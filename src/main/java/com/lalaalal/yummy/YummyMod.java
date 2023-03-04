@@ -1,17 +1,20 @@
 package com.lalaalal.yummy;
 
+import com.lalaalal.yummy.block.YummyBlockRegister;
+import com.lalaalal.yummy.item.YummyItemRegister;
 import com.lalaalal.yummy.networking.ModMessages;
+import com.lalaalal.yummy.particle.YummyParticleRegister;
 import com.mojang.logging.LogUtils;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -42,6 +45,7 @@ public class YummyMod
         YummyBlockRegister.ITEMS.register(modEventBus);
         YummyItemRegister.ITEMS.register(modEventBus);
         YummyItemRegister.VANILLA_ITEMS.register(modEventBus);
+        YummyParticleRegister.PARTICLE_TYPES.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
     }

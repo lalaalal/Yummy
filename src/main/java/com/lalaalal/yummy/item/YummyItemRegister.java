@@ -1,5 +1,6 @@
-package com.lalaalal.yummy;
+package com.lalaalal.yummy.item;
 
+import com.lalaalal.yummy.YummyMod;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;

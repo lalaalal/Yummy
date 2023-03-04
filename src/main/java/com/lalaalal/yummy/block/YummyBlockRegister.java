@@ -1,5 +1,6 @@
-package com.lalaalal.yummy;
+package com.lalaalal.yummy.block;
 
+import com.lalaalal.yummy.YummyMod;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -29,10 +30,8 @@ public class YummyBlockRegister {
             () -> new Block(BlockBehaviour.Properties.of(Material.METAL)
                     .strength(2.5f, 14f).requiresCorrectToolForDrops()),
             YummyMod.TAB);
-    public static final RegistryObject<Block> ECHO_SILVER_BLOCK = register("echo_silver_block",
-            () -> new Block(BlockBehaviour.Properties.of(Material.METAL)
-                    .strength(2.5f, 14f).requiresCorrectToolForDrops()),
-            YummyMod.TAB);
+    public static final RegistryObject<Block> ECHO_SILVER_BLOCK = register(EchoSilverBlock.NAME,
+            EchoSilverBlock::new, YummyMod.TAB);
     public static final RegistryObject<Block> CYAN_FLOWER = register("cyan_flower",
             () -> new FlowerBlock(() -> MobEffects.GLOWING, 5,
                     BlockBehaviour.Properties.copy(Blocks.DANDELION).color(MaterialColor.COLOR_CYAN)),

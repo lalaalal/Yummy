@@ -1,4 +1,4 @@
-package com.lalaalal.yummy;
+package com.lalaalal.yummy.item;
 
 import com.lalaalal.yummy.networking.ModMessages;
 import com.lalaalal.yummy.networking.packet.HitResultPacket;
