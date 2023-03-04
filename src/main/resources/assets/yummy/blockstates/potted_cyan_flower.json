@@ -1,7 +1,7 @@
 {
-  "variants": {
-    "": {
-      "model": "yummy:block/potted_cyan_flower"
+    "variants": {
+        "": {
+            "model": "yummy:block/potted_cyan_flower"
+        }
     }
-  }
 }

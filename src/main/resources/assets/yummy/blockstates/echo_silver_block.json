@@ -1,7 +1,7 @@
 {
-  "variants": {
-    "": {
-      "model": "yummy:block/echo_silver_block"
+    "variants": {
+        "": {
+            "model": "yummy:block/echo_silver_block"
+        }
     }
-  }
 }

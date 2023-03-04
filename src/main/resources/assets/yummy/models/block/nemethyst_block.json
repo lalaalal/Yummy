@@ -1,6 +1,6 @@
 {
     "parent": "minecraft:block/cube_all",
     "textures": {
-        "all": "yummy:blocks/echo_silver_block"
+        "all": "yummy:blocks/nemethyst_block"
     }
 }

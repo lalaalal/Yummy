@@ -1,8 +1,8 @@
 {
-  "replace": false,
-  "values": [
-    "yummy:nether_amethyst_block",
-    "yummy:enderite_block",
-    "yummy:echo_silver_block"
-  ]
+    "replace": false,
+    "values": [
+        "yummy:nemethyst_block",
+        "yummy:breath_steel_block",
+        "yummy:echo_silver_block"
+    ]
 }

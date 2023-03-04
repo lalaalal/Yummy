@@ -2,11 +2,11 @@
     "type": "minecraft:crafting_shapeless",
     "ingredients": [
         {
-            "item": "yummy:enderite_block"
+            "item": "yummy:breath_steel_block"
         }
     ],
     "result": {
-        "item": "yummy:enderite_ingot",
+        "item": "yummy:breath_steel_ingot",
         "count": 9
     }
 }

@@ -21,11 +21,11 @@ public class YummyBlockRegister {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, YummyMod.MOD_ID);
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, YummyMod.MOD_ID);
 
-    public static final RegistryObject<Block> NETHER_AMETHYST_BLOCK = register("nether_amethyst_block",
+    public static final RegistryObject<Block> NEMETHYST_BLOCK = register("nemethyst_block",
             () -> new Block(BlockBehaviour.Properties.of(Material.METAL)
                     .strength(1.5f, 0.5f).requiresCorrectToolForDrops()),
             YummyMod.TAB);
-    public static final RegistryObject<Block> ENDERITE_BLOCK = register("enderite_block",
+    public static final RegistryObject<Block> BREATH_STEEL_BLOCK = register("breath_steel_block",
             () -> new Block(BlockBehaviour.Properties.of(Material.METAL)
                     .strength(2.5f, 14f).requiresCorrectToolForDrops()),
             YummyMod.TAB);
@@ -49,7 +49,6 @@ public class YummyBlockRegister {
     }
 
     public static <T extends Block> void registerBlockItem(String name, Supplier<T> block, CreativeModeTab tab) {
-        RegistryObject<Item> itemRegistryObject = ITEMS.register(name,
-                () -> new BlockItem(block.get(), new Item.Properties().tab(tab)));
+        ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().tab(tab)));
     }
 }

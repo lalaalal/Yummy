@@ -1,11 +1,11 @@
 {
-  "block.yummy.nether_amethyst_block": "네더 자수정 블록",
-  "item.yummy.nether_amethyst": "네더 자수정",
-  "block.yummy.enderite_block": "엔더라이트 블록",
-  "item.yummy.enderite_ingot": "엔더라이트 주괴",
-  "block.yummy.echo_silver_block": "메아리 은 블록",
-  "item.yummy.echo_silver_shard": "메아리 은 조각",
-  "block.yummy.cyan_flower": "청록색 꽃",
-  "block.yummy.potted_cyan_flower": "청록색 꽃이 심어진 화분",
-  "itemGroup.yummy": "야미"
+    "block.yummy.nemethyst_block": "네메시스트 블록",
+    "item.yummy.nemethyst": "네메시스트",
+    "block.yummy.breath_steel_block": "숨결철 블록",
+    "item.yummy.breath_steel_ingot": "숨결철 주괴",
+    "block.yummy.echo_silver_block": "메아리 은 블록",
+    "item.yummy.echo_silver_shard": "메아리 은 조각",
+    "block.yummy.cyan_flower": "청록색 꽃",
+    "block.yummy.potted_cyan_flower": "청록색 꽃이 심어진 화분",
+    "itemGroup.yummy": "야미"
 }

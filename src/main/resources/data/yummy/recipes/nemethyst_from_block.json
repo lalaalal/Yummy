@@ -2,11 +2,11 @@
     "type": "minecraft:crafting_shapeless",
     "ingredients": [
         {
-            "item": "yummy:nether_amethyst_block"
+            "item": "yummy:nemethyst_block"
         }
     ],
     "result": {
-        "item": "yummy:nether_amethyst",
+        "item": "yummy:nemethyst",
         "count": 9
     }
 }

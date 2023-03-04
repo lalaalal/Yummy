@@ -7,11 +7,11 @@
     ],
     "key": {
         "#": {
-            "item": "yummy:echo_silver_shard"
+            "item": "yummy:nemethyst"
         }
     },
     "result": {
-        "item": "yummy:echo_silver_block",
+        "item": "yummy:nemethyst_block",
         "count": 1
     }
 }

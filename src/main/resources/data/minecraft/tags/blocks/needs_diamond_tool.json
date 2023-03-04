@@ -1,7 +1,7 @@
 {
-  "replace": false,
-  "values": [
-    "yummy:echo_silver_block",
-    "yummy:enderite_block"
-  ]
+    "replace": false,
+    "values": [
+        "yummy:echo_silver_block",
+        "yummy:breath_steel_block"
+    ]
 }

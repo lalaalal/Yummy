@@ -1,6 +1,6 @@
 {
-  "replace": false,
-  "values": [
-    "yummy:nether_amethyst_block"
-  ]
+    "replace": false,
+    "values": [
+        "yummy:nemethyst_block"
+    ]
 }

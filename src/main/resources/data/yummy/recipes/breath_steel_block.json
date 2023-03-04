@@ -7,11 +7,11 @@
     ],
     "key": {
         "#": {
-            "item": "yummy:echo_silver_shard"
+            "item": "yummy:breath_steel_ingot"
         }
     },
     "result": {
-        "item": "yummy:echo_silver_block",
+        "item": "yummy:breath_steel_block",
         "count": 1
     }
 }
