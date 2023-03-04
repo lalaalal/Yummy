@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "yummy:blocks/cyan_flower"
+  },
+  "render_type": "cutout"
+}

@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "yummy:nether_amethyst_block",
+    "yummy:enderite_block",
+    "yummy:echo_silver_block"
+  ]
+}

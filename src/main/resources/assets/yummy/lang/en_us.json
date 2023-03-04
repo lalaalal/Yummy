@@ -1,0 +1,11 @@
+{
+  "block.yummy.nether_amethyst_block": "Nether Amethyst Block",
+  "item.yummy.nether_amethyst": "Nether Amethyst",
+  "block.yummy.enderite_block": "Enderite Block",
+  "item.yummy.enderite_ingot": "Enderite Ingot",
+  "block.yummy.echo_silver_block": "Echo Silver Block",
+  "item.yummy.echo_silver_shard": "Echo Silver Shard",
+  "block.yummy.cyan_flower": "Cyan Flower",
+  "block.yummy.potted_cyan_flower": "Potted Cyan Flower",
+  "itemGroup.yummy": "Yummy"
+}

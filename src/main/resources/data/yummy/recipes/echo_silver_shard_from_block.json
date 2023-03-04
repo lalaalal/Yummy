@@ -1,0 +1,12 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "yummy:echo_silver_block"
+        }
+    ],
+    "result": {
+        "item": "yummy:echo_silver_shard",
+        "count": 9
+    }
+}

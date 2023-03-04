@@ -1,0 +1,12 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "yummy:nether_amethyst_block"
+        }
+    ],
+    "result": {
+        "item": "yummy:nether_amethyst",
+        "count": 9
+    }
+}
