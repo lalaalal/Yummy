@@ -1,6 +1,7 @@
 {
     "replace": false,
     "values": [
-        "yummy:cyan_flower"
+        "yummy:cyan_flower",
+        "yummy:light_green_flower"
     ]
 }

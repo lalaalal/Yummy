@@ -40,6 +40,14 @@ public class YummyBlockRegister {
             () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, CYAN_FLOWER,
                     BlockBehaviour.Properties.copy(Blocks.POTTED_DANDELION).color(MaterialColor.COLOR_CYAN)));
 
+    public static final RegistryObject<Block> LIGHT_GREEN_FLOWER = register("light_green_flower",
+            () -> new FlowerBlock(() -> MobEffects.GLOWING, 5,
+                    BlockBehaviour.Properties.copy(Blocks.DANDELION).color(MaterialColor.COLOR_LIGHT_GREEN)),
+            YummyMod.TAB);
+    public static final RegistryObject<Block> POTTED_LIGHT_GREEN_FLOWER = BLOCKS.register("potted_light_green_flower",
+            () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, LIGHT_GREEN_FLOWER,
+                    BlockBehaviour.Properties.copy(Blocks.POTTED_DANDELION).color(MaterialColor.COLOR_LIGHT_GREEN)));
+
     public static <T extends Block> RegistryObject<T> register(String name, Supplier<T> block, CreativeModeTab tab) {
         RegistryObject<T> registryObject = BLOCKS.register(name, block);
         registerBlockItem(name, registryObject, tab);

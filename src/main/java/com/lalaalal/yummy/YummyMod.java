@@ -56,6 +56,7 @@ public class YummyMod
         LOGGER.info("HELLO FROM YUMMY");
         event.enqueueWork(() -> {
             ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(YummyBlockRegister.CYAN_FLOWER.getId(), YummyBlockRegister.POTTED_CYAN_FLOWER);
+            ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(YummyBlockRegister.LIGHT_GREEN_FLOWER.getId(), YummyBlockRegister.POTTED_LIGHT_GREEN_FLOWER);
         });
 
         ModMessages.register();
