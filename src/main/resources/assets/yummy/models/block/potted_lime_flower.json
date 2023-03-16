@@ -1,7 +1,7 @@
 {
     "parent": "minecraft:block/flower_pot_cross",
     "textures": {
-        "plant": "yummy:blocks/light_green_flower"
+        "plant": "yummy:blocks/lime_flower"
     },
     "render_type": "cutout"
 }
