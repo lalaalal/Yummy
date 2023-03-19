@@ -1,14 +1,17 @@
 {
     "block.yummy.nemethyst_block": "Nemethyst Block",
-    "item.yummy.nemethyst": "Nemethyst",
     "block.yummy.breath_steel_block": "Breath Steel Block",
-    "item.yummy.breath_steel_ingot": "Breath Steel Ingot",
     "block.yummy.echo_silver_block": "Echo Silver Block",
-    "item.yummy.echo_silver_shard": "Echo Silver Shard",
     "block.yummy.cyan_flower": "Cyan Flower",
     "block.yummy.potted_cyan_flower": "Potted Cyan Flower",
     "block.yummy.lime_flower": "Lime Flower",
     "block.yummy.potted_lime_flower": "Potted Lime Flower",
+    "item.yummy.nemethyst": "Nemethyst",
+    "item.yummy.breath_steel_ingot": "Breath Steel Ingot",
+    "item.yummy.echo_silver_shard": "Echo Silver Shard",
     "entity.yummy.herobrine": "Herobrine",
+    "effect.yummy.mark": "Mark",
+    "death.attack.mark": "%1$s was died because of the mark.",
+    "death.attack.mark.player": "%1$s was died because of the mark.",
     "itemGroup.yummy": "Yummy"
 }

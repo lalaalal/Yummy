@@ -1,6 +1,7 @@
 package com.lalaalal.yummy;
 
 import com.lalaalal.yummy.block.YummyBlockRegister;
+import com.lalaalal.yummy.effect.YummyEffectRegister;
 import com.lalaalal.yummy.entity.YummyEntityRegister;
 import com.lalaalal.yummy.item.YummyItemRegister;
 import com.lalaalal.yummy.particle.YummyParticleRegister;
@@ -43,6 +44,7 @@ public class YummyMod
         YummyItemRegister.VANILLA_ITEMS.register(modEventBus);
         YummyParticleRegister.PARTICLE_TYPES.register(modEventBus);
         YummyEntityRegister.ENTITIES.register(modEventBus);
+        YummyEffectRegister.EFFECTS.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
     }

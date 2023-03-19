@@ -8,8 +8,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class YummyEntityRegister {
-    public static final DeferredRegister<EntityType<?>> ENTITIES =
-            DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, YummyMod.MOD_ID);
+    public static final DeferredRegister<EntityType<?>> ENTITIES
+            = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, YummyMod.MOD_ID);
 
     public static final RegistryObject<EntityType<HerobrineEntity>> HEROBRINE = ENTITIES.register("herobrine",
             () -> EntityType.Builder.of(HerobrineEntity::new, MobCategory.CREATURE)

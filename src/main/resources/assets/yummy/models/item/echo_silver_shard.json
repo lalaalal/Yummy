@@ -1,6 +1,6 @@
 {
     "parent": "minecraft:item/generated",
     "textures": {
-        "layer0": "yummy:items/echo_silver_shard"
+        "layer0": "yummy:item/echo_silver_shard"
     }
 }

@@ -9,7 +9,8 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 public class HerobrineEntityRenderer extends HumanoidMobRenderer<HerobrineEntity, HerobrineEntityModel> {
-    private static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(YummyMod.MOD_ID, "textures/entities/herobrine.png");
+    private static final ResourceLocation TEXTURE_LOCATION
+            = new ResourceLocation(YummyMod.MOD_ID, "textures/entity/herobrine.png");
 
     public HerobrineEntityRenderer(EntityRendererProvider.Context context) {
         super(context, new HerobrineEntityModel(context.bakeLayer(HerobrineEntityModel.LAYER_LOCATION)), 1.0F);
