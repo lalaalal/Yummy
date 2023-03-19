@@ -1,5 +1,7 @@
 package com.lalaalal.yummy.entity;
 
+import com.lalaalal.yummy.entity.goal.SkillUseGoal;
+import com.lalaalal.yummy.entity.skill.HerobrineExplosion;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -28,7 +30,8 @@ public class HerobrineEntity extends Monster {
     }
 
     protected void addBehaviourGoals() {
-        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, false));
+        this.goalSelector.addGoal(2, new SkillUseGoal(this, HerobrineExplosion::new));
+        this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false));
         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
@@ -40,6 +43,6 @@ public class HerobrineEntity extends Monster {
                 .add(Attributes.MAX_HEALTH, 666)
                 .add(Attributes.ARMOR, 2)
                 .add(Attributes.ATTACK_DAMAGE, 8)
-                .add(Attributes.MOVEMENT_SPEED, 0.23);
+                .add(Attributes.MOVEMENT_SPEED, 0.28);
     }
 }

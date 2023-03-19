@@ -14,5 +14,6 @@ public class YummyEntityRegister {
     public static final RegistryObject<EntityType<HerobrineEntity>> HEROBRINE = ENTITIES.register("herobrine",
             () -> EntityType.Builder.of(HerobrineEntity::new, MobCategory.CREATURE)
                     .sized(1.0f, 2.0f)
+                    .fireImmune()
                     .build(YummyMod.MOD_ID + ":herobrine"));
 }

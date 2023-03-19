@@ -23,7 +23,7 @@ public class YummyMod
     // Define mod id in a common place for everything to reference
     public static final String MOD_ID = "yummy";
     // Directly reference a slf4j logger
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
 
     public static final CreativeModeTab TAB = new CreativeModeTab(MOD_ID) {
         @Override
