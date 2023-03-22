@@ -1,6 +1,7 @@
 package com.lalaalal.yummy;
 
 import com.lalaalal.yummy.block.YummyBlockRegister;
+import com.lalaalal.yummy.blockentity.YummyBlockEntityRegister;
 import com.lalaalal.yummy.effect.YummyEffectRegister;
 import com.lalaalal.yummy.entity.YummyEntityRegister;
 import com.lalaalal.yummy.item.YummyItemRegister;
@@ -40,6 +41,7 @@ public class YummyMod
 
         YummyBlockRegister.BLOCKS.register(modEventBus);
         YummyBlockRegister.ITEMS.register(modEventBus);
+        YummyBlockEntityRegister.BLOCK_ENTITY_TYPES.register(modEventBus);
         YummyItemRegister.ITEMS.register(modEventBus);
         YummyItemRegister.VANILLA_ITEMS.register(modEventBus);
         YummyParticleRegister.PARTICLE_TYPES.register(modEventBus);

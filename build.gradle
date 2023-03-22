@@ -79,15 +79,11 @@ minecraft {
         server {
             workingDirectory project.file('run')
 
-            properties 'mixin.env.remapRefMap': 'true'
             property 'mixin.env.refMapRemappingFile', "${project.projectDir}/build/createSrgToMcp/output.srg"
-
+            arg "-mixin.config=" + "citadel.mixins.json"
             arg "-nogui"
-            args '--mod', 'yummy', '--all', '--output', file('src/generated/resources/'), '--existing', sourceSets.main.resources.srcDirs[0]
-
             // Recommended logging data for a userdev environment
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
 
             property 'forge.logging.console.level', 'debug'
 
