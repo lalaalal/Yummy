@@ -1,7 +1,7 @@
 package com.lalaalal.yummy;
 
 import com.lalaalal.yummy.block.YummyBlockRegister;
-import com.lalaalal.yummy.blockentity.YummyBlockEntityRegister;
+import com.lalaalal.yummy.block.entity.YummyBlockEntityRegister;
 import com.lalaalal.yummy.effect.YummyEffectRegister;
 import com.lalaalal.yummy.entity.YummyEntityRegister;
 import com.lalaalal.yummy.item.YummyItemRegister;

@@ -1,9 +1,11 @@
 package com.lalaalal.yummy.block;
 
-import com.lalaalal.yummy.blockentity.YummyBlockEntityRegister;
+import com.lalaalal.yummy.block.entity.PollutedBlockEntity;
+import com.lalaalal.yummy.block.entity.YummyBlockEntityRegister;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -26,6 +28,12 @@ public class PollutedBlock extends BaseEntityBlock {
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
         return new PollutedBlockEntity(pos, state);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public @NotNull RenderShape getRenderShape(@NotNull BlockState pState) {
+        return RenderShape.MODEL;
     }
 
     @Nullable

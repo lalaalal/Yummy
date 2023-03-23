@@ -1,6 +1,7 @@
 {
     "replace": false,
     "values": [
-        "yummy:nemethyst_block"
+        "yummy:nemethyst_block",
+        "yummy:polluted_block"
     ]
 }

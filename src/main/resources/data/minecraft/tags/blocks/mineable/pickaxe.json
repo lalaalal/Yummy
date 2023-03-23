@@ -3,6 +3,7 @@
     "values": [
         "yummy:nemethyst_block",
         "yummy:breath_steel_block",
-        "yummy:echo_silver_block"
+        "yummy:echo_silver_block",
+        "yummy:polluted_block"
     ]
 }

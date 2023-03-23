@@ -1,7 +1,6 @@
-package com.lalaalal.yummy.block;
+package com.lalaalal.yummy.block.entity;
 
 import com.lalaalal.yummy.YummyUtil;
-import com.lalaalal.yummy.blockentity.YummyBlockEntityRegister;
 import com.lalaalal.yummy.effect.MarkEffect;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
