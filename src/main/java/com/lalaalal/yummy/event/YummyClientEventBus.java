@@ -5,6 +5,7 @@ import com.lalaalal.yummy.client.models.HerobrineEntityModel;
 import com.lalaalal.yummy.client.renderer.HerobrineEntityRenderer;
 import com.lalaalal.yummy.entity.YummyEntityRegister;
 import com.lalaalal.yummy.particle.EchoSilverBlockParticle;
+import com.lalaalal.yummy.particle.PollutedParticle;
 import com.lalaalal.yummy.particle.YummyParticleRegister;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -22,6 +23,8 @@ public class YummyClientEventBus {
                 EchoSilverBlockParticle.EchoSilverFallProvider::new);
         event.register(YummyParticleRegister.LANDING_ECHO_SILVER.get(),
                 EchoSilverBlockParticle.EchoSilverLandProvider::new);
+        event.register(YummyParticleRegister.POLLUTED_PARTICLE.get(),
+                PollutedParticle.PollutedParticleProvider::new);
     }
 
     @SubscribeEvent

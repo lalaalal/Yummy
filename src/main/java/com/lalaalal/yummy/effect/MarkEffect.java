@@ -15,10 +15,10 @@ public class MarkEffect extends MobEffect {
 
         MobEffectInstance mobEffectInstance = entity.getEffect(MARK_EFFECT);
         if (mobEffectInstance != null) {
-            int amplifier = mobEffectInstance.getAmplifier();
-            entity.addEffect(new MobEffectInstance(MARK_EFFECT, 666, amplifier + 1));
+            int amplifier = Math.min(mobEffectInstance.getAmplifier() + 1, 6);
+            entity.addEffect(new MobEffectInstance(MARK_EFFECT, 666, amplifier));
         } else {
-            entity.addEffect(new MobEffectInstance(MARK_EFFECT, 666));
+            entity.addEffect(new MobEffectInstance(MARK_EFFECT, 666, 0));
         }
     }
 

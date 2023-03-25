@@ -31,7 +31,7 @@ public class PollutedBlockEntity extends BlockEntity {
         super.load(pTag);
     }
 
-    public static <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState blockState, T blockEntity) {
+    public static <T extends BlockEntity> void serverTick(Level level, BlockPos blockPos, BlockState blockState, T blockEntity) {
         if (blockEntity instanceof PollutedBlockEntity pollutedBlockEntity
                 && pollutedBlockEntity.tick++ % TICK_INTERVAL == 0) {
             AABB area = YummyUtil.createArea(blockPos, 2);
@@ -41,6 +41,7 @@ public class PollutedBlockEntity extends BlockEntity {
             for (LivingEntity entity : entities) {
                 MarkEffect.overlapMark(entity);
             }
+            pollutedBlockEntity.tick = 1;
         }
     }
 }
