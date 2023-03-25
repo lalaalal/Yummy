@@ -2,9 +2,6 @@ package com.lalaalal.yummy.block.entity;
 
 import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.block.YummyBlockRegister;
-import com.mojang.datafixers.types.Type;
-import net.minecraft.Util;
-import net.minecraft.util.datafix.fixes.References;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -18,10 +15,8 @@ public class YummyBlockEntityRegister {
     public static final RegistryObject<BlockEntityType<PollutedBlockEntity>> POLLUTED_BLOCK_ENTITY_TYPE
             = register("polluted_block_entity_type", PollutedBlockEntity::new, YummyBlockRegister.POLLUTED_BLOCK);
 
-    @SuppressWarnings("null")
     public static <T extends BlockEntity> RegistryObject<BlockEntityType<T>> register(String name, BlockEntityType.BlockEntitySupplier<T> blockEntitySupplier, RegistryObject<Block> block) {
-        Type<?> type = Util.fetchChoiceType(References.BLOCK_ENTITY, name);
         return BLOCK_ENTITY_TYPES.register(name,
-                () -> BlockEntityType.Builder.of(blockEntitySupplier, block.get()).build(type));
+                () -> BlockEntityType.Builder.of(blockEntitySupplier, block.get()).build(null));
     }
 }
