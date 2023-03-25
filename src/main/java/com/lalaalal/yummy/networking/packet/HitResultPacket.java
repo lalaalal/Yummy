@@ -16,9 +16,9 @@ import net.minecraftforge.network.NetworkEvent;
 import java.util.function.Supplier;
 
 public class HitResultPacket {
-    private double x;
-    private double y;
-    private double z;
+    private final double x;
+    private final double y;
+    private final double z;
 
     public HitResultPacket(double x, double y, double z) {
         this.x = x;
@@ -38,18 +38,19 @@ public class HitResultPacket {
         buf.writeDouble(z);
     }
 
-    public boolean handle(Supplier<NetworkEvent.Context> supplier) {
+    public void handle(Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context context = supplier.get();
         context.enqueueWork(() -> {
             // ON SERVER
             ServerPlayer player = context.getSender();
+            if (player == null)
+                return;
             ServerLevel level = player.getLevel();
 
             InteractionHand interactionHand = player.getUsedItemHand();
 
             provideFlower(level, player, player.getItemInHand(interactionHand));
         });
-        return true;
     }
 
     private void provideFlower(Level level, Player player, ItemStack itemStack) {
