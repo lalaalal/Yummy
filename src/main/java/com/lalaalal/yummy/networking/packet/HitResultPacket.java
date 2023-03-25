@@ -13,9 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.network.NetworkEvent;
 
-import java.util.function.Supplier;
-
-public class HitResultPacket {
+public class HitResultPacket extends YummyPacket {
     private final double x;
     private final double y;
     private final double z;
@@ -32,25 +30,23 @@ public class HitResultPacket {
         this.z = buf.readDouble();
     }
 
-    public void toBytes(FriendlyByteBuf buf) {
+    @Override
+    public void encode(FriendlyByteBuf buf) {
         buf.writeDouble(x);
         buf.writeDouble(y);
         buf.writeDouble(z);
     }
 
-    public void handle(Supplier<NetworkEvent.Context> supplier) {
-        NetworkEvent.Context context = supplier.get();
-        context.enqueueWork(() -> {
-            // ON SERVER
-            ServerPlayer player = context.getSender();
-            if (player == null)
-                return;
-            ServerLevel level = player.getLevel();
+    @Override
+    protected void handleWork(NetworkEvent.Context context) {
+        ServerPlayer player = context.getSender();
+        if (player == null)
+            return;
+        ServerLevel level = player.getLevel();
 
-            InteractionHand interactionHand = player.getUsedItemHand();
+        InteractionHand interactionHand = player.getUsedItemHand();
 
-            provideFlower(level, player, player.getItemInHand(interactionHand));
-        });
+        provideFlower(level, player, player.getItemInHand(interactionHand));
     }
 
     private void provideFlower(Level level, Player player, ItemStack itemStack) {

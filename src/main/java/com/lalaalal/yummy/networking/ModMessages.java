@@ -20,23 +20,21 @@ public class ModMessages {
     }
 
     public static void register() {
-        SimpleChannel net = NetworkRegistry.ChannelBuilder
+        INSTANCE = NetworkRegistry.ChannelBuilder
                 .named(new ResourceLocation(YummyMod.MOD_ID, "messages"))
                 .networkProtocolVersion(() -> "1.0")
                 .clientAcceptedVersions(s -> true)
                 .serverAcceptedVersions(s -> true)
                 .simpleChannel();
 
-        INSTANCE = net;
-
-        net.messageBuilder(HitResultPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+        INSTANCE.messageBuilder(HitResultPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
                 .decoder(HitResultPacket::new)
-                .encoder(HitResultPacket::toBytes)
+                .encoder(HitResultPacket::encode)
                 .consumerMainThread(HitResultPacket::handle)
                 .add();
-        net.messageBuilder(ShowHerobrineMarkPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+        INSTANCE.messageBuilder(ShowHerobrineMarkPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
                 .decoder(ShowHerobrineMarkPacket::new)
-                .encoder(ShowHerobrineMarkPacket::toBytes)
+                .encoder(ShowHerobrineMarkPacket::encode)
                 .consumerMainThread(ShowHerobrineMarkPacket::handle)
                 .add();
     }

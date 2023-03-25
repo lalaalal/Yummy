@@ -5,11 +5,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
 
-import java.util.function.Supplier;
-
-public class ShowHerobrineMarkPacket {
+public class ShowHerobrineMarkPacket extends YummyPacket {
     private final double x;
     private final double y;
     private final double z;
@@ -20,21 +21,23 @@ public class ShowHerobrineMarkPacket {
         this.z = z;
     }
 
-    public ShowHerobrineMarkPacket(FriendlyByteBuf friendlyByteBuf) {
-        this.x = friendlyByteBuf.readDouble();
-        this.y = friendlyByteBuf.readDouble();
-        this.z = friendlyByteBuf.readDouble();
+    public ShowHerobrineMarkPacket(FriendlyByteBuf buf) {
+        this.x = buf.readDouble();
+        this.y = buf.readDouble();
+        this.z = buf.readDouble();
     }
 
-    public void toBytes(FriendlyByteBuf friendlyByteBuf) {
-        friendlyByteBuf.writeDouble(x);
-        friendlyByteBuf.writeDouble(y);
-        friendlyByteBuf.writeDouble(z);
+    @Override
+    public void encode(FriendlyByteBuf buf) {
+        buf.writeDouble(x);
+        buf.writeDouble(y);
+        buf.writeDouble(z);
     }
 
-    public void handle(Supplier<NetworkEvent.Context> supplier) {
-        NetworkEvent.Context context = supplier.get();
-        context.enqueueWork(() -> {
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    protected void handleWork(NetworkEvent.Context context) {
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
             Level level = Minecraft.getInstance().level;
             if (level == null)
                 return;
