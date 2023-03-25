@@ -1,6 +1,6 @@
 package com.lalaalal.yummy.item;
 
-import com.lalaalal.yummy.networking.ModMessages;
+import com.lalaalal.yummy.networking.YummyMessages;
 import com.lalaalal.yummy.networking.packet.HitResultPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -43,7 +43,7 @@ public class YummyBoneMealItem extends BoneMealItem {
         double y = hitResult.getLocation().y;
         double z = hitResult.getLocation().z;
 
-        ModMessages.sendToServer(new HitResultPacket(x, y, z));
+        YummyMessages.sendToServer(new HitResultPacket(x, y, z));
 
         BlockPos blockPos = new BlockPos(x, y, z);
         BlockState blockState = level.getBlockState(blockPos);

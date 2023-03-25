@@ -10,28 +10,13 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
 
-public class ShowHerobrineMarkPacket extends YummyPacket {
-    private final double x;
-    private final double y;
-    private final double z;
-
+public class ShowHerobrineMarkPacket extends PositionPacket {
     public ShowHerobrineMarkPacket(double x, double y, double z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        super(x, y, z);
     }
 
     public ShowHerobrineMarkPacket(FriendlyByteBuf buf) {
-        this.x = buf.readDouble();
-        this.y = buf.readDouble();
-        this.z = buf.readDouble();
-    }
-
-    @Override
-    public void encode(FriendlyByteBuf buf) {
-        buf.writeDouble(x);
-        buf.writeDouble(y);
-        buf.writeDouble(z);
+        super(buf);
     }
 
     @OnlyIn(Dist.CLIENT)

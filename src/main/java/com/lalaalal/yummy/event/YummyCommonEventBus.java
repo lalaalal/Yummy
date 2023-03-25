@@ -4,7 +4,7 @@ import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.block.YummyBlockRegister;
 import com.lalaalal.yummy.entity.HerobrineEntity;
 import com.lalaalal.yummy.entity.YummyEntityRegister;
-import com.lalaalal.yummy.networking.ModMessages;
+import com.lalaalal.yummy.networking.YummyMessages;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -21,7 +21,7 @@ public class YummyCommonEventBus {
             ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(YummyBlockRegister.LIME_FLOWER.getId(), YummyBlockRegister.POTTED_LIME_FLOWER);
         });
 
-        ModMessages.register();
+        YummyMessages.register();
     }
 
     @SubscribeEvent

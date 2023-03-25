@@ -7,9 +7,9 @@ import net.minecraft.world.level.Level;
 
 public class HerobrineExplosion extends Skill {
     public static final int COOLDOWN = 600;
-    protected static final double ATTACK_REACH = 25;
-    private float explosionRadius = 6.0f;
-    private boolean explosionCauseFire = true;
+    protected double ATTACK_REACH = 25;
+    protected float explosionRadius = 6.0f;
+    protected boolean explosionCauseFire = true;
 
     public HerobrineExplosion(Mob usingEntity) {
         super(usingEntity, COOLDOWN);

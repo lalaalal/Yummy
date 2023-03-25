@@ -13,28 +13,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.network.NetworkEvent;
 
-public class HitResultPacket extends YummyPacket {
-    private final double x;
-    private final double y;
-    private final double z;
+public class HitResultPacket extends PositionPacket {
 
     public HitResultPacket(double x, double y, double z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        super(x, y, z);
     }
 
     public HitResultPacket(FriendlyByteBuf buf) {
-        this.x = buf.readDouble();
-        this.y = buf.readDouble();
-        this.z = buf.readDouble();
-    }
-
-    @Override
-    public void encode(FriendlyByteBuf buf) {
-        buf.writeDouble(x);
-        buf.writeDouble(y);
-        buf.writeDouble(z);
+        super(buf);
     }
 
     @Override

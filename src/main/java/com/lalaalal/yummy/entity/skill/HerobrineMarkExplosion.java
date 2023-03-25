@@ -2,7 +2,7 @@ package com.lalaalal.yummy.entity.skill;
 
 import com.lalaalal.yummy.YummyUtil;
 import com.lalaalal.yummy.effect.MarkEffect;
-import com.lalaalal.yummy.networking.ModMessages;
+import com.lalaalal.yummy.networking.YummyMessages;
 import com.lalaalal.yummy.networking.packet.ShowHerobrineMarkPacket;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -32,7 +32,7 @@ public class HerobrineMarkExplosion extends HerobrineExplosion {
         double x = usingEntity.getX();
         double y = usingEntity.getY();
         double z = usingEntity.getZ();
-        ModMessages.sendToPlayer(new ShowHerobrineMarkPacket(x, y, z), levelChunk);
+        YummyMessages.sendToPlayer(new ShowHerobrineMarkPacket(x, y, z), levelChunk);
     }
 
     @Override
