@@ -10,9 +10,11 @@
     "item.yummy.nemethyst": "Nemethyst",
     "item.yummy.breath_steel_ingot": "Breath Steel Ingot",
     "item.yummy.echo_silver_shard": "Echo Silver Shard",
+    "item.yummy.spear_of_longinus": "Spear of Longinus",
     "entity.yummy.herobrine": "Herobrine",
     "effect.yummy.mark": "Mark",
-    "death.attack.mark": "%1$s was died because of the mark.",
-    "death.attack.mark.player": "%1$s was died because of the mark.",
+    "death.attack.mark": "%1$s was killed by the mark.",
+    "death.attack.mark.player": "%1$s was killed by the mark.",
+    "death.attack.spear_of_longinus": "%1$s's AT field is torn",
     "itemGroup.yummy": "Yummy"
 }

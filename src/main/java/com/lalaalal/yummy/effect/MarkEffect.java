@@ -1,6 +1,6 @@
 package com.lalaalal.yummy.effect;
 
-import com.lalaalal.yummy.entity.HerobrineEntity;
+import com.lalaalal.yummy.entity.Herobrine;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -12,7 +12,7 @@ import java.awt.*;
 
 public class MarkEffect extends MobEffect {
     public static void overlapMark(LivingEntity entity) {
-        if (entity instanceof HerobrineEntity)
+        if (entity instanceof Herobrine)
             return;
 
         final MobEffect MARK_EFFECT = YummyEffectRegister.MARK.get();

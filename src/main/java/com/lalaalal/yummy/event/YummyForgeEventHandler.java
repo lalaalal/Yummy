@@ -1,7 +1,7 @@
 package com.lalaalal.yummy.event;
 
 import com.lalaalal.yummy.YummyMod;
-import com.lalaalal.yummy.entity.HerobrineEntity;
+import com.lalaalal.yummy.entity.Herobrine;
 import com.lalaalal.yummy.networking.YummyMessages;
 import com.lalaalal.yummy.networking.packet.SpawnHerobrinePacket;
 import net.minecraft.core.BlockPos;
@@ -21,7 +21,7 @@ public class YummyForgeEventHandler {
         BlockPos blockPos = event.getHitVec().getBlockPos();
         ItemStack item = event.getEntity().getMainHandItem();
         if (item.is(Items.FLINT_AND_STEEL) || item.is(Items.FIRE_CHARGE)
-                && HerobrineEntity.canSummonHerobrine(level, blockPos))
+                && Herobrine.canSummonHerobrine(level, blockPos))
             YummyMessages.sendToServer(new SpawnHerobrinePacket(blockPos));
     }
 }

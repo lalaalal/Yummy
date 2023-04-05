@@ -10,9 +10,11 @@
     "item.yummy.nemethyst": "네메시스트",
     "item.yummy.breath_steel_ingot": "숨결철 주괴",
     "item.yummy.echo_silver_shard": "메아리 은 조각",
+    "item.yummy.spear_of_longinus": "롱기누스의 창",
     "entity.yummy.herobrine": "히로빈",
     "effect.yummy.mark": "낙인",
     "death.attack.mark": "%1$s(이)가 낙인사했습니다.",
     "death.attack.mark.player": "%1$s(이)가 낙인사했습니다.",
+    "death.attack.spear_of_longinus": "%1$s의 AT 필드가 찢어졌습니다.",
     "itemGroup.yummy": "야미"
 }

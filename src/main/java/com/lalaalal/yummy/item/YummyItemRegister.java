@@ -16,5 +16,7 @@ public class YummyItemRegister {
             () -> new Item(new Item.Properties().tab(YummyMod.TAB)));
     public static final RegistryObject<Item> ECHO_SILVER_SHARD_ITEM = ITEMS.register("echo_silver_shard",
             () -> new Item(new Item.Properties().tab(YummyMod.TAB)));
+    public static final RegistryObject<Item> SPEAR_OF_LONGINUS_ITEM = ITEMS.register("spear_of_longinus", SpearOfLonginusItem::new);
+
     public static final RegistryObject<Item> BONE_MEAL = VANILLA_ITEMS.register("bone_meal", YummyBoneMealItem::new);
 }

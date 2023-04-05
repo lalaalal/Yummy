@@ -20,7 +20,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
-public class HerobrineEntity extends Monster {
+public class Herobrine extends Monster {
     public static boolean canSummonHerobrine(Level level, BlockPos headPos) {
         Block soulSandBlock = level.getBlockState(headPos).getBlock();
         Block netherBlock = level.getBlockState(headPos.below(1)).getBlock();
@@ -40,7 +40,7 @@ public class HerobrineEntity extends Monster {
         level.destroyBlock(headPos.below(3), false);
     }
 
-    public static AttributeSupplier.Builder getHerobrineEntityAttributes() {
+    public static AttributeSupplier.Builder getHerobrineAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, 666)
                 .add(Attributes.ARMOR, 2)
@@ -48,7 +48,7 @@ public class HerobrineEntity extends Monster {
                 .add(Attributes.MOVEMENT_SPEED, 0.28);
     }
 
-    public HerobrineEntity(EntityType<? extends Monster> pEntityType, Level pLevel) {
+    public Herobrine(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
         this.xpReward = 666;
     }

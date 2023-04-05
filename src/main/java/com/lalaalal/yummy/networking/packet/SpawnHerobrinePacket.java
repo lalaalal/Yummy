@@ -1,6 +1,6 @@
 package com.lalaalal.yummy.networking.packet;
 
-import com.lalaalal.yummy.entity.HerobrineEntity;
+import com.lalaalal.yummy.entity.Herobrine;
 import com.lalaalal.yummy.entity.YummyEntityRegister;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -29,11 +29,11 @@ public class SpawnHerobrinePacket extends PositionPacket {
             return;
 
         ServerLevel level = player.getLevel();
-        if (!HerobrineEntity.canSummonHerobrine(level, getBlockPos()))
+        if (!Herobrine.canSummonHerobrine(level, getBlockPos()))
             return;
 
         BlockPos blockPos = new BlockPos(x, y, z);
-        HerobrineEntity.destroySpawnStructure(level, blockPos);
+        Herobrine.destroySpawnStructure(level, blockPos);
         YummyEntityRegister.HEROBRINE.get().spawn(level, null, null, null, blockPos, MobSpawnType.STRUCTURE, true, false);
     }
 }
