@@ -14,8 +14,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class PollutedBlockEntity extends BlockEntity {
-    public static final long TICK_INTERVAL = 80;
-    private long tick = 0;
+    protected int tickInterval = 20 * 10;
+    protected int lifetime = 20 * 60;
+    protected long tick = 0;
 
     public PollutedBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(YummyBlockEntityRegister.POLLUTED_BLOCK_ENTITY_TYPE.get(), pPos, pBlockState);
@@ -33,7 +34,10 @@ public class PollutedBlockEntity extends BlockEntity {
 
     public static <T extends BlockEntity> void serverTick(Level level, BlockPos blockPos, BlockState blockState, T blockEntity) {
         if (blockEntity instanceof PollutedBlockEntity pollutedBlockEntity
-                && pollutedBlockEntity.tick++ % TICK_INTERVAL == 0) {
+                && pollutedBlockEntity.tick++ % pollutedBlockEntity.tickInterval == 0) {
+            if (pollutedBlockEntity.tick >= pollutedBlockEntity.lifetime)
+                level.destroyBlock(blockPos, false);
+
             AABB area = YummyUtil.createArea(blockPos, 2);
 
             List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, area);
@@ -41,7 +45,6 @@ public class PollutedBlockEntity extends BlockEntity {
             for (LivingEntity entity : entities) {
                 MarkEffect.overlapMark(entity);
             }
-            pollutedBlockEntity.tick = 1;
         }
     }
 }
