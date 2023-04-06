@@ -19,5 +19,6 @@ public class YummyEntityRegister {
 
     public static final RegistryObject<EntityType<ThrownSpearOfLonginus>> THROWN_SPEAR_OF_LONGINUS = ENTITIES.register("thrown_spear_of_longinus",
             () -> EntityType.Builder.of((EntityType.EntityFactory<ThrownSpearOfLonginus>) ThrownSpearOfLonginus::new, MobCategory.MISC)
+                    .fireImmune()
                     .build(YummyMod.MOD_ID + ":thrown_spear_of_longinus"));
 }
