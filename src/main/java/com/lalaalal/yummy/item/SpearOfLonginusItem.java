@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.entity.ThrownSpearOfLonginus;
+import com.lalaalal.yummy.misc.ItemDamageSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -47,9 +48,9 @@ public class SpearOfLonginusItem extends TridentItem {
     }
 
     @Override
-    public boolean hurtEnemy(@NotNull ItemStack pStack, LivingEntity pTarget, @NotNull LivingEntity pAttacker) {
-        DamageSource damageSource = new DamageSource("spear_of_longinus");
-        pTarget.hurt(damageSource, Float.MAX_VALUE);
+    public boolean hurtEnemy(@NotNull ItemStack itemStack, LivingEntity target, @NotNull LivingEntity attacker) {
+        DamageSource damageSource = new ItemDamageSource("spear_of_longinus", attacker, itemStack);
+        target.hurt(damageSource, Float.MAX_VALUE);
         return true;
     }
 

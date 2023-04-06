@@ -1,6 +1,7 @@
 package com.lalaalal.yummy.entity;
 
 import com.lalaalal.yummy.item.YummyItemRegister;
+import com.lalaalal.yummy.misc.ItemDamageSource;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
@@ -30,7 +31,7 @@ public class ThrownSpearOfLonginus extends AbstractArrow {
         Entity entity = result.getEntity();
         SoundEvent soundevent = SoundEvents.TRIDENT_HIT;
         if (entity instanceof LivingEntity livingEntity) {
-            DamageSource damageSource = new DamageSource("spear_of_longinus");
+            DamageSource damageSource = new ItemDamageSource("spear_of_longinus", getOwner(), spearOfLonginusItem);
             livingEntity.hurt(damageSource, Float.MAX_VALUE);
         }
 

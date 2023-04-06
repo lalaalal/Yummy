@@ -13,9 +13,8 @@
     "item.yummy.spear_of_longinus": "§c롱기누스의 창§r",
     "entity.yummy.herobrine": "히로빈",
     "effect.yummy.mark": "낙인",
-    "death.attack.mark": "§6%1$s(이)가 낙인사했습니다.§r",
-    "death.attack.mark.player": "§6%1$s(이)가 낙인사했습니다.§r",
-    "death.attack.spear_of_longinus": "§c%1$s의 AT 필드가 찢어졌습니다.§r",
-    "death.attack.spear_of_longinus.player": "§c%1$s의 AT 필드가 찢어졌습니다.§r",
+    "death.attack.mark": "%1$s(이)가 낙인사했습니다.",
+    "death.attack.mark.player": "%1$s(이)가 낙인사했습니다.",
+    "death.attack.spear_of_longinus": "%2$s의 %3$s에 의해 %1$s의 AT 필드가 찢어졌습니다.",
     "itemGroup.yummy": "야미"
 }
