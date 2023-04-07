@@ -12,9 +12,8 @@
     "item.yummy.echo_silver_shard": "Echo Silver Shard",
     "item.yummy.spear_of_longinus": "§cSpear of Longinus§r",
     "entity.yummy.herobrine": "Herobrine",
-    "effect.yummy.mark": "Mark",
-    "death.attack.mark": "%1$s was killed by the mark.",
-    "death.attack.mark.player": "%1$s was killed by the mark.",
+    "effect.yummy.mark": "§cMark§r",
+    "death.effect.mark": "%1$s died due to stacking the %2$s.",
     "death.attack.spear_of_longinus": "%1$s's AT field is torn by %2$s.",
     "death.attack.spear_of_longinus.player": "%1$s's AT field is torn by %3$s's %2$s.",
     "itemGroup.yummy": "Yummy"

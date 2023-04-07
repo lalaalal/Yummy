@@ -20,12 +20,11 @@ public class ItemDamageSource extends DamageSource {
     @Override
     public Component getLocalizedDeathMessage(LivingEntity livingEntity) {
         if (source == null)
-            return Component.translatable(getMsgId(), livingEntity.getDisplayName(), usedItem.getDisplayName());
-        return Component.translatable(getMsgId(), livingEntity.getDisplayName(), usedItem.getDisplayName(), source.getDisplayName());
+            return Component.translatable(getTranslationId(), livingEntity.getDisplayName(), usedItem.getDisplayName());
+        return Component.translatable(getTranslationId(), livingEntity.getDisplayName(), usedItem.getDisplayName(), source.getDisplayName());
     }
 
-    @Override
-    public String getMsgId() {
+    public String getTranslationId() {
         String messageId = "death.attack." + super.getMsgId();
         return source == null ? messageId : messageId + ".player";
     }
