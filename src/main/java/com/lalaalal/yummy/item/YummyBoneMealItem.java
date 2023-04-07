@@ -1,28 +1,23 @@
 package com.lalaalal.yummy.item;
 
-import com.lalaalal.yummy.networking.YummyMessages;
-import com.lalaalal.yummy.networking.packet.HitResultPacket;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.HitResult;
-
-import java.util.Random;
-
-import static net.minecraft.core.particles.ParticleTypes.HAPPY_VILLAGER;
 
 public class YummyBoneMealItem extends BoneMealItem {
-    private long lastUsedTime = 0;
-
     public YummyBoneMealItem() {
         super(new Properties().tab(CreativeModeTab.TAB_MISC));
     }
@@ -31,49 +26,49 @@ public class YummyBoneMealItem extends BoneMealItem {
     public InteractionResult useOn(UseOnContext context) {
         Player player = context.getPlayer();
         Level level = context.getLevel();
+        BlockPos blockPos = context.getClickedPos();
+        BlockState blockState = level.getBlockState(blockPos);
 
-        if (!checkUsingInterval() || !level.isClientSide() || player == null)
+        if (player == null)
             return super.useOn(context);
 
-        HitResult hitResult = Minecraft.getInstance().hitResult;
-        if (hitResult == null)
-            return InteractionResult.FAIL;
-        double x = hitResult.getLocation().x;
-        double y = hitResult.getLocation().y;
-        double z = hitResult.getLocation().z;
-
-        YummyMessages.sendToServer(new HitResultPacket(x, y, z));
-
-        BlockPos blockPos = new BlockPos(x, y, z);
-        BlockState blockState = level.getBlockState(blockPos);
         if (blockState.is(BlockTags.SMALL_FLOWERS)) {
-            addBoneMealParticle(level, x, y, z);
-            level.playSound(player, blockPos, SoundEvents.BONE_MEAL_USE, SoundSource.BLOCKS, 1, 1);
-            player.swing(player.getUsedItemHand(), true);
+            if (level.isClientSide)
+                doClientEffect(level, player, blockPos, context.getHand());
+            else
+                provideFlower(level, player, blockPos, blockState, context.getItemInHand());
             return InteractionResult.SUCCESS;
         }
 
         return super.useOn(context);
     }
 
-    private boolean checkUsingInterval() {
-        long currentTime = System.currentTimeMillis();
-        long diff = currentTime - lastUsedTime;
-        lastUsedTime = currentTime;
+    private void provideFlower(Level level, Player player, BlockPos blockPos, BlockState blockState, ItemStack itemStack) {
+        double x = blockPos.getX() + 0.5;
+        double y = blockPos.getY() + 0.5;
+        double z = blockPos.getZ() + 0.5;
 
-        return diff > 50;
+        level.addFreshEntity(new ItemEntity(level, x, y, z, new ItemStack(blockState.getBlock(), 1)));
+        if (!player.isCreative())
+            itemStack.shrink(1);
     }
 
-    private void addBoneMealParticle(Level level, double x, double y, double z) {
-        Random random = new Random();
+    private void doClientEffect(Level level, Player player, BlockPos blockPos, InteractionHand hand) {
+        addBoneMealParticle(level, blockPos);
+        level.playSound(player, blockPos, SoundEvents.BONE_MEAL_USE, SoundSource.BLOCKS, 1, 1);
+        player.swing(hand, true);
+    }
 
-        for (int i = 0; i < 7; i++) {
-            double particleX = x + random.nextDouble(-0.5, 0.5);
-            double particleY = y + random.nextDouble(-0.5, 0.5);
-            double particleZ = z + random.nextDouble(-0.5, 0.5);
-            double speed = random.nextDouble(1.0, 1.7);
+    private void addBoneMealParticle(Level level, BlockPos blockPos) {
+        RandomSource random = level.getRandom();
 
-            level.addParticle(HAPPY_VILLAGER, particleX, particleY, particleZ, 0, speed, 0);
+        for (int i = 0; i < 10; i++) {
+            double particleX = blockPos.getX() + random.nextDouble();
+            double particleY = blockPos.getY() + random.nextDouble();
+            double particleZ = blockPos.getZ() + random.nextDouble();
+            double speed = random.nextDouble() * 0.7 + 1;
+
+            level.addParticle(ParticleTypes.HAPPY_VILLAGER, particleX, particleY, particleZ, 0, speed, 0);
         }
     }
 }

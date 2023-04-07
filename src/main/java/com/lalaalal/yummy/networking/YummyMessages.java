@@ -1,7 +1,6 @@
 package com.lalaalal.yummy.networking;
 
 import com.lalaalal.yummy.YummyMod;
-import com.lalaalal.yummy.networking.packet.HitResultPacket;
 import com.lalaalal.yummy.networking.packet.ShowHerobrineMarkPacket;
 import com.lalaalal.yummy.networking.packet.SpawnHerobrinePacket;
 import net.minecraft.resources.ResourceLocation;
@@ -29,11 +28,6 @@ public class YummyMessages {
                 .serverAcceptedVersions(s -> true)
                 .simpleChannel();
 
-        INSTANCE.messageBuilder(HitResultPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(HitResultPacket::new)
-                .encoder(HitResultPacket::encode)
-                .consumerMainThread(HitResultPacket::handle)
-                .add();
         INSTANCE.messageBuilder(SpawnHerobrinePacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
                 .decoder(SpawnHerobrinePacket::new)
                 .encoder(SpawnHerobrinePacket::encode)
