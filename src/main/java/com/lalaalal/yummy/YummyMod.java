@@ -15,7 +15,6 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 // The value here should match an entry in the META-INF/mods.toml file
@@ -29,7 +28,6 @@ public class YummyMod
 
     public static final CreativeModeTab TAB = new CreativeModeTab(MOD_ID) {
         @Override
-        @NotNull
         public ItemStack makeIcon() {
             return YummyItemRegister.NEMETHYST_ITEM.get().getDefaultInstance();
         }

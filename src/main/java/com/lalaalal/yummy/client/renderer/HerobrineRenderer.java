@@ -6,7 +6,6 @@ import com.lalaalal.yummy.entity.Herobrine;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 
 public class HerobrineRenderer extends HumanoidMobRenderer<Herobrine, HerobrineModel> {
     private static final ResourceLocation TEXTURE_LOCATION
@@ -17,7 +16,7 @@ public class HerobrineRenderer extends HumanoidMobRenderer<Herobrine, HerobrineM
     }
 
     @Override
-    public @NotNull ResourceLocation getTextureLocation(@NotNull Herobrine entity) {
+    public ResourceLocation getTextureLocation(Herobrine entity) {
         return TEXTURE_LOCATION;
     }
 }

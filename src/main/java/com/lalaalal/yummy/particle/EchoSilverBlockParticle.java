@@ -10,7 +10,6 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.jetbrains.annotations.NotNull;
 
 public class EchoSilverBlockParticle extends TextureSheetParticle {
     private final Fluid type;
@@ -29,7 +28,6 @@ public class EchoSilverBlockParticle extends TextureSheetParticle {
     }
 
     @Override
-    @NotNull
     public ParticleRenderType getRenderType() {
         return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
     }
@@ -154,7 +152,7 @@ public class EchoSilverBlockParticle extends TextureSheetParticle {
             this.sprite = pSprites;
         }
 
-        public Particle createParticle(@NotNull SimpleParticleType pType, @NotNull ClientLevel pLevel,
+        public Particle createParticle(SimpleParticleType pType, ClientLevel pLevel,
                                        double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
             EchoSilverBlockParticle fallAndLandParticle = new EchoSilverBlockParticle.FallAndLandParticle(pLevel, pX, pY, pZ, Fluids.EMPTY, YummyParticleRegister.LANDING_ECHO_SILVER.get());
             fallAndLandParticle.isGlowing = true;
@@ -174,7 +172,7 @@ public class EchoSilverBlockParticle extends TextureSheetParticle {
             this.sprite = pSprites;
         }
 
-        public Particle createParticle(@NotNull SimpleParticleType pType, @NotNull ClientLevel pLevel,
+        public Particle createParticle(SimpleParticleType pType, ClientLevel pLevel,
                                        double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
             EchoSilverBlockParticle.DripHangParticle dripHangParticle = new EchoSilverBlockParticle.DripHangParticle(pLevel, pX, pY, pZ, Fluids.EMPTY, YummyParticleRegister.FALLING_ECHO_SILVER.get());
             dripHangParticle.isGlowing = true;
@@ -195,7 +193,7 @@ public class EchoSilverBlockParticle extends TextureSheetParticle {
             this.sprite = pSprites;
         }
 
-        public Particle createParticle(@NotNull SimpleParticleType pType, @NotNull ClientLevel pLevel,
+        public Particle createParticle(SimpleParticleType pType, ClientLevel pLevel,
                                        double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
             EchoSilverBlockParticle dripLandParticle = new EchoSilverBlockParticle.DripLandParticle(pLevel, pX, pY, pZ, Fluids.EMPTY);
             dripLandParticle.isGlowing = true;

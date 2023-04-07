@@ -9,7 +9,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
-import org.jetbrains.annotations.NotNull;
 
 public class EchoSilverBlock extends Block {
     public static final String NAME = "echo_silver_block";
@@ -25,7 +24,7 @@ public class EchoSilverBlock extends Block {
     }
 
     @Override
-    public void animateTick(@NotNull BlockState blockState, @NotNull Level level, @NotNull BlockPos blockPos, RandomSource random) {
+    public void animateTick(BlockState blockState, Level level, BlockPos blockPos, RandomSource random) {
         if (random.nextInt(5) == 0) {
             Direction direction = Direction.getRandom(random);
             if (direction != Direction.UP) {

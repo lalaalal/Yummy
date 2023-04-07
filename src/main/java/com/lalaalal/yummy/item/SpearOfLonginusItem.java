@@ -17,14 +17,13 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TridentItem;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
 
-public class SpearOfLonginusItem extends TridentItem {
+public class SpearOfLonginusItem extends Item {
     public SpearOfLonginusItem() {
         super(new Properties().tab(YummyMod.TAB)
                 .durability(0)
@@ -32,38 +31,38 @@ public class SpearOfLonginusItem extends TridentItem {
     }
 
     @Override
-    public boolean canAttackBlock(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, Player player) {
+    public boolean canAttackBlock(BlockState state, Level level, BlockPos pos, Player player) {
         return !player.isCreative();
     }
 
-    @NotNull
+
     @Override
-    public UseAnim getUseAnimation(@NotNull ItemStack stack) {
+    public UseAnim getUseAnimation(ItemStack stack) {
         return UseAnim.SPEAR;
     }
 
     @Override
-    public int getUseDuration(@NotNull ItemStack stack) {
+    public int getUseDuration(ItemStack stack) {
         return 72000;
     }
 
     @Override
-    public boolean hurtEnemy(@NotNull ItemStack itemStack, LivingEntity target, @NotNull LivingEntity attacker) {
+    public boolean hurtEnemy(ItemStack itemStack, LivingEntity target, LivingEntity attacker) {
         DamageSource damageSource = new ItemDamageSource("spear_of_longinus", attacker, itemStack);
         target.hurt(damageSource, Float.MAX_VALUE);
         return true;
     }
 
-    @NotNull
+
     @Override
-    public InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand interactionHand) {
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
         ItemStack itemstack = player.getItemInHand(interactionHand);
         player.startUsingItem(interactionHand);
         return InteractionResultHolder.consume(itemstack);
     }
 
     @Override
-    public void releaseUsing(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity livingEntity, int pTimeLeft) {
+    public void releaseUsing(ItemStack stack, Level level, LivingEntity livingEntity, int pTimeLeft) {
         if (livingEntity instanceof Player player) {
             int i = this.getUseDuration(stack) - pTimeLeft;
             if (i >= 10 && !level.isClientSide) {

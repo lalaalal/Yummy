@@ -10,7 +10,6 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 
 public class ThrownSpearOfLonginusModel extends EntityModel<ThrownSpearOfLonginus> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(YummyMod.MOD_ID, "thrown_spear_of_longinus"), "main");
@@ -77,12 +76,12 @@ public class ThrownSpearOfLonginusModel extends EntityModel<ThrownSpearOfLonginu
     }
 
     @Override
-    public void setupAnim(@NotNull ThrownSpearOfLonginus entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(ThrownSpearOfLonginus entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 
     }
 
     @Override
-    public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         bone_a.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
         bone_b.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
         bb_main.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);

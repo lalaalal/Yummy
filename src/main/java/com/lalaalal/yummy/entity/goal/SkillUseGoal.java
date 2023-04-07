@@ -52,11 +52,6 @@ public class SkillUseGoal extends Goal {
     }
 
     @Override
-    public void stop() {
-        super.stop();
-    }
-
-    @Override
     public void tick() {
         if (tick == 0) {
             skill.showEffect();
