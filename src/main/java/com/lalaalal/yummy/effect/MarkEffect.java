@@ -2,6 +2,7 @@ package com.lalaalal.yummy.effect;
 
 import com.lalaalal.yummy.entity.Herobrine;
 import com.lalaalal.yummy.misc.EffectDamageSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -31,8 +32,11 @@ public class MarkEffect extends MobEffect {
 
     @Override
     public void applyEffectTick(LivingEntity livingEntity, int amplifier) {
-        if (amplifier >= 6)
-            livingEntity.hurt(new EffectDamageSource("mark", this), Float.MAX_VALUE);
+        if (!livingEntity.getLevel().isClientSide && amplifier >= 6) {
+            DamageSource damageSource = new EffectDamageSource("mark", this);
+            livingEntity.hurt(damageSource, Float.MAX_VALUE);
+            livingEntity.removeEffect(this);
+        }
     }
 
     @Override

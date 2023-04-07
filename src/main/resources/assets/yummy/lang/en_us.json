@@ -15,6 +15,6 @@
     "effect.yummy.mark": "§cMark§r",
     "death.effect.mark": "%1$s died due to stacking the %2$s.",
     "death.attack.spear_of_longinus": "%1$s's AT field is torn by %2$s.",
-    "death.attack.spear_of_longinus.player": "%1$s's AT field is torn by %3$s's %2$s.",
+    "death.attack.thrown_spear_of_longinus.player": "%1$s's AT field is torn by %2$s %3$s threw.",
     "itemGroup.yummy": "Yummy"
 }

@@ -30,7 +30,7 @@ public class ThrownSpearOfLonginus extends AbstractArrow {
         Entity entity = result.getEntity();
         SoundEvent soundevent = SoundEvents.TRIDENT_HIT;
         if (entity instanceof LivingEntity livingEntity) {
-            DamageSource damageSource = new ItemDamageSource("spear_of_longinus", getOwner(), spearOfLonginusItem);
+            DamageSource damageSource = new ItemDamageSource("thrown_spear_of_longinus", getOwner(), spearOfLonginusItem);
             livingEntity.hurt(damageSource, Float.MAX_VALUE);
         }
 

@@ -35,7 +35,6 @@ public class SpearOfLonginusItem extends Item {
         return !player.isCreative();
     }
 
-
     @Override
     public UseAnim getUseAnimation(ItemStack stack) {
         return UseAnim.SPEAR;
@@ -46,13 +45,27 @@ public class SpearOfLonginusItem extends Item {
         return 72000;
     }
 
+    private void hurtUser(ItemStack itemStack, LivingEntity user, float damageRate) {
+        DamageSource damageSource = new ItemDamageSource("spear_of_longinus", null, itemStack);
+        float damage = user.getMaxHealth() * damageRate;
+        float health = user.getHealth() - damage;
+
+        if (health <= 0) {
+            user.hurt(damageSource, Float.MAX_VALUE);
+        } else {
+            user.setHealth(health + 1);
+            user.hurt(damageSource, 1);
+        }
+    }
+
     @Override
     public boolean hurtEnemy(ItemStack itemStack, LivingEntity target, LivingEntity attacker) {
         DamageSource damageSource = new ItemDamageSource("spear_of_longinus", attacker, itemStack);
         target.hurt(damageSource, Float.MAX_VALUE);
+        hurtUser(itemStack, attacker, 0.8f);
+
         return true;
     }
-
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
@@ -62,11 +75,11 @@ public class SpearOfLonginusItem extends Item {
     }
 
     @Override
-    public void releaseUsing(ItemStack stack, Level level, LivingEntity livingEntity, int pTimeLeft) {
+    public void releaseUsing(ItemStack itemStack, Level level, LivingEntity livingEntity, int timeLeft) {
         if (livingEntity instanceof Player player) {
-            int i = this.getUseDuration(stack) - pTimeLeft;
+            int i = this.getUseDuration(itemStack) - timeLeft;
             if (i >= 10 && !level.isClientSide) {
-                ThrownSpearOfLonginus thrownSpearOfLonginus = new ThrownSpearOfLonginus(level, player, stack);
+                ThrownSpearOfLonginus thrownSpearOfLonginus = new ThrownSpearOfLonginus(level, player, itemStack);
                 thrownSpearOfLonginus.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 2.5F, 1.0F);
                 if (player.getAbilities().instabuild) {
                     thrownSpearOfLonginus.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
@@ -75,7 +88,8 @@ public class SpearOfLonginusItem extends Item {
                 level.addFreshEntity(thrownSpearOfLonginus);
                 level.playSound(null, thrownSpearOfLonginus, SoundEvents.TRIDENT_THROW, SoundSource.PLAYERS, 1.0F, 1.0F);
                 if (!player.getAbilities().instabuild) {
-                    player.getInventory().removeItem(stack);
+                    player.getInventory().removeItem(itemStack);
+                    hurtUser(itemStack, player, 0.9f);
                 }
             }
         }

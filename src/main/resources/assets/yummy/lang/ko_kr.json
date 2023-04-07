@@ -14,7 +14,7 @@
     "entity.yummy.herobrine": "히로빈",
     "effect.yummy.mark": "§c낙인§r",
     "death.effect.mark": "%1$s(이)가 %2$s이 중첩되어 사망했습니다.",
-    "death.attack.spear_of_longinus": "%2$s에 의해 %1$s의 AT 필드가 찢어졌습니다.",
-    "death.attack.spear_of_longinus.player": "%3$s의 %2$s에 의해 %1$s의 AT 필드가 찢어졌습니다.",
+    "death.attack.spear_of_longinus": "%2$s에 %1$s의 AT 필드가 찢어졌습니다.",
+    "death.attack.thrown_spear_of_longinus.player": "%3$s가 던진 %2$s에 %1$s의 AT 필드가 찢어졌습니다.",
     "itemGroup.yummy": "야미"
 }
