@@ -5,17 +5,17 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 
-public class HerobrineExplosion extends Skill {
+public class ExplosionSkill extends Skill {
     public static final int COOLDOWN = 600;
     protected double ATTACK_REACH = 25;
     protected float explosionRadius = 6.0f;
     protected boolean explosionCauseFire = true;
 
-    public HerobrineExplosion(Mob usingEntity) {
+    public ExplosionSkill(Mob usingEntity) {
         super(usingEntity, COOLDOWN);
     }
 
-    public HerobrineExplosion(Mob usingEntity, int cooldown) {
+    public ExplosionSkill(Mob usingEntity, int cooldown) {
         super(usingEntity, cooldown);
     }
 

@@ -13,14 +13,14 @@ import net.minecraft.world.phys.AABB;
 
 import java.util.List;
 
-public class HerobrineMarkExplosion extends HerobrineExplosion {
+public class MarkExplosionSkill extends ExplosionSkill {
     public static int COOLDOWN = 100;
 
-    public HerobrineMarkExplosion(Mob usingEntity) {
+    public MarkExplosionSkill(Mob usingEntity) {
         this(usingEntity, COOLDOWN);
     }
 
-    public HerobrineMarkExplosion(Mob usingEntity, int cooldown) {
+    public MarkExplosionSkill(Mob usingEntity, int cooldown) {
         super(usingEntity, cooldown);
         setExplosionRadius(3f);
         setExplosionCauseFire(false);
