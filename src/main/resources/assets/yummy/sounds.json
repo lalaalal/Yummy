@@ -1,0 +1,10 @@
+{
+    "herobrine_music": {
+        "sounds": [
+            {
+                "name": "yummy:herobrine_music",
+                "stream": true
+            }
+        ]
+    }
+}

@@ -6,6 +6,7 @@ import com.lalaalal.yummy.effect.YummyEffectRegister;
 import com.lalaalal.yummy.entity.YummyEntityRegister;
 import com.lalaalal.yummy.item.YummyItemRegister;
 import com.lalaalal.yummy.particle.YummyParticleRegister;
+import com.lalaalal.yummy.sound.YummySoundRegister;
 import com.mojang.logging.LogUtils;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -33,18 +34,16 @@ public class YummyMod
         }
     };
 
-    public YummyMod()
-    {
+    public YummyMod() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        YummyBlockRegister.BLOCKS.register(modEventBus);
-        YummyBlockRegister.ITEMS.register(modEventBus);
-        YummyBlockEntityRegister.BLOCK_ENTITY_TYPES.register(modEventBus);
-        YummyItemRegister.ITEMS.register(modEventBus);
-        YummyItemRegister.VANILLA_ITEMS.register(modEventBus);
-        YummyParticleRegister.PARTICLE_TYPES.register(modEventBus);
-        YummyEntityRegister.ENTITIES.register(modEventBus);
-        YummyEffectRegister.EFFECTS.register(modEventBus);
+        YummyBlockRegister.register(modEventBus);
+        YummyBlockEntityRegister.register(modEventBus);
+        YummyItemRegister.register(modEventBus);
+        YummyParticleRegister.register(modEventBus);
+        YummyEntityRegister.register(modEventBus);
+        YummyEffectRegister.register(modEventBus);
+        YummySoundRegister.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
     }

@@ -1,8 +1,8 @@
 package com.lalaalal.yummy.event;
 
 import com.lalaalal.yummy.YummyMod;
-import com.lalaalal.yummy.client.models.HerobrineModel;
-import com.lalaalal.yummy.client.models.ThrownSpearOfLonginusModel;
+import com.lalaalal.yummy.client.model.HerobrineModel;
+import com.lalaalal.yummy.client.model.ThrownSpearOfLonginusModel;
 import com.lalaalal.yummy.client.renderer.HerobrineRenderer;
 import com.lalaalal.yummy.client.renderer.ThrownSpearOfLonginusRenderer;
 import com.lalaalal.yummy.entity.YummyEntityRegister;

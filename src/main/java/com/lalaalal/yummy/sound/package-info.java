@@ -1,6 +1,6 @@
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-package com.lalaalal.yummy.client.models;
+package com.lalaalal.yummy.sound;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 

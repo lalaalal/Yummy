@@ -1,7 +1,7 @@
 package com.lalaalal.yummy.client.renderer;
 
 import com.lalaalal.yummy.YummyMod;
-import com.lalaalal.yummy.client.models.HerobrineModel;
+import com.lalaalal.yummy.client.model.HerobrineModel;
 import com.lalaalal.yummy.entity.Herobrine;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;

@@ -1,7 +1,7 @@
 package com.lalaalal.yummy.client.renderer;
 
 import com.lalaalal.yummy.YummyMod;
-import com.lalaalal.yummy.client.models.ThrownSpearOfLonginusModel;
+import com.lalaalal.yummy.client.model.ThrownSpearOfLonginusModel;
 import com.lalaalal.yummy.entity.ThrownSpearOfLonginus;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

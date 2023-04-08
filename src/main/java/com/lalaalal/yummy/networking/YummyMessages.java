@@ -3,6 +3,7 @@ package com.lalaalal.yummy.networking;
 import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.networking.packet.ShowHerobrineMarkPacket;
 import com.lalaalal.yummy.networking.packet.SpawnHerobrinePacket;
+import com.lalaalal.yummy.networking.packet.ToggleHerobrineMusicPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -37,6 +38,11 @@ public class YummyMessages {
                 .decoder(ShowHerobrineMarkPacket::new)
                 .encoder(ShowHerobrineMarkPacket::encode)
                 .consumerMainThread(ShowHerobrineMarkPacket::handle)
+                .add();
+        INSTANCE.messageBuilder(ToggleHerobrineMusicPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(ToggleHerobrineMusicPacket::new)
+                .encoder(ToggleHerobrineMusicPacket::encode)
+                .consumerMainThread(ToggleHerobrineMusicPacket::handle)
                 .add();
     }
 

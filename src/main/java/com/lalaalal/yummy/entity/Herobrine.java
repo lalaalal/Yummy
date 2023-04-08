@@ -5,6 +5,8 @@ import com.lalaalal.yummy.entity.goal.SkillUseGoal;
 import com.lalaalal.yummy.entity.skill.ExplosionSkill;
 import com.lalaalal.yummy.entity.skill.MarkExplosionSkill;
 import com.lalaalal.yummy.entity.skill.SummonPollutedBlockSkill;
+import com.lalaalal.yummy.networking.YummyMessages;
+import com.lalaalal.yummy.networking.packet.ToggleHerobrineMusicPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -150,12 +152,14 @@ public class Herobrine extends Monster {
     public void startSeenByPlayer(ServerPlayer serverPlayer) {
         super.startSeenByPlayer(serverPlayer);
         bossEvent.addPlayer(serverPlayer);
+        YummyMessages.sendToPlayer(new ToggleHerobrineMusicPacket(true), serverPlayer);
     }
 
     @Override
-    public void stopSeenByPlayer(ServerPlayer pServerPlayer) {
-        super.stopSeenByPlayer(pServerPlayer);
-        bossEvent.removePlayer(pServerPlayer);
+    public void stopSeenByPlayer(ServerPlayer serverPlayer) {
+        super.stopSeenByPlayer(serverPlayer);
+        bossEvent.removePlayer(serverPlayer);
+        YummyMessages.sendToPlayer(new ToggleHerobrineMusicPacket(false), serverPlayer);
     }
 
     public enum ArmPose {

@@ -1,4 +1,4 @@
-package com.lalaalal.yummy.client.models;
+package com.lalaalal.yummy.client.model;
 
 import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.entity.Herobrine;
