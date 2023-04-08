@@ -1,6 +1,7 @@
 package com.lalaalal.yummy.block.entity;
 
 import com.lalaalal.yummy.YummyUtil;
+import com.lalaalal.yummy.block.PollutedBlock;
 import com.lalaalal.yummy.effect.MarkEffect;
 import com.lalaalal.yummy.entity.Herobrine;
 import net.minecraft.core.BlockPos;
@@ -18,7 +19,7 @@ import java.util.List;
 public class PollutedBlockEntity extends BlockEntity {
     protected int tickInterval = 20 * 10;
     protected int lifetime = 20 * 60;
-    protected int tick = -10;
+    protected int tick = -60;
     private Herobrine herobrine;
 
     public PollutedBlockEntity(BlockPos blockPos, BlockState blockState) {
@@ -48,8 +49,10 @@ public class PollutedBlockEntity extends BlockEntity {
     }
 
     private void serverTick(Level level, BlockPos blockPos) {
+
         if (tick % tickInterval == 0)
             affectEntities(level, blockPos);
+
         if (tick >= lifetime)
             destroyBlock(level, blockPos);
 
@@ -57,8 +60,12 @@ public class PollutedBlockEntity extends BlockEntity {
     }
 
     private void clientTick(Level level, BlockPos blockPos) {
+        if ((tick + 20) % tickInterval == 0)
+            level.setBlock(blockPos, getBlockState().setValue(PollutedBlock.POWERED, true), 10);
         if (tick % tickInterval == 0)
             showParticle(level, blockPos);
+        if ((tick - 10) % tickInterval == 0)
+            level.setBlock(blockPos, getBlockState().setValue(PollutedBlock.POWERED, false), 10);
 
         tick += 1;
     }
