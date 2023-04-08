@@ -41,7 +41,7 @@ public class PollutedBlockEntity extends BlockEntity {
         this.herobrine = herobrine;
     }
 
-    private void destroyBlock(Level level, BlockPos blockPos) {
+    public void destroyBlock(Level level, BlockPos blockPos) {
         level.destroyBlock(blockPos, false);
         if (herobrine != null)
             herobrine.removePollutedBlock(this);

@@ -7,6 +7,12 @@ import com.lalaalal.yummy.entity.skill.MarkExplosionSkill;
 import com.lalaalal.yummy.entity.skill.SummonPollutedBlockSkill;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerBossEvent;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.BossEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -27,7 +33,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import java.util.ArrayList;
 
 public class Herobrine extends Monster {
+    private static final EntityDataAccessor<Integer> DATA_SKILL_USE_ID = SynchedEntityData.defineId(Herobrine.class, EntityDataSerializers.INT);
     private final ArrayList<BlockPos> blockPosList = new ArrayList<>();
+    private final ServerBossEvent bossEvent = (ServerBossEvent) (new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.PROGRESS)).setDarkenScreen(true);
 
     public static boolean canSummonHerobrine(Level level, BlockPos headPos) {
         Block soulSandBlock = level.getBlockState(headPos).getBlock();
@@ -59,6 +67,16 @@ public class Herobrine extends Monster {
     public Herobrine(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
         this.xpReward = 666;
+        this.entityData.define(DATA_SKILL_USE_ID, 0);
+    }
+
+    public void setArmPose(ArmPose armPose) {
+        entityData.set(DATA_SKILL_USE_ID, armPose.getId());
+    }
+
+    public ArmPose getArmPose() {
+        int armPoseID = entityData.get(DATA_SKILL_USE_ID);
+        return ArmPose.byId(armPoseID);
     }
 
     private int[] blockPosToIntArray(BlockPos blockPos) {
@@ -106,6 +124,11 @@ public class Herobrine extends Monster {
     }
 
     @Override
+    protected void customServerAiStep() {
+        this.bossEvent.setProgress(this.getHealth() / this.getMaxHealth());
+    }
+
+    @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
@@ -113,13 +136,51 @@ public class Herobrine extends Monster {
     }
 
     protected void addBehaviourGoals() {
-        this.goalSelector.addGoal(2, new SkillUseGoal(this, ExplosionSkill::new));
-        this.goalSelector.addGoal(3, new SkillUseGoal(this, MarkExplosionSkill::new));
-        this.goalSelector.addGoal(2, new SkillUseGoal(this, SummonPollutedBlockSkill::new));
+        this.goalSelector.addGoal(2, new SkillUseGoal(this, new ExplosionSkill(this)));
+        this.goalSelector.addGoal(3, new SkillUseGoal(this, new MarkExplosionSkill(this)));
+        this.goalSelector.addGoal(2, new SkillUseGoal(this, new SummonPollutedBlockSkill(this)));
         this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, false));
         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Mob.class, true));
+    }
+
+    @Override
+    public void startSeenByPlayer(ServerPlayer serverPlayer) {
+        super.startSeenByPlayer(serverPlayer);
+        bossEvent.addPlayer(serverPlayer);
+    }
+
+    @Override
+    public void stopSeenByPlayer(ServerPlayer pServerPlayer) {
+        super.stopSeenByPlayer(pServerPlayer);
+        bossEvent.removePlayer(pServerPlayer);
+    }
+
+    public enum ArmPose {
+        NORMAL(0),
+        RAISE_RIGHT(1),
+        RAISE_LEFT(2),
+        RAISE_BOTH(3);
+
+        final int id;
+
+        public static ArmPose byId(int id) {
+            return switch (id) {
+                case 1 -> RAISE_RIGHT;
+                case 2 -> RAISE_LEFT;
+                case 3 -> RAISE_BOTH;
+                default -> NORMAL;
+            };
+        }
+
+        ArmPose(int id) {
+            this.id = id;
+        }
+
+        public int getId() {
+            return id;
+        }
     }
 }

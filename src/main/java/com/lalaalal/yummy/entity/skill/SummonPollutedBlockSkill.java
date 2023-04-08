@@ -5,26 +5,26 @@ import com.lalaalal.yummy.block.YummyBlockRegister;
 import com.lalaalal.yummy.block.entity.PollutedBlockEntity;
 import com.lalaalal.yummy.entity.Herobrine;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class SummonPollutedBlockSkill extends Skill {
     public static final int COOLDOWN = 300;
+    public static final int WARMUP = 40;
+    private final Herobrine herobrine;
 
-    public SummonPollutedBlockSkill(Mob usingEntity) {
-        this(usingEntity, COOLDOWN);
+    public SummonPollutedBlockSkill(Herobrine herobrine) {
+        this(herobrine, COOLDOWN);
     }
 
-    public SummonPollutedBlockSkill(Mob usingEntity, int cooldown) {
-        super(usingEntity, cooldown);
+    public SummonPollutedBlockSkill(Herobrine herobrine, int cooldown) {
+        super(herobrine, cooldown, WARMUP);
+        this.herobrine = herobrine;
     }
 
     @Override
     public boolean canUse() {
-        if (usingEntity instanceof Herobrine herobrine)
-            return herobrine.canSummonPollutedBlock();
-        return true;
+        return herobrine.canSummonPollutedBlock();
     }
 
     @Override
@@ -35,10 +35,7 @@ public class SummonPollutedBlockSkill extends Skill {
         level.setBlock(fixedPos, YummyBlockRegister.POLLUTED_BLOCK.get().defaultBlockState(), 3);
         BlockEntity blockEntity = level.getBlockEntity(fixedPos);
 
-        if (usingEntity instanceof Herobrine herobrine) {
-            if (blockEntity instanceof PollutedBlockEntity pollutedBlockEntity) {
-                herobrine.addPollutedBlock(pollutedBlockEntity);
-            }
-        }
+        if (blockEntity instanceof PollutedBlockEntity pollutedBlockEntity)
+            herobrine.addPollutedBlock(pollutedBlockEntity);
     }
 }

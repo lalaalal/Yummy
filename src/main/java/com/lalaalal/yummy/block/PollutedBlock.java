@@ -5,6 +5,8 @@ import com.lalaalal.yummy.block.entity.YummyBlockEntityRegister;
 import com.lalaalal.yummy.particle.YummyParticleRegister;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.RenderShape;
@@ -13,6 +15,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Material;
 import org.jetbrains.annotations.Nullable;
 
@@ -58,5 +61,25 @@ public class PollutedBlock extends BaseEntityBlock {
             }
             animateTick = 0;
         }
+    }
+
+    @Override
+    public void onBlockExploded(BlockState state, Level level, BlockPos pos, Explosion explosion) {
+        destroyBlockEntity(level, pos);
+        super.onBlockExploded(state, level, pos, explosion);
+    }
+
+    @Override
+    public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
+        destroyBlockEntity(level, pos);
+        return true;
+    }
+
+    private void destroyBlockEntity(Level level, BlockPos pos) {
+        if (level.isClientSide)
+            return;
+        BlockEntity blockEntity = level.getBlockEntity(pos);
+        if (blockEntity instanceof PollutedBlockEntity pollutedBlockEntity)
+            pollutedBlockEntity.destroyBlock(level, pos);
     }
 }
