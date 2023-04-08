@@ -47,20 +47,15 @@ public class SpearOfLonginusItem extends Item {
 
     private void hurtUser(ItemStack itemStack, LivingEntity user, float damageRate) {
         DamageSource damageSource = new ItemDamageSource("spear_of_longinus", null, itemStack);
+        damageSource.bypassArmor();
         float damage = user.getMaxHealth() * damageRate;
-        float health = user.getHealth() - damage;
-
-        if (health <= 0) {
-            user.hurt(damageSource, Float.MAX_VALUE);
-        } else {
-            user.setHealth(health + 1);
-            user.hurt(damageSource, 1);
-        }
+        user.hurt(damageSource, damage);
     }
 
     @Override
     public boolean hurtEnemy(ItemStack itemStack, LivingEntity target, LivingEntity attacker) {
-        DamageSource damageSource = new ItemDamageSource("spear_of_longinus", attacker, itemStack);
+        DamageSource damageSource = new ItemDamageSource("spear_of_longinus", attacker, itemStack).bypassArmor().bypassInvul();
+        damageSource.bypassArmor().bypassInvul();
         target.hurt(damageSource, Float.MAX_VALUE);
         hurtUser(itemStack, attacker, 0.8f);
 

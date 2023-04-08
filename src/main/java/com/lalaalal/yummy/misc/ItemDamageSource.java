@@ -28,4 +28,10 @@ public class ItemDamageSource extends DamageSource {
         String messageId = "death.attack." + super.getMsgId();
         return source == null ? messageId : messageId + ".player";
     }
+
+    @Nullable
+    @Override
+    public Entity getEntity() {
+        return source;
+    }
 }

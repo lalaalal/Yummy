@@ -34,6 +34,7 @@ public class MarkEffect extends MobEffect {
     public void applyEffectTick(LivingEntity livingEntity, int amplifier) {
         if (!livingEntity.getLevel().isClientSide && amplifier >= 6) {
             DamageSource damageSource = new EffectDamageSource("mark", this);
+            damageSource.bypassArmor().bypassInvul();
             livingEntity.removeAllEffects();
             livingEntity.hurt(damageSource, Float.MAX_VALUE);
         }
