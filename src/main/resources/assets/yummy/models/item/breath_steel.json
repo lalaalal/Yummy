@@ -1,6 +1,6 @@
 {
     "parent": "minecraft:item/generated",
     "textures": {
-        "layer0": "yummy:item/nemethyst"
+        "layer0": "yummy:item/breath_steel"
     }
 }

@@ -1,7 +1,7 @@
 {
     "variants": {
         "": {
-            "model": "yummy:block/nemethyst_block"
+            "model": "yummy:block/amethyst_block"
         }
     }
 }

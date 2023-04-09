@@ -6,7 +6,6 @@ import com.lalaalal.yummy.client.model.ThrownSpearOfLonginusModel;
 import com.lalaalal.yummy.client.renderer.HerobrineRenderer;
 import com.lalaalal.yummy.client.renderer.ThrownSpearOfLonginusRenderer;
 import com.lalaalal.yummy.entity.YummyEntityRegister;
-import com.lalaalal.yummy.particle.EchoSilverBlockParticle;
 import com.lalaalal.yummy.particle.PollutedParticle;
 import com.lalaalal.yummy.particle.YummyParticleRegister;
 import net.minecraftforge.api.distmarker.Dist;
@@ -19,12 +18,6 @@ import net.minecraftforge.fml.common.Mod;
 public class YummyClientEventBus {
     @SubscribeEvent
     public static void registerParticleFactories(final RegisterParticleProvidersEvent event) {
-        event.register(YummyParticleRegister.DRIPPING_ECHO_SILVER.get(),
-                EchoSilverBlockParticle.EchoSilverHangProvider::new);
-        event.register(YummyParticleRegister.FALLING_ECHO_SILVER.get(),
-                EchoSilverBlockParticle.EchoSilverFallProvider::new);
-        event.register(YummyParticleRegister.LANDING_ECHO_SILVER.get(),
-                EchoSilverBlockParticle.EchoSilverLandProvider::new);
         event.register(YummyParticleRegister.POLLUTED_PARTICLE_RED.get(),
                 (spriteSet) -> new PollutedParticle.PollutedParticleProvider(spriteSet, 0x441f0b));
         event.register(YummyParticleRegister.POLLUTED_PARTICLE_BLUE.get(),

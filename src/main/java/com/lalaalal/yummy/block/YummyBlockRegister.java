@@ -23,16 +23,14 @@ public class YummyBlockRegister {
     private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, YummyMod.MOD_ID);
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, YummyMod.MOD_ID);
 
-    public static final RegistryObject<Block> NEMETHYST_BLOCK = register("nemethyst_block",
+    public static final RegistryObject<Block> AMETHYST_BLOCK = register("amethyst_block",
             () -> new Block(BlockBehaviour.Properties.of(Material.METAL)
                     .strength(1.5f, 0.5f).requiresCorrectToolForDrops()),
-            YummyMod.TAB);
+            CreativeModeTab.TAB_BUILDING_BLOCKS);
     public static final RegistryObject<Block> BREATH_STEEL_BLOCK = register("breath_steel_block",
             () -> new Block(BlockBehaviour.Properties.of(Material.METAL)
                     .strength(2.5f, 14f).requiresCorrectToolForDrops()),
             YummyMod.TAB);
-    public static final RegistryObject<Block> ECHO_SILVER_BLOCK = register(EchoSilverBlock.NAME,
-            EchoSilverBlock::new, YummyMod.TAB);
 
     public static final RegistryObject<Block> POLLUTED_BLOCK = register(PollutedBlock.NAME,
             PollutedBlock::new, YummyMod.TAB);

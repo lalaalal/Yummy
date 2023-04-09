@@ -2,11 +2,11 @@
     "type": "minecraft:crafting_shapeless",
     "ingredients": [
         {
-            "item": "yummy:echo_silver_block"
+            "item": "yummy:amethyst_block"
         }
     ],
     "result": {
-        "item": "yummy:echo_silver_shard",
+        "item": "minecraft:amethyst_shard",
         "count": 9
     }
 }

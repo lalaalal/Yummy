@@ -13,7 +13,7 @@ import net.minecraft.world.phys.Vec3;
 public class Stun extends MobEffect {
     protected Stun() {
         super(MobEffectCategory.HARMFUL, 0xFFFF00);
-        addAttributeModifier(Attributes.MOVEMENT_SPEED, "E21757F0-D698-11ED-AFA1-0242AC120002", -15, AttributeModifier.Operation.MULTIPLY_TOTAL);
+        addAttributeModifier(Attributes.MOVEMENT_SPEED, "E21757F0-D698-11ED-AFA1-0242AC120002", -100, AttributeModifier.Operation.MULTIPLY_TOTAL);
     }
 
     @Override

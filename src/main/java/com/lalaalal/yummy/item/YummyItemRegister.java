@@ -11,11 +11,7 @@ public class YummyItemRegister {
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, YummyMod.MOD_ID);
     private static final DeferredRegister<Item> VANILLA_ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, "minecraft");
 
-    public static final RegistryObject<Item> NEMETHYST_ITEM = ITEMS.register("nemethyst",
-            () -> new Item(new Item.Properties().tab(YummyMod.TAB)));
-    public static final RegistryObject<Item> BREATH_STEEL_INGOT = ITEMS.register("breath_steel_ingot",
-            () -> new Item(new Item.Properties().tab(YummyMod.TAB)));
-    public static final RegistryObject<Item> ECHO_SILVER_SHARD_ITEM = ITEMS.register("echo_silver_shard",
+    public static final RegistryObject<Item> BREATH_STEEL = ITEMS.register("breath_steel",
             () -> new Item(new Item.Properties().tab(YummyMod.TAB)));
     public static final RegistryObject<Item> SPEAR_OF_LONGINUS_ITEM = ITEMS.register("spear_of_longinus", SpearOfLonginusItem::new);
 

@@ -7,11 +7,11 @@
     ],
     "key": {
         "#": {
-            "item": "yummy:nemethyst"
+            "item": "minecraft:amethyst_shard"
         }
     },
     "result": {
-        "item": "yummy:nemethyst_block",
+        "item": "yummy:amethyst_block",
         "count": 1
     }
 }
