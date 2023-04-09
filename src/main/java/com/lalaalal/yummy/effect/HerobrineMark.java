@@ -8,26 +8,24 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 
-import java.awt.*;
-
-public class MarkEffect extends MobEffect {
+public class HerobrineMark extends MobEffect {
     public static void overlapMark(LivingEntity entity) {
         if (entity instanceof Herobrine)
             return;
 
-        final MobEffect MARK_EFFECT = YummyEffectRegister.MARK.get();
+        final MobEffect HEROBRINE_MARK = YummyEffectRegister.HEROBRINE_MARK.get();
 
-        MobEffectInstance mobEffectInstance = entity.getEffect(MARK_EFFECT);
+        MobEffectInstance mobEffectInstance = entity.getEffect(HEROBRINE_MARK);
         if (mobEffectInstance != null) {
             int amplifier = Math.min(mobEffectInstance.getAmplifier() + 1, 6);
-            entity.addEffect(new MobEffectInstance(MARK_EFFECT, 666, amplifier));
+            entity.addEffect(new MobEffectInstance(HEROBRINE_MARK, 666, amplifier));
         } else {
-            entity.addEffect(new MobEffectInstance(MARK_EFFECT, 666, 0));
+            entity.addEffect(new MobEffectInstance(HEROBRINE_MARK, 666, 0));
         }
     }
 
-    protected MarkEffect() {
-        super(MobEffectCategory.HARMFUL, Color.RED.getRGB());
+    protected HerobrineMark() {
+        super(MobEffectCategory.HARMFUL, 0xFF0000);
     }
 
     @Override

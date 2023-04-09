@@ -58,20 +58,22 @@ public class PollutedBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
-        if (blockEntityType == YummyBlockEntityRegister.POLLUTED_BLOCK_ENTITY_TYPE.get())
-            return level.isClientSide ? PollutedBlockEntity::clientTick : PollutedBlockEntity::serverTick;
+        if (blockEntityType == YummyBlockEntityRegister.POLLUTED_BLOCK_ENTITY_TYPE.get()
+                && !level.isClientSide)
+            return PollutedBlockEntity::serverTick;
         return null;
     }
 
     @Override
     public void animateTick(BlockState blockState, Level level, BlockPos blockPos, RandomSource random) {
         if (animateTick++ >= 5) {
-            for (int i = 0; i < random.nextInt(10, 15); i++) {
+            int repeat = random.nextInt(25, 30);
+            for (int i = 0; i < repeat; i++) {
                 double particleX = blockPos.getX() + random.nextDouble() * 7.0 - 3.0;
                 double particleY = blockPos.getY() + random.nextDouble() * 0.2;
                 double particleZ = blockPos.getZ() + random.nextDouble() * 7.0 - 3.0;
 
-                level.addParticle(YummyParticleRegister.POLLUTED_PARTICLE.get(), particleX, particleY, particleZ, 0, 1, 0);
+                level.addParticle(YummyParticleRegister.POLLUTED_PARTICLE_RED.get(), particleX, particleY, particleZ, 0, 1, 0);
             }
             animateTick = 0;
         }

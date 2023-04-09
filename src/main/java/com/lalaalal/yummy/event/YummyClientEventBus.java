@@ -25,8 +25,10 @@ public class YummyClientEventBus {
                 EchoSilverBlockParticle.EchoSilverFallProvider::new);
         event.register(YummyParticleRegister.LANDING_ECHO_SILVER.get(),
                 EchoSilverBlockParticle.EchoSilverLandProvider::new);
-        event.register(YummyParticleRegister.POLLUTED_PARTICLE.get(),
-                PollutedParticle.PollutedParticleProvider::new);
+        event.register(YummyParticleRegister.POLLUTED_PARTICLE_RED.get(),
+                (spriteSet) -> new PollutedParticle.PollutedParticleProvider(spriteSet, 0x441f0b));
+        event.register(YummyParticleRegister.POLLUTED_PARTICLE_BLUE.get(),
+                (spriteSet) -> new PollutedParticle.PollutedParticleProvider(spriteSet, 0x019ea3));
     }
 
     @SubscribeEvent

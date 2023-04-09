@@ -2,12 +2,14 @@ package com.lalaalal.yummy.block.entity;
 
 import com.lalaalal.yummy.YummyUtil;
 import com.lalaalal.yummy.block.PollutedBlock;
-import com.lalaalal.yummy.effect.MarkEffect;
+import com.lalaalal.yummy.effect.HerobrineMark;
+import com.lalaalal.yummy.effect.YummyEffectRegister;
 import com.lalaalal.yummy.entity.Herobrine;
+import com.lalaalal.yummy.networking.YummyMessages;
+import com.lalaalal.yummy.networking.packet.ShowParticlePacket;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.RandomSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -49,23 +51,16 @@ public class PollutedBlockEntity extends BlockEntity {
     }
 
     private void serverTick(Level level, BlockPos blockPos) {
-
-        if (tick % tickInterval == 0)
-            affectEntities(level, blockPos);
-
-        if (tick >= lifetime)
-            destroyBlock(level, blockPos);
-
-        tick += 1;
-    }
-
-    private void clientTick(Level level, BlockPos blockPos) {
         if ((tick + 20) % tickInterval == 0)
             level.setBlock(blockPos, getBlockState().setValue(PollutedBlock.POWERED, true), 10);
-        if (tick % tickInterval == 0)
-            showParticle(level, blockPos);
+        if (tick % tickInterval == 0) {
+            affectEntities(level, blockPos);
+            sendParticlePacket(level, blockPos);
+        }
         if ((tick - 10) % tickInterval == 0)
             level.setBlock(blockPos, getBlockState().setValue(PollutedBlock.POWERED, false), 10);
+        if (tick >= lifetime)
+            destroyBlock(level, blockPos);
 
         tick += 1;
     }
@@ -75,27 +70,32 @@ public class PollutedBlockEntity extends BlockEntity {
 
         List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, area);
 
-        for (LivingEntity entity : entities)
-            MarkEffect.overlapMark(entity);
+        for (LivingEntity entity : entities) {
+            HerobrineMark.overlapMark(entity);
+            MobEffectInstance mobEffectInstance = new MobEffectInstance(YummyEffectRegister.STUN.get(), 20 * 3, 10);
+            entity.addEffect(mobEffectInstance);
+        }
     }
 
-    private void showParticle(Level level, BlockPos blockPos) {
-        RandomSource randomSource = level.getRandom();
-
-        double x = blockPos.getX() + randomSource.nextDouble();
-        double y = blockPos.getY() + 1;
-        double z = blockPos.getZ() + randomSource.nextDouble();
-
-        level.addParticle(ParticleTypes.EXPLOSION_EMITTER, x, y, z, 0, 0.3, 0);
+    private void sendParticlePacket(Level level, BlockPos blockPos) {
+        ShowParticlePacket pollutedParticlePacket = new ShowParticlePacket.Builder("polluted_particle_blue")
+                .setXYZ(blockPos)
+                .setSpeed(0, 5, 0)
+                .setRange(1)
+                .setParticleCount(40)
+                .build();
+        ShowParticlePacket explosionEmitterPacket = new ShowParticlePacket.Builder("explosion_emitter")
+                .setParticleNamespace("minecraft")
+                .setXYZ(blockPos)
+                .setSpeed(0, 0.3, 0)
+                .setParticleCount(1)
+                .build();
+        YummyMessages.sendToPlayer(pollutedParticlePacket, level.getChunkAt(blockPos));
+        YummyMessages.sendToPlayer(explosionEmitterPacket, level.getChunkAt(blockPos));
     }
 
     public static <T extends BlockEntity> void serverTick(Level level, BlockPos blockPos, BlockState blockState, T blockEntity) {
         if (blockEntity instanceof PollutedBlockEntity pollutedBlockEntity)
             pollutedBlockEntity.serverTick(level, blockPos);
-    }
-
-    public static <T extends BlockEntity> void clientTick(Level level, BlockPos blockPos, BlockState blockState, T blockEntity) {
-        if (blockEntity instanceof PollutedBlockEntity pollutedBlockEntity)
-            pollutedBlockEntity.clientTick(level, blockPos);
     }
 }

@@ -24,8 +24,12 @@ public class YummyParticleRegister {
             = PARTICLE_TYPES.register(EchoSilverBlockParticle.EchoSilverLandProvider.NAME,
             () -> new SimpleParticleType(true));
 
-    public static final RegistryObject<SimpleParticleType> POLLUTED_PARTICLE
-            = PARTICLE_TYPES.register(PollutedParticle.PollutedParticleProvider.NAME,
+    public static final RegistryObject<SimpleParticleType> POLLUTED_PARTICLE_RED
+            = PARTICLE_TYPES.register("polluted_particle_red",
+            () -> new SimpleParticleType(true));
+
+    public static final RegistryObject<SimpleParticleType> POLLUTED_PARTICLE_BLUE
+            = PARTICLE_TYPES.register("polluted_particle_blue",
             () -> new SimpleParticleType(true));
 
     public static void register(IEventBus eventBus) {
