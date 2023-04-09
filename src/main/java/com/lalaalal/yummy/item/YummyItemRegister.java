@@ -14,6 +14,11 @@ public class YummyItemRegister {
     public static final RegistryObject<Item> BREATH_STEEL = ITEMS.register("breath_steel",
             () -> new Item(new Item.Properties().tab(YummyMod.TAB)));
     public static final RegistryObject<Item> SPEAR_OF_LONGINUS_ITEM = ITEMS.register("spear_of_longinus", SpearOfLonginusItem::new);
+    public static final RegistryObject<Item> PURIFIED_SOUL_METAL = ITEMS.register("purified_soul_metal",
+            () -> new Item(new Item.Properties().tab(YummyMod.TAB)));
+    public static final RegistryObject<Item> PURIFIED_SOUL_SHARD = ITEMS.register("purified_soul_shard",
+            () -> new Item(new Item.Properties().tab(YummyMod.TAB)));
+    public static final RegistryObject<Item> PURIFIED_SOUL_SWORD = ITEMS.register("purified_soul_sword", PurifiedSoulSwordItem::new);
 
     public static final RegistryObject<Item> BONE_MEAL = VANILLA_ITEMS.register("bone_meal", YummyBoneMealItem::new);
 

@@ -31,6 +31,12 @@ public class YummyBlockRegister {
             () -> new Block(BlockBehaviour.Properties.of(Material.METAL)
                     .strength(2.5f, 14f).requiresCorrectToolForDrops()),
             YummyMod.TAB);
+    public static final RegistryObject<Block> PURIFIED_SOUL_BLOCK = register("purified_soul_block",
+            () -> new Block(BlockBehaviour.Properties.of(Material.DIRT)
+                    .strength(0.5F).speedFactor(0.4F)),
+            YummyMod.TAB);
+    public static final RegistryObject<Block> PURIFIED_SOUL_FIRE_BLOCK = BLOCKS.register("purified_soul_fire",
+            PurifiedSoulFireBlock::new);
 
     public static final RegistryObject<Block> POLLUTED_BLOCK = register(PollutedBlock.NAME,
             PollutedBlock::new, YummyMod.TAB);
@@ -50,7 +56,6 @@ public class YummyBlockRegister {
     public static final RegistryObject<Block> POTTED_LIME_FLOWER = BLOCKS.register("potted_lime_flower",
             () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, LIME_FLOWER,
                     BlockBehaviour.Properties.copy(Blocks.POTTED_DANDELION).color(MaterialColor.COLOR_LIGHT_GREEN)));
-
 
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> block, CreativeModeTab tab) {
         RegistryObject<T> registryObject = BLOCKS.register(name, block);

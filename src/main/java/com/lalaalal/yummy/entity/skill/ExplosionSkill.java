@@ -1,7 +1,6 @@
 package com.lalaalal.yummy.entity.skill;
 
 import com.lalaalal.yummy.entity.Herobrine;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
@@ -22,8 +21,8 @@ public class ExplosionSkill extends Skill {
         super(usingEntity, cooldown, WARMUP);
     }
 
-    protected boolean isAttackReachable(LivingEntity target) {
-        return this.usingEntity.distanceToSqr(target.getX(), target.getY(), target.getZ()) < ATTACK_REACH;
+    protected boolean isAttackReachable() {
+        return getDistanceWithTarget() < ATTACK_REACH;
     }
 
     public void setExplosionRadius(float explosionRadius) {
@@ -38,7 +37,7 @@ public class ExplosionSkill extends Skill {
     @Override
     public boolean canUse() {
         return usingEntity.getTarget() != null &&
-                isAttackReachable(usingEntity.getTarget());
+                isAttackReachable();
     }
 
     @Override

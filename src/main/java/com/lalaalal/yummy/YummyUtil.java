@@ -22,9 +22,9 @@ public class YummyUtil {
     }
 
     public static BlockPos randomPos(int x, int y, int z, int range, RandomSource random) {
-        int newX = x + random.nextInt(range);
+        int newX = x + random.nextInt(range * 2 + 1) - range;
         int newY = y + random.nextInt(range);
-        int newZ = z + random.nextInt(range);
+        int newZ = z + random.nextInt(range * 2 + 1) - range;
 
         return new BlockPos(newX, newY, newZ);
     }

@@ -1,9 +1,10 @@
 package com.lalaalal.yummy.entity;
 
 import com.lalaalal.yummy.block.entity.PollutedBlockEntity;
+import com.lalaalal.yummy.effect.YummyEffectRegister;
 import com.lalaalal.yummy.entity.goal.SkillUseGoal;
-import com.lalaalal.yummy.entity.skill.ExplosionSkill;
 import com.lalaalal.yummy.entity.skill.MarkExplosionSkill;
+import com.lalaalal.yummy.entity.skill.ShootFireballSkill;
 import com.lalaalal.yummy.entity.skill.SummonPollutedBlockSkill;
 import com.lalaalal.yummy.networking.YummyMessages;
 import com.lalaalal.yummy.networking.packet.ToggleHerobrineMusicPacket;
@@ -15,7 +16,10 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.BossEvent;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -63,6 +67,7 @@ public class Herobrine extends Monster {
                 .add(Attributes.MAX_HEALTH, 666)
                 .add(Attributes.ARMOR, 2)
                 .add(Attributes.ATTACK_DAMAGE, 8)
+                .add(Attributes.ATTACK_KNOCKBACK, 5)
                 .add(Attributes.MOVEMENT_SPEED, 0.28);
     }
 
@@ -138,14 +143,25 @@ public class Herobrine extends Monster {
     }
 
     protected void addBehaviourGoals() {
-        this.goalSelector.addGoal(2, new SkillUseGoal(this, new ExplosionSkill(this)));
+        this.goalSelector.addGoal(2, new SkillUseGoal(this, new ShootFireballSkill(this)));
         this.goalSelector.addGoal(3, new SkillUseGoal(this, new MarkExplosionSkill(this)));
         this.goalSelector.addGoal(2, new SkillUseGoal(this, new SummonPollutedBlockSkill(this)));
         this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, false));
         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Mob.class, true));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false, false));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Mob.class, false, false));
+    }
+
+    @Override
+    public boolean hurt(DamageSource pSource, float pAmount) {
+        if (random.nextInt(0, 10) == 5) {
+            if (pSource.getEntity() instanceof LivingEntity livingEntity) {
+                MobEffectInstance mobEffectInstance = new MobEffectInstance(YummyEffectRegister.STUN.get(), 60, 0);
+                livingEntity.addEffect(mobEffectInstance);
+            }
+        }
+        return super.hurt(pSource, pAmount);
     }
 
     @Override

@@ -30,12 +30,14 @@ public class SummonPollutedBlockSkill extends Skill {
     @Override
     public void useSkill() {
         Level level = usingEntity.getLevel();
-        BlockPos pos = YummyUtil.randomPos(usingEntity.getOnPos(), 5, usingEntity.getRandom());
-        BlockPos fixedPos = YummyUtil.findHorizonPos(pos, level);
-        level.setBlock(fixedPos, YummyBlockRegister.POLLUTED_BLOCK.get().defaultBlockState(), 3);
-        BlockEntity blockEntity = level.getBlockEntity(fixedPos);
+        for (int i = 0; i < 6 && herobrine.canSummonPollutedBlock(); i++) {
+            BlockPos pos = YummyUtil.randomPos(usingEntity.getOnPos(), 5, usingEntity.getRandom());
+            BlockPos fixedPos = YummyUtil.findHorizonPos(pos, level);
+            level.setBlock(fixedPos, YummyBlockRegister.POLLUTED_BLOCK.get().defaultBlockState(), 3);
+            BlockEntity blockEntity = level.getBlockEntity(fixedPos);
 
-        if (blockEntity instanceof PollutedBlockEntity pollutedBlockEntity)
-            herobrine.addPollutedBlock(pollutedBlockEntity);
+            if (blockEntity instanceof PollutedBlockEntity pollutedBlockEntity)
+                herobrine.addPollutedBlock(pollutedBlockEntity);
+        }
     }
 }

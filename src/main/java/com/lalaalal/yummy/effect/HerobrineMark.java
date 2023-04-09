@@ -25,7 +25,7 @@ public class HerobrineMark extends MobEffect {
     }
 
     protected HerobrineMark() {
-        super(MobEffectCategory.HARMFUL, 0xFF0000);
+        super(MobEffectCategory.HARMFUL, 0x441f0b);
     }
 
     @Override

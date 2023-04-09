@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " # ",
+        " #S",
+        " / "
+    ],
+    "key": {
+        "#": {
+            "item": "yummy:purified_soul_metal"
+        },
+        "S": {
+            "item": "yummy:purified_soul_shard"
+        },
+        "/": {
+            "item": "minecraft:blaze_rod"
+        }
+    },
+    "result": {
+        "item": "yummy:purified_soul_sword",
+        "count": 1
+    }
+}

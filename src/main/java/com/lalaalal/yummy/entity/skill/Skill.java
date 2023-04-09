@@ -1,5 +1,6 @@
 package com.lalaalal.yummy.entity.skill;
 
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 
 public abstract class Skill {
@@ -20,6 +21,14 @@ public abstract class Skill {
 
     public int getCooldown() {
         return cooldown;
+    }
+
+    public double getDistanceWithTarget() {
+        LivingEntity target = usingEntity.getTarget();
+        if (target == null)
+            return Double.MAX_VALUE;
+
+        return this.usingEntity.distanceToSqr(target.getX(), target.getY(), target.getZ());
     }
 
     public void setWarmup(int warmup) {

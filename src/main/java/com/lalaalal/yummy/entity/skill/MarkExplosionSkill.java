@@ -2,8 +2,10 @@ package com.lalaalal.yummy.entity.skill;
 
 import com.lalaalal.yummy.YummyUtil;
 import com.lalaalal.yummy.effect.HerobrineMark;
+import com.lalaalal.yummy.effect.YummyEffectRegister;
 import com.lalaalal.yummy.networking.YummyMessages;
 import com.lalaalal.yummy.networking.packet.ShowParticlePacket;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
@@ -32,7 +34,7 @@ public class MarkExplosionSkill extends ExplosionSkill {
         double x = usingEntity.getX();
         double y = usingEntity.getY();
         double z = usingEntity.getZ();
-        ShowParticlePacket packet = new ShowParticlePacket.Builder("polluted_particle_red")
+        ShowParticlePacket packet = new ShowParticlePacket.Builder("polluted_particle_blue")
                 .setXYZ(x, y, z)
                 .setSpeed(0, 5, 0)
                 .setRange(1)
@@ -47,6 +49,8 @@ public class MarkExplosionSkill extends ExplosionSkill {
 
         for (LivingEntity entity : getNearbyEntities()) {
             HerobrineMark.overlapMark(entity);
+            MobEffectInstance effectInstance = new MobEffectInstance(YummyEffectRegister.STUN.get(), 60, 0);
+            entity.addEffect(effectInstance);
         }
     }
 

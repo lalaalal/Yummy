@@ -17,15 +17,17 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class PollutedBlockEntity extends BlockEntity {
     protected int tickInterval = 20 * 10;
-    protected int lifetime = 20 * 60;
-    protected int tick = -60;
+    protected int lifetime = 20 * 40;
+    protected int tick = -10;
     private Herobrine herobrine;
 
     public PollutedBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(YummyBlockEntityRegister.POLLUTED_BLOCK_ENTITY_TYPE.get(), blockPos, blockState);
+        tick -= ThreadLocalRandom.current().nextInt(0, 100);
     }
 
     @Override
@@ -72,7 +74,9 @@ public class PollutedBlockEntity extends BlockEntity {
 
         for (LivingEntity entity : entities) {
             HerobrineMark.overlapMark(entity);
-            MobEffectInstance mobEffectInstance = new MobEffectInstance(YummyEffectRegister.STUN.get(), 20 * 3, 10);
+            MobEffectInstance mobEffectInstance = new MobEffectInstance(YummyEffectRegister.STUN.get(), 20 * 6, 10);
+            if (entity instanceof Herobrine)
+                continue;
             entity.addEffect(mobEffectInstance);
         }
     }
