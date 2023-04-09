@@ -2,5 +2,6 @@
     "parent": "minecraft:block/template_fire_floor",
     "textures": {
         "fire": "yummy:block/purified_soul_fire_1"
-    }
+    },
+    "render_type": "cutout"
 }
