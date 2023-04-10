@@ -7,12 +7,15 @@ import com.lalaalal.yummy.effect.YummyEffectRegister;
 import com.lalaalal.yummy.entity.Herobrine;
 import com.lalaalal.yummy.networking.YummyMessages;
 import com.lalaalal.yummy.networking.packet.ShowParticlePacket;
+import com.lalaalal.yummy.sound.YummySoundRegister;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
@@ -26,7 +29,11 @@ public class PollutedBlockEntity extends BlockEntity {
     private Herobrine herobrine;
 
     public PollutedBlockEntity(BlockPos blockPos, BlockState blockState) {
-        super(YummyBlockEntityRegister.POLLUTED_BLOCK_ENTITY_TYPE.get(), blockPos, blockState);
+        this(YummyBlockEntityRegister.POLLUTED_BLOCK_ENTITY_TYPE.get(), blockPos, blockState);
+    }
+
+    public PollutedBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
+        super(blockEntityType, blockPos, blockState);
         tick -= ThreadLocalRandom.current().nextInt(0, 100);
     }
 
@@ -52,11 +59,13 @@ public class PollutedBlockEntity extends BlockEntity {
             herobrine.removePollutedBlock(this);
     }
 
-    private void serverTick(Level level, BlockPos blockPos) {
-        if ((tick + 20) % tickInterval == 0)
+    private void serverTick(Level level, BlockPos blockPos, BlockState blockState) {
+        if ((tick + 20) % tickInterval == 0) {
             level.setBlock(blockPos, getBlockState().setValue(PollutedBlock.POWERED, true), 10);
+            level.playSound(null, blockPos, YummySoundRegister.POLLUTED_WAVE.get(), SoundSource.BLOCKS, 0.3f, 1);
+        }
         if (tick % tickInterval == 0) {
-            affectEntities(level, blockPos);
+            affectEntities(level, blockPos, blockState);
             sendParticlePacket(level, blockPos);
         }
         if ((tick - 10) % tickInterval == 0)
@@ -67,18 +76,23 @@ public class PollutedBlockEntity extends BlockEntity {
         tick += 1;
     }
 
-    private void affectEntities(Level level, BlockPos blockPos) {
+    private void affectEntities(Level level, BlockPos blockPos, BlockState blockState) {
         AABB area = YummyUtil.createArea(blockPos, 3);
 
         List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, area);
 
-        for (LivingEntity entity : entities) {
+        for (LivingEntity entity : entities)
+            affectEntity(entity, blockState);
+    }
+
+    protected void affectEntity(LivingEntity entity, BlockState blockState) {
+        if (blockState.getValue(PollutedBlock.CORRUPTED))
             HerobrineMark.overlapMark(entity);
-            MobEffectInstance mobEffectInstance = new MobEffectInstance(YummyEffectRegister.STUN.get(), 20 * 6, 10);
-            if (entity instanceof Herobrine)
-                continue;
-            entity.addEffect(mobEffectInstance);
-        }
+
+        MobEffectInstance mobEffectInstance = new MobEffectInstance(YummyEffectRegister.STUN.get(), 20 * 6, 10);
+        if (entity instanceof Herobrine)
+            return;
+        entity.addEffect(mobEffectInstance);
     }
 
     private void sendParticlePacket(Level level, BlockPos blockPos) {
@@ -100,6 +114,6 @@ public class PollutedBlockEntity extends BlockEntity {
 
     public static <T extends BlockEntity> void serverTick(Level level, BlockPos blockPos, BlockState blockState, T blockEntity) {
         if (blockEntity instanceof PollutedBlockEntity pollutedBlockEntity)
-            pollutedBlockEntity.serverTick(level, blockPos);
+            pollutedBlockEntity.serverTick(level, blockPos, blockState);
     }
 }

@@ -77,6 +77,10 @@ public class Herobrine extends Monster {
         this.entityData.define(DATA_SKILL_USE_ID, 0);
     }
 
+    public int getPhase() {
+        return 1;
+    }
+
     public void setArmPose(ArmPose armPose) {
         entityData.set(DATA_SKILL_USE_ID, armPose.getId());
     }
@@ -168,14 +172,14 @@ public class Herobrine extends Monster {
     public void startSeenByPlayer(ServerPlayer serverPlayer) {
         super.startSeenByPlayer(serverPlayer);
         bossEvent.addPlayer(serverPlayer);
-        YummyMessages.sendToPlayer(new ToggleHerobrineMusicPacket(true), serverPlayer);
+        YummyMessages.sendToPlayer(new ToggleHerobrineMusicPacket(true, getPhase()), serverPlayer);
     }
 
     @Override
     public void stopSeenByPlayer(ServerPlayer serverPlayer) {
         super.stopSeenByPlayer(serverPlayer);
         bossEvent.removePlayer(serverPlayer);
-        YummyMessages.sendToPlayer(new ToggleHerobrineMusicPacket(false), serverPlayer);
+        YummyMessages.sendToPlayer(new ToggleHerobrineMusicPacket(false, getPhase()), serverPlayer);
     }
 
     public enum ArmPose {

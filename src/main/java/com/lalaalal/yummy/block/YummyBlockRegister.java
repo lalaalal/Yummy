@@ -5,10 +5,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.FlowerBlock;
-import net.minecraft.world.level.block.FlowerPotBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
@@ -25,21 +22,34 @@ public class YummyBlockRegister {
 
     public static final RegistryObject<Block> AMETHYST_BLOCK = register("amethyst_block",
             () -> new Block(BlockBehaviour.Properties.of(Material.METAL)
-                    .strength(1.5f, 0.5f).requiresCorrectToolForDrops()),
+                    .strength(1.5f, 0.5f)
+                    .requiresCorrectToolForDrops()),
             CreativeModeTab.TAB_BUILDING_BLOCKS);
     public static final RegistryObject<Block> BREATH_STEEL_BLOCK = register("breath_steel_block",
             () -> new Block(BlockBehaviour.Properties.of(Material.METAL)
-                    .strength(2.5f, 14f).requiresCorrectToolForDrops()),
+                    .strength(2.5f, 14f)
+                    .requiresCorrectToolForDrops()),
             YummyMod.TAB);
     public static final RegistryObject<Block> PURIFIED_SOUL_BLOCK = register("purified_soul_block",
             () -> new Block(BlockBehaviour.Properties.of(Material.DIRT)
-                    .strength(0.5F).speedFactor(0.4F)),
+                    .strength(0.5F)
+                    .speedFactor(0.4F)),
             YummyMod.TAB);
     public static final RegistryObject<Block> PURIFIED_SOUL_FIRE_BLOCK = BLOCKS.register("purified_soul_fire",
-            PurifiedSoulFireBlock::new);
+            () -> new PurifiedSoulFireBlock(BlockBehaviour.Properties.of(Material.FIRE, MaterialColor.COLOR_BLACK)
+                    .noCollission()
+                    .instabreak()
+                    .lightLevel((blockState) -> 5)
+                    .sound(SoundType.WOOL)));
 
-    public static final RegistryObject<Block> POLLUTED_BLOCK = register(PollutedBlock.NAME,
-            PollutedBlock::new, YummyMod.TAB);
+    public static final RegistryObject<Block> POLLUTED_BLOCK = register(PollutedBlock.getName(false),
+            () -> new PollutedBlock(BlockBehaviour.Properties.of(Material.STONE)
+                    .strength(2.7f, 14f)
+                    .requiresCorrectToolForDrops()), YummyMod.TAB);
+    public static final RegistryObject<Block> CORRUPTED_POLLUTED_BLOCK = register(PollutedBlock.getName(true),
+            () -> new PollutedBlock(BlockBehaviour.Properties.of(Material.STONE)
+                    .strength(2.7f, 14f)
+                    .requiresCorrectToolForDrops(), true), YummyMod.TAB);
 
     public static final RegistryObject<Block> CYAN_FLOWER = register("cyan_flower",
             () -> new FlowerBlock(() -> MobEffects.GLOWING, 5,

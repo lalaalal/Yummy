@@ -1,8 +1,24 @@
 {
-    "herobrine_music": {
+    "herobrine_music_phase_1": {
         "sounds": [
             {
-                "name": "yummy:herobrine_music",
+                "name": "yummy:herobrine_music_phase_1",
+                "stream": true
+            }
+        ]
+    },
+    "herobrine_music_phase_2": {
+        "sounds": [
+            {
+                "name": "yummy:herobrine_music_phase_2",
+                "stream": true
+            }
+        ]
+    },
+    "herobrine_music_phase_3": {
+        "sounds": [
+            {
+                "name": "yummy:herobrine_music_phase_3",
                 "stream": true
             }
         ]

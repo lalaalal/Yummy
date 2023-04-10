@@ -1,6 +1,6 @@
 {
-    "parent": "minecraft:item/generated",
-    "textures": {
-        "layer0": "yummy:item/purified_soul_sword"
-    }
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "yummy:item/purified_soul_sword"
+  }
 }

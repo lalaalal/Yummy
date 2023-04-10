@@ -22,6 +22,8 @@ public class YummyClientEventBus {
                 (spriteSet) -> new PollutedParticle.PollutedParticleProvider(spriteSet, 0x441f0b));
         event.register(YummyParticleRegister.POLLUTED_PARTICLE_BLUE.get(),
                 (spriteSet) -> new PollutedParticle.PollutedParticleProvider(spriteSet, 0x019ea3));
+        event.register(YummyParticleRegister.POLLUTED_PARTICLE_PURPLE.get(),
+                (spriteSet) -> new PollutedParticle.PollutedParticleProvider(spriteSet, 0x201a33));
     }
 
     @SubscribeEvent

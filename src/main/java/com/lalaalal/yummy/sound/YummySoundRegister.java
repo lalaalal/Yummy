@@ -12,7 +12,9 @@ public class YummySoundRegister {
     private static final DeferredRegister<SoundEvent> SOUND_EVENTS
             = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, YummyMod.MOD_ID);
 
-    public static final RegistryObject<SoundEvent> HEROBRINE_MUSIC = register("herobrine_music");
+    public static final RegistryObject<SoundEvent> HEROBRINE_MUSIC_PHASE_1 = register("herobrine_music_phase_1");
+    public static final RegistryObject<SoundEvent> HEROBRINE_MUSIC_PHASE_2 = register("herobrine_music_phase_2");
+    public static final RegistryObject<SoundEvent> HEROBRINE_MUSIC_PHASE_3 = register("herobrine_music_phase_3");
     public static final RegistryObject<SoundEvent> HEROBRINE_SUMMON = register("herobrine_summon");
     public static final RegistryObject<SoundEvent> HEROBRINE_TELEPORT = register("herobrine_teleport");
     public static final RegistryObject<SoundEvent> HEROBRINE_RUSH = register("herobrine_rush");

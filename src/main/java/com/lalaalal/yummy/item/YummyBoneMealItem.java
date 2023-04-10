@@ -11,15 +11,14 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BoneMealItem;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class YummyBoneMealItem extends BoneMealItem {
-    public YummyBoneMealItem() {
-        super(new Properties().tab(CreativeModeTab.TAB_MISC));
+    public YummyBoneMealItem(Properties properties) {
+        super(properties);
     }
 
     @Override

@@ -2,7 +2,6 @@ package com.lalaalal.yummy.item;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.entity.ThrownSpearOfLonginus;
 import com.lalaalal.yummy.misc.ItemDamageSource;
 import net.minecraft.core.BlockPos;
@@ -24,10 +23,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class SpearOfLonginusItem extends Item {
-    public SpearOfLonginusItem() {
-        super(new Properties().tab(YummyMod.TAB)
-                .durability(0)
-                .fireResistant());
+    public SpearOfLonginusItem(Properties properties) {
+        super(properties);
     }
 
     @Override

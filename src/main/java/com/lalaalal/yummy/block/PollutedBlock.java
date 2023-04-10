@@ -4,6 +4,7 @@ import com.lalaalal.yummy.block.entity.PollutedBlockEntity;
 import com.lalaalal.yummy.block.entity.YummyBlockEntityRegister;
 import com.lalaalal.yummy.particle.YummyParticleRegister;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Explosion;
@@ -14,38 +15,46 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Material;
 import org.jetbrains.annotations.Nullable;
 
 public class PollutedBlock extends BaseEntityBlock {
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
-    public static final String NAME = "polluted_block";
+    public static final BooleanProperty CORRUPTED = BooleanProperty.create("corrupted");
 
     private int animateTick = 0;
 
-    public PollutedBlock() {
-        super(BlockBehaviour.Properties.of(Material.STONE)
-                .strength(2.7f, 14f)
-                .requiresCorrectToolForDrops());
+    public static String getName(boolean corrupted) {
+        return corrupted ? "corrupted_polluted_block" : "polluted_block";
+    }
+
+    public PollutedBlock(Properties properties) {
+        this(properties, false);
+    }
+
+    public PollutedBlock(Properties properties, boolean corrupted) {
+        super(properties);
         this.registerDefaultState(
                 this.stateDefinition.any()
                         .setValue(POWERED, false)
+                        .setValue(CORRUPTED, corrupted)
         );
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(POWERED);
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(POWERED);
+        builder.add(CORRUPTED);
     }
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        if (state.getValue(CORRUPTED))
+            return new PollutedBlockEntity(YummyBlockEntityRegister.CORRUPTED_POLLUTED_BLOCK_ENTITY_TYPE.get(), pos, state);
         return new PollutedBlockEntity(pos, state);
     }
 
@@ -58,8 +67,7 @@ public class PollutedBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
-        if (blockEntityType == YummyBlockEntityRegister.POLLUTED_BLOCK_ENTITY_TYPE.get()
-                && !level.isClientSide)
+        if (!level.isClientSide)
             return PollutedBlockEntity::serverTick;
         return null;
     }
@@ -73,10 +81,16 @@ public class PollutedBlock extends BaseEntityBlock {
                 double particleY = blockPos.getY() + random.nextDouble() * 0.2;
                 double particleZ = blockPos.getZ() + random.nextDouble() * 7.0 - 3.0;
 
-                level.addParticle(YummyParticleRegister.POLLUTED_PARTICLE_RED.get(), particleX, particleY, particleZ, 0, 1, 0);
+                level.addParticle(getParticle(blockState), particleX, particleY, particleZ, 0, 1, 0);
             }
             animateTick = 0;
         }
+    }
+
+    private ParticleOptions getParticle(BlockState blockState) {
+        if (blockState.getValue(PollutedBlock.CORRUPTED))
+            return YummyParticleRegister.POLLUTED_PARTICLE_PURPLE.get();
+        return YummyParticleRegister.POLLUTED_PARTICLE_RED.get();
     }
 
     @Override
