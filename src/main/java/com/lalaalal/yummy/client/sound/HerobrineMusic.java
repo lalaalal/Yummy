@@ -1,7 +1,6 @@
 package com.lalaalal.yummy.client.sound;
 
 import com.lalaalal.yummy.YummyMod;
-import com.lalaalal.yummy.sound.YummySoundRegister;
 import net.minecraft.client.resources.sounds.AbstractSoundInstance;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
@@ -22,7 +21,7 @@ public class HerobrineMusic extends AbstractSoundInstance {
     }
 
     public HerobrineMusic(int phase) {
-        super(YummySoundRegister.HEROBRINE_MUSIC_PHASE_1.get(), SoundSource.MUSIC, RandomSource.create());
+        super(getResourceLocation(phase), SoundSource.MUSIC, RandomSource.create());
         this.looping = true;
     }
 }

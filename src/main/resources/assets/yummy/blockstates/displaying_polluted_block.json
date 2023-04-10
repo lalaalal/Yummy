@@ -1,0 +1,16 @@
+{
+    "variants": {
+        "powered=true,corrupted=true": {
+            "model": "yummy:block/corrupted_polluted_block_active"
+        },
+        "powered=false,corrupted=true": {
+            "model": "yummy:block/corrupted_polluted_block_charging"
+        },
+        "powered=true,corrupted=false": {
+            "model": "yummy:block/polluted_block_active"
+        },
+        "powered=false,corrupted=false": {
+            "model": "yummy:block/polluted_block_charging"
+        }
+    }
+}

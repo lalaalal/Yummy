@@ -36,6 +36,7 @@ public class ToggleHerobrineMusicPacket extends YummyPacket {
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
             SoundManager soundManager = Minecraft.getInstance().getSoundManager();
             if (play) {
+                soundManager.stop();
                 soundManager.play(new HerobrineMusic(phase));
             } else {
                 soundManager.stop(HerobrineMusic.getResourceLocation(phase), SoundSource.MUSIC);

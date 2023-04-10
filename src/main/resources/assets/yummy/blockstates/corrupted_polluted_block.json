@@ -1,10 +1,10 @@
 {
-  "variants": {
-    "powered=true": {
-      "model": "yummy:block/corrupted_polluted_block_active"
-    },
-    "powered=false": {
-      "model": "yummy:block/corrupted_polluted_block_charging"
+    "variants": {
+        "powered=true": {
+            "model": "yummy:block/corrupted_polluted_block_active"
+        },
+        "powered=false": {
+            "model": "yummy:block/corrupted_polluted_block_charging"
+        }
     }
-  }
 }

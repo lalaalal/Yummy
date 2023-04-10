@@ -35,8 +35,10 @@ public class SpawnHerobrinePacket extends PositionPacket {
             return;
 
         BlockPos blockPos = new BlockPos(x, y, z);
-        Herobrine.destroySpawnStructure(level, blockPos);
+        Herobrine.polluteHerobrineAlter(level, blockPos);
         level.playSound(null, blockPos, YummySoundRegister.HEROBRINE_SUMMON.get(), SoundSource.HOSTILE, 1, 1);
-        YummyEntityRegister.HEROBRINE.get().spawn(level, null, null, null, blockPos, MobSpawnType.STRUCTURE, true, false);
+        Herobrine herobrine = YummyEntityRegister.HEROBRINE.get().spawn(level, null, null, null, blockPos, MobSpawnType.STRUCTURE, true, false);
+        if (herobrine != null)
+            herobrine.setInitialPos(blockPos);
     }
 }

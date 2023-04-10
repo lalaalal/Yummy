@@ -25,6 +25,7 @@ import org.jetbrains.annotations.Nullable;
 public class PollutedBlock extends BaseEntityBlock {
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
     public static final BooleanProperty CORRUPTED = BooleanProperty.create("corrupted");
+    public static final BooleanProperty FOR_DISPLAY = BooleanProperty.create("for_display");
 
     private int animateTick = 0;
 
@@ -37,11 +38,16 @@ public class PollutedBlock extends BaseEntityBlock {
     }
 
     public PollutedBlock(Properties properties, boolean corrupted) {
+        this(properties, false, corrupted, false);
+    }
+
+    public PollutedBlock(Properties properties, boolean powered, boolean corrupted, boolean forDisplay) {
         super(properties);
         this.registerDefaultState(
                 this.stateDefinition.any()
-                        .setValue(POWERED, false)
+                        .setValue(POWERED, powered)
                         .setValue(CORRUPTED, corrupted)
+                        .setValue(FOR_DISPLAY, forDisplay)
         );
     }
 
@@ -49,6 +55,7 @@ public class PollutedBlock extends BaseEntityBlock {
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(POWERED);
         builder.add(CORRUPTED);
+        builder.add(FOR_DISPLAY);
     }
 
     @Override
@@ -67,7 +74,7 @@ public class PollutedBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
-        if (!level.isClientSide)
+        if (!level.isClientSide && !blockState.getValue(FOR_DISPLAY))
             return PollutedBlockEntity::serverTick;
         return null;
     }
