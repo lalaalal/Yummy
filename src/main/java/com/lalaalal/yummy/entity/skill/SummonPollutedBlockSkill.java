@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class SummonPollutedBlockSkill extends Skill {
     public static final int COOLDOWN = 300;
-    public static final int WARMUP = 40;
+    public static final int WARMUP = 20;
     private final Herobrine herobrine;
 
     public SummonPollutedBlockSkill(Herobrine herobrine) {

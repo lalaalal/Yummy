@@ -8,7 +8,7 @@ import net.minecraft.world.level.Level;
 public class ExplosionSkill extends Skill {
     public static final int COOLDOWN = 600;
 
-    public static final int WARMUP = 40;
+    public static final int WARMUP = 20;
     protected double ATTACK_REACH = 25;
     protected float explosionRadius = 6.0f;
     protected boolean explosionCauseFire = true;

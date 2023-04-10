@@ -13,7 +13,7 @@ public class PurifiedSoulFireBlock extends BaseFireBlock {
     }
 
     @Override
-    protected boolean canBurn(BlockState pState) {
+    protected boolean canBurn(BlockState state) {
         return true;
     }
 }
