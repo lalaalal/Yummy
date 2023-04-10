@@ -5,10 +5,10 @@ import com.lalaalal.yummy.client.model.HerobrineModel;
 import com.lalaalal.yummy.client.model.ThrownSpearOfLonginusModel;
 import com.lalaalal.yummy.client.renderer.HerobrineRenderer;
 import com.lalaalal.yummy.client.renderer.ThrownSpearOfLonginusRenderer;
+import com.lalaalal.yummy.client.renderer.YummyItemEntityRenderer;
 import com.lalaalal.yummy.entity.YummyEntityRegister;
 import com.lalaalal.yummy.particle.PollutedParticle;
 import com.lalaalal.yummy.particle.YummyParticleRegister;
-import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
@@ -32,7 +32,9 @@ public class YummyClientEventBus {
         event.registerEntityRenderer(YummyEntityRegister.HEROBRINE.get(), HerobrineRenderer::new);
         event.registerEntityRenderer(YummyEntityRegister.THROWN_SPEAR_OF_LONGINUS.get(), ThrownSpearOfLonginusRenderer::new);
         event.registerEntityRenderer(YummyEntityRegister.MARK_FIREBALL.get(),
-                (context) -> new ThrownItemRenderer<>(context, 3.0f, true));
+                (context) -> new YummyItemEntityRenderer<>(context, "mark_fireball", 3));
+        event.registerEntityRenderer(YummyEntityRegister.METEOR.get(),
+                (context) -> new YummyItemEntityRenderer<>(context, "meteor", 15));
     }
 
     @SubscribeEvent

@@ -23,11 +23,11 @@ public class MarkFireball extends Fireball {
     }
 
     public MarkFireball(Level level, LivingEntity shooter, double offsetX, double offsetY, double offsetZ) {
-        super(EntityType.FIREBALL, shooter, offsetX, offsetY, offsetZ, level);
+        super(YummyEntityRegister.MARK_FIREBALL.get(), shooter, offsetX, offsetY, offsetZ, level);
     }
 
-    public MarkFireball(Level level, LivingEntity shooter, double offsetX, double offsetY, double offsetZ, int explosionPower) {
-        super(EntityType.FIREBALL, shooter, offsetX, offsetY, offsetZ, level);
+    public MarkFireball(EntityType<? extends Fireball> entityType, Level level, LivingEntity shooter, double offsetX, double offsetY, double offsetZ, int explosionPower) {
+        super(entityType, shooter, offsetX, offsetY, offsetZ, level);
         this.explosionPower = explosionPower;
     }
 
