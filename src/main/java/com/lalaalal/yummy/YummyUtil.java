@@ -17,6 +17,10 @@ public class YummyUtil {
         return new AABB(start, end);
     }
 
+    public static AABB createArea(double x, double y, double z, int offset) {
+        return createArea(new BlockPos(x, y, z), offset);
+    }
+
     public static BlockPos randomPos(BlockPos pos, int range, RandomSource random) {
         return randomPos(pos.getX(), pos.getY(), pos.getZ(), range, random);
     }

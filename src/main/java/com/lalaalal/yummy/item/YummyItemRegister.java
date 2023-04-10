@@ -28,6 +28,8 @@ public class YummyItemRegister {
                     .durability(0)
                     .fireResistant()
                     .rarity(Rarity.EPIC)));
+    public static final RegistryObject<Item> MARK_FIREBALL = ITEMS.register("mark_fireball",
+            () -> new MarkFireballItem(new Item.Properties().tab(YummyMod.TAB)));
 
     public static final RegistryObject<Item> BONE_MEAL = VANILLA_ITEMS.register("bone_meal",
             () -> new YummyBoneMealItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));

@@ -9,8 +9,8 @@ public class ExplosionSkill extends Skill {
     public static final int COOLDOWN = 600;
 
     public static final int WARMUP = 20;
-    protected double ATTACK_REACH = 25;
-    protected float explosionRadius = 6.0f;
+    protected double attackReach = 50;
+    protected float explosionRadius = 127.5f;
     protected boolean explosionCauseFire = true;
 
     public ExplosionSkill(Mob usingEntity) {
@@ -22,7 +22,11 @@ public class ExplosionSkill extends Skill {
     }
 
     protected boolean isAttackReachable() {
-        return getDistanceWithTarget() < ATTACK_REACH;
+        return getDistanceWithTarget() < attackReach;
+    }
+
+    public void setAttackReach(double attackReach) {
+        this.attackReach = attackReach;
     }
 
     public void setExplosionRadius(float explosionRadius) {

@@ -3,7 +3,7 @@ package com.lalaalal.yummy.entity;
 import com.lalaalal.yummy.block.entity.PollutedBlockEntity;
 import com.lalaalal.yummy.effect.YummyEffectRegister;
 import com.lalaalal.yummy.entity.goal.SkillUseGoal;
-import com.lalaalal.yummy.entity.skill.MarkExplosionSkill;
+import com.lalaalal.yummy.entity.skill.ExplosionSkill;
 import com.lalaalal.yummy.entity.skill.ShootFireballSkill;
 import com.lalaalal.yummy.entity.skill.SummonPollutedBlockSkill;
 import com.lalaalal.yummy.networking.YummyMessages;
@@ -148,7 +148,7 @@ public class Herobrine extends Monster {
 
     protected void addBehaviourGoals() {
         this.goalSelector.addGoal(2, new SkillUseGoal(this, new ShootFireballSkill(this)));
-        this.goalSelector.addGoal(3, new SkillUseGoal(this, new MarkExplosionSkill(this)));
+        this.goalSelector.addGoal(3, new SkillUseGoal(this, new ExplosionSkill(this)));
         this.goalSelector.addGoal(2, new SkillUseGoal(this, new SummonPollutedBlockSkill(this)));
         this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, false));
         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0D));

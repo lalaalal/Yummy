@@ -14,7 +14,7 @@ public class YummyEntityRegister {
 
     public static final RegistryObject<EntityType<Herobrine>> HEROBRINE = ENTITY_TYPES.register("herobrine",
             () -> EntityType.Builder.of(Herobrine::new, MobCategory.CREATURE)
-                    .sized(1.0f, 2.0f)
+                    .sized(0.6f, 2.0f)
                     .fireImmune()
                     .build(YummyMod.MOD_ID + ":herobrine"));
 
@@ -23,6 +23,11 @@ public class YummyEntityRegister {
                     .sized(0.5f, 0.5f)
                     .fireImmune()
                     .build(YummyMod.MOD_ID + ":thrown_spear_of_longinus"));
+
+    public static final RegistryObject<EntityType<MarkFireball>> MARK_FIREBALL = ENTITY_TYPES.register("mark_fireball",
+            () -> EntityType.Builder.of((EntityType.EntityFactory<MarkFireball>) MarkFireball::new, MobCategory.MISC)
+                    .sized(0.5f, 0.5f)
+                    .build(YummyMod.MOD_ID + ":mark_fireball"));
 
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);
