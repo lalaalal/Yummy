@@ -34,7 +34,7 @@ public class YummyClientEventBus {
         event.registerEntityRenderer(YummyEntityRegister.MARK_FIREBALL.get(),
                 (context) -> new YummyItemEntityRenderer<>(context, "mark_fireball", 3));
         event.registerEntityRenderer(YummyEntityRegister.METEOR.get(),
-                (context) -> new YummyItemEntityRenderer<>(context, "meteor", 15));
+                (context) -> new YummyItemEntityRenderer<>(context, "meteor", 5));
     }
 
     @SubscribeEvent

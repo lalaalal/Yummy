@@ -6,6 +6,7 @@ import com.lalaalal.yummy.entity.goal.SkillUseGoal;
 import com.lalaalal.yummy.entity.skill.ExplosionSkill;
 import com.lalaalal.yummy.entity.skill.ShootFireballSkill;
 import com.lalaalal.yummy.entity.skill.SummonPollutedBlockSkill;
+import com.lalaalal.yummy.entity.skill.TeleportAndShootMeteorSkill;
 import com.lalaalal.yummy.networking.YummyMessages;
 import com.lalaalal.yummy.networking.packet.ToggleHerobrineMusicPacket;
 import net.minecraft.core.BlockPos;
@@ -65,9 +66,9 @@ public class Herobrine extends Monster {
     public static AttributeSupplier.Builder getHerobrineAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, 666)
-                .add(Attributes.ARMOR, 2)
-                .add(Attributes.ATTACK_DAMAGE, 8)
-                .add(Attributes.ATTACK_KNOCKBACK, 5)
+                .add(Attributes.ARMOR, 6)
+                .add(Attributes.ATTACK_DAMAGE, 16)
+                .add(Attributes.ATTACK_KNOCKBACK, 6)
                 .add(Attributes.MOVEMENT_SPEED, 0.28);
     }
 
@@ -78,8 +79,13 @@ public class Herobrine extends Monster {
     }
 
     public int getPhase() {
-        return 1;
+        if (getHealth() > 66)
+            return 1;
+        if (getHealth() > 6)
+            return 2;
+        return 3;
     }
+
 
     public void setArmPose(ArmPose armPose) {
         entityData.set(DATA_SKILL_USE_ID, armPose.getId());
@@ -147,6 +153,7 @@ public class Herobrine extends Monster {
     }
 
     protected void addBehaviourGoals() {
+        this.goalSelector.addGoal(1, new SkillUseGoal(this, new TeleportAndShootMeteorSkill(this)));
         this.goalSelector.addGoal(2, new SkillUseGoal(this, new ShootFireballSkill(this)));
         this.goalSelector.addGoal(3, new SkillUseGoal(this, new ExplosionSkill(this)));
         this.goalSelector.addGoal(2, new SkillUseGoal(this, new SummonPollutedBlockSkill(this)));

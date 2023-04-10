@@ -1,17 +1,19 @@
 package com.lalaalal.yummy.entity.skill;
 
-import com.lalaalal.yummy.entity.Herobrine;
+import com.lalaalal.yummy.networking.YummyMessages;
+import com.lalaalal.yummy.networking.packet.ShowParticlePacket;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.chunk.LevelChunk;
 
 public class ExplosionSkill extends Skill {
     public static final int COOLDOWN = 600;
 
     public static final int WARMUP = 20;
     protected double attackReach = 50;
-    protected float explosionRadius = 127.5f;
-    protected boolean explosionCauseFire = true;
+    protected float explosionRadius = 27f;
+    protected boolean explosionCauseFire = false;
 
     public ExplosionSkill(Mob usingEntity) {
         super(usingEntity, COOLDOWN, WARMUP);
@@ -46,8 +48,15 @@ public class ExplosionSkill extends Skill {
 
     @Override
     public void showEffect() {
-        if (usingEntity instanceof Herobrine herobrine)
-            herobrine.setArmPose(Herobrine.ArmPose.RAISE_BOTH);
+        LevelChunk levelChunk = usingEntity.getLevel().getChunkAt(usingEntity.getOnPos());
+        ShowParticlePacket packet = new ShowParticlePacket.Builder("explosion_emitter")
+                .setParticleNamespace("minecraft")
+                .setXYZ(usingEntity.getX(), usingEntity.getY(), usingEntity.getZ())
+                .setSpeed(0, 0.3, 0)
+                .setRange(1)
+                .setParticleCount(1)
+                .build();
+        YummyMessages.sendToPlayer(packet, levelChunk);
     }
 
     @Override
@@ -55,11 +64,14 @@ public class ExplosionSkill extends Skill {
         Level level = usingEntity.getLevel();
         level.explode(usingEntity, usingEntity.getX(), usingEntity.getY(), usingEntity.getZ(),
                 explosionRadius, explosionCauseFire, Explosion.BlockInteraction.NONE);
-    }
-
-    @Override
-    public void endEffect() {
-        if (usingEntity instanceof Herobrine herobrine)
-            herobrine.setArmPose(Herobrine.ArmPose.NORMAL);
+        LevelChunk levelChunk = usingEntity.getLevel().getChunkAt(usingEntity.getOnPos());
+        ShowParticlePacket packet = new ShowParticlePacket.Builder("explosion_emitter")
+                .setParticleNamespace("minecraft")
+                .setXYZ(usingEntity.getX(), usingEntity.getY(), usingEntity.getZ())
+                .setSpeed(0, 0.3, 0)
+                .setRange(1)
+                .setParticleCount(1)
+                .build();
+        YummyMessages.sendToPlayer(packet, levelChunk);
     }
 }

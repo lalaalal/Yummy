@@ -16,7 +16,8 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class MarkFireball extends Fireball {
-    protected float explosionPower = 25;
+    protected float explosionPower = 7;
+    protected boolean markEntities = true;
 
     public MarkFireball(EntityType<? extends Fireball> entityType, Level level) {
         super(entityType, level);
@@ -26,9 +27,10 @@ public class MarkFireball extends Fireball {
         super(YummyEntityRegister.MARK_FIREBALL.get(), shooter, offsetX, offsetY, offsetZ, level);
     }
 
-    public MarkFireball(EntityType<? extends Fireball> entityType, Level level, LivingEntity shooter, double offsetX, double offsetY, double offsetZ, int explosionPower) {
+    public MarkFireball(EntityType<? extends Fireball> entityType, Level level, LivingEntity shooter, double offsetX, double offsetY, double offsetZ, int explosionPower, boolean markEntities) {
         super(entityType, shooter, offsetX, offsetY, offsetZ, level);
         this.explosionPower = explosionPower;
+        this.markEntities = markEntities;
     }
 
     @Override
@@ -36,13 +38,18 @@ public class MarkFireball extends Fireball {
         super.onHit(result);
         if (!this.level.isClientSide) {
             Vec3 hitLocation = result.getLocation();
+            if (markEntities)
+                markEntities(level, hitLocation);
             this.level.explode(this.getOwner(), this.getX(), this.getY(), this.getZ(), explosionPower, true, Explosion.BlockInteraction.DESTROY);
-            AABB area = YummyUtil.createArea(hitLocation.x, hitLocation.y, hitLocation.z, 5);
-            for (LivingEntity livingEntity : level.getEntitiesOfClass(LivingEntity.class, area))
-                HerobrineMark.overlapMark(livingEntity);
 
             this.discard();
         }
+    }
+
+    private void markEntities(Level level, Vec3 location) {
+        AABB area = YummyUtil.createArea(location.x, location.y, location.z, 5);
+        for (LivingEntity livingEntity : level.getEntitiesOfClass(LivingEntity.class, area))
+            HerobrineMark.overlapMark(livingEntity);
     }
 
     @Override

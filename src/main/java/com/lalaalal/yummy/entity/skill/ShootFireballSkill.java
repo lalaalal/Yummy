@@ -1,6 +1,8 @@
 package com.lalaalal.yummy.entity.skill;
 
 import com.lalaalal.yummy.entity.MarkFireball;
+import com.lalaalal.yummy.sound.YummySoundRegister;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -21,6 +23,12 @@ public class ShootFireballSkill extends Skill {
     @Override
     public boolean canUse() {
         return usingEntity.getTarget() != null && isFarEnough();
+    }
+
+    @Override
+    public void showEffect() {
+        Level level = usingEntity.getLevel();
+        level.playSound(null, usingEntity.getOnPos(), YummySoundRegister.SHOOT_FIREBALL.get(), SoundSource.HOSTILE, 0.3f, 1);
     }
 
     @Override
