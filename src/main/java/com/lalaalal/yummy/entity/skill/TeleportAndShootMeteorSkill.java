@@ -1,5 +1,6 @@
 package com.lalaalal.yummy.entity.skill;
 
+import com.lalaalal.yummy.YummyUtil;
 import com.lalaalal.yummy.entity.Herobrine;
 import com.lalaalal.yummy.entity.Meteor;
 import com.lalaalal.yummy.sound.YummySoundRegister;
@@ -38,8 +39,8 @@ public class TeleportAndShootMeteorSkill extends Skill {
             return;
 
         Vec3 viewVector = usingEntity.getViewVector(1f);
-        Meteor meteor = new Meteor(level, usingEntity, viewVector.x, -0.8, viewVector.z);
-        meteor.setPos(usingEntity.getX() + viewVector.x * 4.0D, usingEntity.getY() + 5D, meteor.getZ() + viewVector.z * 4.0D);
+        Meteor meteor = new Meteor(level, usingEntity, YummyUtil.makeUnit(viewVector.x) * 0.1, -0.7, YummyUtil.makeUnit(viewVector.z) * 0.1);
+        meteor.setPos(usingEntity.getX(), usingEntity.getY() + 20D, usingEntity.getZ());
         level.addFreshEntity(meteor);
 
         usingEntity.moveTo(target.getOnPos().above(), 0, 0);

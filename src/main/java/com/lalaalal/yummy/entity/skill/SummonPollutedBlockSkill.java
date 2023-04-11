@@ -13,14 +13,16 @@ public class SummonPollutedBlockSkill extends Skill {
     public static final int COOLDOWN = 300;
     public static final int WARMUP = 20;
     private final Herobrine herobrine;
+    private final int range;
 
     public SummonPollutedBlockSkill(Herobrine herobrine) {
-        this(herobrine, COOLDOWN);
+        this(herobrine, 5);
     }
 
-    public SummonPollutedBlockSkill(Herobrine herobrine, int cooldown) {
-        super(herobrine, cooldown, WARMUP);
+    public SummonPollutedBlockSkill(Herobrine herobrine, int range) {
+        super(herobrine, COOLDOWN, WARMUP);
         this.herobrine = herobrine;
+        this.range = range;
     }
 
     @Override
@@ -31,8 +33,8 @@ public class SummonPollutedBlockSkill extends Skill {
     @Override
     public void useSkill() {
         Level level = usingEntity.getLevel();
-        for (int i = 0; i < 6 && herobrine.canSummonPollutedBlock(); i++) {
-            BlockPos pos = YummyUtil.randomPos(usingEntity.getOnPos(), 5, usingEntity.getRandom());
+        while (herobrine.canSummonPollutedBlock()) {
+            BlockPos pos = YummyUtil.randomPos(usingEntity.getOnPos(), range, usingEntity.getRandom());
             BlockPos fixedPos = YummyUtil.findHorizonPos(pos, level);
             level.setBlock(fixedPos, getPollutedBlockState(), 10);
             BlockEntity blockEntity = level.getBlockEntity(fixedPos);

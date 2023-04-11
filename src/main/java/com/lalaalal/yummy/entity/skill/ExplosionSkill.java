@@ -49,12 +49,11 @@ public class ExplosionSkill extends Skill {
     @Override
     public void showEffect() {
         LevelChunk levelChunk = usingEntity.getLevel().getChunkAt(usingEntity.getOnPos());
-        ShowParticlePacket packet = new ShowParticlePacket.Builder("explosion_emitter")
-                .setParticleNamespace("minecraft")
+        ShowParticlePacket packet = new ShowParticlePacket.Builder("polluted_particle_blue")
                 .setXYZ(usingEntity.getX(), usingEntity.getY(), usingEntity.getZ())
-                .setSpeed(0, 0.3, 0)
+                .setSpeed(0, 5, 0)
                 .setRange(1)
-                .setParticleCount(1)
+                .setParticleCount(20)
                 .build();
         YummyMessages.sendToPlayer(packet, levelChunk);
     }

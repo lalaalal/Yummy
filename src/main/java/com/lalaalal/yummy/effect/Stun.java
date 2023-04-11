@@ -6,8 +6,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 public class Stun extends MobEffect {
@@ -17,15 +15,14 @@ public class Stun extends MobEffect {
     }
 
     @Override
-    public void applyEffectTick(LivingEntity pLivingEntity, int pAmplifier) {
-        Level level = pLivingEntity.getLevel();
-        BlockState blockState = level.getBlockState(pLivingEntity.getOnPos());
-        if (!blockState.is(Blocks.AIR))
-            pLivingEntity.makeStuckInBlock(level.getBlockState(pLivingEntity.getOnPos()), new Vec3(0.01, 0.01, 0.01));
+    public void applyEffectTick(LivingEntity livingEntity, int amplifier) {
+        Level level = livingEntity.getLevel();
+        if (livingEntity.isOnGround())
+            livingEntity.makeStuckInBlock(level.getBlockState(livingEntity.getOnPos()), new Vec3(0.01, 0.01, 0.01));
     }
 
     @Override
-    public boolean isDurationEffectTick(int pDuration, int pAmplifier) {
+    public boolean isDurationEffectTick(int duration, int amplifier) {
         return true;
     }
 }

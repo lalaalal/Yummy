@@ -24,6 +24,19 @@ public class HerobrineMark extends MobEffect {
         }
     }
 
+    public static void reduceMark(LivingEntity entity) {
+        final MobEffect HEROBRINE_MARK = YummyEffectRegister.HEROBRINE_MARK.get();
+        MobEffectInstance markEffectInstance = entity.getEffect(HEROBRINE_MARK);
+        if (markEffectInstance == null)
+            return;
+
+        int modifiedAmplifier = markEffectInstance.getAmplifier() - 1;
+        int leftDuration = markEffectInstance.getDuration();
+        entity.removeEffect(HEROBRINE_MARK);
+        if (modifiedAmplifier >= 0)
+            entity.addEffect(new MobEffectInstance(HEROBRINE_MARK, leftDuration, modifiedAmplifier));
+    }
+
     protected HerobrineMark() {
         super(MobEffectCategory.HARMFUL, 0x441f0b);
     }

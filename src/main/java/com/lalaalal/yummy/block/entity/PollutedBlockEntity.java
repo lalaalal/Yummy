@@ -62,7 +62,7 @@ public class PollutedBlockEntity extends BlockEntity {
     private void serverTick(Level level, BlockPos blockPos, BlockState blockState) {
         if ((tick + 20) % tickInterval == 0) {
             level.setBlock(blockPos, getBlockState().setValue(PollutedBlock.POWERED, true), 10);
-            level.playSound(null, blockPos, YummySoundRegister.POLLUTED_WAVE.get(), SoundSource.BLOCKS, 0.3f, 1);
+            level.playSound(null, blockPos, YummySoundRegister.POLLUTED_WAVE.get(), SoundSource.BLOCKS, 0.5f, 1);
         }
         if (tick % tickInterval == 0) {
             affectEntities(level, blockPos, blockState);

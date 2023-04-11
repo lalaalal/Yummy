@@ -69,9 +69,9 @@ public class ShowParticlePacket extends PositionPacket {
                 return;
             RandomSource random = level.random;
             for (int i = 0; i < particleCount; i++) {
-                double particleX = x + random.nextDouble() * (range * 2 + 1) - range;
+                double particleX = x + random.nextDouble() * (range * 2) - range;
                 double particleY = y + random.nextDouble() * 0.2;
-                double particleZ = z + random.nextDouble() * (range * 2 + 1) - range;
+                double particleZ = z + random.nextDouble() * (range * 2) - range;
                 level.addParticle(getParticle(), particleX, particleY, particleZ, xSpeed, ySpeed, zSpeed);
             }
         });
@@ -86,18 +86,24 @@ public class ShowParticlePacket extends PositionPacket {
 
     public static class Builder {
         private String particleNamespace = YummyMod.MOD_ID;
-        private final String particleName;
+        private String particleName;
         private int particleCount = 1;
         private double x;
         private double y;
         private double z;
-        private double range = 0;
+        private double range = 0.5;
         private double xSpeed;
         private double ySpeed;
         private double zSpeed;
 
         public Builder(String particleName) {
             this.particleName = particleName;
+        }
+
+        public Builder setParticleName(String particleName) {
+            this.particleName = particleName;
+
+            return this;
         }
 
         public Builder setXYZ(double x, double y, double z) {
@@ -115,7 +121,7 @@ public class ShowParticlePacket extends PositionPacket {
         }
 
         public Builder setXYZ(BlockPos blockPos) {
-            return this.setXYZ(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+            return this.setXYZ(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5);
         }
 
         public Builder setParticleCount(int count) {
@@ -125,7 +131,7 @@ public class ShowParticlePacket extends PositionPacket {
         }
 
         public Builder setRange(int range) {
-            this.range = range;
+            this.range = (range == 0 ? 0.5 : range);
 
             return this;
         }

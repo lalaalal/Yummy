@@ -6,10 +6,7 @@ import com.lalaalal.yummy.block.YummyBlockRegister;
 import com.lalaalal.yummy.block.entity.PollutedBlockEntity;
 import com.lalaalal.yummy.effect.YummyEffectRegister;
 import com.lalaalal.yummy.entity.goal.SkillUseGoal;
-import com.lalaalal.yummy.entity.skill.ExplosionSkill;
-import com.lalaalal.yummy.entity.skill.ShootFireballSkill;
-import com.lalaalal.yummy.entity.skill.SummonPollutedBlockSkill;
-import com.lalaalal.yummy.entity.skill.TeleportAndShootMeteorSkill;
+import com.lalaalal.yummy.entity.skill.*;
 import com.lalaalal.yummy.networking.YummyMessages;
 import com.lalaalal.yummy.networking.packet.ToggleHerobrineMusicPacket;
 import net.minecraft.core.BlockPos;
@@ -94,7 +91,8 @@ public class Herobrine extends Monster {
                 .add(Attributes.ARMOR, 6)
                 .add(Attributes.ATTACK_DAMAGE, 16)
                 .add(Attributes.ATTACK_KNOCKBACK, 6)
-                .add(Attributes.MOVEMENT_SPEED, 0.28);
+                .add(Attributes.MOVEMENT_SPEED, 0.28)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 2);
     }
 
     public Herobrine(EntityType<? extends Monster> pEntityType, Level pLevel) {
@@ -152,7 +150,9 @@ public class Herobrine extends Monster {
     }
 
     public boolean canSummonPollutedBlock() {
-        return blockPosList.size() < 6;
+        int maxPollutedBlock = getPhase() != phaseManager.getMaxPhase() ? 6 : 10;
+
+        return blockPosList.size() < maxPollutedBlock;
     }
 
     public void addPollutedBlock(PollutedBlockEntity pollutedBlockEntity) {
@@ -179,16 +179,25 @@ public class Herobrine extends Monster {
             setHealth(phaseManager.getActualCurrentPhaseMaxHealth());
             YummyMod.LOGGER.debug("Setting health to " + phaseManager.getActualCurrentPhaseMaxHealth());
 
-            if (getPhase() == phaseManager.getMaxPhase()) {
-                if (initialPos != null) {
-                    destroySpawnStructure(level, initialPos);
-                    moveTo(initialPos, 0, 0);
-                }
-                goalSelector.removeAllGoals();
-                targetSelector.removeAllGoals();
-            }
+            if (getPhase() == phaseManager.getMaxPhase())
+                enterPhase3();
         }
         phaseManager.updateBossProgressBar(bossEvent);
+    }
+
+    private void enterPhase3() {
+        if (initialPos != null) {
+            destroySpawnStructure(level, initialPos);
+            moveTo(initialPos, 0, 0);
+        }
+        goalSelector.removeAllGoals();
+        targetSelector.removeAllGoals();
+        getNavigation().stop();
+
+        setArmPose(ArmPose.RAISE_BOTH);
+        this.goalSelector.addGoal(1, new SkillUseGoal(this, new KnockbackAndMarkSkill(this)));
+        this.goalSelector.addGoal(2, new SkillUseGoal(this, new AddDigSlownessSkill(this)));
+        this.goalSelector.addGoal(3, new SkillUseGoal(this, new SummonPollutedBlockSkill(this, 10)));
     }
 
     @Override
@@ -251,7 +260,9 @@ public class Herobrine extends Monster {
     public void stopSeenByPlayer(ServerPlayer serverPlayer) {
         super.stopSeenByPlayer(serverPlayer);
         bossEvent.removePlayer(serverPlayer);
-        YummyMessages.sendToPlayer(new ToggleHerobrineMusicPacket(false, getPhase()), serverPlayer);
+        YummyMessages.sendToPlayer(new ToggleHerobrineMusicPacket(false, 1), serverPlayer);
+        YummyMessages.sendToPlayer(new ToggleHerobrineMusicPacket(false, 2), serverPlayer);
+        YummyMessages.sendToPlayer(new ToggleHerobrineMusicPacket(false, 3), serverPlayer);
     }
 
     private class PhaseManager {
