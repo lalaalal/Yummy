@@ -94,7 +94,7 @@ public class Herobrine extends PathfinderMob implements SkillUsable {
 
     public static AttributeSupplier.Builder getHerobrineAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.FOLLOW_RANGE, 32)
+                .add(Attributes.FOLLOW_RANGE, 64)
                 .add(Attributes.MAX_HEALTH, 666)
                 .add(Attributes.ARMOR, 6)
                 .add(Attributes.ATTACK_DAMAGE, 16)
@@ -236,8 +236,8 @@ public class Herobrine extends PathfinderMob implements SkillUsable {
     }
 
     protected void addBehaviourGoals() {
-        this.goalSelector.addGoal(1, new SkillUseGoal(this, new TeleportAndShootMeteorSkill(this)));
-        this.goalSelector.addGoal(2, new SkillUseGoal(this, new ShootFireballSkill(this)));
+        this.goalSelector.addGoal(1, new SkillUseGoal(this, new ShootFireballSkill(this)));
+        this.goalSelector.addGoal(2, new SkillUseGoal(this, new TeleportAndShootMeteorSkill(this)));
         this.goalSelector.addGoal(3, new SkillUseGoal(this, new ExplosionSkill(this)));
         this.goalSelector.addGoal(2, new SkillUseGoal(this, new SummonPollutedBlockSkill(this)));
         this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, false));

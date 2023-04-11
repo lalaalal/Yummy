@@ -11,7 +11,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class TeleportAndShootMeteorSkill extends Skill {
-    public static final int COOLDOWN = 20 * 15;
+    public static final int COOLDOWN = 20 * 17;
     public static final int WARMUP = 20;
 
     public TeleportAndShootMeteorSkill(Mob usingEntity) {
@@ -35,15 +35,13 @@ public class TeleportAndShootMeteorSkill extends Skill {
     public void useSkill() {
         LivingEntity target = usingEntity.getTarget();
         Level level = usingEntity.getLevel();
-        if (target == null)
-            return;
+        if (target != null)
+            usingEntity.moveTo(target.getOnPos().above(), 0, 0);
 
         Vec3 viewVector = usingEntity.getViewVector(1f);
         Meteor meteor = new Meteor(level, usingEntity, YummyUtil.makeUnit(viewVector.x) * 0.1, -0.7, YummyUtil.makeUnit(viewVector.z) * 0.1);
         meteor.setPos(usingEntity.getX(), usingEntity.getY() + 20D, usingEntity.getZ());
         level.addFreshEntity(meteor);
-
-        usingEntity.moveTo(target.getOnPos().above(), 0, 0);
     }
 
     @Override
