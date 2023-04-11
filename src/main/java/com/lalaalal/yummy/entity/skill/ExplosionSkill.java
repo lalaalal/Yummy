@@ -12,7 +12,7 @@ public class ExplosionSkill extends Skill {
 
     public static final int WARMUP = 20;
     protected double attackReach = 50;
-    protected float explosionRadius = 27f;
+    protected float explosionRadius = 16f;
     protected boolean explosionCauseFire = false;
 
     public ExplosionSkill(Mob usingEntity) {

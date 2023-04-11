@@ -8,9 +8,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class ShootFireballSkill extends Skill {
-    public static final int WARMUP = 10;
+    public static final int WARMUP = 20;
     public static final int COOLDOWN = 600;
-    public static final int PREFERRED_DISTANCE = 150;
+    public static final int PREFERRED_DISTANCE = 70;
 
     public ShootFireballSkill(Mob usingEntity) {
         super(usingEntity, COOLDOWN, WARMUP);

@@ -21,7 +21,7 @@ public class HerobrineMusic extends AbstractSoundInstance {
     }
 
     public HerobrineMusic(int phase) {
-        super(getResourceLocation(phase), SoundSource.MUSIC, RandomSource.create());
+        super(getResourceLocation(phase), SoundSource.RECORDS, RandomSource.create());
         this.looping = true;
     }
 }

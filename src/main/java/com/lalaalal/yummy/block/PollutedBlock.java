@@ -42,7 +42,7 @@ public class PollutedBlock extends BaseEntityBlock {
     }
 
     public PollutedBlock(Properties properties, boolean powered, boolean corrupted, boolean forDisplay) {
-        super(properties);
+        super(properties.lightLevel((blockState) -> blockState.getValue(POWERED) ? 15 : 0));
         this.registerDefaultState(
                 this.stateDefinition.any()
                         .setValue(POWERED, powered)

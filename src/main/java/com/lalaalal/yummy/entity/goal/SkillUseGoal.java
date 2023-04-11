@@ -1,12 +1,14 @@
 package com.lalaalal.yummy.entity.goal;
 
 import com.lalaalal.yummy.entity.skill.Skill;
+import com.lalaalal.yummy.entity.skill.SkillUsable;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.Level;
 
 public class SkillUseGoal extends Goal {
     protected final Mob mob;
+    protected SkillUsable skillUsable;
     protected final Skill skill;
     private final Level level;
     private long prevUsedGameTime;
@@ -17,19 +19,27 @@ public class SkillUseGoal extends Goal {
         this.skill = skill;
 
         this.level = mob.getLevel();
+        if (mob instanceof SkillUsable skillUsableMob)
+            this.skillUsable = skillUsableMob;
+    }
+
+    private boolean canUseSkill() {
+        return skill.canUse() &&
+                level.getGameTime() - prevUsedGameTime > skill.getCooldown();
     }
 
     @Override
     public boolean canUse() {
-        return skill.canUse() &&
-                level.getGameTime() - prevUsedGameTime > skill.getCooldown();
+        if (skillUsable != null && skillUsable.isUsingSkill())
+            return false;
+        return canUseSkill();
     }
 
     @Override
     public boolean canContinueToUse() {
         if (tick <= skill.getWarmup())
             return true;
-        return canUse();
+        return canUseSkill();
     }
 
     @Override
@@ -41,10 +51,15 @@ public class SkillUseGoal extends Goal {
     @Override
     public void tick() {
         if (tick == 0) {
+            if (skillUsable != null)
+                skillUsable.setUsingSkill(true);
             skill.showEffect();
         } else if (tick >= skill.getWarmup()) {
             skill.useSkill();
             skill.endEffect();
+            if (skillUsable != null)
+                skillUsable.setUsingSkill(false);
+
             prevUsedGameTime = level.getGameTime();
         }
         tick += 1;

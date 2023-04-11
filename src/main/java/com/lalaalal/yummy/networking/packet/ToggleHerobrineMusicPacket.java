@@ -39,7 +39,7 @@ public class ToggleHerobrineMusicPacket extends YummyPacket {
                 soundManager.stop();
                 soundManager.play(new HerobrineMusic(phase));
             } else {
-                soundManager.stop(HerobrineMusic.getResourceLocation(phase), SoundSource.MUSIC);
+                soundManager.stop(HerobrineMusic.getResourceLocation(phase), SoundSource.RECORDS);
             }
         });
     }

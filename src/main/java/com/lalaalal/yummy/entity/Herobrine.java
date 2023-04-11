@@ -1,12 +1,12 @@
 package com.lalaalal.yummy.entity;
 
-import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.block.PollutedBlock;
 import com.lalaalal.yummy.block.YummyBlockRegister;
 import com.lalaalal.yummy.block.entity.PollutedBlockEntity;
 import com.lalaalal.yummy.effect.YummyEffectRegister;
 import com.lalaalal.yummy.entity.goal.SkillUseGoal;
 import com.lalaalal.yummy.entity.skill.*;
+import com.lalaalal.yummy.misc.PhaseManager;
 import com.lalaalal.yummy.networking.YummyMessages;
 import com.lalaalal.yummy.networking.packet.ToggleHerobrineMusicPacket;
 import net.minecraft.core.BlockPos;
@@ -22,6 +22,8 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -32,6 +34,7 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -40,24 +43,28 @@ import net.minecraft.world.level.chunk.LevelChunk;
 
 import java.util.ArrayList;
 
-public class Herobrine extends Monster {
+public class Herobrine extends PathfinderMob implements SkillUsable {
+    private static final float[] PHASE_HEALTHS = {600, 60, 6};
+    private static final BossEvent.BossBarColor[] PHASE_COLORS = {BossEvent.BossBarColor.BLUE, BossEvent.BossBarColor.YELLOW, BossEvent.BossBarColor.PINK};
+
     private static final EntityDataAccessor<Integer> DATA_SKILL_USE_ID = SynchedEntityData.defineId(Herobrine.class, EntityDataSerializers.INT);
     private final ArrayList<BlockPos> blockPosList = new ArrayList<>();
-    private final ServerBossEvent bossEvent = (ServerBossEvent) (new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.PROGRESS)).setDarkenScreen(true);
-    private final PhaseManager phaseManager = new PhaseManager();
+    private final ServerBossEvent bossEvent = (ServerBossEvent) (new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.PROGRESS))
+            .setDarkenScreen(true)
+            .setPlayBossMusic(true);
+    private final PhaseManager phaseManager = new PhaseManager(PHASE_HEALTHS, PHASE_COLORS, this);
     private int invulnerableTick = 0;
     private static final int INVULNERABLE_DURATION = 20 * 5;
     private BlockPos initialPos;
+    private boolean usingSkill = false;
 
     public static boolean canSummonHerobrine(Level level, BlockPos headPos) {
-        Block soulFireBlock = level.getBlockState(headPos.above()).getBlock();
         Block soulSandBlock = level.getBlockState(headPos).getBlock();
         Block netherBlock = level.getBlockState(headPos.below(1)).getBlock();
         Block goldBlock1 = level.getBlockState(headPos.below(2)).getBlock();
         Block goldBlock2 = level.getBlockState(headPos.below(3)).getBlock();
 
-        return soulFireBlock == Blocks.SOUL_FIRE
-                && soulSandBlock == Blocks.SOUL_SAND
+        return soulSandBlock == Blocks.SOUL_SAND
                 && netherBlock == Blocks.CHISELED_NETHER_BRICKS
                 && goldBlock1 == Blocks.GOLD_BLOCK
                 && goldBlock2 == Blocks.GOLD_BLOCK;
@@ -87,18 +94,33 @@ public class Herobrine extends Monster {
 
     public static AttributeSupplier.Builder getHerobrineAttributes() {
         return Monster.createMonsterAttributes()
+                .add(Attributes.FOLLOW_RANGE, 32)
                 .add(Attributes.MAX_HEALTH, 666)
                 .add(Attributes.ARMOR, 6)
                 .add(Attributes.ATTACK_DAMAGE, 16)
                 .add(Attributes.ATTACK_KNOCKBACK, 6)
-                .add(Attributes.MOVEMENT_SPEED, 0.28)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 2);
+                .add(Attributes.MOVEMENT_SPEED, 0.28);
     }
 
-    public Herobrine(EntityType<? extends Monster> pEntityType, Level pLevel) {
+    public Herobrine(EntityType<? extends Herobrine> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
         this.xpReward = 666;
         this.entityData.define(DATA_SKILL_USE_ID, 0);
+
+        this.phaseManager.addPhaseChangeListener(this::changePhase);
+        this.phaseManager.addPhaseChangeListener(this::enterPhase2, 2);
+        this.phaseManager.addPhaseChangeListener(this::enterPhase3, 3);
+        setPersistenceRequired();
+    }
+
+    @Override
+    public boolean isUsingSkill() {
+        return usingSkill;
+    }
+
+    @Override
+    public void setUsingSkill(boolean usingSkill) {
+        this.usingSkill = usingSkill;
     }
 
     public void setInitialPos(BlockPos blockPos) {
@@ -171,18 +193,22 @@ public class Herobrine extends Monster {
         } else if (invulnerableTick == INVULNERABLE_DURATION) {
             setInvulnerable(false);
         }
-        if (phaseManager.isPhaseChanged()) {
-            invulnerableTick = 0;
-            LevelChunk levelChunk = level.getChunkAt(getOnPos());
-            YummyMessages.sendToPlayer(new ToggleHerobrineMusicPacket(true, getPhase()), levelChunk);
-            setInvulnerable(true);
-            setHealth(phaseManager.getActualCurrentPhaseMaxHealth());
-            YummyMod.LOGGER.debug("Setting health to " + phaseManager.getActualCurrentPhaseMaxHealth());
 
-            if (getPhase() == phaseManager.getMaxPhase())
-                enterPhase3();
-        }
         phaseManager.updateBossProgressBar(bossEvent);
+    }
+
+    private void changePhase(int phase) {
+        invulnerableTick = 0;
+        LevelChunk levelChunk = level.getChunkAt(getOnPos());
+        YummyMessages.sendToPlayer(new ToggleHerobrineMusicPacket(true, phase), levelChunk);
+        setInvulnerable(true);
+        setHealth(phaseManager.getActualCurrentPhaseMaxHealth());
+    }
+
+    private void enterPhase2() {
+        AttributeInstance attributeInstance = getAttribute(Attributes.ARMOR);
+        if (attributeInstance != null)
+            attributeInstance.setBaseValue(20);
     }
 
     private void enterPhase3() {
@@ -190,11 +216,13 @@ public class Herobrine extends Monster {
             destroySpawnStructure(level, initialPos);
             moveTo(initialPos, 0, 0);
         }
+        level.explode(this, getX(), getY(), getZ(), 6, false, Explosion.BlockInteraction.NONE);
         goalSelector.removeAllGoals();
         targetSelector.removeAllGoals();
         getNavigation().stop();
 
         setArmPose(ArmPose.RAISE_BOTH);
+        setUsingSkill(false);
         this.goalSelector.addGoal(1, new SkillUseGoal(this, new KnockbackAndMarkSkill(this)));
         this.goalSelector.addGoal(2, new SkillUseGoal(this, new AddDigSlownessSkill(this)));
         this.goalSelector.addGoal(3, new SkillUseGoal(this, new SummonPollutedBlockSkill(this, 10)));
@@ -260,84 +288,10 @@ public class Herobrine extends Monster {
     public void stopSeenByPlayer(ServerPlayer serverPlayer) {
         super.stopSeenByPlayer(serverPlayer);
         bossEvent.removePlayer(serverPlayer);
+
         YummyMessages.sendToPlayer(new ToggleHerobrineMusicPacket(false, 1), serverPlayer);
         YummyMessages.sendToPlayer(new ToggleHerobrineMusicPacket(false, 2), serverPlayer);
         YummyMessages.sendToPlayer(new ToggleHerobrineMusicPacket(false, 3), serverPlayer);
-    }
-
-    private class PhaseManager {
-        public static final float HEALTH_PHASE_1 = 600;
-        public static final float HEALTH_PHASE_2 = 60;
-        public static final float HEALTH_PHASE_3 = 6;
-
-        private int prevPhase = 1;
-        private final float[] phaseHealthArray = {HEALTH_PHASE_1, HEALTH_PHASE_2, HEALTH_PHASE_3};
-        private final BossEvent.BossBarColor[] bossBarColors = {BossEvent.BossBarColor.BLUE, BossEvent.BossBarColor.YELLOW, BossEvent.BossBarColor.RED};
-
-        public int getMaxPhase() {
-            return phaseHealthArray.length;
-        }
-
-        public int getCurrentPhase() {
-            float leftHealth = getMaxHealth();
-            for (int phase = 0; phase < phaseHealthArray.length; phase++) {
-                float phaseMinHealth = (leftHealth -= phaseHealthArray[phase]);
-                if (getHealth() > phaseMinHealth)
-                    return phase + 1;
-            }
-            return phaseHealthArray.length;
-        }
-
-        public float getPhaseMaxHealth(int phase) {
-            return phaseHealthArray[phase - 1];
-        }
-
-        public float getCurrentPhaseHealth() {
-            int phase = getCurrentPhase();
-            float health = getHealth();
-            for (int i = 0; i < phaseHealthArray.length - phase; i++) {
-                int index = phaseHealthArray.length - i - 1;
-                health -= phaseHealthArray[index];
-            }
-
-            return health;
-        }
-
-        public float getActualCurrentPhaseMaxHealth() {
-            int phase = getCurrentPhase();
-            float health = 0;
-            for (int i = 0; i < phaseHealthArray.length - phase + 1; i++) {
-                int index = phaseHealthArray.length - i - 1;
-                health += phaseHealthArray[index];
-            }
-
-            return health;
-        }
-
-        private BossEvent.BossBarColor getPhaseColor(int phase) {
-            return bossBarColors[phase - 1];
-        }
-
-        public boolean isPhaseChanged() {
-            return prevPhase != getCurrentPhase();
-        }
-
-        public void updateBossProgressBar(BossEvent bossEvent) {
-            int phase = getCurrentPhase();
-            if (prevPhase != phase) {
-                BossEvent.BossBarColor color = getPhaseColor(phase);
-                bossEvent.setColor(color);
-                prevPhase = phase;
-            }
-            bossEvent.setProgress(calculateProgress(phase));
-        }
-
-        private float calculateProgress(int phase) {
-            float maxPhaseHealth = phaseHealthArray[phase - 1];
-            float currentPhaseHealth = getCurrentPhaseHealth();
-
-            return currentPhaseHealth / maxPhaseHealth;
-        }
     }
 
     public enum ArmPose {
