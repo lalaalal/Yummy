@@ -1,5 +1,6 @@
 package com.lalaalal.yummy.entity;
 
+import com.lalaalal.yummy.YummyUtil;
 import com.lalaalal.yummy.block.PollutedBlock;
 import com.lalaalal.yummy.block.YummyBlockRegister;
 import com.lalaalal.yummy.block.entity.PollutedBlockEntity;
@@ -15,14 +16,12 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerBossEvent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -32,6 +31,7 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
@@ -39,8 +39,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.phys.AABB;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Herobrine extends PathfinderMob implements SkillUsable {
     private static final float[] PHASE_HEALTHS = {600, 60, 6};
@@ -48,6 +50,7 @@ public class Herobrine extends PathfinderMob implements SkillUsable {
 
     private static final EntityDataAccessor<Integer> DATA_SKILL_USE_ID = SynchedEntityData.defineId(Herobrine.class, EntityDataSerializers.INT);
     private final ArrayList<BlockPos> blockPosList = new ArrayList<>();
+    private final ArrayList<ShadowHerobrine> shadowHerobrines = new ArrayList<>();
     private final ServerBossEvent bossEvent = (ServerBossEvent) (new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.PROGRESS))
             .setDarkenScreen(true)
             .setPlayBossMusic(true);
@@ -56,6 +59,7 @@ public class Herobrine extends PathfinderMob implements SkillUsable {
     private static final int INVULNERABLE_DURATION = 20 * 5;
     private BlockPos initialPos;
     private boolean usingSkill = false;
+    private boolean shadowSummon = false;
 
     public static boolean canSummonHerobrine(Level level, BlockPos headPos) {
         Block soulSandBlock = level.getBlockState(headPos).getBlock();
@@ -93,7 +97,7 @@ public class Herobrine extends PathfinderMob implements SkillUsable {
 
     public static AttributeSupplier.Builder getHerobrineAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.FOLLOW_RANGE, 64)
+                .add(Attributes.FOLLOW_RANGE, 32)
                 .add(Attributes.MAX_HEALTH, 666)
                 .add(Attributes.ARMOR, 6)
                 .add(Attributes.ATTACK_DAMAGE, 16)
@@ -107,9 +111,15 @@ public class Herobrine extends PathfinderMob implements SkillUsable {
         this.entityData.define(DATA_SKILL_USE_ID, 0);
 
         this.phaseManager.addPhaseChangeListener(this::changePhase);
+        this.phaseManager.addPhaseChangeListener(this::checkShadows, 2);
         this.phaseManager.addPhaseChangeListener(this::enterPhase2, 2);
         this.phaseManager.addPhaseChangeListener(this::enterPhase3, 3);
         setPersistenceRequired();
+    }
+
+    public void addShadow(ShadowHerobrine shadowHerobrine) {
+        this.shadowHerobrines.add(shadowHerobrine);
+        shadowHerobrine.setHerobrine(this);
     }
 
     @Override
@@ -153,11 +163,13 @@ public class Herobrine extends PathfinderMob implements SkillUsable {
         tag.putInt("numPollutedBlocks", blockPosList.size());
         for (int i = 0; i < blockPosList.size(); i++)
             tag.putIntArray("blockPosList" + i, blockPosToIntArray(blockPosList.get(i)));
+
+        tag.putBoolean("shadowSummon", shadowSummon);
     }
 
     @Override
-    public void load(CompoundTag tag) {
-        super.load(tag);
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
         Level level = getLevel();
         int numPollutedBlocks = tag.getInt("numPollutedBlocks");
         for (int i = 0; i < numPollutedBlocks; i++) {
@@ -168,6 +180,7 @@ public class Herobrine extends PathfinderMob implements SkillUsable {
             if (blockEntity instanceof PollutedBlockEntity pollutedBlockEntity)
                 pollutedBlockEntity.setHerobrine(this);
         }
+        shadowSummon = tag.getBoolean("shadowSummon");
     }
 
     public boolean canSummonPollutedBlock() {
@@ -204,12 +217,33 @@ public class Herobrine extends PathfinderMob implements SkillUsable {
         setHealth(phaseManager.getActualCurrentPhaseMaxHealth());
     }
 
+    private void checkShadows() {
+        if (shadowSummon && shadowHerobrines.size() < 3) {
+            AABB area = YummyUtil.createArea(getOnPos(), 16);
+            List<ShadowHerobrine> shadows = level.getNearbyEntities(ShadowHerobrine.class, TargetingConditions.forNonCombat(), this, area);
+            for (ShadowHerobrine shadow : shadows) {
+                if (!shadow.hasOwner())
+                    addShadow(shadow);
+            }
+        }
+    }
+
     private void enterPhase2() {
         AttributeInstance attributeInstance = getAttribute(Attributes.ARMOR);
         if (attributeInstance != null)
             attributeInstance.setBaseValue(20);
 
-        goalSelector.addGoal(5, new SkillUseGoal(this, new SummonShadowSkill(this)));
+        if (shadowHerobrines.size() >= 3)
+            return;
+        for (int i = 0; i < 3; i++) {
+            BlockPos spawnBlockPos = YummyUtil.randomPos(getOnPos(), 5, level.getRandom());
+            if (level instanceof ServerLevel serverLevel) {
+                Entity entity = YummyEntityRegister.SHADOW_HEROBRINE.get().spawn(serverLevel, null, null, spawnBlockPos, MobSpawnType.MOB_SUMMONED, true, false);
+                if (entity instanceof ShadowHerobrine shadowHerobrine)
+                    addShadow(shadowHerobrine);
+            }
+        }
+        shadowSummon = true;
     }
 
     private void enterPhase3() {
@@ -279,6 +313,14 @@ public class Herobrine extends PathfinderMob implements SkillUsable {
     }
 
     @Override
+    public void die(DamageSource damageSource) {
+        for (ShadowHerobrine shadowHerobrine : shadowHerobrines)
+            shadowHerobrine.kill();
+
+        super.die(damageSource);
+    }
+
+    @Override
     public void startSeenByPlayer(ServerPlayer serverPlayer) {
         super.startSeenByPlayer(serverPlayer);
         bossEvent.addPlayer(serverPlayer);
@@ -291,9 +333,7 @@ public class Herobrine extends PathfinderMob implements SkillUsable {
         super.stopSeenByPlayer(serverPlayer);
         bossEvent.removePlayer(serverPlayer);
 
-        YummyMessages.sendToPlayer(new ToggleHerobrineMusicPacket(false, 1), serverPlayer);
-        YummyMessages.sendToPlayer(new ToggleHerobrineMusicPacket(false, 2), serverPlayer);
-        YummyMessages.sendToPlayer(new ToggleHerobrineMusicPacket(false, 3), serverPlayer);
+        YummyMessages.sendToPlayer(new ToggleHerobrineMusicPacket(false), serverPlayer);
     }
 
     public enum ArmPose {

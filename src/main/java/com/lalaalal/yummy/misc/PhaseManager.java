@@ -18,6 +18,10 @@ public class PhaseManager {
         this.bossBarColors = bossBarColors;
     }
 
+    public void updatePhaseValueOnly() {
+        prevPhase = getCurrentPhase();
+    }
+
     public int getMaxPhase() {
         return phaseHealthArray.length;
     }

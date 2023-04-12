@@ -14,6 +14,11 @@ public class ToggleHerobrineMusicPacket extends YummyPacket {
     private final boolean play;
     private final int phase;
 
+    public ToggleHerobrineMusicPacket(boolean play) {
+        this.play = play;
+        this.phase = 0;
+    }
+
     public ToggleHerobrineMusicPacket(boolean play, int phase) {
         this.play = play;
         this.phase = phase;
@@ -35,12 +40,11 @@ public class ToggleHerobrineMusicPacket extends YummyPacket {
     protected void handleWork(NetworkEvent.Context context) {
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
             SoundManager soundManager = Minecraft.getInstance().getSoundManager();
-            if (play) {
-                soundManager.stop();
+            soundManager.stop(HerobrineMusic.getResourceLocation(1), SoundSource.RECORDS);
+            soundManager.stop(HerobrineMusic.getResourceLocation(2), SoundSource.RECORDS);
+            soundManager.stop(HerobrineMusic.getResourceLocation(3), SoundSource.RECORDS);
+            if (play)
                 soundManager.play(new HerobrineMusic(phase));
-            } else {
-                soundManager.stop(HerobrineMusic.getResourceLocation(phase), SoundSource.RECORDS);
-            }
         });
     }
 }
