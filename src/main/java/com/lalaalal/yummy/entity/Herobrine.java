@@ -208,6 +208,8 @@ public class Herobrine extends PathfinderMob implements SkillUsable {
         AttributeInstance attributeInstance = getAttribute(Attributes.ARMOR);
         if (attributeInstance != null)
             attributeInstance.setBaseValue(20);
+
+        goalSelector.addGoal(5, new SkillUseGoal(this, new SummonShadowSkill(this)));
     }
 
     private void enterPhase3() {
@@ -243,7 +245,8 @@ public class Herobrine extends PathfinderMob implements SkillUsable {
         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false, false));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Mob.class, false, false));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Mob.class, false,
+                (livingEntity) -> !(livingEntity instanceof ShadowHerobrine)));
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.lalaalal.yummy.effect;
 
-import com.lalaalal.yummy.entity.Herobrine;
 import com.lalaalal.yummy.misc.EffectDamageSource;
+import com.lalaalal.yummy.tags.YummyTagRegister;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -10,7 +10,7 @@ import net.minecraft.world.entity.LivingEntity;
 
 public class HerobrineMark extends MobEffect {
     public static void overlapMark(LivingEntity entity) {
-        if (entity instanceof Herobrine)
+        if (entity.getType().is(YummyTagRegister.HEROBRINE))
             return;
 
         final MobEffect HEROBRINE_MARK = YummyEffectRegister.HEROBRINE_MARK.get();
