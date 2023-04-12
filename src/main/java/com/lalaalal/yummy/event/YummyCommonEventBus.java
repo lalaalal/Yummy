@@ -3,6 +3,7 @@ package com.lalaalal.yummy.event;
 import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.block.YummyBlockRegister;
 import com.lalaalal.yummy.entity.Herobrine;
+import com.lalaalal.yummy.entity.ShadowHerobrine;
 import com.lalaalal.yummy.entity.YummyEntityRegister;
 import com.lalaalal.yummy.networking.YummyMessages;
 import net.minecraft.world.level.block.Blocks;
@@ -27,5 +28,6 @@ public class YummyCommonEventBus {
     @SubscribeEvent
     public static void entityAttributes(EntityAttributeCreationEvent event) {
         event.put(YummyEntityRegister.HEROBRINE.get(), Herobrine.getHerobrineAttributes().build());
+        event.put(YummyEntityRegister.SHADOW_HEROBRINE.get(), ShadowHerobrine.getHerobrineAttributes().build());
     }
 }

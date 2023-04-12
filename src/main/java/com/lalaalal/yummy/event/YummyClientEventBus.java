@@ -2,8 +2,10 @@ package com.lalaalal.yummy.event;
 
 import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.client.model.HerobrineModel;
+import com.lalaalal.yummy.client.model.ShadowHerobrineModel;
 import com.lalaalal.yummy.client.model.ThrownSpearOfLonginusModel;
 import com.lalaalal.yummy.client.renderer.HerobrineRenderer;
+import com.lalaalal.yummy.client.renderer.ShadowHerobrineRenderer;
 import com.lalaalal.yummy.client.renderer.ThrownSpearOfLonginusRenderer;
 import com.lalaalal.yummy.client.renderer.YummyItemEntityRenderer;
 import com.lalaalal.yummy.entity.YummyEntityRegister;
@@ -30,6 +32,7 @@ public class YummyClientEventBus {
     @SubscribeEvent
     public static void entityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(YummyEntityRegister.HEROBRINE.get(), HerobrineRenderer::new);
+        event.registerEntityRenderer(YummyEntityRegister.SHADOW_HEROBRINE.get(), ShadowHerobrineRenderer::new);
         event.registerEntityRenderer(YummyEntityRegister.THROWN_SPEAR_OF_LONGINUS.get(), ThrownSpearOfLonginusRenderer::new);
         event.registerEntityRenderer(YummyEntityRegister.MARK_FIREBALL.get(),
                 (context) -> new YummyItemEntityRenderer<>(context, "mark_fireball", 3));
@@ -40,6 +43,7 @@ public class YummyClientEventBus {
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(HerobrineModel.LAYER_LOCATION, HerobrineModel::createBodyLayer);
+        event.registerLayerDefinition(ShadowHerobrineModel.LAYER_LOCATION, ShadowHerobrineModel::createBodyLayer);
         event.registerLayerDefinition(ThrownSpearOfLonginusModel.LAYER_LOCATION, ThrownSpearOfLonginusModel::createBodyLayer);
     }
 }

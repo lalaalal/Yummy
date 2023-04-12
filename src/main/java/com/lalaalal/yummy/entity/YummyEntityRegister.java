@@ -18,6 +18,13 @@ public class YummyEntityRegister {
                     .fireImmune()
                     .build(YummyMod.MOD_ID + ":herobrine"));
 
+    public static final RegistryObject<EntityType<ShadowHerobrine>> SHADOW_HEROBRINE = ENTITY_TYPES.register("shadow_herobrine",
+            () -> EntityType.Builder.of(ShadowHerobrine::new, MobCategory.CREATURE)
+                    .sized(0.6f, 2.0f)
+                    .fireImmune()
+                    .build(YummyMod.MOD_ID + ":shadow_herobrine"));
+
+
     public static final RegistryObject<EntityType<ThrownSpearOfLonginus>> THROWN_SPEAR_OF_LONGINUS = ENTITY_TYPES.register("thrown_spear_of_longinus",
             () -> EntityType.Builder.of((EntityType.EntityFactory<ThrownSpearOfLonginus>) ThrownSpearOfLonginus::new, MobCategory.MISC)
                     .sized(0.5f, 0.5f)

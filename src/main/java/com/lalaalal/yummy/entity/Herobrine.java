@@ -32,7 +32,6 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
@@ -93,7 +92,7 @@ public class Herobrine extends PathfinderMob implements SkillUsable {
     }
 
     public static AttributeSupplier.Builder getHerobrineAttributes() {
-        return Monster.createMonsterAttributes()
+        return Mob.createMobAttributes()
                 .add(Attributes.FOLLOW_RANGE, 64)
                 .add(Attributes.MAX_HEALTH, 666)
                 .add(Attributes.ARMOR, 6)
@@ -240,7 +239,7 @@ public class Herobrine extends PathfinderMob implements SkillUsable {
         this.goalSelector.addGoal(2, new SkillUseGoal(this, new TeleportAndShootMeteorSkill(this)));
         this.goalSelector.addGoal(3, new SkillUseGoal(this, new ExplosionSkill(this)));
         this.goalSelector.addGoal(2, new SkillUseGoal(this, new SummonPollutedBlockSkill(this)));
-        this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, false));
+        this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, true));
         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false, false));
