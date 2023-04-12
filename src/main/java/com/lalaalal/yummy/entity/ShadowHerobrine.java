@@ -10,7 +10,7 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
-public class ShadowHerobrine extends PathfinderMob {
+public class ShadowHerobrine extends PathfinderMob implements PowerableMob {
     public static AttributeSupplier.Builder getHerobrineAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 66)
@@ -39,5 +39,10 @@ public class ShadowHerobrine extends PathfinderMob {
             HerobrineMark.overlapMark(livingEntity);
 
         return super.doHurtTarget(entity);
+    }
+
+    @Override
+    public boolean isPowered() {
+        return true;
     }
 }
