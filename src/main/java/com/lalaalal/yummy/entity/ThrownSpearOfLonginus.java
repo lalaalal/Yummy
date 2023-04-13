@@ -54,6 +54,8 @@ public class ThrownSpearOfLonginus extends AbstractArrow {
         DamageSource damageSource = new ItemDamageSource("thrown_spear_of_longinus", getOwner(), spearOfLonginusItem);
         damageSource.bypassArmor().bypassInvul();
         livingEntity.hurt(damageSource, Float.MAX_VALUE);
+        if (livingEntity.isAlive())
+            livingEntity.setHealth(0);
     }
 
     @Override

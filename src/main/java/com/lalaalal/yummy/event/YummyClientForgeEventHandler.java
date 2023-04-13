@@ -14,7 +14,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = YummyMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
-public class YummyForgeEventHandler {
+public class YummyClientForgeEventHandler {
     @SubscribeEvent
     public static void soulFireCheck(PlayerInteractEvent.RightClickBlock event) {
         Level level = event.getLevel();

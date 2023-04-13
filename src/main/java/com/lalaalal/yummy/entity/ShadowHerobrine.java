@@ -27,7 +27,8 @@ public class ShadowHerobrine extends PathfinderMob implements PowerableMob {
                 .add(Attributes.MAX_HEALTH, 66)
                 .add(Attributes.ARMOR, 6)
                 .add(Attributes.ATTACK_DAMAGE, 6)
-                .add(Attributes.MOVEMENT_SPEED, 0.18);
+                .add(Attributes.MOVEMENT_SPEED, 0.18)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 3);
     }
 
     protected ShadowHerobrine(EntityType<? extends PathfinderMob> entityType, Level level) {

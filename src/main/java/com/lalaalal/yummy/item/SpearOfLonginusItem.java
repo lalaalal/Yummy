@@ -10,6 +10,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -50,11 +51,16 @@ public class SpearOfLonginusItem extends Item {
     }
 
     @Override
-    public boolean hurtEnemy(ItemStack itemStack, LivingEntity target, LivingEntity attacker) {
-        DamageSource damageSource = new ItemDamageSource("spear_of_longinus", attacker, itemStack).bypassArmor().bypassInvul();
-        damageSource.bypassArmor().bypassInvul();
-        target.hurt(damageSource, Float.MAX_VALUE);
-        hurtUser(itemStack, attacker, 0.8f);
+    public boolean onLeftClickEntity(ItemStack itemStack, Player player, Entity entity) {
+        if (!player.level.isClientSide) {
+            DamageSource damageSource = new ItemDamageSource("spear_of_longinus", player, itemStack);
+            damageSource.bypassArmor().bypassInvul();
+            entity.hurt(damageSource, Float.MAX_VALUE);
+            if (entity instanceof LivingEntity livingEntity && livingEntity.getHealth() > 0)
+                livingEntity.setHealth(0);
+
+            hurtUser(itemStack, player, 0.8f);
+        }
 
         return true;
     }

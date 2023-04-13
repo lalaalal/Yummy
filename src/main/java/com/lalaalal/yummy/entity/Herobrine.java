@@ -102,6 +102,7 @@ public class Herobrine extends PathfinderMob implements SkillUsable {
                 .add(Attributes.ARMOR, 6)
                 .add(Attributes.ATTACK_DAMAGE, 16)
                 .add(Attributes.ATTACK_KNOCKBACK, 6)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.6)
                 .add(Attributes.MOVEMENT_SPEED, 0.28);
     }
 
