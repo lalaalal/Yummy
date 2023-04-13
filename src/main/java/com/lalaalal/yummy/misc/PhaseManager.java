@@ -18,8 +18,9 @@ public class PhaseManager {
         this.bossBarColors = bossBarColors;
     }
 
-    public void updatePhaseValueOnly() {
+    public void updatePhaseValueOnly(BossEvent bossEvent) {
         prevPhase = getCurrentPhase();
+        bossEvent.setColor(getPhaseColor(prevPhase));
     }
 
     public int getMaxPhase() {
@@ -70,7 +71,7 @@ public class PhaseManager {
         return prevPhase != getCurrentPhase();
     }
 
-    public void updateBossProgressBar(BossEvent bossEvent) {
+    public void updatePhase(BossEvent bossEvent) {
         int phase = getCurrentPhase();
         if (prevPhase != phase) {
             BossEvent.BossBarColor color = getPhaseColor(phase);

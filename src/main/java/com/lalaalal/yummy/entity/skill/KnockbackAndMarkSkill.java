@@ -1,10 +1,8 @@
 package com.lalaalal.yummy.entity.skill;
 
-import com.lalaalal.yummy.YummyUtil;
 import com.lalaalal.yummy.effect.HerobrineMark;
 import com.lalaalal.yummy.networking.YummyMessages;
 import com.lalaalal.yummy.networking.packet.ShowParticlePacket;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
@@ -44,8 +42,7 @@ public class KnockbackAndMarkSkill extends Skill {
     @Override
     public void useSkill() {
         Level level = usingEntity.getLevel();
-        BlockPos blockPos = usingEntity.getOnPos();
-        AABB area = YummyUtil.createArea(blockPos, 3);
+        AABB area = usingEntity.getBoundingBox().inflate(3.0);
 
         LevelChunk levelChunk = usingEntity.getLevel().getChunkAt(usingEntity.getOnPos());
         ShowParticlePacket packet = new ShowParticlePacket.Builder("explosion_emitter")

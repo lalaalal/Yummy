@@ -32,6 +32,7 @@ import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
@@ -44,7 +45,7 @@ import net.minecraft.world.phys.AABB;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Herobrine extends PathfinderMob implements SkillUsable {
+public class Herobrine extends PathfinderMob implements SkillUsable, Enemy {
     private static final float[] PHASE_HEALTHS = {600, 60, 6};
     private static final BossEvent.BossBarColor[] PHASE_COLORS = {BossEvent.BossBarColor.BLUE, BossEvent.BossBarColor.YELLOW, BossEvent.BossBarColor.PINK};
 
@@ -57,9 +58,10 @@ public class Herobrine extends PathfinderMob implements SkillUsable {
     private final PhaseManager phaseManager = new PhaseManager(PHASE_HEALTHS, PHASE_COLORS, this);
     private int invulnerableTick = 0;
     private static final int INVULNERABLE_DURATION = 20 * 5;
+    private static final int MAX_SHADOWS = 3;
+    private static final int FOLLOW_RANGE = 32;
     private BlockPos initialPos;
     private boolean usingSkill = false;
-    private boolean shadowSummon = false;
 
     public static boolean canSummonHerobrine(Level level, BlockPos headPos) {
         Block soulSandBlock = level.getBlockState(headPos).getBlock();
@@ -97,7 +99,7 @@ public class Herobrine extends PathfinderMob implements SkillUsable {
 
     public static AttributeSupplier.Builder getHerobrineAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.FOLLOW_RANGE, 32)
+                .add(Attributes.FOLLOW_RANGE, FOLLOW_RANGE)
                 .add(Attributes.MAX_HEALTH, 666)
                 .add(Attributes.ARMOR, 6)
                 .add(Attributes.ATTACK_DAMAGE, 16)
@@ -112,7 +114,6 @@ public class Herobrine extends PathfinderMob implements SkillUsable {
         this.entityData.define(DATA_SKILL_USE_ID, 0);
 
         this.phaseManager.addPhaseChangeListener(this::changePhase);
-        this.phaseManager.addPhaseChangeListener(this::checkShadows, 2);
         this.phaseManager.addPhaseChangeListener(this::enterPhase2, 2);
         this.phaseManager.addPhaseChangeListener(this::enterPhase3, 3);
         setPersistenceRequired();
@@ -164,8 +165,9 @@ public class Herobrine extends PathfinderMob implements SkillUsable {
         tag.putInt("numPollutedBlocks", blockPosList.size());
         for (int i = 0; i < blockPosList.size(); i++)
             tag.putIntArray("blockPosList" + i, blockPosToIntArray(blockPosList.get(i)));
-
-        tag.putBoolean("shadowSummon", shadowSummon);
+        tag.putBoolean("hasInitialPos", initialPos != null);
+        if (initialPos != null)
+            tag.putIntArray("initialPos", blockPosToIntArray(initialPos));
     }
 
     @Override
@@ -181,7 +183,9 @@ public class Herobrine extends PathfinderMob implements SkillUsable {
             if (blockEntity instanceof PollutedBlockEntity pollutedBlockEntity)
                 pollutedBlockEntity.setHerobrine(this);
         }
-        shadowSummon = tag.getBoolean("shadowSummon");
+        if (tag.getBoolean("hasInitialPos"))
+            initialPos = blockPosFromIntArray(tag.getIntArray("initialPos"));
+        phaseManager.updatePhaseValueOnly(bossEvent);
     }
 
     public boolean canSummonPollutedBlock() {
@@ -207,7 +211,10 @@ public class Herobrine extends PathfinderMob implements SkillUsable {
             setInvulnerable(false);
         }
 
-        phaseManager.updateBossProgressBar(bossEvent);
+        if (getPhase() >= 2)
+            checkShadows();
+
+        phaseManager.updatePhase(bossEvent);
     }
 
     private void changePhase(int phase) {
@@ -219,11 +226,11 @@ public class Herobrine extends PathfinderMob implements SkillUsable {
     }
 
     private void checkShadows() {
-        if (shadowSummon && shadowHerobrines.size() < 3) {
-            AABB area = YummyUtil.createArea(getOnPos(), 16);
+        if (shadowHerobrines.size() < MAX_SHADOWS) {
+            AABB area = getBoundingBox().inflate(FOLLOW_RANGE);
             List<ShadowHerobrine> shadows = level.getNearbyEntities(ShadowHerobrine.class, TargetingConditions.forNonCombat(), this, area);
             for (ShadowHerobrine shadow : shadows) {
-                if (!shadow.hasOwner())
+                if (!shadow.hasOwner() && shadowHerobrines.size() < MAX_SHADOWS)
                     addShadow(shadow);
             }
         }
@@ -234,17 +241,14 @@ public class Herobrine extends PathfinderMob implements SkillUsable {
         if (attributeInstance != null)
             attributeInstance.setBaseValue(20);
 
-        if (shadowHerobrines.size() >= 3)
-            return;
         for (int i = 0; i < 3; i++) {
             BlockPos spawnBlockPos = YummyUtil.randomPos(getOnPos(), 5, level.getRandom());
             if (level instanceof ServerLevel serverLevel) {
-                Entity entity = YummyEntityRegister.SHADOW_HEROBRINE.get().spawn(serverLevel, null, null, spawnBlockPos, MobSpawnType.MOB_SUMMONED, true, false);
+                Entity entity = YummyEntityRegister.SHADOW_HEROBRINE.get().spawn(serverLevel, null, null, spawnBlockPos, MobSpawnType.MOB_SUMMONED, true, true);
                 if (entity instanceof ShadowHerobrine shadowHerobrine)
                     addShadow(shadowHerobrine);
             }
         }
-        shadowSummon = true;
     }
 
     private void enterPhase3() {
@@ -325,7 +329,7 @@ public class Herobrine extends PathfinderMob implements SkillUsable {
     public void startSeenByPlayer(ServerPlayer serverPlayer) {
         super.startSeenByPlayer(serverPlayer);
         bossEvent.addPlayer(serverPlayer);
-        phaseManager.updateBossProgressBar(bossEvent);
+        phaseManager.updatePhase(bossEvent);
         YummyMessages.sendToPlayer(new ToggleHerobrineMusicPacket(true, getPhase()), serverPlayer);
     }
 

@@ -23,7 +23,8 @@ public class YummyBlockRegister {
     public static final RegistryObject<Block> AMETHYST_BLOCK = register("amethyst_block",
             () -> new Block(BlockBehaviour.Properties.of(Material.METAL)
                     .strength(1.5f, 0.5f)
-                    .requiresCorrectToolForDrops()),
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.AMETHYST)),
             CreativeModeTab.TAB_BUILDING_BLOCKS);
     public static final RegistryObject<Block> BREATH_STEEL_BLOCK = register("breath_steel_block",
             () -> new Block(BlockBehaviour.Properties.of(Material.METAL)

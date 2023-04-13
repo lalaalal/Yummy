@@ -1,6 +1,5 @@
 package com.lalaalal.yummy.entity;
 
-import com.lalaalal.yummy.YummyUtil;
 import com.lalaalal.yummy.item.YummyItemRegister;
 import com.lalaalal.yummy.misc.ItemDamageSource;
 import net.minecraft.sounds.SoundEvent;
@@ -39,7 +38,7 @@ public class ThrownSpearOfLonginus extends AbstractArrow {
             double x = this.getX();
             double y = this.getY();
             double z = this.getZ();
-            AABB area = YummyUtil.createArea(this.getOnPos(), 2);
+            AABB area = getBoundingBox().inflate(2.0);
             LivingEntity livingEntity = level.getNearestEntity(LivingEntity.class, TargetingConditions.DEFAULT, null, x, y, z, area);
             killEnemy(livingEntity);
         }

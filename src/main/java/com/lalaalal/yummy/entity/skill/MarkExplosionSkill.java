@@ -1,6 +1,5 @@
 package com.lalaalal.yummy.entity.skill;
 
-import com.lalaalal.yummy.YummyUtil;
 import com.lalaalal.yummy.effect.HerobrineMark;
 import com.lalaalal.yummy.effect.YummyEffectRegister;
 import com.lalaalal.yummy.networking.YummyMessages;
@@ -56,7 +55,7 @@ public class MarkExplosionSkill extends ExplosionSkill {
 
     private List<LivingEntity> getNearbyEntities() {
         Level level = usingEntity.getLevel();
-        AABB area = YummyUtil.createArea(usingEntity.getOnPos(), 5);
+        AABB area = usingEntity.getBoundingBox().inflate(5);
         return level.getNearbyEntities(LivingEntity.class, TargetingConditions.DEFAULT, usingEntity, area);
     }
 }

@@ -15,10 +15,11 @@ import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
-public class ShadowHerobrine extends PathfinderMob implements PowerableMob {
+public class ShadowHerobrine extends PathfinderMob implements PowerableMob, Enemy {
     private Herobrine herobrine;
 
     public static AttributeSupplier.Builder getHerobrineAttributes() {
@@ -45,11 +46,8 @@ public class ShadowHerobrine extends PathfinderMob implements PowerableMob {
     }
 
     @Override
-    public boolean hurt(DamageSource damageSource, float amount) {
-        if (!damageSource.isBypassInvul())
-            return true;
-
-        return super.hurt(damageSource, amount);
+    public boolean isInvulnerableTo(DamageSource source) {
+        return !source.isBypassInvul();
     }
 
     @Override
