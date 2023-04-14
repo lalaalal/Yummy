@@ -7,6 +7,8 @@ import com.lalaalal.yummy.entity.YummyEntityRegister;
 import com.lalaalal.yummy.item.YummyItemRegister;
 import com.lalaalal.yummy.particle.YummyParticleRegister;
 import com.lalaalal.yummy.sound.YummySoundRegister;
+import com.lalaalal.yummy.world.feature.YummyConfiguredFeatures;
+import com.lalaalal.yummy.world.feature.YummyPlacedFeatures;
 import com.mojang.logging.LogUtils;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -44,6 +46,8 @@ public class YummyMod
         YummyEntityRegister.register(modEventBus);
         YummyEffectRegister.register(modEventBus);
         YummySoundRegister.register(modEventBus);
+        YummyConfiguredFeatures.register(modEventBus);
+        YummyPlacedFeatures.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
     }

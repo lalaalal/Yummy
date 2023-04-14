@@ -18,6 +18,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 
 public class PurifiedSoulSwordItem extends Item {
     private final Multimap<Attribute, AttributeModifier> defaultModifiers;
@@ -43,10 +44,15 @@ public class PurifiedSoulSwordItem extends Item {
     @Override
     public InteractionResult useOn(UseOnContext context) {
         Level level = context.getLevel();
+        Player player = context.getPlayer();
         BlockPos clickedPos = context.getClickedPos();
         BlockPos firePos = clickedPos.relative(context.getClickedFace());
         if (!level.isClientSide && BaseFireBlock.canBePlacedAt(level, firePos, context.getHorizontalDirection())) {
-            level.setBlock(firePos, YummyBlockRegister.PURIFIED_SOUL_FIRE_BLOCK.get().defaultBlockState(), 10);
+            level.setBlock(firePos, YummyBlockRegister.PURIFIED_SOUL_FIRE_BLOCK.get().defaultBlockState(), 11);
+            level.gameEvent(player, GameEvent.BLOCK_PLACE, firePos);
+            if (player != null)
+                player.swing(context.getHand());
+            return InteractionResult.sidedSuccess(level.isClientSide());
         }
 
         return super.useOn(context);
