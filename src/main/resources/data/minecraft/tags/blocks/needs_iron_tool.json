@@ -2,6 +2,7 @@
     "replace": false,
     "values": [
         "yummy:amethyst_block",
-        "yummy:polluted_block"
+        "yummy:polluted_block",
+        "yummy:rubellite_block"
     ]
 }

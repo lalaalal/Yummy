@@ -31,6 +31,11 @@ public class YummyBlockRegister {
                     .strength(2.5f, 14f)
                     .requiresCorrectToolForDrops()),
             YummyMod.TAB);
+    public static final RegistryObject<Block> RUBELLITE_BLOCK = register("rubellite_block",
+            () -> new Block(BlockBehaviour.Properties.of(Material.METAL)
+                    .strength(5f, 6f)
+                    .requiresCorrectToolForDrops()),
+            YummyMod.TAB);
     public static final RegistryObject<Block> PURIFIED_SOUL_BLOCK = register("purified_soul_block",
             () -> new Block(BlockBehaviour.Properties.of(Material.DIRT)
                     .strength(0.5F)
