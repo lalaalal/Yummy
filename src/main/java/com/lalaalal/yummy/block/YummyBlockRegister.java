@@ -45,7 +45,7 @@ public class YummyBlockRegister {
 
     public static final RegistryObject<Block> POLLUTED_BLOCK = register(PollutedBlock.getName(false),
             () -> new PollutedBlock(BlockBehaviour.Properties.of(Material.STONE)
-                    .strength(2.7f, 14f)
+                    .strength(66f, 1200f)
                     .requiresCorrectToolForDrops()), YummyMod.TAB);
     public static final RegistryObject<Block> CORRUPTED_POLLUTED_BLOCK = register(PollutedBlock.getName(true),
             () -> new PollutedBlock(BlockBehaviour.Properties.of(Material.STONE)
@@ -54,7 +54,7 @@ public class YummyBlockRegister {
     public static final RegistryObject<Block> DISPLAYING_POLLUTED_BLOCK = register("displaying_" + PollutedBlock.getName(false),
             () -> new PollutedBlock(BlockBehaviour.Properties.of(Material.STONE)
                     .strength(-1.0F, 3600000.0F)
-                    .requiresCorrectToolForDrops(), false, false, true), YummyMod.TAB);
+                    .requiresCorrectToolForDrops(), false, false, true, false), YummyMod.TAB);
 
     public static final RegistryObject<Block> CYAN_FLOWER = register("cyan_flower",
             () -> new FlowerBlock(() -> MobEffects.GLOWING, 5,

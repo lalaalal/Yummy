@@ -10,7 +10,7 @@ import net.minecraft.world.phys.Vec3;
 public class ShootFireballSkill extends Skill {
     public static final int WARMUP = 20;
     public static final int COOLDOWN = 20 * 13;
-    public static final int PREFERRED_DISTANCE = 50;
+    public static final int PREFERRED_DISTANCE = 150;
 
     public ShootFireballSkill(Mob usingEntity) {
         super(usingEntity, COOLDOWN, WARMUP);

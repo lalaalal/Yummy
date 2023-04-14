@@ -16,6 +16,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class PurifiedSoulSwordItem extends Item {
@@ -30,8 +31,8 @@ public class PurifiedSoulSwordItem extends Item {
     }
 
     @Override
-    public boolean canAttackBlock(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer) {
-        return false;
+    public boolean canAttackBlock(BlockState state, Level level, BlockPos pos, Player player) {
+        return !player.isCreative();
     }
 
     @Override
@@ -43,8 +44,9 @@ public class PurifiedSoulSwordItem extends Item {
     public InteractionResult useOn(UseOnContext context) {
         Level level = context.getLevel();
         BlockPos clickedPos = context.getClickedPos();
-        if (!level.isClientSide) {
-            level.setBlock(clickedPos.above(), YummyBlockRegister.PURIFIED_SOUL_FIRE_BLOCK.get().defaultBlockState(), 10);
+        BlockPos firePos = clickedPos.relative(context.getClickedFace());
+        if (!level.isClientSide && BaseFireBlock.canBePlacedAt(level, firePos, context.getHorizontalDirection())) {
+            level.setBlock(firePos, YummyBlockRegister.PURIFIED_SOUL_FIRE_BLOCK.get().defaultBlockState(), 10);
         }
 
         return super.useOn(context);

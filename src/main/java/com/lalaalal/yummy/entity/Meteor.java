@@ -14,11 +14,11 @@ public class Meteor extends MarkFireball {
     }
 
     public Meteor(Level level, LivingEntity shooter, double offsetX, double offsetY, double offsetZ) {
-        this(YummyEntityRegister.METEOR.get(), level, shooter, offsetX, offsetY, offsetZ, 10);
+        this(YummyEntityRegister.METEOR.get(), level, shooter, offsetX, offsetY, offsetZ, 1, false);
     }
 
-    public Meteor(EntityType<? extends MarkFireball> entityType, Level level, LivingEntity shooter, double offsetX, double offsetY, double offsetZ, int explosionPower) {
-        super(entityType, level, shooter, offsetX, offsetY, offsetZ, explosionPower, false);
+    public Meteor(EntityType<? extends MarkFireball> entityType, Level level, LivingEntity shooter, double offsetX, double offsetY, double offsetZ, int explosionPower, boolean markEntities) {
+        super(entityType, level, shooter, offsetX, offsetY, offsetZ, explosionPower, markEntities);
         setDeltaMovement(0.01, 0.1, 0.01);
     }
 

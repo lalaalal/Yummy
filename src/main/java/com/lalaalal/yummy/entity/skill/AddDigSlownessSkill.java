@@ -1,6 +1,5 @@
 package com.lalaalal.yummy.entity.skill;
 
-import com.lalaalal.yummy.effect.HerobrineMark;
 import com.lalaalal.yummy.effect.YummyEffectRegister;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -13,13 +12,15 @@ import net.minecraft.world.phys.AABB;
 import java.util.List;
 
 public class AddDigSlownessSkill extends Skill {
+    private boolean used;
+
     public AddDigSlownessSkill(Mob usingEntity) {
         super(usingEntity, 40, 5);
     }
 
     @Override
     public boolean canUse() {
-        return true;
+        return !used;
     }
 
     @Override
@@ -30,9 +31,11 @@ public class AddDigSlownessSkill extends Skill {
         for (LivingEntity livingEntity : livingEntities) {
             if (livingEntity.getEffect(YummyEffectRegister.HEROBRINE_MARK.get()) == null)
                 continue;
-            MobEffectInstance mobEffectInstance = new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 60, 4);
+            MobEffectInstance mobEffectInstance = new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 1000000, 4);
             livingEntity.addEffect(mobEffectInstance);
-            HerobrineMark.reduceMark(livingEntity);
+            livingEntity.removeEffect(YummyEffectRegister.HEROBRINE_MARK.get());
         }
+
+        used = true;
     }
 }

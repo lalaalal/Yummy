@@ -10,9 +10,9 @@ import net.minecraft.world.level.chunk.LevelChunk;
 public class ExplosionSkill extends Skill {
     public static final int COOLDOWN = 600;
 
-    public static final int WARMUP = 40;
+    public static final int WARMUP = 0;
     protected double attackReach = 50;
-    protected float explosionRadius = 16f;
+    protected float explosionRadius = 6f;
     protected boolean explosionCauseFire = false;
 
     public ExplosionSkill(Mob usingEntity) {

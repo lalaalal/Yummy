@@ -26,6 +26,7 @@ public class PollutedBlock extends BaseEntityBlock {
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
     public static final BooleanProperty CORRUPTED = BooleanProperty.create("corrupted");
     public static final BooleanProperty FOR_DISPLAY = BooleanProperty.create("for_display");
+    public static final BooleanProperty SHOW_PARTICLE = BooleanProperty.create("show_particle");
 
     private int animateTick = 0;
 
@@ -38,16 +39,17 @@ public class PollutedBlock extends BaseEntityBlock {
     }
 
     public PollutedBlock(Properties properties, boolean corrupted) {
-        this(properties, false, corrupted, false);
+        this(properties, false, corrupted, false, true);
     }
 
-    public PollutedBlock(Properties properties, boolean powered, boolean corrupted, boolean forDisplay) {
+    public PollutedBlock(Properties properties, boolean powered, boolean corrupted, boolean forDisplay, boolean showParticle) {
         super(properties.lightLevel((blockState) -> blockState.getValue(POWERED) ? 15 : 0));
         this.registerDefaultState(
                 this.stateDefinition.any()
                         .setValue(POWERED, powered)
                         .setValue(CORRUPTED, corrupted)
                         .setValue(FOR_DISPLAY, forDisplay)
+                        .setValue(SHOW_PARTICLE, showParticle)
         );
     }
 
@@ -56,17 +58,18 @@ public class PollutedBlock extends BaseEntityBlock {
         builder.add(POWERED);
         builder.add(CORRUPTED);
         builder.add(FOR_DISPLAY);
+        builder.add(SHOW_PARTICLE);
     }
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         if (state.getValue(CORRUPTED))
-            return new PollutedBlockEntity(YummyBlockEntityRegister.CORRUPTED_POLLUTED_BLOCK_ENTITY_TYPE.get(), pos, state);
+            return new PollutedBlockEntity(YummyBlockEntityRegister.CORRUPTED_POLLUTED_BLOCK_ENTITY_TYPE.get(), pos, state,
+                    20 * 6, Integer.MIN_VALUE, 20);
         return new PollutedBlockEntity(pos, state);
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public RenderShape getRenderShape(BlockState blockState) {
         return RenderShape.MODEL;
     }
@@ -81,8 +84,11 @@ public class PollutedBlock extends BaseEntityBlock {
 
     @Override
     public void animateTick(BlockState blockState, Level level, BlockPos blockPos, RandomSource random) {
+        if (!blockState.getValue(SHOW_PARTICLE))
+            return;
+
         if (animateTick++ >= 5) {
-            int repeat = random.nextInt(25, 30);
+            int repeat = random.nextInt(7, 10);
             for (int i = 0; i < repeat; i++) {
                 double particleX = blockPos.getX() + random.nextDouble() * 7.0 - 3.0;
                 double particleY = blockPos.getY() + random.nextDouble() * 0.2;

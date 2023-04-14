@@ -39,9 +39,16 @@ public class TeleportAndShootMeteorSkill extends Skill {
             usingEntity.moveTo(target.getOnPos().above(), 0, 0);
 
         Vec3 viewVector = usingEntity.getViewVector(1f);
-        Meteor meteor = new Meteor(level, usingEntity, YummyUtil.makeUnit(viewVector.x) * 0.1, -0.7, YummyUtil.makeUnit(viewVector.z) * 0.1);
-        meteor.setPos(usingEntity.getX(), usingEntity.getY() + 20D, usingEntity.getZ());
-        level.addFreshEntity(meteor);
+
+        for (int i = 0; i < 6; i++) {
+            double x = usingEntity.getX() + level.random.nextDouble() * 12 - 2;
+            double y = usingEntity.getY() + 20 + level.random.nextDouble() * 8 - 6;
+            double z = usingEntity.getZ() + level.random.nextDouble() * 12 - 2;
+
+            Meteor meteor = new Meteor(level, usingEntity, YummyUtil.makeUnit(viewVector.x) * 0.1, -0.7, YummyUtil.makeUnit(viewVector.z) * 0.1);
+            meteor.setPos(x, y, z);
+            level.addFreshEntity(meteor);
+        }
     }
 
     @Override

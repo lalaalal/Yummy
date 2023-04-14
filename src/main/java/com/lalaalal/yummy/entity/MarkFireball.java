@@ -16,7 +16,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class MarkFireball extends Fireball {
-    protected float explosionPower = 7;
+    protected float explosionPower = 1;
     protected boolean markEntities = true;
 
     public MarkFireball(EntityType<? extends Fireball> entityType, Level level) {

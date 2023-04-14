@@ -21,21 +21,28 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class PollutedBlockEntity extends BlockEntity {
     protected int tickInterval = 20 * 10;
-    protected int lifetime = 20 * 40;
-    protected int tick = -10;
+    protected int lifetime = 20 * 6;
+    protected int stunDuration = 20 * 6;
+    protected int tick = -11;
     private Herobrine herobrine;
 
     public PollutedBlockEntity(BlockPos blockPos, BlockState blockState) {
         this(YummyBlockEntityRegister.POLLUTED_BLOCK_ENTITY_TYPE.get(), blockPos, blockState);
     }
 
+    public PollutedBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState, int tickInterval, int lifetime, int stunDuration) {
+        this(blockEntityType, blockPos, blockState);
+        this.tickInterval = tickInterval;
+        this.lifetime = lifetime;
+        this.stunDuration = stunDuration;
+    }
+
     public PollutedBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
-        tick -= ThreadLocalRandom.current().nextInt(0, 100);
+//        tick -= ThreadLocalRandom.current().nextInt(0, 100);
     }
 
     @Override
@@ -63,15 +70,15 @@ public class PollutedBlockEntity extends BlockEntity {
     private void serverTick(Level level, BlockPos blockPos, BlockState blockState) {
         if ((tick + 20) % tickInterval == 0) {
             level.setBlock(blockPos, getBlockState().setValue(PollutedBlock.POWERED, true), 10);
-            level.playSound(null, blockPos, YummySoundRegister.POLLUTED_WAVE.get(), SoundSource.BLOCKS, 0.5f, 1);
         }
         if (tick % tickInterval == 0) {
+            level.playSound(null, blockPos, YummySoundRegister.POLLUTED_WAVE.get(), SoundSource.BLOCKS, 0.25f, 1);
             affectEntities(level, blockPos, blockState);
             sendParticlePacket(level, blockPos);
         }
         if ((tick - 10) % tickInterval == 0)
             level.setBlock(blockPos, getBlockState().setValue(PollutedBlock.POWERED, false), 10);
-        if (tick >= lifetime)
+        if (tick == lifetime)
             destroyBlock(level, blockPos);
 
         tick += 1;

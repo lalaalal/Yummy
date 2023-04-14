@@ -26,7 +26,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.MoveTowardsTargetGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
@@ -113,6 +113,7 @@ public class Herobrine extends PathfinderMob implements SkillUsable, Enemy {
         this.xpReward = 666;
         this.entityData.define(DATA_SKILL_USE_ID, 0);
 
+        this.phaseManager.setAbsorptionDisappearAction(this::onAbsorptionDisappear);
         this.phaseManager.addPhaseChangeListener(this::changePhase);
         this.phaseManager.addPhaseChangeListener(this::enterPhase2, 2);
         this.phaseManager.addPhaseChangeListener(this::enterPhase3, 3);
@@ -217,6 +218,16 @@ public class Herobrine extends PathfinderMob implements SkillUsable, Enemy {
         phaseManager.updatePhase(bossEvent);
     }
 
+    private void onAbsorptionDisappear() {
+        setHealth(6);
+        this.goalSelector.removeAllGoals();
+        this.goalSelector.addGoal(1, new SkillUseGoal(this, new KnockbackAndMarkSkill(this)));
+        this.goalSelector.addGoal(2, new SkillUseGoal(this, new AddDigSlownessSkill(this)));
+        level.explode(this, getX(), getY(), getZ(), 2, false, Explosion.BlockInteraction.NONE);
+        for (BlockPos blockPos : blockPosList)
+            level.destroyBlock(blockPos, false);
+    }
+
     private void changePhase(int phase) {
         invulnerableTick = 0;
         LevelChunk levelChunk = level.getChunkAt(getOnPos());
@@ -256,16 +267,20 @@ public class Herobrine extends PathfinderMob implements SkillUsable, Enemy {
             destroySpawnStructure(level, initialPos);
             moveTo(initialPos, 0, 0);
         }
-        level.explode(this, getX(), getY(), getZ(), 6, false, Explosion.BlockInteraction.NONE);
         goalSelector.removeAllGoals();
         targetSelector.removeAllGoals();
         getNavigation().stop();
 
         setArmPose(ArmPose.RAISE_BOTH);
         setUsingSkill(false);
-        this.goalSelector.addGoal(1, new SkillUseGoal(this, new KnockbackAndMarkSkill(this)));
-        this.goalSelector.addGoal(2, new SkillUseGoal(this, new AddDigSlownessSkill(this)));
-        this.goalSelector.addGoal(3, new SkillUseGoal(this, new SummonPollutedBlockSkill(this, 10)));
+
+        AttributeInstance attributeInstance = getAttribute(Attributes.ARMOR);
+        if (attributeInstance != null)
+            attributeInstance.setBaseValue(0);
+
+        setAbsorptionAmount(666f);
+        phaseManager.setMaxAbsorption(666f);
+        this.goalSelector.addGoal(1, new SkillUseGoal(this, new SummonBlockCircleSkill(this, YummyBlockRegister.CORRUPTED_POLLUTED_BLOCK.get())));
     }
 
     @Override
@@ -276,11 +291,11 @@ public class Herobrine extends PathfinderMob implements SkillUsable, Enemy {
     }
 
     protected void addBehaviourGoals() {
+        this.goalSelector.addGoal(1, new MoveTowardsTargetGoal(this, 1, FOLLOW_RANGE));
         this.goalSelector.addGoal(1, new SkillUseGoal(this, new ShootFireballSkill(this)));
         this.goalSelector.addGoal(2, new SkillUseGoal(this, new TeleportAndShootMeteorSkill(this)));
-        this.goalSelector.addGoal(3, new SkillUseGoal(this, new ExplosionSkill(this)));
-        this.goalSelector.addGoal(2, new SkillUseGoal(this, new SummonPollutedBlockSkill(this)));
-        this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, true));
+        this.goalSelector.addGoal(3, new SkillUseGoal(this, new ExplosionSkill(this, 0)));
+        this.goalSelector.addGoal(2, new SkillUseGoal(this, new SummonBlockCircleSkill(this, YummyBlockRegister.POLLUTED_BLOCK.get(), 1, 6)));
         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false, false));
@@ -308,9 +323,15 @@ public class Herobrine extends PathfinderMob implements SkillUsable, Enemy {
 
             return true;
         }
-        if (getPhase() == maxPhase) {
+        if (getPhase() == maxPhase && getAbsorptionAmount() == 0) {
             if (source.isMagic())
                 return super.hurt(source.bypassArmor(), 1f);
+            return true;
+        }
+        if (getAbsorptionAmount() > 0 && getAbsorptionAmount() - amount < 0) {
+            super.hurt(source, 0.1f);
+            setAbsorptionAmount(0);
+
             return true;
         }
 
@@ -321,6 +342,8 @@ public class Herobrine extends PathfinderMob implements SkillUsable, Enemy {
     public void die(DamageSource damageSource) {
         for (ShadowHerobrine shadowHerobrine : shadowHerobrines)
             shadowHerobrine.kill();
+        for (BlockPos blockPos : blockPosList)
+            level.destroyBlock(blockPos, false);
 
         super.die(damageSource);
     }
