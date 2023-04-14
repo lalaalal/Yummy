@@ -30,7 +30,7 @@ public class YummyMod
     public static final CreativeModeTab TAB = new CreativeModeTab(MOD_ID) {
         @Override
         public ItemStack makeIcon() {
-            return YummyItemRegister.BREATH_STEEL.get().getDefaultInstance();
+            return YummyItemRegister.RUBELLITE.get().getDefaultInstance();
         }
     };
 

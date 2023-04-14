@@ -13,21 +13,23 @@ public class SummonBlockCircleSkill extends Skill {
     private final int limit;
     private final int blockNumPerCircle;
     private int circleNum = 1;
+    private final boolean increaseCircle;
 
     public SummonBlockCircleSkill(Herobrine usingEntity, Block block) {
-        this(usingEntity, block, 4, 6, 20 * 6, 0);
+        this(usingEntity, block, 4, 6, 20 * 6, 0, true);
     }
 
-    public SummonBlockCircleSkill(Herobrine usingEntity, Block block, int limit, int cooldown) {
-        this(usingEntity, block, limit, 6, cooldown, 0);
+    public SummonBlockCircleSkill(Herobrine usingEntity, Block block, int limit, int cooldown, boolean increaseCircle) {
+        this(usingEntity, block, limit, 6, cooldown, 0, increaseCircle);
     }
 
-    public SummonBlockCircleSkill(Herobrine usingEntity, Block block, int limit, int blockNumPerCircle, int cooldown, int warmup) {
+    public SummonBlockCircleSkill(Herobrine usingEntity, Block block, int limit, int blockNumPerCircle, int cooldown, int warmup, boolean increaseCircle) {
         super(usingEntity, cooldown, warmup);
         this.herobrine = usingEntity;
         this.block = block;
         this.limit = limit;
         this.blockNumPerCircle = blockNumPerCircle;
+        this.increaseCircle = increaseCircle;
     }
 
     @Override
@@ -38,7 +40,8 @@ public class SummonBlockCircleSkill extends Skill {
     @Override
     public void useSkill() {
         summonBlock();
-        circleNum += 1;
+        if (increaseCircle)
+            circleNum += 1;
     }
 
     private void summonBlock() {

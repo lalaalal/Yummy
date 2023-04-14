@@ -1,6 +1,7 @@
 {
     "block.yummy.amethyst_block": "자수정 블록",
-    "block.yummy.breath_steel_block": "숨결철 블록",
+    "block.yummy.rubellite_ore": "루벨라이트 광석",
+    "block.yummy.deepslate_rubellite_ore": "심층암 루벨라이트 광석",
     "block.yummy.rubellite_block": "루벨라이트 블록",
     "block.yummy.polluted_block": "오염 블록",
     "block.yummy.corrupted_polluted_block": "침식된 오염 블록",
@@ -11,7 +12,7 @@
     "block.yummy.potted_cyan_flower": "청록색 꽃이 심어진 화분",
     "block.yummy.lime_flower": "연두색 꽃",
     "block.yummy.potted_lime_flower": "연두색 꽃이 심어진 화분",
-    "item.yummy.breath_steel": "숨결철",
+    "item.yummy.rubellite": "루벨라이트",
     "item.yummy.echo_silver_shard": "메아리 은 조각",
     "item.yummy.purified_soul_shard": "정화된 영혼 조각",
     "item.yummy.purified_soul_metal": "정화된 영혼 금속",

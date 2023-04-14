@@ -26,7 +26,7 @@ public class PollutedBlockEntity extends BlockEntity {
     protected int tickInterval = 20 * 10;
     protected int lifetime = 20 * 6;
     protected int stunDuration = 20 * 6;
-    protected int tick = -11;
+    protected int tick = -30;
     private Herobrine herobrine;
 
     public PollutedBlockEntity(BlockPos blockPos, BlockState blockState) {

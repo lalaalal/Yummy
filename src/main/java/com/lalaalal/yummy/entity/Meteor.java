@@ -13,8 +13,8 @@ public class Meteor extends MarkFireball {
         super(entityType, level);
     }
 
-    public Meteor(Level level, LivingEntity shooter, double offsetX, double offsetY, double offsetZ) {
-        this(YummyEntityRegister.METEOR.get(), level, shooter, offsetX, offsetY, offsetZ, 1, false);
+    public Meteor(Level level, LivingEntity shooter, double offsetX, double offsetY, double offsetZ, boolean markEntities) {
+        this(YummyEntityRegister.METEOR.get(), level, shooter, offsetX, offsetY, offsetZ, 1, markEntities);
     }
 
     public Meteor(EntityType<? extends MarkFireball> entityType, Level level, LivingEntity shooter, double offsetX, double offsetY, double offsetZ, int explosionPower, boolean markEntities) {

@@ -1,6 +1,7 @@
 package com.lalaalal.yummy.block;
 
 import com.lalaalal.yummy.YummyMod;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -26,15 +27,21 @@ public class YummyBlockRegister {
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.AMETHYST)),
             CreativeModeTab.TAB_BUILDING_BLOCKS);
-    public static final RegistryObject<Block> BREATH_STEEL_BLOCK = register("breath_steel_block",
-            () -> new Block(BlockBehaviour.Properties.of(Material.METAL)
-                    .strength(2.5f, 14f)
-                    .requiresCorrectToolForDrops()),
-            YummyMod.TAB);
     public static final RegistryObject<Block> RUBELLITE_BLOCK = register("rubellite_block",
             () -> new Block(BlockBehaviour.Properties.of(Material.METAL)
                     .strength(5f, 6f)
                     .requiresCorrectToolForDrops()),
+            YummyMod.TAB);
+    public static final RegistryObject<Block> RUBELLITE_ORE = register("rubellite_ore",
+            () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE)
+                    .strength(3f, 3f)
+                    .requiresCorrectToolForDrops(), UniformInt.of(3, 7)),
+            YummyMod.TAB);
+    public static final RegistryObject<Block> DEEPSLATE_RUBELLITE_ORE = register("deepslate_rubellite_ore",
+            () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE)
+                    .strength(4.5f, 3f)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.DEEPSLATE), UniformInt.of(3, 7)),
             YummyMod.TAB);
     public static final RegistryObject<Block> PURIFIED_SOUL_BLOCK = register("purified_soul_block",
             () -> new Block(BlockBehaviour.Properties.of(Material.DIRT)

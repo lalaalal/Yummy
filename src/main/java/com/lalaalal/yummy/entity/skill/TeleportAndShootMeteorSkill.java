@@ -6,16 +6,17 @@ import com.lalaalal.yummy.entity.Meteor;
 import com.lalaalal.yummy.sound.YummySoundRegister;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class TeleportAndShootMeteorSkill extends Skill {
     public static final int COOLDOWN = 20 * 17;
     public static final int WARMUP = 20;
+    private final Herobrine herobrine;
 
-    public TeleportAndShootMeteorSkill(Mob usingEntity) {
+    public TeleportAndShootMeteorSkill(Herobrine usingEntity) {
         super(usingEntity, COOLDOWN, WARMUP);
+        this.herobrine = usingEntity;
     }
 
     @Override
@@ -25,8 +26,7 @@ public class TeleportAndShootMeteorSkill extends Skill {
 
     @Override
     public void showEffect() {
-        if (usingEntity instanceof Herobrine herobrine)
-            herobrine.setArmPose(Herobrine.ArmPose.RAISE_BOTH);
+        herobrine.setArmPose(Herobrine.ArmPose.RAISE_BOTH);
         Level level = usingEntity.getLevel();
         level.playSound(null, usingEntity.getOnPos(), YummySoundRegister.HEROBRINE_TELEPORT.get(), SoundSource.HOSTILE, 0.5f, 1);
     }
@@ -45,7 +45,8 @@ public class TeleportAndShootMeteorSkill extends Skill {
             double y = usingEntity.getY() + 20 + level.random.nextDouble() * 8 - 6;
             double z = usingEntity.getZ() + level.random.nextDouble() * 12 - 2;
 
-            Meteor meteor = new Meteor(level, usingEntity, YummyUtil.makeUnit(viewVector.x) * 0.1, -0.7, YummyUtil.makeUnit(viewVector.z) * 0.1);
+            boolean mark = herobrine.getPhase() >= 2;
+            Meteor meteor = new Meteor(level, usingEntity, YummyUtil.makeUnit(viewVector.x) * 0.1, -0.7, YummyUtil.makeUnit(viewVector.z) * 0.1, mark);
             meteor.setPos(x, y, z);
             level.addFreshEntity(meteor);
         }
@@ -53,7 +54,6 @@ public class TeleportAndShootMeteorSkill extends Skill {
 
     @Override
     public void endEffect() {
-        if (usingEntity instanceof Herobrine herobrine)
-            herobrine.setArmPose(Herobrine.ArmPose.NORMAL);
+        herobrine.setArmPose(Herobrine.ArmPose.NORMAL);
     }
 }

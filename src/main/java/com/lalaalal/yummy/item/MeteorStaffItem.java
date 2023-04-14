@@ -19,7 +19,7 @@ public class MeteorStaffItem extends Item {
         Vec3 viewVector = player.getViewVector(1);
         double offsetY = -Math.pow(1.5, -(viewVector.y + 1));
 
-        Meteor meteor = new Meteor(level, player, viewVector.x, offsetY, viewVector.z);
+        Meteor meteor = new Meteor(level, player, viewVector.x, offsetY, viewVector.z, false);
         meteor.setPos(player.getX() + viewVector.x * 4.0D, player.getY() + 10D, meteor.getZ() + viewVector.z * 4.0D);
         level.addFreshEntity(meteor);
 

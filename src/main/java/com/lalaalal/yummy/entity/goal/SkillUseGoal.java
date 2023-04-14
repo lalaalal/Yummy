@@ -68,5 +68,7 @@ public class SkillUseGoal extends Goal {
     @Override
     public void stop() {
         super.stop();
+        if (skillUsable != null)
+            skillUsable.setUsingSkill(false);
     }
 }

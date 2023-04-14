@@ -1,6 +1,6 @@
 {
     "parent": "minecraft:block/cube_all",
     "textures": {
-        "all": "yummy:block/breath_steel_block"
+        "all": "yummy:block/rubellite_ore"
     }
 }

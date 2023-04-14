@@ -7,11 +7,11 @@
     ],
     "key": {
         "#": {
-            "item": "yummy:breath_steel"
+            "item": "yummy:rubellite"
         }
     },
     "result": {
-        "item": "yummy:breath_steel_block",
+        "item": "yummy:rubellite_block",
         "count": 1
     }
 }

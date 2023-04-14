@@ -2,7 +2,9 @@
     "replace": false,
     "values": [
         "yummy:amethyst_block",
-        "yummy:breath_steel_block",
+        "yummy:rubellite_block",
+        "yummy:rubellite_ore",
+        "yummy:deepslate_rubellite_ore",
         "yummy:polluted_block"
     ]
 }

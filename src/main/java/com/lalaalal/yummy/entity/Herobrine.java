@@ -5,6 +5,7 @@ import com.lalaalal.yummy.block.PollutedBlock;
 import com.lalaalal.yummy.block.YummyBlockRegister;
 import com.lalaalal.yummy.block.entity.PollutedBlockEntity;
 import com.lalaalal.yummy.effect.YummyEffectRegister;
+import com.lalaalal.yummy.entity.goal.FollowTargetGoal;
 import com.lalaalal.yummy.entity.goal.SkillUseGoal;
 import com.lalaalal.yummy.entity.skill.*;
 import com.lalaalal.yummy.misc.PhaseManager;
@@ -26,7 +27,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.MoveTowardsTargetGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
@@ -250,7 +250,7 @@ public class Herobrine extends PathfinderMob implements SkillUsable, Enemy {
     private void enterPhase2() {
         AttributeInstance attributeInstance = getAttribute(Attributes.ARMOR);
         if (attributeInstance != null)
-            attributeInstance.setBaseValue(20);
+            attributeInstance.setBaseValue(66);
 
         for (int i = 0; i < 3; i++) {
             BlockPos spawnBlockPos = YummyUtil.randomPos(getOnPos(), 5, level.getRandom());
@@ -291,11 +291,11 @@ public class Herobrine extends PathfinderMob implements SkillUsable, Enemy {
     }
 
     protected void addBehaviourGoals() {
-        this.goalSelector.addGoal(1, new MoveTowardsTargetGoal(this, 1, FOLLOW_RANGE));
-        this.goalSelector.addGoal(1, new SkillUseGoal(this, new ShootFireballSkill(this)));
-        this.goalSelector.addGoal(2, new SkillUseGoal(this, new TeleportAndShootMeteorSkill(this)));
-        this.goalSelector.addGoal(3, new SkillUseGoal(this, new ExplosionSkill(this, 0)));
-        this.goalSelector.addGoal(2, new SkillUseGoal(this, new SummonBlockCircleSkill(this, YummyBlockRegister.POLLUTED_BLOCK.get(), 1, 6)));
+        this.goalSelector.addGoal(3, new FollowTargetGoal<>(this));
+        this.goalSelector.addGoal(2, new SkillUseGoal(this, new ShootFireballSkill(this)));
+        this.goalSelector.addGoal(3, new SkillUseGoal(this, new TeleportAndShootMeteorSkill(this)));
+        this.goalSelector.addGoal(1, new SkillUseGoal(this, new ExplosionSkill(this, 10)));
+        this.goalSelector.addGoal(2, new SkillUseGoal(this, new SummonBlockCircleSkill(this, YummyBlockRegister.POLLUTED_BLOCK.get(), 1, 20 * 8, false)));
         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false, false));
