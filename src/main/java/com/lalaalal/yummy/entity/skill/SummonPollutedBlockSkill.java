@@ -1,7 +1,7 @@
 package com.lalaalal.yummy.entity.skill;
 
 import com.lalaalal.yummy.YummyUtil;
-import com.lalaalal.yummy.block.YummyBlockRegister;
+import com.lalaalal.yummy.block.YummyBlocks;
 import com.lalaalal.yummy.block.entity.PollutedBlockEntity;
 import com.lalaalal.yummy.entity.Herobrine;
 import net.minecraft.core.BlockPos;
@@ -46,7 +46,7 @@ public class SummonPollutedBlockSkill extends Skill {
 
     private BlockState getPollutedBlockState() {
         if (herobrine.getPhase() >= 3)
-            return YummyBlockRegister.CORRUPTED_POLLUTED_BLOCK.get().defaultBlockState();
-        return YummyBlockRegister.POLLUTED_BLOCK.get().defaultBlockState();
+            return YummyBlocks.CORRUPTED_POLLUTED_BLOCK.get().defaultBlockState();
+        return YummyBlocks.POLLUTED_BLOCK.get().defaultBlockState();
     }
 }

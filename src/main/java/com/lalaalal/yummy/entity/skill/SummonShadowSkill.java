@@ -1,8 +1,8 @@
 package com.lalaalal.yummy.entity.skill;
 
 import com.lalaalal.yummy.YummyUtil;
-import com.lalaalal.yummy.entity.YummyEntityRegister;
-import com.lalaalal.yummy.sound.YummySoundRegister;
+import com.lalaalal.yummy.entity.YummyEntities;
+import com.lalaalal.yummy.sound.YummySounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
@@ -22,7 +22,7 @@ public class SummonShadowSkill extends Skill {
     public void showEffect() {
         Level level = usingEntity.getLevel();
         BlockPos blockPos = usingEntity.getOnPos();
-        level.playSound(null, blockPos, YummySoundRegister.HEROBRINE_TELEPORT.get(), SoundSource.HOSTILE, 0.7f, 1f);
+        level.playSound(null, blockPos, YummySounds.HEROBRINE_TELEPORT.get(), SoundSource.HOSTILE, 0.7f, 1f);
     }
 
     @Override
@@ -38,7 +38,7 @@ public class SummonShadowSkill extends Skill {
         for (int i = 0; i < 3; i++) {
             BlockPos spawnBlockPos = YummyUtil.randomPos(blockPos, 5, level.getRandom());
             if (level instanceof ServerLevel serverLevel)
-                YummyEntityRegister.SHADOW_HEROBRINE.get().spawn(serverLevel, null, null, spawnBlockPos, MobSpawnType.MOB_SUMMONED, true, false);
+                YummyEntities.SHADOW_HEROBRINE.get().spawn(serverLevel, null, null, spawnBlockPos, MobSpawnType.MOB_SUMMONED, true, false);
         }
     }
 }

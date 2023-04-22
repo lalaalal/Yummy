@@ -2,7 +2,7 @@ package com.lalaalal.yummy.item;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import com.lalaalal.yummy.block.YummyBlockRegister;
+import com.lalaalal.yummy.block.YummyBlocks;
 import com.lalaalal.yummy.effect.HerobrineMark;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
@@ -26,8 +26,8 @@ public class PurifiedSoulSwordItem extends Item {
     public PurifiedSoulSwordItem(Properties properties) {
         super(properties);
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", 15, AttributeModifier.Operation.ADDITION));
-        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", -2.4, AttributeModifier.Operation.ADDITION));
+        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", 65, AttributeModifier.Operation.ADDITION));
+        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", 2, AttributeModifier.Operation.ADDITION));
         this.defaultModifiers = builder.build();
     }
 
@@ -48,11 +48,13 @@ public class PurifiedSoulSwordItem extends Item {
         BlockPos clickedPos = context.getClickedPos();
         BlockPos firePos = clickedPos.relative(context.getClickedFace());
         if (!level.isClientSide && BaseFireBlock.canBePlacedAt(level, firePos, context.getHorizontalDirection())) {
-            level.setBlock(firePos, YummyBlockRegister.PURIFIED_SOUL_FIRE_BLOCK.get().defaultBlockState(), 11);
+            level.setBlock(firePos, YummyBlocks.PURIFIED_SOUL_FIRE_BLOCK.get().defaultBlockState(), 11);
             level.gameEvent(player, GameEvent.BLOCK_PLACE, firePos);
-            if (player != null)
-                player.swing(context.getHand());
             return InteractionResult.sidedSuccess(level.isClientSide());
+        }
+
+        if (level.isClientSide && player != null) {
+            player.swing(context.getHand());
         }
 
         return super.useOn(context);

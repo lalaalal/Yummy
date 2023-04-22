@@ -1,0 +1,30 @@
+{
+    "display": {
+        "icon": {
+            "item": "yummy:rubellite"
+        },
+        "title": {
+            "translate": "advancements.yummy.root.title",
+            "color": "aqua"
+        },
+        "description": {
+            "translate": "advancements.yummy.root.description"
+        },
+        "frame": "task",
+        "show_toast": false,
+        "announce_to_chat": false,
+        "hidden": false,
+        "background": "yummy:textures/block/purified_soul_block.png"
+    },
+    "criteria": {
+        "yummy": {
+            "trigger": "minecraft:changed_dimension",
+            "conditions": {}
+        }
+    },
+    "requirements": [
+        [
+            "yummy"
+        ]
+    ]
+}

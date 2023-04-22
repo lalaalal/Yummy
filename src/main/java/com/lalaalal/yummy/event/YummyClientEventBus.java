@@ -8,9 +8,9 @@ import com.lalaalal.yummy.client.renderer.HerobrineRenderer;
 import com.lalaalal.yummy.client.renderer.ShadowHerobrineRenderer;
 import com.lalaalal.yummy.client.renderer.ThrownSpearOfLonginusRenderer;
 import com.lalaalal.yummy.client.renderer.YummyItemEntityRenderer;
-import com.lalaalal.yummy.entity.YummyEntityRegister;
+import com.lalaalal.yummy.entity.YummyEntities;
 import com.lalaalal.yummy.particle.PollutedParticle;
-import com.lalaalal.yummy.particle.YummyParticleRegister;
+import com.lalaalal.yummy.particle.YummyParticles;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
@@ -21,22 +21,22 @@ import net.minecraftforge.fml.common.Mod;
 public class YummyClientEventBus {
     @SubscribeEvent
     public static void registerParticleFactories(final RegisterParticleProvidersEvent event) {
-        event.register(YummyParticleRegister.POLLUTED_PARTICLE_RED.get(),
+        event.register(YummyParticles.POLLUTED_PARTICLE_RED.get(),
                 (spriteSet) -> new PollutedParticle.PollutedParticleProvider(spriteSet, 0x441f0b));
-        event.register(YummyParticleRegister.POLLUTED_PARTICLE_BLUE.get(),
+        event.register(YummyParticles.POLLUTED_PARTICLE_BLUE.get(),
                 (spriteSet) -> new PollutedParticle.PollutedParticleProvider(spriteSet, 0x019ea3));
-        event.register(YummyParticleRegister.POLLUTED_PARTICLE_PURPLE.get(),
+        event.register(YummyParticles.POLLUTED_PARTICLE_PURPLE.get(),
                 (spriteSet) -> new PollutedParticle.PollutedParticleProvider(spriteSet, 0x201a33));
     }
 
     @SubscribeEvent
     public static void entityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(YummyEntityRegister.HEROBRINE.get(), HerobrineRenderer::new);
-        event.registerEntityRenderer(YummyEntityRegister.SHADOW_HEROBRINE.get(), ShadowHerobrineRenderer::new);
-        event.registerEntityRenderer(YummyEntityRegister.THROWN_SPEAR_OF_LONGINUS.get(), ThrownSpearOfLonginusRenderer::new);
-        event.registerEntityRenderer(YummyEntityRegister.MARK_FIREBALL.get(),
+        event.registerEntityRenderer(YummyEntities.HEROBRINE.get(), HerobrineRenderer::new);
+        event.registerEntityRenderer(YummyEntities.SHADOW_HEROBRINE.get(), ShadowHerobrineRenderer::new);
+        event.registerEntityRenderer(YummyEntities.THROWN_SPEAR_OF_LONGINUS.get(), ThrownSpearOfLonginusRenderer::new);
+        event.registerEntityRenderer(YummyEntities.MARK_FIREBALL.get(),
                 (context) -> new YummyItemEntityRenderer<>(context, "mark_fireball", 3));
-        event.registerEntityRenderer(YummyEntityRegister.METEOR.get(),
+        event.registerEntityRenderer(YummyEntities.METEOR.get(),
                 (context) -> new YummyItemEntityRenderer<>(context, "meteor", 5));
     }
 

@@ -1,8 +1,8 @@
 package com.lalaalal.yummy.block;
 
 import com.lalaalal.yummy.block.entity.PollutedBlockEntity;
-import com.lalaalal.yummy.block.entity.YummyBlockEntityRegister;
-import com.lalaalal.yummy.particle.YummyParticleRegister;
+import com.lalaalal.yummy.block.entity.YummyBlockEntities;
+import com.lalaalal.yummy.particle.YummyParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.util.RandomSource;
@@ -64,11 +64,12 @@ public class PollutedBlock extends BaseEntityBlock {
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         if (state.getValue(CORRUPTED))
-            return new PollutedBlockEntity(YummyBlockEntityRegister.CORRUPTED_POLLUTED_BLOCK_ENTITY_TYPE.get(), pos, state,
+            return new PollutedBlockEntity(YummyBlockEntities.CORRUPTED_POLLUTED_BLOCK_ENTITY_TYPE.get(), pos, state,
                     20 * 6, Integer.MIN_VALUE, 20);
         return new PollutedBlockEntity(pos, state);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public RenderShape getRenderShape(BlockState blockState) {
         return RenderShape.MODEL;
@@ -102,8 +103,8 @@ public class PollutedBlock extends BaseEntityBlock {
 
     private ParticleOptions getParticle(BlockState blockState) {
         if (blockState.getValue(PollutedBlock.CORRUPTED))
-            return YummyParticleRegister.POLLUTED_PARTICLE_PURPLE.get();
-        return YummyParticleRegister.POLLUTED_PARTICLE_RED.get();
+            return YummyParticles.POLLUTED_PARTICLE_PURPLE.get();
+        return YummyParticles.POLLUTED_PARTICLE_RED.get();
     }
 
     @Override

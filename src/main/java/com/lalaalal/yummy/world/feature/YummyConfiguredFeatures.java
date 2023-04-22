@@ -2,7 +2,7 @@ package com.lalaalal.yummy.world.feature;
 
 import com.google.common.base.Suppliers;
 import com.lalaalal.yummy.YummyMod;
-import com.lalaalal.yummy.block.YummyBlockRegister;
+import com.lalaalal.yummy.block.YummyBlocks;
 import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.features.OreFeatures;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
@@ -21,8 +21,8 @@ public class YummyConfiguredFeatures {
 
     public static final Supplier<List<OreConfiguration.TargetBlockState>> OVERWORLD_RUBELLITE_ORES
             = Suppliers.memoize(() -> List.of(
-            OreConfiguration.target(OreFeatures.STONE_ORE_REPLACEABLES, YummyBlockRegister.RUBELLITE_ORE.get().defaultBlockState()),
-            OreConfiguration.target(OreFeatures.DEEPSLATE_ORE_REPLACEABLES, YummyBlockRegister.DEEPSLATE_RUBELLITE_ORE.get().defaultBlockState())
+            OreConfiguration.target(OreFeatures.STONE_ORE_REPLACEABLES, YummyBlocks.RUBELLITE_ORE.get().defaultBlockState()),
+            OreConfiguration.target(OreFeatures.DEEPSLATE_ORE_REPLACEABLES, YummyBlocks.DEEPSLATE_RUBELLITE_ORE.get().defaultBlockState())
     ));
 
     public static final RegistryObject<ConfiguredFeature<?, ?>> RUBELLITE_ORE = CONFIGURED_FEATURES.register("rubellite_ore",

@@ -1,6 +1,6 @@
 package com.lalaalal.yummy.entity;
 
-import com.lalaalal.yummy.item.YummyItemRegister;
+import com.lalaalal.yummy.item.YummyItems;
 import com.lalaalal.yummy.misc.ItemDamageSource;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -17,14 +17,14 @@ import net.minecraft.world.phys.EntityHitResult;
 import org.jetbrains.annotations.Nullable;
 
 public class ThrownSpearOfLonginus extends AbstractArrow {
-    private ItemStack spearOfLonginusItem = new ItemStack(YummyItemRegister.SPEAR_OF_LONGINUS_ITEM.get());
+    private ItemStack spearOfLonginusItem = new ItemStack(YummyItems.SPEAR_OF_LONGINUS_ITEM.get());
 
     public ThrownSpearOfLonginus(EntityType<? extends ThrownSpearOfLonginus> entityType, Level level) {
         super(entityType, level);
     }
 
     public ThrownSpearOfLonginus(Level level, LivingEntity shooter, ItemStack stack) {
-        super(YummyEntityRegister.THROWN_SPEAR_OF_LONGINUS.get(), shooter, level);
+        super(YummyEntities.THROWN_SPEAR_OF_LONGINUS.get(), shooter, level);
         spearOfLonginusItem = stack.copy();
     }
 

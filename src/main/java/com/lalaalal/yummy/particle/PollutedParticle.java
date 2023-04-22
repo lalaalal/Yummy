@@ -6,7 +6,6 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class PollutedParticle extends TextureSheetParticle {
 
@@ -55,7 +54,6 @@ public class PollutedParticle extends TextureSheetParticle {
             this(spriteSet, ((color & 0xFF0000) >> 16) / 255f, ((color & 0x00FF00) >> 8) / 255f, (color & 0x0000FF) / 255f);
         }
 
-        @Nullable
         @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel level,
                                        double x, double pY, double pZ, double xSpeed, double ySpeed, double zSpeed) {

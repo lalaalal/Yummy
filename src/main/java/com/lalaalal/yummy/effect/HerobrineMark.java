@@ -13,7 +13,7 @@ public class HerobrineMark extends MobEffect {
         if (entity.getType().is(YummyTagRegister.HEROBRINE))
             return;
 
-        final MobEffect HEROBRINE_MARK = YummyEffectRegister.HEROBRINE_MARK.get();
+        final MobEffect HEROBRINE_MARK = YummyEffects.HEROBRINE_MARK.get();
 
         MobEffectInstance mobEffectInstance = entity.getEffect(HEROBRINE_MARK);
         if (mobEffectInstance != null) {
@@ -25,7 +25,7 @@ public class HerobrineMark extends MobEffect {
     }
 
     public static void reduceMark(LivingEntity entity) {
-        final MobEffect HEROBRINE_MARK = YummyEffectRegister.HEROBRINE_MARK.get();
+        final MobEffect HEROBRINE_MARK = YummyEffects.HEROBRINE_MARK.get();
         MobEffectInstance markEffectInstance = entity.getEffect(HEROBRINE_MARK);
         if (markEffectInstance == null)
             return;

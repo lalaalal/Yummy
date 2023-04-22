@@ -2,9 +2,9 @@ package com.lalaalal.yummy.entity;
 
 import com.lalaalal.yummy.YummyUtil;
 import com.lalaalal.yummy.block.PollutedBlock;
-import com.lalaalal.yummy.block.YummyBlockRegister;
+import com.lalaalal.yummy.block.YummyBlocks;
 import com.lalaalal.yummy.block.entity.PollutedBlockEntity;
-import com.lalaalal.yummy.effect.YummyEffectRegister;
+import com.lalaalal.yummy.effect.YummyEffects;
 import com.lalaalal.yummy.entity.goal.FollowTargetGoal;
 import com.lalaalal.yummy.entity.goal.SkillUseGoal;
 import com.lalaalal.yummy.entity.skill.*;
@@ -47,7 +47,7 @@ import java.util.List;
 
 public class Herobrine extends PathfinderMob implements SkillUsable, Enemy {
     private static final float[] PHASE_HEALTHS = {600, 60, 6};
-    private static final BossEvent.BossBarColor[] PHASE_COLORS = {BossEvent.BossBarColor.BLUE, BossEvent.BossBarColor.YELLOW, BossEvent.BossBarColor.PINK};
+    private static final BossEvent.BossBarColor[] PHASE_COLORS = {BossEvent.BossBarColor.BLUE, BossEvent.BossBarColor.YELLOW, BossEvent.BossBarColor.RED};
 
     private static final EntityDataAccessor<Integer> DATA_SKILL_USE_ID = SynchedEntityData.defineId(Herobrine.class, EntityDataSerializers.INT);
     private final ArrayList<BlockPos> blockPosList = new ArrayList<>();
@@ -76,16 +76,16 @@ public class Herobrine extends PathfinderMob implements SkillUsable, Enemy {
     }
 
     public static void polluteHerobrineAlter(Level level, BlockPos headPos) {
-        level.setBlock(headPos.above(), YummyBlockRegister.PURIFIED_SOUL_FIRE_BLOCK.get().defaultBlockState(), 10);
-        level.setBlock(headPos, YummyBlockRegister.DISPLAYING_POLLUTED_BLOCK.get()
+        level.setBlock(headPos.above(), YummyBlocks.PURIFIED_SOUL_FIRE_BLOCK.get().defaultBlockState(), 10);
+        level.setBlock(headPos, YummyBlocks.DISPLAYING_POLLUTED_BLOCK.get()
                 .defaultBlockState()
                 .setValue(PollutedBlock.POWERED, true), 10);
-        level.setBlock(headPos.below(), YummyBlockRegister.DISPLAYING_POLLUTED_BLOCK.get().defaultBlockState(), 10);
-        level.setBlock(headPos.below(1), YummyBlockRegister.DISPLAYING_POLLUTED_BLOCK.get().defaultBlockState(), 10);
-        level.setBlock(headPos.below(2), YummyBlockRegister.DISPLAYING_POLLUTED_BLOCK.get()
+        level.setBlock(headPos.below(), YummyBlocks.DISPLAYING_POLLUTED_BLOCK.get().defaultBlockState(), 10);
+        level.setBlock(headPos.below(1), YummyBlocks.DISPLAYING_POLLUTED_BLOCK.get().defaultBlockState(), 10);
+        level.setBlock(headPos.below(2), YummyBlocks.DISPLAYING_POLLUTED_BLOCK.get()
                 .defaultBlockState()
                 .setValue(PollutedBlock.CORRUPTED, true), 10);
-        level.setBlock(headPos.below(3), YummyBlockRegister.DISPLAYING_POLLUTED_BLOCK.get()
+        level.setBlock(headPos.below(3), YummyBlocks.DISPLAYING_POLLUTED_BLOCK.get()
                 .defaultBlockState()
                 .setValue(PollutedBlock.CORRUPTED, true), 10);
     }
@@ -255,7 +255,7 @@ public class Herobrine extends PathfinderMob implements SkillUsable, Enemy {
         for (int i = 0; i < 3; i++) {
             BlockPos spawnBlockPos = YummyUtil.randomPos(getOnPos(), 5, level.getRandom());
             if (level instanceof ServerLevel serverLevel) {
-                Entity entity = YummyEntityRegister.SHADOW_HEROBRINE.get().spawn(serverLevel, null, null, spawnBlockPos, MobSpawnType.MOB_SUMMONED, true, true);
+                Entity entity = YummyEntities.SHADOW_HEROBRINE.get().spawn(serverLevel, null, null, spawnBlockPos, MobSpawnType.MOB_SUMMONED, true, true);
                 if (entity instanceof ShadowHerobrine shadowHerobrine)
                     addShadow(shadowHerobrine);
             }
@@ -280,7 +280,7 @@ public class Herobrine extends PathfinderMob implements SkillUsable, Enemy {
 
         setAbsorptionAmount(666f);
         phaseManager.setMaxAbsorption(666f);
-        this.goalSelector.addGoal(1, new SkillUseGoal(this, new SummonBlockCircleSkill(this, YummyBlockRegister.CORRUPTED_POLLUTED_BLOCK.get())));
+        this.goalSelector.addGoal(1, new SkillUseGoal(this, new SummonBlockCircleSkill(this, YummyBlocks.CORRUPTED_POLLUTED_BLOCK.get())));
     }
 
     @Override
@@ -295,7 +295,7 @@ public class Herobrine extends PathfinderMob implements SkillUsable, Enemy {
         this.goalSelector.addGoal(2, new SkillUseGoal(this, new ShootFireballSkill(this)));
         this.goalSelector.addGoal(3, new SkillUseGoal(this, new TeleportAndShootMeteorSkill(this)));
         this.goalSelector.addGoal(1, new SkillUseGoal(this, new ExplosionSkill(this, 10)));
-        this.goalSelector.addGoal(2, new SkillUseGoal(this, new SummonBlockCircleSkill(this, YummyBlockRegister.POLLUTED_BLOCK.get(), 1, 20 * 8, false)));
+        this.goalSelector.addGoal(2, new SkillUseGoal(this, new SummonBlockCircleSkill(this, YummyBlocks.POLLUTED_BLOCK.get(), 1, 20 * 8, false)));
         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false, false));
@@ -309,7 +309,7 @@ public class Herobrine extends PathfinderMob implements SkillUsable, Enemy {
             return super.hurt(source, amount);
         if (random.nextInt(0, 10) == 5) {
             if (source.getEntity() instanceof LivingEntity livingEntity) {
-                MobEffectInstance mobEffectInstance = new MobEffectInstance(YummyEffectRegister.STUN.get(), 60, 0);
+                MobEffectInstance mobEffectInstance = new MobEffectInstance(YummyEffects.STUN.get(), 60, 0);
                 livingEntity.addEffect(mobEffectInstance);
             }
         }

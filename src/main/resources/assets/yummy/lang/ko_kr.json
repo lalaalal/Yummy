@@ -20,6 +20,12 @@
     "item.yummy.mark_fireball": "낙인 화염구",
     "item.yummy.meteor_staff": "운석 지팡이",
     "item.yummy.spear_of_longinus": "§c롱기누스의 창§r",
+    "item.yummy.herobrine_phase1_disc": "히로빈 1 페이즈 음반",
+    "item.yummy.herobrine_phase2_disc": "히로빈 2 페이즈 음반",
+    "item.yummy.herobrine_phase3_disc": "히로빈 3 페이즈 음반",
+    "item.yummy.herobrine_phase1_disc.desc": "히로빈 1 페이즈 음반",
+    "item.yummy.herobrine_phase2_disc.desc": "히로빈 2 페이즈 음반",
+    "item.yummy.herobrine_phase3_disc.desc": "히로빈 3 페이즈 음반",
     "entity.yummy.herobrine": "히로빈 : 나락의 폭군",
     "entity.yummy.shadow_herobrine": "그림자 히로빈",
     "entity.yummy.thrown_spear_of_longinus": "§c롱기누스의 창§r",
@@ -30,5 +36,11 @@
     "death.effect.mark": "%1$s(이)가 의식의 %2$s이 완성되어 영혼을 빼앗겼습니다.",
     "death.attack.spear_of_longinus": "%2$s에 %1$s의 AT 필드가 찢어졌습니다.",
     "death.attack.thrown_spear_of_longinus.player": "%3$s가 던진 %2$s에 %1$s의 AT 필드가 찢어졌습니다.",
-    "itemGroup.yummy": "야미"
+    "itemGroup.yummy": "야미",
+    "advancements.yummy.root.title": "야미",
+    "advancements.yummy.root.description": "야미!",
+    "advancements.yummy.summon_herobrine.title": "나락의 폭군",
+    "advancements.yummy.summon_herobrine.description": "히로빈을 소환하세요",
+    "advancements.yummy.kill_herobrine.title": "정화된 영혼",
+    "advancements.yummy.kill_herobrine.description": "나락의 군주를 쓰러트리세요"
 }

@@ -3,7 +3,7 @@ package com.lalaalal.yummy.entity.skill;
 import com.lalaalal.yummy.YummyUtil;
 import com.lalaalal.yummy.entity.Herobrine;
 import com.lalaalal.yummy.entity.Meteor;
-import com.lalaalal.yummy.sound.YummySoundRegister;
+import com.lalaalal.yummy.sound.YummySounds;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -28,7 +28,7 @@ public class TeleportAndShootMeteorSkill extends Skill {
     public void showEffect() {
         herobrine.setArmPose(Herobrine.ArmPose.RAISE_BOTH);
         Level level = usingEntity.getLevel();
-        level.playSound(null, usingEntity.getOnPos(), YummySoundRegister.HEROBRINE_TELEPORT.get(), SoundSource.HOSTILE, 0.5f, 1);
+        level.playSound(null, usingEntity.getOnPos(), YummySounds.HEROBRINE_TELEPORT.get(), SoundSource.HOSTILE, 0.5f, 1);
     }
 
     @Override

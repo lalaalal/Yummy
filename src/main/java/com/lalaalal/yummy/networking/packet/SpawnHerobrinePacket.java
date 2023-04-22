@@ -1,8 +1,9 @@
 package com.lalaalal.yummy.networking.packet;
 
 import com.lalaalal.yummy.entity.Herobrine;
-import com.lalaalal.yummy.entity.YummyEntityRegister;
-import com.lalaalal.yummy.sound.YummySoundRegister;
+import com.lalaalal.yummy.entity.YummyEntities;
+import com.lalaalal.yummy.sound.YummySounds;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
@@ -36,9 +37,11 @@ public class SpawnHerobrinePacket extends PositionPacket {
 
         BlockPos blockPos = new BlockPos(x, y, z);
         Herobrine.polluteHerobrineAlter(level, blockPos);
-        level.playSound(null, blockPos, YummySoundRegister.HEROBRINE_SUMMON.get(), SoundSource.HOSTILE, 1, 1);
-        Herobrine herobrine = YummyEntityRegister.HEROBRINE.get().spawn(level, null, null, null, blockPos, MobSpawnType.STRUCTURE, true, false);
-        if (herobrine != null)
+        level.playSound(null, blockPos, YummySounds.HEROBRINE_SUMMON.get(), SoundSource.HOSTILE, 1, 1);
+        Herobrine herobrine = YummyEntities.HEROBRINE.get().spawn(level, null, null, null, blockPos, MobSpawnType.STRUCTURE, true, false);
+        if (herobrine != null) {
             herobrine.setInitialPos(blockPos);
+            CriteriaTriggers.SUMMONED_ENTITY.trigger(player, herobrine);
+        }
     }
 }

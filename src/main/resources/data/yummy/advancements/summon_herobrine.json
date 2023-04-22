@@ -1,0 +1,39 @@
+{
+    "display": {
+        "icon": {
+            "item": "yummy:purified_soul_block"
+        },
+        "title": {
+            "translate": "advancements.yummy.summon_herobrine.title"
+        },
+        "description": {
+            "translate": "advancements.yummy.summon_herobrine.description"
+        },
+        "frame": "goal",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "parent": "yummy:root",
+    "criteria": {
+        "summoned_herobrine": {
+            "trigger": "minecraft:summoned_entity",
+            "conditions": {
+                "entity": [
+                    {
+                        "condition": "minecraft:entity_properties",
+                        "entity": "this",
+                        "predicate": {
+                            "type": "yummy:herobrine"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [
+        [
+            "summoned_herobrine"
+        ]
+    ]
+}

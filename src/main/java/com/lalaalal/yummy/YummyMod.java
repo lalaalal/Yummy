@@ -1,12 +1,12 @@
 package com.lalaalal.yummy;
 
-import com.lalaalal.yummy.block.YummyBlockRegister;
-import com.lalaalal.yummy.block.entity.YummyBlockEntityRegister;
-import com.lalaalal.yummy.effect.YummyEffectRegister;
-import com.lalaalal.yummy.entity.YummyEntityRegister;
-import com.lalaalal.yummy.item.YummyItemRegister;
-import com.lalaalal.yummy.particle.YummyParticleRegister;
-import com.lalaalal.yummy.sound.YummySoundRegister;
+import com.lalaalal.yummy.block.YummyBlocks;
+import com.lalaalal.yummy.block.entity.YummyBlockEntities;
+import com.lalaalal.yummy.effect.YummyEffects;
+import com.lalaalal.yummy.entity.YummyEntities;
+import com.lalaalal.yummy.item.YummyItems;
+import com.lalaalal.yummy.particle.YummyParticles;
+import com.lalaalal.yummy.sound.YummySounds;
 import com.lalaalal.yummy.world.feature.YummyConfiguredFeatures;
 import com.lalaalal.yummy.world.feature.YummyPlacedFeatures;
 import com.mojang.logging.LogUtils;
@@ -32,20 +32,20 @@ public class YummyMod
     public static final CreativeModeTab TAB = new CreativeModeTab(MOD_ID) {
         @Override
         public ItemStack makeIcon() {
-            return YummyItemRegister.RUBELLITE.get().getDefaultInstance();
+            return YummyItems.RUBELLITE.get().getDefaultInstance();
         }
     };
 
     public YummyMod() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        YummyBlockRegister.register(modEventBus);
-        YummyBlockEntityRegister.register(modEventBus);
-        YummyItemRegister.register(modEventBus);
-        YummyParticleRegister.register(modEventBus);
-        YummyEntityRegister.register(modEventBus);
-        YummyEffectRegister.register(modEventBus);
-        YummySoundRegister.register(modEventBus);
+        YummyBlocks.register(modEventBus);
+        YummyBlockEntities.register(modEventBus);
+        YummyItems.register(modEventBus);
+        YummyParticles.register(modEventBus);
+        YummyEntities.register(modEventBus);
+        YummyEffects.register(modEventBus);
+        YummySounds.register(modEventBus);
         YummyConfiguredFeatures.register(modEventBus);
         YummyPlacedFeatures.register(modEventBus);
 

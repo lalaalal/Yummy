@@ -1,6 +1,6 @@
 package com.lalaalal.yummy.entity.skill;
 
-import com.lalaalal.yummy.effect.YummyEffectRegister;
+import com.lalaalal.yummy.effect.YummyEffects;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -29,11 +29,11 @@ public class AddDigSlownessSkill extends Skill {
         AABB area = usingEntity.getBoundingBox().inflate(3.0);
         List<LivingEntity> livingEntities = level.getNearbyEntities(LivingEntity.class, TargetingConditions.DEFAULT, usingEntity, area);
         for (LivingEntity livingEntity : livingEntities) {
-            if (livingEntity.getEffect(YummyEffectRegister.HEROBRINE_MARK.get()) == null)
+            if (livingEntity.getEffect(YummyEffects.HEROBRINE_MARK.get()) == null)
                 continue;
             MobEffectInstance mobEffectInstance = new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 1000000, 4);
             livingEntity.addEffect(mobEffectInstance);
-            livingEntity.removeEffect(YummyEffectRegister.HEROBRINE_MARK.get());
+            livingEntity.removeEffect(YummyEffects.HEROBRINE_MARK.get());
         }
 
         used = true;

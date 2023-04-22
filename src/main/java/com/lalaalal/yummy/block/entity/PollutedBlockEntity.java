@@ -3,11 +3,11 @@ package com.lalaalal.yummy.block.entity;
 import com.lalaalal.yummy.YummyUtil;
 import com.lalaalal.yummy.block.PollutedBlock;
 import com.lalaalal.yummy.effect.HerobrineMark;
-import com.lalaalal.yummy.effect.YummyEffectRegister;
+import com.lalaalal.yummy.effect.YummyEffects;
 import com.lalaalal.yummy.entity.Herobrine;
 import com.lalaalal.yummy.networking.YummyMessages;
 import com.lalaalal.yummy.networking.packet.ShowParticlePacket;
-import com.lalaalal.yummy.sound.YummySoundRegister;
+import com.lalaalal.yummy.sound.YummySounds;
 import com.lalaalal.yummy.tags.YummyTagRegister;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -30,7 +30,7 @@ public class PollutedBlockEntity extends BlockEntity {
     private Herobrine herobrine;
 
     public PollutedBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(YummyBlockEntityRegister.POLLUTED_BLOCK_ENTITY_TYPE.get(), blockPos, blockState);
+        this(YummyBlockEntities.POLLUTED_BLOCK_ENTITY_TYPE.get(), blockPos, blockState);
     }
 
     public PollutedBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState, int tickInterval, int lifetime, int stunDuration) {
@@ -72,7 +72,7 @@ public class PollutedBlockEntity extends BlockEntity {
             level.setBlock(blockPos, getBlockState().setValue(PollutedBlock.POWERED, true), 10);
         }
         if (tick % tickInterval == 0) {
-            level.playSound(null, blockPos, YummySoundRegister.POLLUTED_WAVE.get(), SoundSource.BLOCKS, 0.25f, 1);
+            level.playSound(null, blockPos, YummySounds.POLLUTED_WAVE.get(), SoundSource.BLOCKS, 0.25f, 1);
             affectEntities(level, blockPos, blockState);
             sendParticlePacket(level, blockPos);
         }
@@ -97,7 +97,7 @@ public class PollutedBlockEntity extends BlockEntity {
         if (blockState.getValue(PollutedBlock.CORRUPTED))
             HerobrineMark.overlapMark(entity);
 
-        MobEffectInstance mobEffectInstance = new MobEffectInstance(YummyEffectRegister.STUN.get(), 20 * 6, 0);
+        MobEffectInstance mobEffectInstance = new MobEffectInstance(YummyEffects.STUN.get(), 20 * 6, 0);
         if (!entity.getType().is(YummyTagRegister.HEROBRINE))
             entity.addEffect(mobEffectInstance);
     }

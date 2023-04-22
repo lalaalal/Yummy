@@ -20,6 +20,12 @@
     "item.yummy.mark_fireball": "Mark Fireball",
     "item.yummy.meteor_staff": "Meteor Staff",
     "item.yummy.spear_of_longinus": "§cSpear of Longinus§r",
+    "item.yummy.herobrine_phase1_disc": "Herobrine Phase 1 Disc",
+    "item.yummy.herobrine_phase2_disc": "Herobrine Phase 2 Disc",
+    "item.yummy.herobrine_phase3_disc": "Herobrine Phase 3 Disc",
+    "item.yummy.herobrine_phase1_disc.desc": "Herobrine Phase 1 Disc",
+    "item.yummy.herobrine_phase2_disc.desc": "Herobrine Phase 2 Disc",
+    "item.yummy.herobrine_phase3_disc.desc": "Herobrine Phase 3 Disc",
     "entity.yummy.herobrine": "Herobrine : The Naraka Tyrant",
     "entity.yummy.shadow_herobrine": "Shadow Herobrine",
     "entity.yummy.thrown_spear_of_longinus": "§cSpear of Longinus§r",
@@ -30,5 +36,11 @@
     "death.effect.mark": "%1$s died due to stacking the %2$s.",
     "death.attack.spear_of_longinus": "%1$s's AT field is torn by %2$s.",
     "death.attack.thrown_spear_of_longinus.player": "%1$s's AT field is torn by %2$s %3$s threw.",
-    "itemGroup.yummy": "Yummy"
+    "itemGroup.yummy": "Yummy",
+    "advancements.yummy.root.title": "Yummy",
+    "advancements.yummy.root.description": "YUMMY!",
+    "advancements.yummy.summon_herobrine.title": "Naraka Tyrant",
+    "advancements.yummy.summon_herobrine.description": "Summon Herobrine",
+    "advancements.yummy.kill_herobrine.title": "Purified Soul",
+    "advancements.yummy.kill_herobrine.description": "Defeat the lord of the Naraka"
 }

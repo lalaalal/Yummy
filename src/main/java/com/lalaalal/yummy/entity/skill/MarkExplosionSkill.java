@@ -1,7 +1,7 @@
 package com.lalaalal.yummy.entity.skill;
 
 import com.lalaalal.yummy.effect.HerobrineMark;
-import com.lalaalal.yummy.effect.YummyEffectRegister;
+import com.lalaalal.yummy.effect.YummyEffects;
 import com.lalaalal.yummy.networking.YummyMessages;
 import com.lalaalal.yummy.networking.packet.ShowParticlePacket;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -48,7 +48,7 @@ public class MarkExplosionSkill extends ExplosionSkill {
 
         for (LivingEntity entity : getNearbyEntities()) {
             HerobrineMark.overlapMark(entity);
-            MobEffectInstance effectInstance = new MobEffectInstance(YummyEffectRegister.STUN.get(), 60, 0);
+            MobEffectInstance effectInstance = new MobEffectInstance(YummyEffects.STUN.get(), 60, 0);
             entity.addEffect(effectInstance);
         }
     }
