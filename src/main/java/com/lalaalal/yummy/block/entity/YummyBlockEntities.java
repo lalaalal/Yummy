@@ -19,6 +19,12 @@ public class YummyBlockEntities {
     public static final RegistryObject<BlockEntityType<PollutedBlockEntity>> CORRUPTED_POLLUTED_BLOCK_ENTITY_TYPE
             = register("corrupted_polluted_block_entity_type", (blockPos, blockState) -> new PollutedBlockEntity(YummyBlockEntities.CORRUPTED_POLLUTED_BLOCK_ENTITY_TYPE.get(), blockPos, blockState), YummyBlocks.CORRUPTED_POLLUTED_BLOCK);
 
+    public static final RegistryObject<BlockEntityType<YummySignBlockEntity>> YUMMY_SIGN_BLOCK_ENTITY
+            = BLOCK_ENTITY_TYPES.register("yummy_sign_block_entity", () -> BlockEntityType.Builder.of(YummySignBlockEntity::new,
+            YummyBlocks.EBONY_SIGN.get(),
+            YummyBlocks.EBONY_WALL_SIGN.get()
+    ).build(null));
+
     private static <T extends BlockEntity> RegistryObject<BlockEntityType<T>> register(String name, BlockEntityType.BlockEntitySupplier<T> blockEntitySupplier, RegistryObject<Block> block) {
         return BLOCK_ENTITY_TYPES.register(name,
                 () -> BlockEntityType.Builder.of(blockEntitySupplier, block.get()).build(null));

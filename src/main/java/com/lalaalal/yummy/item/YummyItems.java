@@ -1,11 +1,9 @@
 package com.lalaalal.yummy.item;
 
 import com.lalaalal.yummy.YummyMod;
+import com.lalaalal.yummy.block.YummyBlocks;
 import com.lalaalal.yummy.sound.YummySounds;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.RecordItem;
+import net.minecraft.world.item.*;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -35,6 +33,8 @@ public class YummyItems {
     public static final RegistryObject<Item> METEOR_STAFF = ITEMS.register("meteor_staff",
             () -> new MeteorStaffItem(new Item.Properties().tab(YummyMod.TAB)));
 
+    public static final RegistryObject<Item> EBONY_SIGN = ITEMS.register("ebony_sign",
+            () -> new SignItem(new Item.Properties().tab(YummyMod.TAB).stacksTo(16), YummyBlocks.EBONY_SIGN.get(), YummyBlocks.EBONY_WALL_SIGN.get()));
 
     public static final RegistryObject<Item> HEROBRINE_PHASE1_DISC = ITEMS.register("herobrine_phase1_disc",
             () -> new RecordItem(4, YummySounds.HEROBRINE_MUSIC_PHASE_1,

@@ -34,7 +34,8 @@ public class SummonBlockCircleSkill extends Skill {
 
     @Override
     public boolean canUse() {
-        return circleNum <= limit;
+        return circleNum <= limit
+                && (herobrine.getPhase() == 3 || herobrine.getTarget() != null);
     }
 
     @Override

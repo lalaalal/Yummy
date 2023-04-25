@@ -9,6 +9,11 @@
                     "type": "minecraft:item",
                     "name": "yummy:amethyst_block"
                 }
+            ],
+            "conditions": [
+                {
+                    "condition": "minecraft:survives_explosion"
+                }
             ]
         }
     ]

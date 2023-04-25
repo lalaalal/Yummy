@@ -1,7 +1,10 @@
 package com.lalaalal.yummy.world.feature;
 
 import com.lalaalal.yummy.YummyMod;
+import com.lalaalal.yummy.block.YummyBlocks;
 import net.minecraft.core.Registry;
+import net.minecraft.data.worldgen.placement.PlacementUtils;
+import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.placement.*;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -18,6 +21,15 @@ public class YummyPlacedFeatures {
             () -> new PlacedFeature(YummyConfiguredFeatures.RUBELLITE_ORE.getHolder().get(),
                     commonOrePlacement(9, HeightRangePlacement.triangle(VerticalAnchor.absolute(-80), VerticalAnchor.absolute(80)))
             ));
+
+    public static final RegistryObject<PlacedFeature> EBONY_CHECKED = PLACED_FEATURES.register("ebony_checked",
+            () -> new PlacedFeature(YummyConfiguredFeatures.EBONY.getHolder().get(),
+                    List.of(PlacementUtils.filteredByBlockSurvival(YummyBlocks.EBONY_SAPLING.get()))));
+
+    public static final RegistryObject<PlacedFeature> EBONY_PLACED = PLACED_FEATURES.register("ebony_placed",
+            () -> new PlacedFeature(YummyConfiguredFeatures.EBONY_SPAWN.getHolder().get(), VegetationPlacements.treePlacement(
+                    PlacementUtils.countExtra(3, 0.1f, 2)
+            )));
 
     private static List<PlacementModifier> orePlacement(PlacementModifier countPlacement, PlacementModifier heightRange) {
         return List.of(countPlacement, InSquarePlacement.spread(), heightRange, BiomeFilter.biome());

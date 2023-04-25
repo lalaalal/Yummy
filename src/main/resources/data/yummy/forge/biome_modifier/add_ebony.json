@@ -1,0 +1,6 @@
+{
+    "type": "forge:add_features",
+    "biomes": "#yummy:ebony_growable",
+    "features": "yummy:ebony_placed",
+    "step": "vegetal_decoration"
+}
