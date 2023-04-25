@@ -38,7 +38,7 @@ public class YummyEntities {
 
     public static final RegistryObject<EntityType<Meteor>> METEOR = ENTITY_TYPES.register("meteor",
             () -> EntityType.Builder.of((EntityType.EntityFactory<Meteor>) Meteor::new, MobCategory.MISC)
-                    .sized(2f, 2f)
+                    .sized(0.5f, 0.5f)
                     .build(YummyMod.MOD_ID + ":meteor"));
 
     public static void register(IEventBus eventBus) {

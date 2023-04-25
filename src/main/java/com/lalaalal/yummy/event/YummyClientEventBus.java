@@ -5,12 +5,10 @@ import com.lalaalal.yummy.YummyTypes;
 import com.lalaalal.yummy.block.YummyBlocks;
 import com.lalaalal.yummy.block.entity.YummyBlockEntities;
 import com.lalaalal.yummy.client.model.HerobrineModel;
+import com.lalaalal.yummy.client.model.MeteorModel;
 import com.lalaalal.yummy.client.model.ShadowHerobrineModel;
 import com.lalaalal.yummy.client.model.ThrownSpearOfLonginusModel;
-import com.lalaalal.yummy.client.renderer.HerobrineRenderer;
-import com.lalaalal.yummy.client.renderer.ShadowHerobrineRenderer;
-import com.lalaalal.yummy.client.renderer.ThrownSpearOfLonginusRenderer;
-import com.lalaalal.yummy.client.renderer.YummyItemEntityRenderer;
+import com.lalaalal.yummy.client.renderer.*;
 import com.lalaalal.yummy.entity.YummyEntities;
 import com.lalaalal.yummy.particle.PollutedParticle;
 import com.lalaalal.yummy.particle.YummyParticles;
@@ -37,9 +35,7 @@ public class YummyClientEventBus {
 
     @SubscribeEvent
     public static void registerBlockColors(RegisterColorHandlersEvent.Block event) {
-        event.register((state, level, pos, tint) -> {
-                    return level != null && pos != null ? BiomeColors.getAverageFoliageColor(level, pos) : FoliageColor.getDefaultColor();
-                },
+        event.register((state, level, pos, tint) -> level != null && pos != null ? BiomeColors.getAverageFoliageColor(level, pos) : FoliageColor.getDefaultColor(),
                 YummyBlocks.EBONY_LEAVES.get());
     }
 
@@ -68,8 +64,7 @@ public class YummyClientEventBus {
         event.registerEntityRenderer(YummyEntities.THROWN_SPEAR_OF_LONGINUS.get(), ThrownSpearOfLonginusRenderer::new);
         event.registerEntityRenderer(YummyEntities.MARK_FIREBALL.get(),
                 (context) -> new YummyItemEntityRenderer<>(context, "mark_fireball", 3));
-        event.registerEntityRenderer(YummyEntities.METEOR.get(),
-                (context) -> new YummyItemEntityRenderer<>(context, "meteor", 5));
+        event.registerEntityRenderer(YummyEntities.METEOR.get(), MeteorRenderer::new);
         event.registerBlockEntityRenderer(YummyBlockEntities.YUMMY_SIGN_BLOCK_ENTITY.get(), SignRenderer::new);
     }
 
@@ -78,5 +73,6 @@ public class YummyClientEventBus {
         event.registerLayerDefinition(HerobrineModel.LAYER_LOCATION, HerobrineModel::createBodyLayer);
         event.registerLayerDefinition(ShadowHerobrineModel.LAYER_LOCATION, ShadowHerobrineModel::createBodyLayer);
         event.registerLayerDefinition(ThrownSpearOfLonginusModel.LAYER_LOCATION, ThrownSpearOfLonginusModel::createBodyLayer);
+        event.registerLayerDefinition(MeteorModel.LAYER_LOCATION, MeteorModel::createBodyLayer);
     }
 }

@@ -292,8 +292,7 @@ public class Herobrine extends PathfinderMob implements SkillUsable, Enemy {
 
     protected void addBehaviourGoals() {
         this.goalSelector.addGoal(3, new FollowTargetGoal<>(this));
-        this.goalSelector.addGoal(2, new SkillUseGoal(this, new ShootFireballSkill(this)));
-        this.goalSelector.addGoal(3, new SkillUseGoal(this, new TeleportAndShootMeteorSkill(this)));
+        this.goalSelector.addGoal(4, new SkillUseGoal(this, new TeleportAndShootMeteorSkill(this)));
         this.goalSelector.addGoal(1, new SkillUseGoal(this, new ExplosionSkill(this, 10)));
         this.goalSelector.addGoal(2, new SkillUseGoal(this, new SummonBlockCircleSkill(this, YummyBlocks.POLLUTED_BLOCK.get(), 1, 20 * 8, false)));
         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0D));

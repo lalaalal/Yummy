@@ -58,7 +58,7 @@ public class KnockbackAndMarkSkill extends Skill {
         for (LivingEntity entity : entities) {
             double dx = usingEntity.getX() - entity.getX();
             double dz = usingEntity.getZ() - entity.getZ();
-            double strength = (dx * dx + dz * dz) / 3;
+            double strength = (dx * dx + dz * dz);
             entity.knockback(strength, dx, dz);
             HerobrineMark.overlapMark(entity);
             HerobrineMark.overlapMark(entity);
