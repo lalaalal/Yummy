@@ -24,12 +24,19 @@ public class YummyEntities {
                     .fireImmune()
                     .build(YummyMod.MOD_ID + ":shadow_herobrine"));
 
-
-    public static final RegistryObject<EntityType<ThrownSpearOfLonginus>> THROWN_SPEAR_OF_LONGINUS = ENTITY_TYPES.register("thrown_spear_of_longinus",
+    public static final RegistryObject<EntityType<ThrownSpear>> SPEAR = ENTITY_TYPES.register("spear",
+            () -> EntityType.Builder.of((EntityType.EntityFactory<ThrownSpear>) ThrownSpear::new, MobCategory.MISC)
+                    .sized(0.5f, 0.5f)
+                    .build(YummyMod.MOD_ID + ":spear"));
+    public static final RegistryObject<EntityType<ThrownSpear>> MIGHTY_HOLY_SPEAR = ENTITY_TYPES.register("mighty_holy_spear",
+            () -> EntityType.Builder.of((EntityType.EntityFactory<ThrownSpear>) (type, level) -> new ThrownSpear(YummyEntities.MIGHTY_HOLY_SPEAR.get(), level), MobCategory.MISC)
+                    .sized(0.5f, 0.5f)
+                    .build(YummyMod.MOD_ID + ":mighty_holy_spear"));
+    public static final RegistryObject<EntityType<ThrownSpearOfLonginus>> THROWN_SPEAR_OF_LONGINUS = ENTITY_TYPES.register("spear_of_longinus",
             () -> EntityType.Builder.of((EntityType.EntityFactory<ThrownSpearOfLonginus>) ThrownSpearOfLonginus::new, MobCategory.MISC)
                     .sized(0.5f, 0.5f)
                     .fireImmune()
-                    .build(YummyMod.MOD_ID + ":thrown_spear_of_longinus"));
+                    .build(YummyMod.MOD_ID + ":spear_of_longinus"));
 
     public static final RegistryObject<EntityType<MarkFireball>> MARK_FIREBALL = ENTITY_TYPES.register("mark_fireball",
             () -> EntityType.Builder.of((EntityType.EntityFactory<MarkFireball>) MarkFireball::new, MobCategory.MISC)

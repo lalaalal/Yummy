@@ -5,10 +5,17 @@ import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.block.YummyBlocks;
 import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.features.OreFeatures;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.GeodeBlockSettings;
+import net.minecraft.world.level.levelgen.GeodeCrackSettings;
+import net.minecraft.world.level.levelgen.GeodeLayerSettings;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.WeightedPlacedFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.GeodeConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
@@ -33,8 +40,39 @@ public class YummyConfiguredFeatures {
             OreConfiguration.target(OreFeatures.DEEPSLATE_ORE_REPLACEABLES, YummyBlocks.DEEPSLATE_RUBELLITE_ORE.get().defaultBlockState())
     ));
 
+    public static final Supplier<List<OreConfiguration.TargetBlockState>> OVERWORLD_MANGANITE_ORES
+            = Suppliers.memoize(() -> List.of(
+            OreConfiguration.target(OreFeatures.STONE_ORE_REPLACEABLES, YummyBlocks.MANGANITE.get().defaultBlockState()),
+            OreConfiguration.target(OreFeatures.DEEPSLATE_ORE_REPLACEABLES, YummyBlocks.MANGANITE.get().defaultBlockState())
+    ));
+
     public static final RegistryObject<ConfiguredFeature<?, ?>> RUBELLITE_ORE = CONFIGURED_FEATURES.register("rubellite_ore",
             () -> new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(OVERWORLD_RUBELLITE_ORES.get(), 9)));
+
+    public static final RegistryObject<ConfiguredFeature<?, ?>> MANGANITE_ORE = CONFIGURED_FEATURES.register("manganite_ore",
+            () -> new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(OVERWORLD_MANGANITE_ORES.get(), 4)));
+
+    public static final RegistryObject<ConfiguredFeature<?, ?>> MANGANITE_GEODE = CONFIGURED_FEATURES.register("manganite_geode",
+            () -> new ConfiguredFeature<>(Feature.GEODE,
+                    new GeodeConfiguration(
+                            new GeodeBlockSettings(BlockStateProvider.simple(Blocks.AIR),
+                                    BlockStateProvider.simple(Blocks.AIR),
+                                    BlockStateProvider.simple(Blocks.AIR),
+                                    BlockStateProvider.simple(YummyBlocks.MANGANITE.get()),
+                                    BlockStateProvider.simple(YummyBlocks.MANGANITE.get()),
+                                    List.of(Blocks.AIR.defaultBlockState()),
+                                    BlockTags.FEATURES_CANNOT_REPLACE, BlockTags.GEODE_INVALID_BLOCKS),
+                            new GeodeLayerSettings(1.0D, 1.0D, 2.0D, 2.1D),
+                            new GeodeCrackSettings(0.95D, 2.0D, 2),
+                            0.35D,
+                            0.083D,
+                            true,
+                            UniformInt.of(2, 4),
+                            UniformInt.of(3, 4),
+                            UniformInt.of(1, 2),
+                            -16, 16, 0.05D, 1)
+            )
+    );
 
     public static final RegistryObject<ConfiguredFeature<?, ?>> EBONY
             = CONFIGURED_FEATURES.register("ebony",

@@ -34,6 +34,22 @@
                     "chance": 0.1
                 }
             ]
+        },
+        {
+            "rolls": 1,
+            "bonus_rolls": 0,
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "yummy:god_blood"
+                }
+            ],
+            "conditions": [
+                {
+                    "condition": "minecraft:random_chance",
+                    "chance": 0.0006
+                }
+            ]
         }
     ]
 }

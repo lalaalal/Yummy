@@ -1,0 +1,12 @@
+{
+    "type": "minecraft:smithing",
+    "base": {
+        "item": "yummy:spear"
+    },
+    "addition": {
+        "item": "yummy:god_blood"
+    },
+    "result": {
+        "item": "yummy:mighty_holy_spear"
+    }
+}

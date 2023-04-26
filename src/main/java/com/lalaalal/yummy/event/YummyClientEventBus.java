@@ -4,10 +4,7 @@ import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.YummyTypes;
 import com.lalaalal.yummy.block.YummyBlocks;
 import com.lalaalal.yummy.block.entity.YummyBlockEntities;
-import com.lalaalal.yummy.client.model.HerobrineModel;
-import com.lalaalal.yummy.client.model.MeteorModel;
-import com.lalaalal.yummy.client.model.ShadowHerobrineModel;
-import com.lalaalal.yummy.client.model.ThrownSpearOfLonginusModel;
+import com.lalaalal.yummy.client.model.*;
 import com.lalaalal.yummy.client.renderer.*;
 import com.lalaalal.yummy.entity.YummyEntities;
 import com.lalaalal.yummy.particle.PollutedParticle;
@@ -61,6 +58,10 @@ public class YummyClientEventBus {
     public static void entityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(YummyEntities.HEROBRINE.get(), HerobrineRenderer::new);
         event.registerEntityRenderer(YummyEntities.SHADOW_HEROBRINE.get(), ShadowHerobrineRenderer::new);
+        event.registerEntityRenderer(YummyEntities.SPEAR.get(), ThrownSpearRenderer::new);
+        event.registerEntityRenderer(YummyEntities.MIGHTY_HOLY_SPEAR.get(), context -> new ThrownSpearRenderer<>(context, "mighty_holy_spear", () -> new ThrownMightyHolySpearModel<>(
+                context.bakeLayer(ThrownMightyHolySpearModel.LAYER_LOCATION)
+        )));
         event.registerEntityRenderer(YummyEntities.THROWN_SPEAR_OF_LONGINUS.get(), ThrownSpearOfLonginusRenderer::new);
         event.registerEntityRenderer(YummyEntities.MARK_FIREBALL.get(),
                 (context) -> new YummyItemEntityRenderer<>(context, "mark_fireball", 3));
@@ -72,6 +73,8 @@ public class YummyClientEventBus {
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(HerobrineModel.LAYER_LOCATION, HerobrineModel::createBodyLayer);
         event.registerLayerDefinition(ShadowHerobrineModel.LAYER_LOCATION, ShadowHerobrineModel::createBodyLayer);
+        event.registerLayerDefinition(ThrownSpearModel.LAYER_LOCATION, ThrownSpearModel::createBodyLayer);
+        event.registerLayerDefinition(ThrownMightyHolySpearModel.LAYER_LOCATION, ThrownMightyHolySpearModel::createBodyLayer);
         event.registerLayerDefinition(ThrownSpearOfLonginusModel.LAYER_LOCATION, ThrownSpearOfLonginusModel::createBodyLayer);
         event.registerLayerDefinition(MeteorModel.LAYER_LOCATION, MeteorModel::createBodyLayer);
     }

@@ -27,6 +27,6 @@ public class PurifiedSoulFireBlock extends BaseFireBlock {
     @SuppressWarnings("deprecation")
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-        return !level.getBlockState(pos.below()).is(Blocks.AIR);
+        return level.getBlockState(pos.below()).isFaceSturdy(level, pos, Direction.UP);
     }
 }

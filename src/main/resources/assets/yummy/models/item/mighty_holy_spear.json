@@ -1,0 +1,6 @@
+{
+    "parent": "minecraft:item/handheld",
+    "textures": {
+        "layer0": "yummy:item/mighty_holy_spear"
+    }
+}

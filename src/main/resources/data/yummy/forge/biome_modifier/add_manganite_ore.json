@@ -1,6 +1,6 @@
 {
     "type": "forge:add_features",
     "biomes": "#minecraft:is_overworld",
-    "features": "yummy:rubellite_ore_placed",
+    "features": "yummy:manganite_ore",
     "step": "underground_ores"
 }

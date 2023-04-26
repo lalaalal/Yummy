@@ -1,0 +1,12 @@
+{
+    "type": "minecraft:smithing",
+    "base": {
+        "item": "minecraft:iron_hoe"
+    },
+    "addition": {
+        "item": "yummy:rubellite"
+    },
+    "result": {
+        "item": "yummy:steel_hoe"
+    }
+}

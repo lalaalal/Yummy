@@ -45,6 +45,12 @@ public class YummyBlocks {
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.DEEPSLATE), UniformInt.of(3, 7)),
             YummyMod.TAB);
+    public static final RegistryObject<Block> MANGANITE = register("manganite",
+            () -> new Block(BlockBehaviour.Properties.of(Material.METAL)
+                    .strength(5f, 6f)
+                    .requiresCorrectToolForDrops()),
+            YummyMod.TAB);
+
     public static final RegistryObject<Block> PURIFIED_SOUL_BLOCK = register("purified_soul_block",
             () -> new Block(BlockBehaviour.Properties.of(Material.DIRT)
                     .strength(0.5F)
