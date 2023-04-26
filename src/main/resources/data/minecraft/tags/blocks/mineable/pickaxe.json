@@ -1,8 +1,10 @@
 {
     "replace": false,
     "values": [
-        "yummy:nemethyst_block",
-        "yummy:breath_steel_block",
-        "yummy:echo_silver_block"
+        "yummy:amethyst_block",
+        "yummy:rubellite_block",
+        "yummy:rubellite_ore",
+        "yummy:deepslate_rubellite_ore",
+        "yummy:polluted_block"
     ]
 }

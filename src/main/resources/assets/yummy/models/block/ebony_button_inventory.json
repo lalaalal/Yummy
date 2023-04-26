@@ -1,0 +1,6 @@
+{
+    "parent": "minecraft:block/button_inventory",
+    "textures": {
+        "texture": "yummy:block/ebony_planks"
+    }
+}

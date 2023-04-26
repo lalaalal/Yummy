@@ -1,0 +1,7 @@
+{
+    "parent": "minecraft:block/leaves",
+    "textures": {
+        "all": "yummy:block/ebony_leaves"
+    },
+    "render_type": "cutout"
+}

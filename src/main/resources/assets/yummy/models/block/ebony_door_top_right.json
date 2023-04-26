@@ -1,0 +1,8 @@
+{
+    "parent": "minecraft:block/door_top_right",
+    "textures": {
+        "bottom": "yummy:block/ebony_door_bottom",
+        "top": "yummy:block/ebony_door_top"
+    }
+}
+

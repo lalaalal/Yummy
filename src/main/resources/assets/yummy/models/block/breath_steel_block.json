@@ -1,6 +1,0 @@
-{
-    "parent": "minecraft:block/cube_all",
-    "textures": {
-        "all": "yummy:blocks/breath_steel_block"
-    }
-}

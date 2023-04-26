@@ -1,0 +1,13 @@
+{
+    "variants": {
+        "type=bottom": {
+            "model": "yummy:block/ebony_slab"
+        },
+        "type=double": {
+            "model": "yummy:block/ebony_planks"
+        },
+        "type=top": {
+            "model": "yummy:block/ebony_slab_top"
+        }
+    }
+}

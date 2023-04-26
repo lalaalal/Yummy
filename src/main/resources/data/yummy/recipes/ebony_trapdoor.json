@@ -1,0 +1,17 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "group": "wooden_trapdoor",
+    "pattern": [
+        "###",
+        "###"
+    ],
+    "key": {
+        "#": {
+            "item": "yummy:ebony_planks"
+        }
+    },
+    "result": {
+        "item": "yummy:ebony_trapdoor",
+        "count": 3
+    }
+}

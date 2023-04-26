@@ -1,0 +1,56 @@
+{
+    "herobrine_music_phase_1": {
+        "sounds": [
+            {
+                "name": "yummy:herobrine_music_phase_1",
+                "stream": true
+            }
+        ]
+    },
+    "herobrine_music_phase_2": {
+        "sounds": [
+            {
+                "name": "yummy:herobrine_music_phase_2",
+                "stream": true
+            }
+        ]
+    },
+    "herobrine_music_phase_3": {
+        "sounds": [
+            {
+                "name": "yummy:herobrine_music_phase_3",
+                "stream": true
+            }
+        ]
+    },
+    "herobrine_rush": {
+        "sounds": [
+            "yummy:herobrine_rush"
+        ]
+    },
+    "herobrine_summon": {
+        "sounds": [
+            "yummy:herobrine_summon"
+        ]
+    },
+    "herobrine_teleport": {
+        "sounds": [
+            "yummy:herobrine_teleport"
+        ]
+    },
+    "polluted_wave": {
+        "sounds": [
+            "yummy:polluted_wave"
+        ]
+    },
+    "shadow_summon": {
+        "sounds": [
+            "yummy:shadow_summon"
+        ]
+    },
+    "shoot_fireball": {
+        "sounds": [
+            "yummy:shoot_fireball"
+        ]
+    }
+}

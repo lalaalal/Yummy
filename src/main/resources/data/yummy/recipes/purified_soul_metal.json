@@ -1,0 +1,36 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "yummy:purified_soul_shard"
+        },
+        {
+            "item": "yummy:purified_soul_shard"
+        },
+        {
+            "item": "yummy:purified_soul_shard"
+        },
+        {
+            "item": "yummy:purified_soul_shard"
+        },
+        {
+            "item": "minecraft:blaze_powder"
+        },
+        {
+            "item": "minecraft:blaze_powder"
+        },
+        {
+            "item": "minecraft:blaze_powder"
+        },
+        {
+            "item": "minecraft:blaze_powder"
+        },
+        {
+            "item": "minecraft:netherite_ingot"
+        }
+    ],
+    "result": {
+        "item": "yummy:purified_soul_metal",
+        "count": 1
+    }
+}

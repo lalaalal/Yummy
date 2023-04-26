@@ -1,0 +1,16 @@
+{
+    "variants": {
+        "axis=x": {
+            "model": "yummy:block/ebony_wood",
+            "x": 90,
+            "y": 90
+        },
+        "axis=y": {
+            "model": "yummy:block/ebony_wood"
+        },
+        "axis=z": {
+            "model": "yummy:block/ebony_wood",
+            "x": 90
+        }
+    }
+}
