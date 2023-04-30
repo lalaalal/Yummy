@@ -7,11 +7,15 @@ public abstract class TickableSkill {
     protected final PathfinderMob usingEntity;
     protected final Level level;
     protected final int cooldown;
+    protected final int animationDuration;
+    protected final int tickDuration;
 
-    public TickableSkill(PathfinderMob usingEntity, int cooldown) {
+    public TickableSkill(PathfinderMob usingEntity, int cooldown, int animationDuration, int tickDuration) {
         this.usingEntity = usingEntity;
         this.level = usingEntity.level;
         this.cooldown = cooldown;
+        this.animationDuration = animationDuration;
+        this.tickDuration = tickDuration;
     }
 
     public int getCooldown() {
@@ -22,11 +26,15 @@ public abstract class TickableSkill {
      * @param tick Tick
      * @return True when animation end
      */
-    public abstract boolean animationTick(final int tick);
+    public boolean animationTick(int tick) {
+        return tick > animationDuration;
+    }
 
     /**
      * @param tick Tick
      * @return True when using skill end
      */
-    public abstract boolean tick(final int tick);
+    public boolean tick(int tick) {
+        return tick > tickDuration;
+    }
 }

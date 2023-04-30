@@ -1,6 +1,5 @@
 package com.lalaalal.yummy.entity;
 
-import com.lalaalal.yummy.YummyUtil;
 import com.lalaalal.yummy.effect.HerobrineMark;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.damagesource.DamageSource;
@@ -13,11 +12,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
 
 public class MarkFireball extends Fireball {
     protected float explosionPower = 1;
     protected boolean markEntities = true;
+    protected int time = 0;
+    private int discardTime = 20 * 15;
 
     public MarkFireball(EntityType<? extends Fireball> entityType, Level level) {
         super(entityType, level);
@@ -33,21 +33,44 @@ public class MarkFireball extends Fireball {
         this.markEntities = markEntities;
     }
 
-    @Override
-    protected void onHit(HitResult result) {
-        super.onHit(result);
+    public void setExplosionPower(float explosionPower) {
+        this.explosionPower = explosionPower;
+    }
+
+    public void setMarkEntities(boolean markEntities) {
+        this.markEntities = markEntities;
+    }
+
+    public void setDiscardTime(int discardTime) {
+        this.discardTime = discardTime;
+    }
+
+    public void explodeAndDiscard() {
         if (!this.level.isClientSide) {
-            Vec3 hitLocation = result.getLocation();
             if (markEntities)
-                markEntities(level, hitLocation);
+                markEntities(level);
             this.level.explode(this.getOwner(), this.getX(), this.getY(), this.getZ(), explosionPower, true, Explosion.BlockInteraction.DESTROY);
 
             this.discard();
         }
     }
 
-    private void markEntities(Level level, Vec3 location) {
-        AABB area = YummyUtil.createArea(location.x, location.y, location.z, 5);
+    @Override
+    protected void onHit(HitResult result) {
+        super.onHit(result);
+        explodeAndDiscard();
+    }
+
+    @Override
+    public void tick() {
+        if (time++ > discardTime)
+            explodeAndDiscard();
+
+        super.tick();
+    }
+
+    private void markEntities(Level level) {
+        AABB area = getBoundingBox().inflate(3);
         for (LivingEntity livingEntity : level.getEntitiesOfClass(LivingEntity.class, area))
             HerobrineMark.overlapMark(livingEntity);
     }

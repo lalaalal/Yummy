@@ -5,6 +5,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 public class YummyUtil {
     public static AABB createArea(BlockPos blockPos, int range) {
@@ -48,5 +49,12 @@ public class YummyUtil {
         if (value < 0)
             return -1;
         return 0;
+    }
+
+    public static Vec3 calcOrthogonal(Vec3 vec3, double angle, double scale) {
+        double x = vec3.x * Math.cos(angle) - vec3.z * Math.sin(angle);
+        double z = vec3.x * Math.sin(angle) + vec3.z * Math.cos(angle);
+
+        return new Vec3(x * scale, 0, z * scale);
     }
 }

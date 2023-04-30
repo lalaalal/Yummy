@@ -58,6 +58,11 @@ public class YummyEntities {
                     .sized(1f, 1f)
                     .build(YummyMod.MOD_ID + ":transforming_block_entity"));
 
+    public static final RegistryObject<EntityType<MagicCircle>> MAGIC_CIRCLE = ENTITY_TYPES.register("magic_circle",
+            () -> EntityType.Builder.of(MagicCircle::new, MobCategory.MISC)
+                    .sized(0f, 0f)
+                    .build(YummyMod.MOD_ID + ":magic_circle"));
+
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);
     }

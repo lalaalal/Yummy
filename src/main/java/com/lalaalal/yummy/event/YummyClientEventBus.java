@@ -64,10 +64,11 @@ public class YummyClientEventBus {
         )));
         event.registerEntityRenderer(YummyEntities.THROWN_SPEAR_OF_LONGINUS.get(), ThrownSpearOfLonginusRenderer::new);
         event.registerEntityRenderer(YummyEntities.MARK_FIREBALL.get(),
-                (context) -> new YummyItemEntityRenderer<>(context, "mark_fireball", 3));
+                (context) -> new YummyItemEntityRenderer<>(context, "mark_fireball", 1));
         event.registerEntityRenderer(YummyEntities.METEOR.get(), MeteorRenderer::new);
         event.registerEntityRenderer(YummyEntities.FLOATING_BLOCK_ENTITY.get(), FloatingBlockRenderer::new);
         event.registerEntityRenderer(YummyEntities.TRANSFORMING_BLOCK_ENTITY.get(), FloatingBlockRenderer::new);
+        event.registerEntityRenderer(YummyEntities.MAGIC_CIRCLE.get(), MagicCircleRenderer::new);
         event.registerBlockEntityRenderer(YummyBlockEntities.YUMMY_SIGN_BLOCK_ENTITY.get(), SignRenderer::new);
     }
 

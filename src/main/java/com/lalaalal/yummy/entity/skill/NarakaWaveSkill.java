@@ -18,29 +18,30 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 
 public class NarakaWaveSkill extends TickableSkill {
-    public static final int ANIMATION_DURATION = 10;
     public static final int SKILL_DURATION = 8;
-    public static final int SKILL_END_TICK = 20;
+    public static final Vec3 MOTION_MULTIPLIER = new Vec3(0.1, 0.1, 0.1);
+    public static final Vec3 TRANSFORMING_BLOCK_VELOCITY = new Vec3(0, 0.8, 0);
+    public static final Vec3 FLOATING_BLOCK_VELOCITY = new Vec3(0, 0.6, 0);
 
     private BlockPos usingPos;
 
     public NarakaWaveSkill(PathfinderMob usingEntity, int cooldown) {
-        super(usingEntity, cooldown);
+        super(usingEntity, cooldown, 10, 20);
     }
 
     @Override
     public boolean animationTick(int tick) {
-        if (tick == ANIMATION_DURATION)
+        if (tick == animationDuration)
             usingPos = usingEntity.getOnPos();
 
-        return tick > ANIMATION_DURATION;
+        return super.animationTick(tick);
     }
 
     @Override
     public boolean tick(int tick) {
         shakeEntities(tick);
         if (tick > SKILL_DURATION)
-            return tick > SKILL_END_TICK;
+            return super.tick(tick);
 
         floatBlock(tick);
         return false;
@@ -51,21 +52,14 @@ public class NarakaWaveSkill extends TickableSkill {
         List<LivingEntity> entities = level.getNearbyEntities(LivingEntity.class, TargetingConditions.DEFAULT, usingEntity, area);
         for (LivingEntity entity : entities) {
             Vec3 viewVector = entity.getViewVector(1);
-            Vec3 deltaMovement = calcOrthogonal(viewVector, Math.PI * (tick % 2 == 0 ? 0.5 : -0.5), 0.2);
+            Vec3 deltaMovement = YummyUtil.calcOrthogonal(viewVector, Math.PI * (tick % 2 == 0 ? 0.5 : -0.5), 0.2);
             entity.setDeltaMovement(deltaMovement);
-            entity.makeStuckInBlock(level.getBlockState(entity.getOnPos().above()), new Vec3(0.2, 1, 0.2));
+            entity.makeStuckInBlock(level.getBlockState(entity.getOnPos().above()), MOTION_MULTIPLIER);
             entity.move(MoverType.SELF, deltaMovement);
             if (entity instanceof ServerPlayer serverPlayer)
                 serverPlayer.setShiftKeyDown(tick % 2 == 0);
             entity.hurt(new EntityDamageSource("naraka_wave", usingEntity), 1);
         }
-    }
-
-    private Vec3 calcOrthogonal(Vec3 vec3, double angle, double scale) {
-        double x = vec3.x * Math.cos(angle) - vec3.z * Math.sin(angle);
-        double z = vec3.x * Math.sin(angle) + vec3.z * Math.cos(angle);
-
-        return new Vec3(x * scale, 0, z * scale);
     }
 
     private void floatBlock(int tick) {
@@ -88,9 +82,9 @@ public class NarakaWaveSkill extends TickableSkill {
             BlockPos pos = YummyUtil.findHorizonPos(new BlockPos(x, usingPos.getY(), z), level).below();
             BlockState state = level.getBlockState(pos);
             if ((tick == 2 || tick == 4) && i % (tick) == 0)
-                TransformingBlockEntity.floatAndTransformBlock(level, pos, new Vec3(0, 0.8, 0), state, YummyBlocks.POLLUTED_BLOCK.get().defaultBlockState());
+                TransformingBlockEntity.floatAndTransformBlock(level, pos, TRANSFORMING_BLOCK_VELOCITY, state, YummyBlocks.POLLUTED_BLOCK.get().defaultBlockState());
             else
-                FloatingBlockEntity.floatBlock(level, pos, new Vec3(0, 0.6, 0), FloatingBlockEntity.DEFAULT_ACCELERATION, state);
+                FloatingBlockEntity.floatBlock(level, pos, FLOATING_BLOCK_VELOCITY, FloatingBlockEntity.DEFAULT_ACCELERATION, state);
         }
     }
 }

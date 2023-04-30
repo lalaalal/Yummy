@@ -4,6 +4,7 @@ import com.lalaalal.yummy.entity.goal.FollowTargetGoal;
 import com.lalaalal.yummy.entity.goal.TickableSkillUseGoal;
 import com.lalaalal.yummy.entity.skill.NarakaWaveSkill;
 import com.lalaalal.yummy.entity.skill.SkillUsable;
+import com.lalaalal.yummy.entity.skill.ThrowNarakaFireballSkill;
 import com.lalaalal.yummy.entity.skill.TickableSkill;
 import com.lalaalal.yummy.misc.PhaseManager;
 import com.lalaalal.yummy.networking.YummyMessages;
@@ -125,6 +126,7 @@ public class Herobrine extends Monster implements IAnimatable, SkillUsable {
     protected void registerSkills() {
         this.goalSelector.addGoal(1, skillUseGoal);
         registerSkill(new NarakaWaveSkill(this, 20 * 30), "naraka_wave");
+        registerSkill(new ThrowNarakaFireballSkill(this, 20 * 6), "throw_naraka_fireball");
     }
 
     public void registerSkill(TickableSkill skill, String name) {
