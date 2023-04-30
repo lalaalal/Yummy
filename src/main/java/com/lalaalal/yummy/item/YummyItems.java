@@ -6,6 +6,7 @@ import com.lalaalal.yummy.entity.YummyEntities;
 import com.lalaalal.yummy.sound.YummySounds;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.*;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -65,6 +66,8 @@ public class YummyItems {
             () -> new MarkFireballItem(new Item.Properties().tab(YummyMod.TAB)));
     public static final RegistryObject<Item> METEOR_STAFF = ITEMS.register("meteor_staff",
             () -> new MeteorStaffItem(new Item.Properties().tab(YummyMod.TAB)));
+    public static final RegistryObject<Item> FLOATING_STICK = ITEMS.register("floating_stick",
+            () -> new FloatingStick(new Item.Properties().tab(YummyMod.TAB)));
 
     public static final RegistryObject<Item> EBONY_SIGN = ITEMS.register("ebony_sign",
             () -> new SignItem(new Item.Properties().tab(YummyMod.TAB).stacksTo(16), YummyBlocks.EBONY_SIGN.get(), YummyBlocks.EBONY_WALL_SIGN.get()));
@@ -92,6 +95,9 @@ public class YummyItems {
                     .tab(YummyMod.TAB)
                     .stacksTo(1)
                     .rarity(Rarity.EPIC)));
+
+    public static final RegistryObject<Item> HEROBRINE_SPAWN_EGG = ITEMS.register("herobrine_spawn_egg",
+            () -> new ForgeSpawnEggItem(YummyEntities.HEROBRINE, 0x0f0f0f, 0xff0000, new Item.Properties().tab(YummyMod.TAB)));
 
     public static final RegistryObject<Item> BONE_MEAL = VANILLA_ITEMS.register("bone_meal",
             () -> new YummyBoneMealItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));

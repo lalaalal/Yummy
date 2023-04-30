@@ -1,7 +1,7 @@
 package com.lalaalal.yummy.entity.skill;
 
 import com.lalaalal.yummy.YummyUtil;
-import com.lalaalal.yummy.entity.Herobrine;
+import com.lalaalal.yummy.entity.LegacyHerobrine;
 import com.lalaalal.yummy.entity.Meteor;
 import com.lalaalal.yummy.sound.YummySounds;
 import net.minecraft.sounds.SoundSource;
@@ -12,9 +12,9 @@ import net.minecraft.world.phys.Vec3;
 public class TeleportAndShootMeteorSkill extends Skill {
     public static final int COOLDOWN = 20 * 17;
     public static final int WARMUP = 20;
-    private final Herobrine herobrine;
+    private final LegacyHerobrine herobrine;
 
-    public TeleportAndShootMeteorSkill(Herobrine usingEntity) {
+    public TeleportAndShootMeteorSkill(LegacyHerobrine usingEntity) {
         super(usingEntity, COOLDOWN, WARMUP);
         this.herobrine = usingEntity;
     }
@@ -26,7 +26,7 @@ public class TeleportAndShootMeteorSkill extends Skill {
 
     @Override
     public void showEffect() {
-        herobrine.setArmPose(Herobrine.ArmPose.RAISE_BOTH);
+        herobrine.setArmPose(LegacyHerobrine.ArmPose.RAISE_BOTH);
         Level level = usingEntity.getLevel();
         level.playSound(null, usingEntity.getOnPos(), YummySounds.HEROBRINE_TELEPORT.get(), SoundSource.HOSTILE, 0.5f, 1);
     }
@@ -54,6 +54,6 @@ public class TeleportAndShootMeteorSkill extends Skill {
 
     @Override
     public void endEffect() {
-        herobrine.setArmPose(Herobrine.ArmPose.NORMAL);
+        herobrine.setArmPose(LegacyHerobrine.ArmPose.NORMAL);
     }
 }

@@ -1,29 +1,29 @@
 package com.lalaalal.yummy.entity.skill;
 
 import com.lalaalal.yummy.block.entity.PollutedBlockEntity;
-import com.lalaalal.yummy.entity.Herobrine;
+import com.lalaalal.yummy.entity.LegacyHerobrine;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class SummonBlockCircleSkill extends Skill {
-    private final Herobrine herobrine;
+    private final LegacyHerobrine herobrine;
     private final Block block;
     private final int limit;
     private final int blockNumPerCircle;
     private int circleNum = 1;
     private final boolean increaseCircle;
 
-    public SummonBlockCircleSkill(Herobrine usingEntity, Block block) {
+    public SummonBlockCircleSkill(LegacyHerobrine usingEntity, Block block) {
         this(usingEntity, block, 4, 6, 20 * 6, 0, true);
     }
 
-    public SummonBlockCircleSkill(Herobrine usingEntity, Block block, int limit, int cooldown, boolean increaseCircle) {
+    public SummonBlockCircleSkill(LegacyHerobrine usingEntity, Block block, int limit, int cooldown, boolean increaseCircle) {
         this(usingEntity, block, limit, 6, cooldown, 0, increaseCircle);
     }
 
-    public SummonBlockCircleSkill(Herobrine usingEntity, Block block, int limit, int blockNumPerCircle, int cooldown, int warmup, boolean increaseCircle) {
+    public SummonBlockCircleSkill(LegacyHerobrine usingEntity, Block block, int limit, int blockNumPerCircle, int cooldown, int warmup, boolean increaseCircle) {
         super(usingEntity, cooldown, warmup);
         this.herobrine = usingEntity;
         this.block = block;

@@ -1,7 +1,9 @@
 package com.lalaalal.yummy.entity.skill;
 
-public interface SkillUsable {
-    boolean isUsingSkill();
+import org.jetbrains.annotations.Nullable;
 
-    void setUsingSkill(boolean value);
+public interface SkillUsable {
+    void setUsingSkill(@Nullable TickableSkill skill);
+
+    String getUsingSkillName();
 }

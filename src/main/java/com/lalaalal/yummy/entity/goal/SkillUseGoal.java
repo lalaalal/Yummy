@@ -1,14 +1,14 @@
 package com.lalaalal.yummy.entity.goal;
 
+import com.lalaalal.yummy.entity.skill.LegacySkillUsable;
 import com.lalaalal.yummy.entity.skill.Skill;
-import com.lalaalal.yummy.entity.skill.SkillUsable;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.Level;
 
 public class SkillUseGoal extends Goal {
     protected final Mob mob;
-    protected SkillUsable skillUsable;
+    protected LegacySkillUsable skillUsable;
     protected final Skill skill;
     private final Level level;
     private long prevUsedGameTime;
@@ -19,7 +19,7 @@ public class SkillUseGoal extends Goal {
         this.skill = skill;
 
         this.level = mob.getLevel();
-        if (mob instanceof SkillUsable skillUsableMob)
+        if (mob instanceof LegacySkillUsable skillUsableMob)
             this.skillUsable = skillUsableMob;
     }
 

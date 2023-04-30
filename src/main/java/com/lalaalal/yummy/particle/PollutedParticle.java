@@ -15,7 +15,7 @@ public class PollutedParticle extends TextureSheetParticle {
         this.xd = 0;
         this.yd = (this.random.nextDouble() * 2 + 1) * 0.01 * ySpeed;
         this.zd = 0;
-        double lifetime = (240 - this.random.nextInt(0, 40) * ySpeed) / Math.max(ySpeed, 1);
+        double lifetime = (240 - this.random.nextInt(0, 40) * Math.abs(ySpeed)) / Math.max(Math.abs(ySpeed), 1);
         setLifetime(Math.max((int) lifetime, 1));
     }
 

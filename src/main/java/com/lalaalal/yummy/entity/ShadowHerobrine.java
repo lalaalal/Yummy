@@ -20,7 +20,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 public class ShadowHerobrine extends PathfinderMob implements PowerableMob, Enemy {
-    private Herobrine herobrine;
+    private LegacyHerobrine herobrine;
 
     public static AttributeSupplier.Builder getHerobrineAttributes() {
         return Mob.createMobAttributes()
@@ -40,7 +40,7 @@ public class ShadowHerobrine extends PathfinderMob implements PowerableMob, Enem
         return herobrine != null;
     }
 
-    public void setHerobrine(Herobrine herobrine) {
+    public void setHerobrine(LegacyHerobrine herobrine) {
         this.herobrine = herobrine;
         this.goalSelector.addGoal(1, new FollowHerobrineGoal(herobrine));
     }
@@ -55,7 +55,7 @@ public class ShadowHerobrine extends PathfinderMob implements PowerableMob, Enem
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1, true));
         this.goalSelector.addGoal(3, new RandomStrollGoal(this, 1));
 
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this, Herobrine.class));
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this, LegacyHerobrine.class));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false, false));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Mob.class, false,
                 (livingEntity) -> !livingEntity.getType().is(YummyTagRegister.HEROBRINE)));
@@ -80,10 +80,10 @@ public class ShadowHerobrine extends PathfinderMob implements PowerableMob, Enem
     private class FollowHerobrineGoal extends Goal {
         public static final double START_FOLLOWING_DISTANCE = 12;
 
-        private final Herobrine herobrine;
+        private final LegacyHerobrine herobrine;
         private int timeToRecalculatePath;
 
-        public FollowHerobrineGoal(Herobrine herobrine) {
+        public FollowHerobrineGoal(LegacyHerobrine herobrine) {
             this.herobrine = herobrine;
         }
 

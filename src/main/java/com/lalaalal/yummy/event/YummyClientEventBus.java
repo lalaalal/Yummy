@@ -66,12 +66,14 @@ public class YummyClientEventBus {
         event.registerEntityRenderer(YummyEntities.MARK_FIREBALL.get(),
                 (context) -> new YummyItemEntityRenderer<>(context, "mark_fireball", 3));
         event.registerEntityRenderer(YummyEntities.METEOR.get(), MeteorRenderer::new);
+        event.registerEntityRenderer(YummyEntities.FLOATING_BLOCK_ENTITY.get(), FloatingBlockRenderer::new);
+        event.registerEntityRenderer(YummyEntities.TRANSFORMING_BLOCK_ENTITY.get(), FloatingBlockRenderer::new);
         event.registerBlockEntityRenderer(YummyBlockEntities.YUMMY_SIGN_BLOCK_ENTITY.get(), SignRenderer::new);
     }
 
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        event.registerLayerDefinition(HerobrineModel.LAYER_LOCATION, HerobrineModel::createBodyLayer);
+        event.registerLayerDefinition(LegacyHerobrineModel.LAYER_LOCATION, LegacyHerobrineModel::createBodyLayer);
         event.registerLayerDefinition(ShadowHerobrineModel.LAYER_LOCATION, ShadowHerobrineModel::createBodyLayer);
         event.registerLayerDefinition(ThrownSpearModel.LAYER_LOCATION, ThrownSpearModel::createBodyLayer);
         event.registerLayerDefinition(ThrownMightyHolySpearModel.LAYER_LOCATION, ThrownMightyHolySpearModel::createBodyLayer);

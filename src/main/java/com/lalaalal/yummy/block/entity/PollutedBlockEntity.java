@@ -1,10 +1,9 @@
 package com.lalaalal.yummy.block.entity;
 
-import com.lalaalal.yummy.YummyUtil;
 import com.lalaalal.yummy.block.PollutedBlock;
 import com.lalaalal.yummy.effect.HerobrineMark;
 import com.lalaalal.yummy.effect.YummyEffects;
-import com.lalaalal.yummy.entity.Herobrine;
+import com.lalaalal.yummy.entity.LegacyHerobrine;
 import com.lalaalal.yummy.networking.YummyMessages;
 import com.lalaalal.yummy.networking.packet.ShowParticlePacket;
 import com.lalaalal.yummy.sound.YummySounds;
@@ -23,11 +22,11 @@ import net.minecraft.world.phys.AABB;
 import java.util.List;
 
 public class PollutedBlockEntity extends BlockEntity {
-    protected int tickInterval = 20 * 10;
-    protected int lifetime = 20 * 6;
-    protected int stunDuration = 20 * 6;
-    protected int tick = -30;
-    private Herobrine herobrine;
+    protected int tickInterval = 20 * 6;
+    protected int lifetime = 20 * 7;
+    protected int stunDuration = 20 * 3;
+    protected int tick = 0;
+    private LegacyHerobrine herobrine;
 
     public PollutedBlockEntity(BlockPos blockPos, BlockState blockState) {
         this(YummyBlockEntities.POLLUTED_BLOCK_ENTITY_TYPE.get(), blockPos, blockState);
@@ -42,7 +41,6 @@ public class PollutedBlockEntity extends BlockEntity {
 
     public PollutedBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
-//        tick -= ThreadLocalRandom.current().nextInt(0, 100);
     }
 
     @Override
@@ -57,7 +55,7 @@ public class PollutedBlockEntity extends BlockEntity {
         tick = tag.getInt("tick");
     }
 
-    public void setHerobrine(Herobrine herobrine) {
+    public void setHerobrine(LegacyHerobrine herobrine) {
         this.herobrine = herobrine;
     }
 
@@ -71,9 +69,9 @@ public class PollutedBlockEntity extends BlockEntity {
         if ((tick + 20) % tickInterval == 0) {
             level.setBlock(blockPos, getBlockState().setValue(PollutedBlock.POWERED, true), 10);
         }
-        if (tick % tickInterval == 0) {
+        if (tick > 0 && tick % tickInterval == 0) {
             level.playSound(null, blockPos, YummySounds.POLLUTED_WAVE.get(), SoundSource.BLOCKS, 0.25f, 1);
-            affectEntities(level, blockPos, blockState);
+            affectEntities(level, blockState);
             sendParticlePacket(level, blockPos);
         }
         if ((tick - 10) % tickInterval == 0)
@@ -84,8 +82,8 @@ public class PollutedBlockEntity extends BlockEntity {
         tick += 1;
     }
 
-    private void affectEntities(Level level, BlockPos blockPos, BlockState blockState) {
-        AABB area = YummyUtil.createArea(blockPos, 3);
+    private void affectEntities(Level level, BlockState blockState) {
+        AABB area = getRenderBoundingBox().inflate(1, 4, 1);
 
         List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, area);
 
@@ -105,7 +103,7 @@ public class PollutedBlockEntity extends BlockEntity {
     private void sendParticlePacket(Level level, BlockPos blockPos) {
         ShowParticlePacket pollutedParticlePacket = new ShowParticlePacket.Builder("polluted_particle_blue")
                 .setXYZ(blockPos)
-                .setSpeed(0, 5, 0)
+                .setSpeed(0, -5, 0)
                 .setRange(1)
                 .setParticleCount(40)
                 .build();

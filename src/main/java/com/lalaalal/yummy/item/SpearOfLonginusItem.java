@@ -31,7 +31,7 @@ public class SpearOfLonginusItem extends SpearItem {
             damageSource.bypassArmor().bypassInvul();
             entity.hurt(damageSource, Float.MAX_VALUE);
             if (entity instanceof LivingEntity livingEntity && livingEntity.getHealth() > 0)
-                livingEntity.setHealth(0);
+                livingEntity.kill();
 
             hurtUser(itemStack, player, 0.8f);
         }

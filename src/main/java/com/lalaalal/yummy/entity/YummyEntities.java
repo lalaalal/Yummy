@@ -48,6 +48,16 @@ public class YummyEntities {
                     .sized(0.5f, 0.5f)
                     .build(YummyMod.MOD_ID + ":meteor"));
 
+    public static final RegistryObject<EntityType<FloatingBlockEntity>> FLOATING_BLOCK_ENTITY = ENTITY_TYPES.register("floating_block_entity",
+            () -> EntityType.Builder.of((EntityType.EntityFactory<FloatingBlockEntity>) FloatingBlockEntity::new, MobCategory.MISC)
+                    .sized(1f, 1f)
+                    .build(YummyMod.MOD_ID + ":floating_block_entity"));
+
+    public static final RegistryObject<EntityType<TransformingBlockEntity>> TRANSFORMING_BLOCK_ENTITY = ENTITY_TYPES.register("transforming_block_entity",
+            () -> EntityType.Builder.of((EntityType.EntityFactory<TransformingBlockEntity>) TransformingBlockEntity::new, MobCategory.MISC)
+                    .sized(1f, 1f)
+                    .build(YummyMod.MOD_ID + ":transforming_block_entity"));
+
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);
     }

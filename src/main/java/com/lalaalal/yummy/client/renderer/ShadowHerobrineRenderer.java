@@ -2,7 +2,7 @@ package com.lalaalal.yummy.client.renderer;
 
 import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.client.layer.ShadowHerobrineArmorLayer;
-import com.lalaalal.yummy.client.model.HerobrineModel;
+import com.lalaalal.yummy.client.model.LegacyHerobrineModel;
 import com.lalaalal.yummy.client.model.ShadowHerobrineModel;
 import com.lalaalal.yummy.entity.ShadowHerobrine;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -22,7 +22,7 @@ public class ShadowHerobrineRenderer extends HumanoidMobRenderer<ShadowHerobrine
             = new ResourceLocation(YummyMod.MOD_ID, "textures/entity/shadow_herobrine.png");
 
     public ShadowHerobrineRenderer(EntityRendererProvider.Context context) {
-        super(context, new ShadowHerobrineModel(context.bakeLayer(HerobrineModel.LAYER_LOCATION)), 1f);
+        super(context, new ShadowHerobrineModel(context.bakeLayer(LegacyHerobrineModel.LAYER_LOCATION)), 1f);
         addLayer(new ShadowHerobrineArmorLayer(this, context.getModelSet()));
     }
 
@@ -54,7 +54,7 @@ public class ShadowHerobrineRenderer extends HumanoidMobRenderer<ShadowHerobrine
         this.setupRotations(pEntity, pMatrixStack, f7, f, pPartialTicks);
         pMatrixStack.scale(-1.0F, -1.0F, 1.0F);
         this.scale(pEntity, pMatrixStack, pPartialTicks);
-        pMatrixStack.translate(0.0D, (double) -1.501F, 0.0D);
+        pMatrixStack.translate(0.0D, -1.501F, 0.0D);
         float f8 = 0.0F;
         float f5 = 0.0F;
         if (pEntity.isAlive()) {
