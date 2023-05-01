@@ -58,10 +58,21 @@ public class YummyEntities {
                     .sized(1f, 1f)
                     .build(YummyMod.MOD_ID + ":transforming_block_entity"));
 
-    public static final RegistryObject<EntityType<MagicCircle>> MAGIC_CIRCLE = ENTITY_TYPES.register("magic_circle",
-            () -> EntityType.Builder.of(MagicCircle::new, MobCategory.MISC)
-                    .sized(0f, 0f)
-                    .build(YummyMod.MOD_ID + ":magic_circle"));
+    public static final RegistryObject<EntityType<NarakaMagicCircle>> NARAKA_MAGIC_CIRCLE = ENTITY_TYPES.register("naraka_magic_circle",
+            () -> EntityType.Builder.of((EntityType.EntityFactory<NarakaMagicCircle>) NarakaMagicCircle::new, MobCategory.MISC)
+                    .sized(1f, 0.1f)
+                    .build(YummyMod.MOD_ID + ":naraka_magic_circle"));
+
+    public static final RegistryObject<EntityType<EbonyBoat>> EBONY_BOAT = ENTITY_TYPES.register("ebony_boat",
+            () -> EntityType.Builder.of((EntityType.EntityFactory<EbonyBoat>) EbonyBoat::new, MobCategory.MISC)
+                    .sized(1.375F, 0.5625F)
+                    .clientTrackingRange(10)
+                    .build(YummyMod.MOD_ID + ":ebony_boat"));
+    public static final RegistryObject<EntityType<EbonyChestBoat>> EBONY_CHEST_BOAT = ENTITY_TYPES.register("ebony_chest_boat",
+            () -> EntityType.Builder.of((EntityType.EntityFactory<EbonyChestBoat>) EbonyChestBoat::new, MobCategory.MISC)
+                    .sized(1.375F, 0.5625F)
+                    .clientTrackingRange(10)
+                    .build(YummyMod.MOD_ID + ":ebony_chest_boat"));
 
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);

@@ -17,10 +17,17 @@ public class TickableSkillUseGoal<T extends PathfinderMob & SkillUsable> extends
     private TickableSkill usingSkill;
     private int tick = 0;
     private int animationTick = 0;
+    private long lastSkillEndTime;
+    private int skillUseInterval = 20;
 
     public TickableSkillUseGoal(T usingEntity) {
         this.usingEntity = usingEntity;
         this.level = usingEntity.level;
+        this.lastSkillEndTime = level.getGameTime();
+    }
+
+    public void setSkillUseInterval(int skillUseInterval) {
+        this.skillUseInterval = skillUseInterval;
     }
 
     public void addSkill(TickableSkill skill) {
@@ -44,6 +51,8 @@ public class TickableSkillUseGoal<T extends PathfinderMob & SkillUsable> extends
 
     @Override
     public boolean canUse() {
+        if (level.getGameTime() - lastSkillEndTime < skillUseInterval)
+            return false;
         setUsingSkill(findUsableSkill());
 
         return usingSkill != null;
@@ -70,6 +79,7 @@ public class TickableSkillUseGoal<T extends PathfinderMob & SkillUsable> extends
             if (usingSkill.tick(tick++)) {
                 skillUsedTimeMap.put(usingSkill, level.getGameTime());
                 setUsingSkill(null);
+                lastSkillEndTime = level.getGameTime();
             }
         }
     }

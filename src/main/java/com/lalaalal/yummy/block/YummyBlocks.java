@@ -19,6 +19,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Supplier;
 
+@SuppressWarnings("unused")
 public class YummyBlocks {
     private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, YummyMod.MOD_ID);
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, YummyMod.MOD_ID);
@@ -97,9 +98,9 @@ public class YummyBlocks {
     public static final RegistryObject<Block> EBONY_DOOR = register("ebony_door",
             () -> new DoorBlock(BlockBehaviour.Properties.copy(Blocks.OAK_DOOR)), YummyMod.TAB);
     public static final RegistryObject<SignBlock> EBONY_SIGN = BLOCKS.register("ebony_sign",
-            () -> new YummyStandingSignBlock(BlockBehaviour.Properties.copy(Blocks.OAK_SIGN), YummyTypes.EBONY));
+            () -> new YummyStandingSignBlock(BlockBehaviour.Properties.copy(Blocks.OAK_SIGN), YummyTypes.WOOD_EBONY));
     public static final RegistryObject<SignBlock> EBONY_WALL_SIGN = BLOCKS.register("ebony_wall_sign",
-            () -> new YummyWallSignBlock(BlockBehaviour.Properties.copy(Blocks.OAK_WALL_SIGN), YummyTypes.EBONY));
+            () -> new YummyWallSignBlock(BlockBehaviour.Properties.copy(Blocks.OAK_WALL_SIGN), YummyTypes.WOOD_EBONY));
     public static final RegistryObject<Block> EBONY_TRAPDOOR = register("ebony_trapdoor",
             () -> new TrapDoorBlock(BlockBehaviour.Properties.copy(Blocks.OAK_TRAPDOOR)), YummyMod.TAB);
 

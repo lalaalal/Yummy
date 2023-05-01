@@ -1,5 +1,6 @@
 package com.lalaalal.yummy.entity.skill;
 
+import com.lalaalal.yummy.YummyUtil;
 import com.lalaalal.yummy.block.entity.PollutedBlockEntity;
 import com.lalaalal.yummy.entity.LegacyHerobrine;
 import net.minecraft.core.BlockPos;
@@ -47,27 +48,13 @@ public class SummonBlockCircleSkill extends Skill {
 
     private void summonBlock() {
         Level level = usingEntity.getLevel();
-        BlockPos blockPos = usingEntity.getOnPos();
+        BlockPos entityPos = usingEntity.getOnPos();
         int radius = 3 * circleNum + circleNum - 1;
-        for (int i = 0; i < circleNum * blockNumPerCircle; i++) {
-            double t = (2 * Math.PI) / (circleNum * blockNumPerCircle) * i;
-            double x = Math.cos(t) * radius + blockPos.getX();
-            double z = Math.sin(t) * radius + blockPos.getZ();
-
-            if (0 < t && t < Math.PI)
-                z += 1;
-            if ((1.5 * Math.PI) < t || t < (0.5 * Math.PI))
-                x += 1;
-            if (t == Math.PI)
-                x -= 1;
-            if (t == Math.PI * 1.5)
-                z -= 1;
-
-            BlockPos pos = new BlockPos(x, blockPos.getY() + 3, z);
-            level.setBlock(pos, block.defaultBlockState(), 10);
-            BlockEntity blockEntity = level.getBlockEntity(pos);
+        YummyUtil.doCircle(circleNum * blockNumPerCircle, radius, entityPos, blockPos -> {
+            level.setBlock(blockPos, block.defaultBlockState(), 10);
+            BlockEntity blockEntity = level.getBlockEntity(blockPos);
             if (blockEntity instanceof PollutedBlockEntity pollutedBlockEntity)
                 herobrine.addPollutedBlock(pollutedBlockEntity);
-        }
+        });
     }
 }

@@ -26,7 +26,7 @@ public class YummyCommonEventBus {
             YummyBlocks.EBONY_LOG.get().addAxeModifiedState(YummyBlocks.EBONY_LOG.get(), YummyBlocks.STRIPPED_EBONY_LOG.get());
             YummyBlocks.EBONY_WOOD.get().addAxeModifiedState(YummyBlocks.EBONY_WOOD.get(), YummyBlocks.STRIPPED_EBONY_WOOD.get());
 
-            Sheets.addWoodType(YummyTypes.EBONY);
+            Sheets.addWoodType(YummyTypes.WOOD_EBONY);
         });
 
         YummyMessages.register();

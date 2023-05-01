@@ -151,8 +151,8 @@ public class LegacyHerobrine extends PathfinderMob implements LegacySkillUsable,
             BlockPos blockPos = blockPosFromIntArray(array);
             blockPosList.add(blockPos);
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
-            if (blockEntity instanceof PollutedBlockEntity pollutedBlockEntity)
-                pollutedBlockEntity.setHerobrine(this);
+//            if (blockEntity instanceof PollutedBlockEntity pollutedBlockEntity)
+//                pollutedBlockEntity.setHerobrine(this);
         }
         if (tag.getBoolean("hasInitialPos"))
             initialPos = blockPosFromIntArray(tag.getIntArray("initialPos"));
@@ -167,7 +167,7 @@ public class LegacyHerobrine extends PathfinderMob implements LegacySkillUsable,
 
     public void addPollutedBlock(PollutedBlockEntity pollutedBlockEntity) {
         blockPosList.add(pollutedBlockEntity.getBlockPos());
-        pollutedBlockEntity.setHerobrine(this);
+//        pollutedBlockEntity.setHerobrine(this);
     }
 
     public void removePollutedBlock(PollutedBlockEntity pollutedBlockEntity) {

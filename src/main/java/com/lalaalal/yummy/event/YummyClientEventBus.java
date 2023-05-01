@@ -27,7 +27,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 public class YummyClientEventBus {
     @SubscribeEvent
     public static void clientSetup(final FMLClientSetupEvent event) {
-        WoodType.register(YummyTypes.EBONY);
+        WoodType.register(YummyTypes.WOOD_EBONY);
     }
 
     @SubscribeEvent
@@ -68,7 +68,10 @@ public class YummyClientEventBus {
         event.registerEntityRenderer(YummyEntities.METEOR.get(), MeteorRenderer::new);
         event.registerEntityRenderer(YummyEntities.FLOATING_BLOCK_ENTITY.get(), FloatingBlockRenderer::new);
         event.registerEntityRenderer(YummyEntities.TRANSFORMING_BLOCK_ENTITY.get(), FloatingBlockRenderer::new);
-        event.registerEntityRenderer(YummyEntities.MAGIC_CIRCLE.get(), MagicCircleRenderer::new);
+        event.registerEntityRenderer(YummyEntities.NARAKA_MAGIC_CIRCLE.get(), NarakaMagicCircleRenderer::new);
+        event.registerEntityRenderer(YummyEntities.EBONY_BOAT.get(), (context) -> new EbonyBoatRenderer(context, false));
+        event.registerEntityRenderer(YummyEntities.EBONY_CHEST_BOAT.get(), (context) -> new EbonyBoatRenderer(context, true));
+
         event.registerBlockEntityRenderer(YummyBlockEntities.YUMMY_SIGN_BLOCK_ENTITY.get(), SignRenderer::new);
     }
 

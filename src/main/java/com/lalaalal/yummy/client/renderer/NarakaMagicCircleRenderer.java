@@ -1,7 +1,7 @@
 package com.lalaalal.yummy.client.renderer;
 
 import com.lalaalal.yummy.YummyMod;
-import com.lalaalal.yummy.entity.MagicCircle;
+import com.lalaalal.yummy.entity.NarakaMagicCircle;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix3f;
@@ -14,15 +14,15 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
-public class MagicCircleRenderer extends EntityRenderer<MagicCircle> {
+public class NarakaMagicCircleRenderer extends EntityRenderer<NarakaMagicCircle> {
     public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(YummyMod.MOD_ID, "textures/entity/magic_circle.png");
 
-    public MagicCircleRenderer(EntityRendererProvider.Context pContext) {
+    public NarakaMagicCircleRenderer(EntityRendererProvider.Context pContext) {
         super(pContext);
     }
 
     @Override
-    public void render(MagicCircle entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+    public void render(NarakaMagicCircle entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
         VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityTranslucent(this.getTextureLocation(entity)));
         poseStack.scale(entity.getRadius(), entity.getRadius(), entity.getRadius());
@@ -44,7 +44,7 @@ public class MagicCircleRenderer extends EntityRenderer<MagicCircle> {
     }
 
     @Override
-    public ResourceLocation getTextureLocation(MagicCircle pEntity) {
+    public ResourceLocation getTextureLocation(NarakaMagicCircle pEntity) {
         return TEXTURE_LOCATION;
     }
 

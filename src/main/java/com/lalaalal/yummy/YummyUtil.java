@@ -7,6 +7,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.function.Consumer;
+
 public class YummyUtil {
     public static AABB createArea(BlockPos blockPos, int range) {
         int x = blockPos.getX();
@@ -54,10 +56,29 @@ public class YummyUtil {
         return 0;
     }
 
-    public static Vec3 calcOrthogonal(Vec3 vec3, double angle, double scale) {
+    public static Vec3 calcXZRotation(Vec3 vec3, double angle, double scale) {
         double x = vec3.x * Math.cos(angle) - vec3.z * Math.sin(angle);
         double z = vec3.x * Math.sin(angle) + vec3.z * Math.cos(angle);
 
-        return new Vec3(x * scale, 0, z * scale);
+        return new Vec3(x * scale, vec3.y, z * scale);
+    }
+
+    public static void doCircle(int count, int radius, BlockPos basePos, Consumer<BlockPos> consumer) {
+        for (int i = 0; i < count; i++) {
+            double t = (2 * Math.PI) / count * i;
+            double x = Math.cos(t) * radius + basePos.getX();
+            double z = Math.sin(t) * radius + basePos.getZ();
+
+            if (0 < t && t < Math.PI)
+                z += 1;
+            if ((1.5 * Math.PI) < t || t < (0.5 * Math.PI))
+                x += 1;
+            if (t == Math.PI)
+                x -= 1;
+            if (t == Math.PI * 1.5)
+                z -= 1;
+
+            consumer.accept(new BlockPos(x, basePos.getY(), z));
+        }
     }
 }

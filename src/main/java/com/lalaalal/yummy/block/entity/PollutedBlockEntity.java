@@ -3,7 +3,7 @@ package com.lalaalal.yummy.block.entity;
 import com.lalaalal.yummy.block.PollutedBlock;
 import com.lalaalal.yummy.effect.HerobrineMark;
 import com.lalaalal.yummy.effect.YummyEffects;
-import com.lalaalal.yummy.entity.LegacyHerobrine;
+import com.lalaalal.yummy.entity.Herobrine;
 import com.lalaalal.yummy.networking.YummyMessages;
 import com.lalaalal.yummy.networking.packet.ShowParticlePacket;
 import com.lalaalal.yummy.sound.YummySounds;
@@ -26,7 +26,7 @@ public class PollutedBlockEntity extends BlockEntity {
     protected int lifetime = 20 * 7;
     protected int stunDuration = 20 * 3;
     protected int tick = 0;
-    private LegacyHerobrine herobrine;
+    private Herobrine herobrine;
 
     public PollutedBlockEntity(BlockPos blockPos, BlockState blockState) {
         this(YummyBlockEntities.POLLUTED_BLOCK_ENTITY_TYPE.get(), blockPos, blockState);
@@ -55,14 +55,12 @@ public class PollutedBlockEntity extends BlockEntity {
         tick = tag.getInt("tick");
     }
 
-    public void setHerobrine(LegacyHerobrine herobrine) {
+    public void setHerobrine(Herobrine herobrine) {
         this.herobrine = herobrine;
     }
 
     public void destroyBlock(Level level, BlockPos blockPos) {
         level.destroyBlock(blockPos, false);
-        if (herobrine != null)
-            herobrine.removePollutedBlock(this);
     }
 
     private void serverTick(Level level, BlockPos blockPos, BlockState blockState) {
@@ -93,7 +91,7 @@ public class PollutedBlockEntity extends BlockEntity {
 
     protected void affectEntity(LivingEntity entity, BlockState blockState) {
         if (blockState.getValue(PollutedBlock.CORRUPTED))
-            HerobrineMark.overlapMark(entity);
+            HerobrineMark.overlapMark(entity, herobrine);
 
         MobEffectInstance mobEffectInstance = new MobEffectInstance(YummyEffects.STUN.get(), 20 * 6, 0);
         if (!entity.getType().is(YummyTagRegister.HEROBRINE))
