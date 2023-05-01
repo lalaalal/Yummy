@@ -2,10 +2,7 @@ package com.lalaalal.yummy.entity;
 
 import com.lalaalal.yummy.entity.goal.FollowTargetGoal;
 import com.lalaalal.yummy.entity.goal.TickableSkillUseGoal;
-import com.lalaalal.yummy.entity.skill.NarakaWaveSkill;
-import com.lalaalal.yummy.entity.skill.SkillUsable;
-import com.lalaalal.yummy.entity.skill.ThrowNarakaFireballSkill;
-import com.lalaalal.yummy.entity.skill.TickableSkill;
+import com.lalaalal.yummy.entity.skill.*;
 import com.lalaalal.yummy.misc.PhaseManager;
 import com.lalaalal.yummy.networking.YummyMessages;
 import com.lalaalal.yummy.networking.packet.ToggleHerobrineMusicPacket;
@@ -32,6 +29,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.chunk.LevelChunk;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -51,6 +49,7 @@ public class Herobrine extends Monster implements IAnimatable, SkillUsable {
     private static final float[] PHASE_HEALTHS = {600, 60, 6};
     private static final BossEvent.BossBarColor[] PHASE_COLORS = {BossEvent.BossBarColor.BLUE, BossEvent.BossBarColor.YELLOW, BossEvent.BossBarColor.RED};
     private final Map<TickableSkill, String> skillNames = new HashMap<>();
+    private final Map<String, TickableSkill> skills = new HashMap<>();
     private final TickableSkillUseGoal<Herobrine> skillUseGoal = new TickableSkillUseGoal<>(this);
 
     private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
@@ -60,6 +59,7 @@ public class Herobrine extends Monster implements IAnimatable, SkillUsable {
             .setPlayBossMusic(true);
 
     private int hurtAnimationTick = 0;
+    private int invulnerableTick = 30;
 
     public static boolean canSummonHerobrine(Level level, BlockPos headPos) {
         Block soulSandBlock = level.getBlockState(headPos).getBlock();
@@ -97,9 +97,11 @@ public class Herobrine extends Monster implements IAnimatable, SkillUsable {
         this.noCulling = true;
         this.xpReward = 666;
 
+        phaseManager.addPhaseChangeListener(this::changePhase);
         phaseManager.addPhaseChangeListener(this::enterPhase2, 2);
         registerSkills();
         setPersistenceRequired();
+        setInvulnerable(true);
     }
 
     @Override
@@ -127,31 +129,39 @@ public class Herobrine extends Monster implements IAnimatable, SkillUsable {
         this.goalSelector.addGoal(1, skillUseGoal);
         registerSkill(new NarakaWaveSkill(this, 20 * 30), "naraka_wave");
         registerSkill(new ThrowNarakaFireballSkill(this, 20 * 6), "throw_naraka_fireball");
+        registerSkill(new DescentAndFallMeteorSkill(this, 20 * 12), "descent_fall_meteor");
     }
 
     public void registerSkill(TickableSkill skill, String name) {
+        skills.put(name, skill);
         skillNames.put(skill, name);
         skillUseGoal.addSkill(skill);
+    }
+
+    private void changePhase(int phase) {
+        invulnerableTick = 30;
+        LevelChunk levelChunk = level.getChunkAt(getOnPos());
+        YummyMessages.sendToPlayer(new ToggleHerobrineMusicPacket(true, phase), levelChunk);
+        setInvulnerable(true);
+        setHealth(phaseManager.getActualCurrentPhaseMaxHealth());
     }
 
     private void enterPhase2() {
         AttributeInstance attributeInstance = getAttribute(Attributes.ARMOR);
         if (attributeInstance != null)
             attributeInstance.setBaseValue(66);
+        if (skills.get("descent_fall_meteor") instanceof DescentAndFallMeteorSkill descentAndFallMeteorSkill)
+            descentAndFallMeteorSkill.setMeteorMark(true);
     }
 
     public int getPhase() {
         return phaseManager.getCurrentPhase();
     }
 
-    @Override
-    public void animateHurt() {
-        super.animateHurt();
-    }
-
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         String skillName = getUsingSkillName();
         if (!skillName.equals("none")) {
+            hurtAnimationTick = 0;
             String animationName = String.format("animation.herobrine.%s", skillName);
             event.getController().setAnimation(new AnimationBuilder().addAnimation(animationName, ILoopType.EDefaultLoopTypes.HOLD_ON_LAST_FRAME));
             return PlayState.CONTINUE;
@@ -159,7 +169,7 @@ public class Herobrine extends Monster implements IAnimatable, SkillUsable {
 
         if (hurtAnimationTick > 0) {
             hurtAnimationTick -= 1;
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.herobrine.hit", ILoopType.EDefaultLoopTypes.HOLD_ON_LAST_FRAME));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.herobrine.hit", ILoopType.EDefaultLoopTypes.LOOP));
             return PlayState.CONTINUE;
         }
 
@@ -189,14 +199,27 @@ public class Herobrine extends Monster implements IAnimatable, SkillUsable {
     }
 
     @Override
-    public boolean hurt(DamageSource pSource, float pAmount) {
+    public boolean hurt(DamageSource source, float amount) {
         hurtAnimationTick = 20;
 
-        return super.hurt(pSource, pAmount);
+        if (isInvulnerable() && !source.isBypassInvul())
+            return false;
+
+        return super.hurt(source, amount);
     }
 
     @Override
     protected void customServerAiStep() {
+        if (phaseManager.isPhaseChanged()) {
+            setInvulnerable(true);
+            invulnerableTick = 30;
+        }
+
+        if (invulnerableTick > 0) {
+            if ((invulnerableTick -= 1) == 0)
+                setInvulnerable(false);
+        }
+
         phaseManager.updatePhase(bossEvent);
     }
 

@@ -1,9 +1,9 @@
 package com.lalaalal.yummy;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
@@ -35,8 +35,11 @@ public class YummyUtil {
     }
 
     public static BlockPos findHorizonPos(BlockPos pos, Level level) {
-        if (level.getBlockState(pos).is(Blocks.AIR)) {
-            if (level.getBlockState(pos.below()).is(Blocks.AIR))
+        if (pos.getY() < -64 || pos.getY() > 256)
+            return pos;
+
+        if (!level.getBlockState(pos).isFaceSturdy(level, pos, Direction.UP)) {
+            if (!level.getBlockState(pos.below()).isFaceSturdy(level, pos.below(), Direction.UP))
                 return findHorizonPos(pos.below(), level);
             return pos;
         }

@@ -14,10 +14,11 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 
 public class MarkFireball extends Fireball {
+    protected boolean explosion = true;
     protected float explosionPower = 1;
     protected boolean markEntities = true;
     protected int time = 0;
-    private int discardTime = 20 * 15;
+    private int discardTime = 20 * 7;
 
     public MarkFireball(EntityType<? extends Fireball> entityType, Level level) {
         super(entityType, level);
@@ -31,6 +32,10 @@ public class MarkFireball extends Fireball {
         super(entityType, shooter, offsetX, offsetY, offsetZ, level);
         this.explosionPower = explosionPower;
         this.markEntities = markEntities;
+    }
+
+    public void setExplosion(boolean explosion) {
+        this.explosion = explosion;
     }
 
     public void setExplosionPower(float explosionPower) {
@@ -49,8 +54,8 @@ public class MarkFireball extends Fireball {
         if (!this.level.isClientSide) {
             if (markEntities)
                 markEntities(level);
-            this.level.explode(this.getOwner(), this.getX(), this.getY(), this.getZ(), explosionPower, true, Explosion.BlockInteraction.DESTROY);
-
+            if (explosion)
+                this.level.explode(this.getOwner(), DamageSource.fireball(this, getOwner()), null, this.getX(), this.getY(), this.getZ(), explosionPower, true, Explosion.BlockInteraction.DESTROY);
             this.discard();
         }
     }

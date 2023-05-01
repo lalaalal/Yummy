@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 public class FloatingBlockEntity extends Entity {
     private static final double GRAVITATIONAL_ACCELERATION_PER_TICK = -0.04903325;
@@ -26,9 +27,10 @@ public class FloatingBlockEntity extends Entity {
     private Vec3 acceleration;
     protected int time = 0;
 
+    @Nullable
     public static FloatingBlockEntity floatBlock(Level level, BlockPos pos, Vec3 velocity, Vec3 acceleration, BlockState state) {
         if (!state.isFaceSturdy(level, pos, Direction.UP))
-            state = Blocks.SAND.defaultBlockState();
+            return null;
         FloatingBlockEntity floatingBlockEntity = new FloatingBlockEntity(level, pos, velocity, acceleration, state);
         level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
         level.addFreshEntity(floatingBlockEntity);
@@ -46,7 +48,7 @@ public class FloatingBlockEntity extends Entity {
     protected FloatingBlockEntity(EntityType<? extends FloatingBlockEntity> entityType, Level level, BlockPos pos, Vec3 velocity, Vec3 acceleration, BlockState state) {
         super(entityType, level);
         this.acceleration = acceleration;
-        this.blockState = state;
+        this.blockState = state.getBlock().defaultBlockState();
         this.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
         this.setDeltaMovement(velocity);
         this.setStartPos(blockPosition());

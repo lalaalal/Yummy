@@ -13,7 +13,7 @@ public class ThrowNarakaFireballSkill extends TickableSkill {
     private double originalKnockbackResistance;
 
     public ThrowNarakaFireballSkill(PathfinderMob usingEntity, int cooldown) {
-        super(usingEntity, cooldown, 20, 10);
+        super(usingEntity, cooldown, 20, 5);
     }
 
     private void increaseKnockbackResistance() {
@@ -31,6 +31,11 @@ public class ThrowNarakaFireballSkill extends TickableSkill {
     }
 
     @Override
+    public boolean canUse() {
+        return usingEntity.getTarget() != null;
+    }
+
+    @Override
     public boolean animationTick(int tick) {
         if (tick == 0) {
             increaseKnockbackResistance();
@@ -38,6 +43,10 @@ public class ThrowNarakaFireballSkill extends TickableSkill {
             markFireball = new MarkFireball(level, usingEntity, 0, 0, 0);
             markFireball.move(MoverType.SELF, offset);
             level.addFreshEntity(markFireball);
+        } else if (!markFireball.isAlive()) {
+            return true;
+        } else if (tick < animationDuration) {
+            markFireball.setDeltaMovement(Vec3.ZERO);
         }
 
         return super.animationTick(tick);
@@ -45,6 +54,8 @@ public class ThrowNarakaFireballSkill extends TickableSkill {
 
     @Override
     public boolean tick(int tick) {
+        if (!markFireball.isAlive())
+            return true;
         if (tick == 0) {
             restoreKnockbackResistance();
             Vec3 viewVector = usingEntity.getViewVector(1);

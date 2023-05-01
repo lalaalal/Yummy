@@ -9,14 +9,16 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 public class TransformingBlockEntity extends FloatingBlockEntity {
     public static final Vec3 DEFAULT_VELOCITY = new Vec3(0, 0.8, 0);
     private BlockState transformingBlockState;
 
+    @Nullable
     public static TransformingBlockEntity floatAndTransformBlock(Level level, BlockPos pos, Vec3 velocity, BlockState state, BlockState transformingBlockState) {
         if (!state.isFaceSturdy(level, pos, Direction.UP))
-            state = Blocks.SAND.defaultBlockState();
+            return null;
         TransformingBlockEntity transformingBlockEntity = new TransformingBlockEntity(level, pos, velocity, state, transformingBlockState);
         level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
         level.addFreshEntity(transformingBlockEntity);
@@ -40,7 +42,7 @@ public class TransformingBlockEntity extends FloatingBlockEntity {
     public void tick() {
         if (getDeltaMovement().y > 0) {
             super.tick();
-        } else {
+        } else if (!level.isClientSide) {
             discard();
             level.setBlock(getOnPos(), transformingBlockState, 3);
         }

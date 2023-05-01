@@ -35,7 +35,7 @@ public class TickableSkillUseGoal<T extends PathfinderMob & SkillUsable> extends
     @Nullable
     private TickableSkill findUsableSkill() {
         for (TickableSkill skill : skillUsedTimeMap.keySet()) {
-            if (skill.getCooldown() < level.getGameTime() - skillUsedTimeMap.get(skill)) {
+            if (skill.getCooldown() < level.getGameTime() - skillUsedTimeMap.get(skill) && skill.canUse()) {
                 return skill;
             }
         }

@@ -18,6 +18,8 @@ public abstract class TickableSkill {
         this.tickDuration = tickDuration;
     }
 
+    public abstract boolean canUse();
+
     public int getCooldown() {
         return cooldown;
     }
@@ -27,7 +29,7 @@ public abstract class TickableSkill {
      * @return True when animation end
      */
     public boolean animationTick(int tick) {
-        return tick > animationDuration;
+        return tick >= animationDuration;
     }
 
     /**
@@ -35,6 +37,6 @@ public abstract class TickableSkill {
      * @return True when using skill end
      */
     public boolean tick(int tick) {
-        return tick > tickDuration;
+        return tick >= tickDuration;
     }
 }
