@@ -2762,7 +2762,7 @@
             }
         },
         "animation.herobrine.rush": {
-            "animation_length": 2,
+            "animation_length": 2.25,
             "bones": {
                 "head": {
                     "rotation": {

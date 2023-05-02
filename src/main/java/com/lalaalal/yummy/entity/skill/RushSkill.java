@@ -3,12 +3,12 @@ package com.lalaalal.yummy.entity.skill;
 import com.lalaalal.yummy.YummyUtil;
 import com.lalaalal.yummy.effect.HerobrineMark;
 import com.lalaalal.yummy.entity.FloatingBlockEntity;
-import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
@@ -41,10 +41,15 @@ public class RushSkill extends TickableSkill {
 
     @Override
     public boolean animationTick(int tick) {
-        if (tick == 10)
+        LivingEntity target = usingEntity.getTarget();
+        if (target == null)
+            return true;
+        if (tick < 11) {
+            usingEntity.lookAt(target, 0, 0);
             viewVector = usingEntity.getViewVector(2).multiply(1, 0, 1);
+        }
         if (12 <= tick && tick <= 17)
-            run(tick);
+            run();
 
         return super.animationTick(tick);
     }
@@ -61,9 +66,8 @@ public class RushSkill extends TickableSkill {
         return super.tick(tick);
     }
 
-    private void run(int tick) {
+    private void run() {
         usingEntity.move(MoverType.SELF, viewVector.scale(0.7));
-        usingEntity.lookAt(EntityAnchorArgument.Anchor.EYES, viewVector.reverse());
     }
 
     private void rush() {
@@ -78,14 +82,14 @@ public class RushSkill extends TickableSkill {
         usingEntity.moveTo(targetPos.x, sturdyBlockPos.getY(), targetPos.z);
         usingEntity.setDeltaMovement(Vec3.ZERO);
         target.hurt(new EntityDamageSource("rush", usingEntity), 1);
-        target.knockback(6, viewVector.x, viewVector.z);
+        target.knockback(6, -viewVector.x, -viewVector.z);
         HerobrineMark.overlapMark(target, usingEntity);
     }
 
     private void floatBlocks(int tick) {
-        double scale = MOVE_DISTANCE * 0.6 * (tickDuration - tick) / tickDuration;
-        Vec3 offset1 = YummyUtil.calcXZRotation(moveVectorReverse, Math.PI / 10, scale);
-        Vec3 offset2 = YummyUtil.calcXZRotation(moveVectorReverse, Math.PI / -10, scale);
+        double scale = MOVE_DISTANCE * 0.3 * (tickDuration - tick) / tickDuration;
+        Vec3 offset1 = YummyUtil.calcXZRotation(moveVectorReverse, Math.PI / 12, scale);
+        Vec3 offset2 = YummyUtil.calcXZRotation(moveVectorReverse, Math.PI / -12, scale);
 
         floatBlock(new BlockPos(targetPos.add(offset1)));
         floatBlock(new BlockPos(targetPos.add(offset2)));
@@ -96,7 +100,7 @@ public class RushSkill extends TickableSkill {
             return;
         floatedBlocks.add(pos);
         BlockPos floatingBlockPos = YummyUtil.findHorizonPos(pos, level).below();
-        BlockState state1 = level.getBlockState(floatingBlockPos);
-        FloatingBlockEntity.floatBlock(level, new BlockPos(floatingBlockPos), FLOATING_BLOCK_VELOCITY, FloatingBlockEntity.DEFAULT_ACCELERATION, state1);
+        BlockState state = Blocks.MAGMA_BLOCK.defaultBlockState();
+        FloatingBlockEntity.floatBlock(level, new BlockPos(floatingBlockPos), FLOATING_BLOCK_VELOCITY, FloatingBlockEntity.DEFAULT_ACCELERATION, state);
     }
 }

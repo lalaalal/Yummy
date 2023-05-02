@@ -2,13 +2,13 @@ package com.lalaalal.yummy.entity.skill;
 
 import com.lalaalal.yummy.YummyUtil;
 import com.lalaalal.yummy.block.YummyBlocks;
+import com.lalaalal.yummy.effect.YummyEffects;
 import com.lalaalal.yummy.entity.FloatingBlockEntity;
 import com.lalaalal.yummy.entity.TransformingBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.EntityDamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.level.block.state.BlockState;
@@ -19,7 +19,6 @@ import java.util.List;
 
 public class NarakaWaveSkill extends TickableSkill {
     public static final int SKILL_DURATION = 8;
-    public static final Vec3 MOTION_MULTIPLIER = new Vec3(0.1, 0.1, 0.1);
     public static final Vec3 TRANSFORMING_BLOCK_VELOCITY = new Vec3(0, 0.8, 0);
     public static final Vec3 FLOATING_BLOCK_VELOCITY = new Vec3(0, 0.6, 0);
     private final int maxTransform = level.random.nextInt(6, 13);
@@ -65,13 +64,10 @@ public class NarakaWaveSkill extends TickableSkill {
         AABB area = usingEntity.getBoundingBox().inflate(15);
         List<LivingEntity> entities = level.getNearbyEntities(LivingEntity.class, TargetingConditions.DEFAULT, usingEntity, area);
         for (LivingEntity entity : entities) {
-            Vec3 viewVector = entity.getViewVector(1);
-            Vec3 deltaMovement = YummyUtil.calcXZRotation(viewVector, Math.PI * (tick % 2 == 0 ? 0.5 : -0.5), 0.2).multiply(1, 0, 1);
-            entity.setDeltaMovement(deltaMovement);
-            entity.makeStuckInBlock(level.getBlockState(entity.getOnPos().above()), MOTION_MULTIPLIER);
-            entity.move(MoverType.SELF, deltaMovement);
-            if (entity instanceof ServerPlayer serverPlayer)
-                serverPlayer.setShiftKeyDown(tick % 2 == 0);
+            if (tick == 0) {
+                MobEffectInstance stunEffectInstance = new MobEffectInstance(YummyEffects.STUN.get(), tickDuration);
+                entity.addEffect(stunEffectInstance);
+            }
             entity.hurt(new EntityDamageSource("naraka_wave", usingEntity), 1);
         }
     }

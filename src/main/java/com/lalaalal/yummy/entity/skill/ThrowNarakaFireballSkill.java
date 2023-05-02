@@ -34,7 +34,7 @@ public class ThrowNarakaFireballSkill extends TickableSkill {
     @Override
     public boolean canUse() {
         LivingEntity target = usingEntity.getTarget();
-        return target != null && usingEntity.distanceToSqr(target) < 49;
+        return target != null;
     }
 
     @Override

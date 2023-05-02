@@ -15,16 +15,13 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -44,7 +41,7 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Herobrine extends Monster implements IAnimatable, SkillUsable {
+public class Herobrine extends PathfinderMob implements IAnimatable, SkillUsable, Enemy {
     private static final EntityDataAccessor<String> DATA_USING_SKILL_NAME = SynchedEntityData.defineId(Herobrine.class, EntityDataSerializers.STRING);
     private static final float[] PHASE_HEALTHS = {600, 60, 6};
     private static final BossEvent.BossBarColor[] PHASE_COLORS = {BossEvent.BossBarColor.BLUE, BossEvent.BossBarColor.YELLOW, BossEvent.BossBarColor.RED};
@@ -204,7 +201,7 @@ public class Herobrine extends Monster implements IAnimatable, SkillUsable {
         if (source.isBypassInvul())
             return super.hurt(source, amount);
 
-        hurtAnimationTick += 50;
+        hurtAnimationTick += 37;
         if (invulnerableTick > 0)
             return false;
 

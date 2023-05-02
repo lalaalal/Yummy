@@ -1,13 +1,11 @@
 package com.lalaalal.yummy.event;
 
 import com.lalaalal.yummy.YummyMod;
-import com.lalaalal.yummy.YummyTypes;
 import com.lalaalal.yummy.block.YummyBlocks;
 import com.lalaalal.yummy.entity.Herobrine;
 import com.lalaalal.yummy.entity.ShadowHerobrine;
 import com.lalaalal.yummy.entity.YummyEntities;
 import com.lalaalal.yummy.networking.YummyMessages;
-import net.minecraft.client.renderer.Sheets;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -25,8 +23,6 @@ public class YummyCommonEventBus {
 
             YummyBlocks.EBONY_LOG.get().addAxeModifiedState(YummyBlocks.EBONY_LOG.get(), YummyBlocks.STRIPPED_EBONY_LOG.get());
             YummyBlocks.EBONY_WOOD.get().addAxeModifiedState(YummyBlocks.EBONY_WOOD.get(), YummyBlocks.STRIPPED_EBONY_WOOD.get());
-
-            Sheets.addWoodType(YummyTypes.WOOD_EBONY);
         });
 
         YummyMessages.register();

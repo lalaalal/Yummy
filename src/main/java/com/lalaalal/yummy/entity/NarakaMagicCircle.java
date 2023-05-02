@@ -2,9 +2,11 @@ package com.lalaalal.yummy.entity;
 
 import com.lalaalal.yummy.effect.HerobrineMark;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -16,6 +18,7 @@ import net.minecraft.world.phys.AABB;
 
 public class NarakaMagicCircle extends Entity {
     private int radius = 3;
+    private int lifetime = 20 * 10;
     private LivingEntity owner;
 
     public NarakaMagicCircle(EntityType<?> entityType, Level level) {
@@ -36,6 +39,15 @@ public class NarakaMagicCircle extends Entity {
         return radius;
     }
 
+    @Override
+    public void tick() {
+        if (lifetime == 0) {
+            explode();
+            discard();
+        }
+        lifetime -= 1;
+    }
+
     public void explode() {
         if (!level.isClientSide) {
             AABB area = getBoundingBox().inflate(radius);
@@ -45,6 +57,7 @@ public class NarakaMagicCircle extends Entity {
                 level.explode(owner, getX(), getY(), getZ(), 1, false, Explosion.BlockInteraction.NONE);
                 HerobrineMark.overlapMark(target, owner);
             }
+            ((ServerLevel) level).sendParticles(ParticleTypes.EXPLOSION_EMITTER, getX(), getY(), getZ(), 1, 0, 0, 0, 1);
         }
     }
 

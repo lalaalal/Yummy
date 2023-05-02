@@ -10,6 +10,7 @@ import com.lalaalal.yummy.entity.YummyEntities;
 import com.lalaalal.yummy.particle.PollutedParticle;
 import com.lalaalal.yummy.particle.YummyParticles;
 import net.minecraft.client.renderer.BiomeColors;
+import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.FoliageColor;
@@ -27,6 +28,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 public class YummyClientEventBus {
     @SubscribeEvent
     public static void clientSetup(final FMLClientSetupEvent event) {
+        Sheets.addWoodType(YummyTypes.WOOD_EBONY);
         WoodType.register(YummyTypes.WOOD_EBONY);
     }
 
