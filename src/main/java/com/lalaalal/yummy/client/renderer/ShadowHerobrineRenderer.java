@@ -2,7 +2,6 @@ package com.lalaalal.yummy.client.renderer;
 
 import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.client.layer.ShadowHerobrineArmorLayer;
-import com.lalaalal.yummy.client.model.LegacyHerobrineModel;
 import com.lalaalal.yummy.client.model.ShadowHerobrineModel;
 import com.lalaalal.yummy.entity.ShadowHerobrine;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -22,7 +21,7 @@ public class ShadowHerobrineRenderer extends HumanoidMobRenderer<ShadowHerobrine
             = new ResourceLocation(YummyMod.MOD_ID, "textures/entity/shadow_herobrine.png");
 
     public ShadowHerobrineRenderer(EntityRendererProvider.Context context) {
-        super(context, new ShadowHerobrineModel(context.bakeLayer(LegacyHerobrineModel.LAYER_LOCATION)), 1f);
+        super(context, new ShadowHerobrineModel(context.bakeLayer(ShadowHerobrineModel.LAYER_LOCATION)), 1f);
         addLayer(new ShadowHerobrineArmorLayer(this, context.getModelSet()));
     }
 

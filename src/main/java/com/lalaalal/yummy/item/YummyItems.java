@@ -78,6 +78,10 @@ public class YummyItems {
             () -> new FloatingStick(new Item.Properties()
                     .durability(6)
                     .tab(YummyMod.TAB)));
+    public static final RegistryObject<Item> BUNNY_CHEST_ITEM = ITEMS.register("bunny_chest",
+            () -> new BunnyChestItem(new Item.Properties()
+                    .stacksTo(1)
+                    .tab(YummyMod.TAB)));
 
     public static final RegistryObject<Item> EBONY_SIGN = ITEMS.register("ebony_sign",
             () -> new SignItem(new Item.Properties().tab(YummyMod.TAB).stacksTo(16), YummyBlocks.EBONY_SIGN.get(), YummyBlocks.EBONY_WALL_SIGN.get()));

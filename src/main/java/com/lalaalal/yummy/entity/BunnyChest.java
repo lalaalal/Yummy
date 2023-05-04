@@ -4,14 +4,12 @@ import com.lalaalal.yummy.YummyUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.*;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -22,7 +20,6 @@ import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.ContainerEntity;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.inventory.MenuType;
@@ -34,13 +31,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
-public class BunnyChest extends TamableAnimal implements ContainerEntity, OwnableEntity {
+public class BunnyChest extends TamableAnimal implements Container, MenuProvider, OwnableEntity {
     private static final int CONTAINER_SIZE = 45;
-    private static final EntityDataAccessor<Boolean> DATA_OPENED = SynchedEntityData.defineId(BunnyChest.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_FOLLOWING = SynchedEntityData.defineId(BunnyChest.class, EntityDataSerializers.BOOLEAN);
     private final NonNullList<ItemStack> itemStacks = NonNullList.withSize(CONTAINER_SIZE, ItemStack.EMPTY);
-    private long lootTableSeed;
     public final Color color;
     private int idleTick = 0;
+    private FollowOwnerGoal followOwnerGoal;
 
     public static AttributeSupplier.Builder getBunnyChestAttributes() {
         return Mob.createMobAttributes()
@@ -65,7 +62,7 @@ public class BunnyChest extends TamableAnimal implements ContainerEntity, Ownabl
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(DATA_OPENED, false);
+        this.entityData.define(DATA_FOLLOWING, true);
     }
 
     @Override
@@ -127,36 +124,45 @@ public class BunnyChest extends TamableAnimal implements ContainerEntity, Ownabl
     @Override
     public void addAdditionalSaveData(CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
-        this.addChestVehicleSaveData(compoundTag);
-        ContainerHelper.saveAllItems(compoundTag, this.getItemStacks());
+        compoundTag.putBoolean("Following", isFollowing());
+        ContainerHelper.saveAllItems(compoundTag, itemStacks);
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
-        this.readChestVehicleSaveData(compoundTag);
-        ContainerHelper.loadAllItems(compoundTag, this.getItemStacks());
+        setFollowing(compoundTag.getBoolean("Following"));
+        ContainerHelper.loadAllItems(compoundTag, itemStacks);
     }
 
-    public boolean isOpened() {
-        return this.entityData.get(DATA_OPENED);
+    public boolean isFollowing() {
+        return this.entityData.get(DATA_FOLLOWING);
     }
 
-    public void setOpened(boolean opened) {
-        this.entityData.set(DATA_OPENED, opened);
+    public void setFollowing(boolean value) {
+        if (value) {
+            if (followOwnerGoal == null)
+                followOwnerGoal = new FollowOwnerGoal(this, 1.75, 4, 3, true);
+            goalSelector.addGoal(1, followOwnerGoal);
+        } else {
+            goalSelector.removeGoal(followOwnerGoal);
+        }
+
+        this.entityData.set(DATA_FOLLOWING, value);
     }
 
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(1, new FollowOwnerGoal(this, 1.75, 4, 3, true));
+        followOwnerGoal = new FollowOwnerGoal(this, 1.75, 5, 4, true);
+        this.goalSelector.addGoal(1, followOwnerGoal);
         this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 10));
     }
 
     @Override
     public void die(DamageSource pCause) {
         super.die(pCause);
-        this.chestVehicleDestroyed(pCause, level, this);
+        Containers.dropContents(level, this, this);
     }
 
     @Override
@@ -164,6 +170,12 @@ public class BunnyChest extends TamableAnimal implements ContainerEntity, Ownabl
         super.tick();
         if (level.isClientSide)
             return;
+        if (!isFollowing()) {
+            setDeltaMovement(getDeltaMovement().add(0, -0.005, 0));
+            move(MoverType.SELF, getDeltaMovement());
+            idleTick = 0;
+            return;
+        }
         double height = getY() - YummyUtil.findHorizonPos(getOnPos(), level).getY();
         if (height > 2.2)
             setDeltaMovement(getDeltaMovement().add(0, -0.03, 0));
@@ -174,7 +186,6 @@ public class BunnyChest extends TamableAnimal implements ContainerEntity, Ownabl
                 setDeltaMovement(getDeltaMovement().add(0, -0.005, 0));
         }
         move(MoverType.SELF, getDeltaMovement());
-        setDeltaMovement(getDeltaMovement().multiply(0.9, 1, 0.9));
         idleTick = (idleTick + 1) % 40;
     }
 
@@ -186,11 +197,6 @@ public class BunnyChest extends TamableAnimal implements ContainerEntity, Ownabl
     }
 
     @Override
-    public void setLootTable(@Nullable ResourceLocation lootTable) {
-
-    }
-
-    @Override
     public boolean isInvulnerableTo(DamageSource source) {
         if (Objects.equals(source.getEntity(), getOwner()))
             return false;
@@ -198,28 +204,13 @@ public class BunnyChest extends TamableAnimal implements ContainerEntity, Ownabl
     }
 
     @Override
-    public long getLootTableSeed() {
-        return lootTableSeed;
-    }
-
-    @Override
-    public void setLootTableSeed(long lootTableSeed) {
-        this.lootTableSeed = lootTableSeed;
-    }
-
-    @Override
-    public NonNullList<ItemStack> getItemStacks() {
-        return itemStacks;
-    }
-
-    @Override
-    public void clearItemStacks() {
-        itemStacks.clear();
-    }
-
-    @Override
     public int getContainerSize() {
         return CONTAINER_SIZE;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return itemStacks.isEmpty();
     }
 
     @Override
@@ -229,17 +220,27 @@ public class BunnyChest extends TamableAnimal implements ContainerEntity, Ownabl
 
     @Override
     public ItemStack removeItem(int slot, int amount) {
-        return this.removeChestVehicleItem(slot, amount);
+        ItemStack itemstack = ContainerHelper.removeItem(itemStacks, slot, amount);
+        if (!itemstack.isEmpty()) {
+            this.setChanged();
+        }
+
+        return itemstack;
     }
 
     @Override
     public ItemStack removeItemNoUpdate(int slot) {
-        return this.removeChestVehicleItemNoUpdate(slot);
+        return ContainerHelper.takeItem(itemStacks, slot);
     }
 
     @Override
     public void setItem(int slot, ItemStack stack) {
-        this.setChestVehicleItem(slot, stack);
+        itemStacks.set(slot, stack);
+        if (stack.getCount() > this.getMaxStackSize()) {
+            stack.setCount(this.getMaxStackSize());
+        }
+
+        this.setChanged();
     }
 
     @Override
@@ -249,17 +250,26 @@ public class BunnyChest extends TamableAnimal implements ContainerEntity, Ownabl
 
     @Override
     public boolean stillValid(Player player) {
-        return this.isChestVehicleStillValid(player);
+        return !this.isRemoved();
     }
 
     @Override
     public void clearContent() {
-        this.clearChestVehicleContent();
+        itemStacks.clear();
     }
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        return this.interactWithChestVehicle(this::gameEvent, player);
+        travel(Vec3.ZERO);
+        if (!level.isClientSide && player.isShiftKeyDown()) {
+            setFollowing(!isFollowing());
+            String key = isFollowing() ? "info.yummy.bunny_chest.following" : "info.yummy.bunny_chest.not_following";
+            player.sendSystemMessage(Component.translatable(key, this.getDisplayName(), player.getDisplayName()));
+            return InteractionResult.SUCCESS;
+        }
+
+        player.openMenu(this);
+        return InteractionResult.SUCCESS;
     }
 
     @Nullable
@@ -268,7 +278,6 @@ public class BunnyChest extends TamableAnimal implements ContainerEntity, Ownabl
         if (!Objects.equals(getOwnerUUID(), player.getUUID()) || player.isSpectator()) {
             return null;
         } else {
-            this.unpackChestVehicleLootTable(playerInventory.player);
             return new ChestMenu(MenuType.GENERIC_9x5, containerId, playerInventory, this, 5);
         }
     }

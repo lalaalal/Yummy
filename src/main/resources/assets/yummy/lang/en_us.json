@@ -39,6 +39,7 @@
     "item.yummy.mark_fireball": "Mark Fireball",
     "item.yummy.meteor_staff": "Meteor Staff",
     "item.yummy.floating_stick": "Floating Stick",
+    "item.yummy.bunny_chest": "Bunny Chest",
     "item.yummy.spear_of_longinus": "§cSpear of Longinus§r",
     "item.yummy.ebony_sign": "Ebony Sign",
     "item.yummy.manganese_nodule": "Manganese Nodule",
@@ -82,5 +83,7 @@
     "advancements.yummy.kill_herobrine.title": "Purified Soul",
     "advancements.yummy.kill_herobrine.description": "Defeat the lord of the Naraka",
     "key.category.yummy.armor_skill": "Armor Skills",
-    "key.yummy.armor_skill.steel": "Steel Armor Skill"
+    "key.yummy.armor_skill.steel": "Steel Armor Skill",
+    "info.yummy.bunny_chest.following": "%1$s will follow %2$s",
+    "info.yummy.bunny_chest.not_following": "%1$s will not follow %2$s"
 }

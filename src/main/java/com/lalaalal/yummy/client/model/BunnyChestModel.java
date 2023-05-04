@@ -13,7 +13,6 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 
 public class BunnyChestModel extends EntityModel<BunnyChest> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(YummyMod.MOD_ID, "bunny_chest"), "main");
@@ -54,9 +53,7 @@ public class BunnyChestModel extends EntityModel<BunnyChest> {
 
     @Override
     public void setupAnim(BunnyChest entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (entity.isOpened()) {
-            head.yRot = Mth.cos(ageInTicks);
-        }
+
     }
 
     @Override
