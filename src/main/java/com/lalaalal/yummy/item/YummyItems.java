@@ -52,7 +52,7 @@ public class YummyItems {
     public static final RegistryObject<Item> STEEL_BOOTS = ITEMS.register("steel_boots",
             () -> new ArmorItem(RubelliteMaterial.INSTANCE, EquipmentSlot.FEET, new Item.Properties().tab(YummyMod.TAB)));
     public static final RegistryObject<Item> STEEL_SWORD = ITEMS.register("steel_sword",
-            () -> new SwordItem(SteelTier.INSTANCE, 3, -2.4f, new Item.Properties().tab(YummyMod.TAB)));
+            () -> new SteelSwordItem(SteelTier.INSTANCE, 3, -2.4f, new Item.Properties().tab(YummyMod.TAB)));
     public static final RegistryObject<Item> STEEL_AXE = ITEMS.register("steel_axe",
             () -> new AxeItem(SteelTier.INSTANCE, 5, -3, new Item.Properties().tab(YummyMod.TAB)));
     public static final RegistryObject<Item> STEEL_HOE = ITEMS.register("steel_hoe",

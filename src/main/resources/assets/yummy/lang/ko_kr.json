@@ -38,6 +38,7 @@
     "item.yummy.purified_soul_sword": "정화된 영혼 검",
     "item.yummy.mark_fireball": "낙인 화염구",
     "item.yummy.meteor_staff": "운석 지팡이",
+    "item.yummy.floating_stick": "부유 막대기",
     "item.yummy.spear_of_longinus": "§c롱기누스의 창§r",
     "item.yummy.ebony_sign": "흑단나무 표지판",
     "item.yummy.manganese_nodule": "망가니즈 단괴",
@@ -66,10 +67,12 @@
     "entity.yummy.thrown_spear_of_longinus": "§c롱기누스의 창§r",
     "entity.yummy.mark_fireball": "낙인 화염구",
     "entity.yummy.meteor": "운석",
+    "entity.yummy.bunny_chest": "토끼 상자",
     "effect.yummy.herobrine_mark": "§c낙인§r",
     "effect.yummy.stun": "스턴",
     "death.effect.mark": "%2$s이 %1$s의 생명을 소모했습니다.",
     "death.attack.spear_of_longinus": "%2$s에 %1$s의 AT 필드가 찢어졌습니다.",
+    "death.attack.spear_of_longinus.player": "%2$s에 %1$s의 AT 필드가 찢어졌습니다.",
     "death.attack.thrown_spear_of_longinus.player": "%3$s가 던진 %2$s에 %1$s의 AT 필드가 찢어졌습니다.",
     "itemGroup.yummy": "야미",
     "advancements.yummy.root.title": "야미",
@@ -77,5 +80,7 @@
     "advancements.yummy.summon_herobrine.title": "나락의 폭군",
     "advancements.yummy.summon_herobrine.description": "히로빈을 소환하세요",
     "advancements.yummy.kill_herobrine.title": "정화된 영혼",
-    "advancements.yummy.kill_herobrine.description": "나락의 군주를 쓰러트리세요"
+    "advancements.yummy.kill_herobrine.description": "나락의 군주를 쓰러트리세요",
+    "key.category.yummy.armor_skill": "방어구 스킬",
+    "key.yummy.armor_skill.steel": "강철 방어구 스킬"
 }

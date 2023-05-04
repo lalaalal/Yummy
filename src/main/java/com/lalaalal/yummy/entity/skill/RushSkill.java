@@ -17,16 +17,21 @@ import java.util.Set;
 
 public class RushSkill extends TickableSkill {
     public static final float MIN_ATTACK_REACH = 5;
-    public static final float ATTACK_REACH = 10;
+    public static final float ATTACK_REACH = 14;
     public static final Vec3 FLOATING_BLOCK_VELOCITY = new Vec3(0, 0.4, 0);
-    private static final double MOVE_DISTANCE = 7;
+    private static final double MOVE_DISTANCE = 14;
+    private static final int RUSH_DURATION = 10;
+    private static final int FLOATING_DURATION = 12;
+    private static final int START_RUN_TIME = 15;
     private Vec3 viewVector = Vec3.ZERO;
     private Vec3 targetPos = Vec3.ZERO;
-    private Vec3 moveVectorReverse = Vec3.ZERO;
+    private Vec3 rushStartPos = Vec3.ZERO;
+    private Vec3 moveVector = Vec3.ZERO;
+    private boolean pushed = false;
     private final Set<BlockPos> floatedBlocks = new HashSet<>();
 
     public RushSkill(PathfinderMob usingEntity, int cooldown) {
-        super(usingEntity, cooldown, 20, 10);
+        super(usingEntity, cooldown, 20, 15);
     }
 
     @Override
@@ -42,13 +47,15 @@ public class RushSkill extends TickableSkill {
     @Override
     public boolean animationTick(int tick) {
         LivingEntity target = usingEntity.getTarget();
+        if (tick == 0)
+            pushed = false;
         if (target == null)
             return true;
-        if (tick < 11) {
+        if (tick < START_RUN_TIME) {
             usingEntity.lookAt(target, 0, 0);
             viewVector = usingEntity.getViewVector(2).multiply(1, 0, 1);
         }
-        if (12 <= tick && tick <= 17)
+        if (START_RUN_TIME <= tick)
             run();
 
         return super.animationTick(tick);
@@ -56,43 +63,55 @@ public class RushSkill extends TickableSkill {
 
     @Override
     public boolean tick(int tick) {
-        if (tick == 0)
-            rush();
-        floatBlocks(tick);
+        if (tick < FLOATING_DURATION)
+            floatBlocks(tick);
+        if (tick > RUSH_DURATION)
+            return super.tick(tick);
 
-        if (tick == tickDuration)
+        if (tick == 0) {
+            moveVector = viewVector.scale(MOVE_DISTANCE);
+            rushStartPos = new Vec3(usingEntity.getX(), usingEntity.getY(), usingEntity.getZ());
+            targetPos = rushStartPos.add(moveVector);
+        }
+
+        rush(tick);
+
+        if (tick == RUSH_DURATION) {
             floatedBlocks.clear();
+        }
 
-        return super.tick(tick);
+        return false;
     }
 
     private void run() {
-        usingEntity.move(MoverType.SELF, viewVector.scale(0.7));
+        usingEntity.move(MoverType.SELF, viewVector.scale(1));
     }
 
-    private void rush() {
+    private void rush(int tick) {
+        Vec3 stepMovement = moveVector.scale(tick / (double) RUSH_DURATION);
+        Vec3 stepPos = rushStartPos.add(stepMovement);
+        BlockPos sturdyBlockPos = YummyUtil.findHorizonPos(new BlockPos(targetPos), level);
+        usingEntity.moveTo(stepPos.x, sturdyBlockPos.getY(), stepPos.z);
         LivingEntity target = usingEntity.getTarget();
         if (target == null)
             return;
 
-        Vec3 moveOffset = viewVector.scale(MOVE_DISTANCE);
-        targetPos = new Vec3(usingEntity.getX(), usingEntity.getY(), usingEntity.getZ()).add(moveOffset);
-        moveVectorReverse = moveOffset.reverse();
-        BlockPos sturdyBlockPos = YummyUtil.findHorizonPos(new BlockPos(targetPos), level);
-        usingEntity.moveTo(targetPos.x, sturdyBlockPos.getY(), targetPos.z);
-        usingEntity.setDeltaMovement(Vec3.ZERO);
-        target.hurt(new EntityDamageSource("rush", usingEntity), 1);
-        target.knockback(6, -viewVector.x, -viewVector.z);
-        HerobrineMark.overlapMark(target, usingEntity);
+        if (!pushed && usingEntity.distanceToSqr(target) < 2) {
+            target.hurt(new EntityDamageSource("rush", usingEntity), 1);
+            target.knockback(6, -viewVector.x, -viewVector.z);
+            HerobrineMark.overlapMark(target, usingEntity);
+        }
     }
 
     private void floatBlocks(int tick) {
-        double scale = MOVE_DISTANCE * 0.3 * (tickDuration - tick) / tickDuration;
-        Vec3 offset1 = YummyUtil.calcXZRotation(moveVectorReverse, Math.PI / 12, scale);
-        Vec3 offset2 = YummyUtil.calcXZRotation(moveVectorReverse, Math.PI / -12, scale);
+        double scale = MOVE_DISTANCE * 0.1 * (FLOATING_DURATION - tick) / FLOATING_DURATION;
+        for (int i = 1; i <= 3; i++) {
+            Vec3 offset1 = YummyUtil.calcXZRotation(moveVector.reverse(), Math.PI / (12 * i), scale);
+            Vec3 offset2 = YummyUtil.calcXZRotation(moveVector.reverse(), Math.PI / (-12 * i), scale);
 
-        floatBlock(new BlockPos(targetPos.add(offset1)));
-        floatBlock(new BlockPos(targetPos.add(offset2)));
+            floatBlock(new BlockPos(targetPos.add(offset1)));
+            floatBlock(new BlockPos(targetPos.add(offset2)));
+        }
     }
 
     private void floatBlock(BlockPos pos) {

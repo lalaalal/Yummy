@@ -1,7 +1,7 @@
 package com.lalaalal.yummy.effect;
 
 import com.lalaalal.yummy.misc.EffectDamageSource;
-import com.lalaalal.yummy.tags.YummyTagRegister;
+import com.lalaalal.yummy.tags.YummyTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class HerobrineMark extends MobEffect {
     public static void overlapMark(LivingEntity entity, @Nullable LivingEntity herobrine) {
-        if (entity.getType().is(YummyTagRegister.HEROBRINE))
+        if (entity.getType().is(YummyTags.HEROBRINE))
             return;
 
         final MobEffect HEROBRINE_MARK = YummyEffects.HEROBRINE_MARK.get();

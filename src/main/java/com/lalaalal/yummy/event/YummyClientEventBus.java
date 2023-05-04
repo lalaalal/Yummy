@@ -9,6 +9,7 @@ import com.lalaalal.yummy.client.renderer.*;
 import com.lalaalal.yummy.entity.YummyEntities;
 import com.lalaalal.yummy.particle.PollutedParticle;
 import com.lalaalal.yummy.particle.YummyParticles;
+import com.lalaalal.yummy.util.KeyBinding;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
@@ -19,6 +20,7 @@ import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -30,6 +32,11 @@ public class YummyClientEventBus {
     public static void clientSetup(final FMLClientSetupEvent event) {
         Sheets.addWoodType(YummyTypes.WOOD_EBONY);
         WoodType.register(YummyTypes.WOOD_EBONY);
+    }
+
+    @SubscribeEvent
+    public static void onKeyRegister(RegisterKeyMappingsEvent event) {
+        event.register(KeyBinding.STEEL_ARMOR_KEY);
     }
 
     @SubscribeEvent
@@ -60,6 +67,7 @@ public class YummyClientEventBus {
     public static void entityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(YummyEntities.HEROBRINE.get(), HerobrineRenderer::new);
         event.registerEntityRenderer(YummyEntities.SHADOW_HEROBRINE.get(), ShadowHerobrineRenderer::new);
+        event.registerEntityRenderer(YummyEntities.BUNNY_CHEST.get(), BunnyChestRenderer::new);
         event.registerEntityRenderer(YummyEntities.SPEAR.get(), ThrownSpearRenderer::new);
         event.registerEntityRenderer(YummyEntities.MIGHTY_HOLY_SPEAR.get(), context -> new ThrownSpearRenderer<>(context, "mighty_holy_spear", () -> new ThrownMightyHolySpearModel<>(
                 context.bakeLayer(ThrownMightyHolySpearModel.LAYER_LOCATION)
@@ -79,8 +87,8 @@ public class YummyClientEventBus {
 
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        event.registerLayerDefinition(LegacyHerobrineModel.LAYER_LOCATION, LegacyHerobrineModel::createBodyLayer);
         event.registerLayerDefinition(ShadowHerobrineModel.LAYER_LOCATION, ShadowHerobrineModel::createBodyLayer);
+        event.registerLayerDefinition(BunnyChestModel.LAYER_LOCATION, BunnyChestModel::createBodyLayer);
         event.registerLayerDefinition(ThrownSpearModel.LAYER_LOCATION, ThrownSpearModel::createBodyLayer);
         event.registerLayerDefinition(ThrownMightyHolySpearModel.LAYER_LOCATION, ThrownMightyHolySpearModel::createBodyLayer);
         event.registerLayerDefinition(ThrownSpearOfLonginusModel.LAYER_LOCATION, ThrownSpearOfLonginusModel::createBodyLayer);

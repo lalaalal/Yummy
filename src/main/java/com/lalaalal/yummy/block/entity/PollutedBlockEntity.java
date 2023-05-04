@@ -7,7 +7,7 @@ import com.lalaalal.yummy.entity.Herobrine;
 import com.lalaalal.yummy.networking.YummyMessages;
 import com.lalaalal.yummy.networking.packet.ShowParticlePacket;
 import com.lalaalal.yummy.sound.YummySounds;
-import com.lalaalal.yummy.tags.YummyTagRegister;
+import com.lalaalal.yummy.tags.YummyTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
@@ -94,7 +94,7 @@ public class PollutedBlockEntity extends BlockEntity {
             HerobrineMark.overlapMark(entity, herobrine);
 
         MobEffectInstance mobEffectInstance = new MobEffectInstance(YummyEffects.STUN.get(), 20 * 6, 0);
-        if (!entity.getType().is(YummyTagRegister.HEROBRINE))
+        if (!entity.getType().is(YummyTags.HEROBRINE))
             entity.addEffect(mobEffectInstance);
     }
 

@@ -8,5 +8,6 @@ import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 public class HerobrineRenderer extends GeoEntityRenderer<Herobrine> {
     public HerobrineRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new HerobrineModel());
+        this.shadowRadius = 0.3f;
     }
 }

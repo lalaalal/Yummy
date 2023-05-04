@@ -2,6 +2,7 @@ package com.lalaalal.yummy.event;
 
 import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.block.YummyBlocks;
+import com.lalaalal.yummy.entity.BunnyChest;
 import com.lalaalal.yummy.entity.Herobrine;
 import com.lalaalal.yummy.entity.ShadowHerobrine;
 import com.lalaalal.yummy.entity.YummyEntities;
@@ -32,5 +33,6 @@ public class YummyCommonEventBus {
     public static void entityAttributes(EntityAttributeCreationEvent event) {
         event.put(YummyEntities.HEROBRINE.get(), Herobrine.getHerobrineAttributes().build());
         event.put(YummyEntities.SHADOW_HEROBRINE.get(), ShadowHerobrine.getHerobrineAttributes().build());
+        event.put(YummyEntities.BUNNY_CHEST.get(), BunnyChest.getBunnyChestAttributes().build());
     }
 }

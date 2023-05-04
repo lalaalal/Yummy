@@ -7,13 +7,16 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class TickableSkillUseGoal<T extends PathfinderMob & SkillUsable> extends Goal {
+    private final ArrayList<TickableSkill> skills = new ArrayList<>();
     private final Map<TickableSkill, Long> skillUsedTimeMap = new HashMap<>();
     private final T usingEntity;
     private final Level level;
+    private TickableSkill skillToUse;
     private TickableSkill usingSkill;
     private int tick = 0;
     private int animationTick = 0;
@@ -31,7 +34,9 @@ public class TickableSkillUseGoal<T extends PathfinderMob & SkillUsable> extends
     }
 
     public void addSkill(TickableSkill skill) {
+        skills.add(skill);
         skillUsedTimeMap.put(skill, 0L);
+        skills.sort((o1, o2) -> o2.getCooldown() - o1.getCooldown());
     }
 
     protected void setUsingSkill(@Nullable TickableSkill skill) {
@@ -41,10 +46,10 @@ public class TickableSkillUseGoal<T extends PathfinderMob & SkillUsable> extends
 
     @Nullable
     private TickableSkill findUsableSkill() {
-        for (TickableSkill skill : skillUsedTimeMap.keySet()) {
-            if (skill.getCooldown() < level.getGameTime() - skillUsedTimeMap.get(skill) && skill.canUse()) {
+        for (TickableSkill skill : skills) {
+            if (skill.getCooldown() < level.getGameTime() - skillUsedTimeMap.get(skill)
+                    && skill.canUse())
                 return skill;
-            }
         }
         return null;
     }
@@ -53,9 +58,9 @@ public class TickableSkillUseGoal<T extends PathfinderMob & SkillUsable> extends
     public boolean canUse() {
         if (level.getGameTime() - lastSkillEndTime < skillUseInterval)
             return false;
-        setUsingSkill(findUsableSkill());
+        skillToUse = findUsableSkill();
 
-        return usingSkill != null;
+        return skillToUse != null;
     }
 
     @Override
@@ -67,6 +72,7 @@ public class TickableSkillUseGoal<T extends PathfinderMob & SkillUsable> extends
     public void start() {
         tick = 0;
         animationTick = 0;
+        setUsingSkill(skillToUse);
     }
 
     @Override
@@ -79,6 +85,7 @@ public class TickableSkillUseGoal<T extends PathfinderMob & SkillUsable> extends
             if (usingSkill.tick(tick++)) {
                 skillUsedTimeMap.put(usingSkill, level.getGameTime());
                 setUsingSkill(null);
+                skillToUse = null;
                 lastSkillEndTime = level.getGameTime();
             }
         }

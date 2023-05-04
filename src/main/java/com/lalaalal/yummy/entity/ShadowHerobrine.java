@@ -2,7 +2,7 @@ package com.lalaalal.yummy.entity;
 
 import com.lalaalal.yummy.YummyUtil;
 import com.lalaalal.yummy.effect.HerobrineMark;
-import com.lalaalal.yummy.tags.YummyTagRegister;
+import com.lalaalal.yummy.tags.YummyTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -20,7 +20,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 public class ShadowHerobrine extends PathfinderMob implements PowerableMob, Enemy {
-    private LegacyHerobrine herobrine;
+    private Herobrine herobrine;
 
     public static AttributeSupplier.Builder getHerobrineAttributes() {
         return Mob.createMobAttributes()
@@ -40,7 +40,7 @@ public class ShadowHerobrine extends PathfinderMob implements PowerableMob, Enem
         return herobrine != null;
     }
 
-    public void setHerobrine(LegacyHerobrine herobrine) {
+    public void setHerobrine(Herobrine herobrine) {
         this.herobrine = herobrine;
         this.goalSelector.addGoal(1, new FollowHerobrineGoal(herobrine));
     }
@@ -55,10 +55,10 @@ public class ShadowHerobrine extends PathfinderMob implements PowerableMob, Enem
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1, true));
         this.goalSelector.addGoal(3, new RandomStrollGoal(this, 1));
 
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this, LegacyHerobrine.class));
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this, Herobrine.class));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false, false));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Mob.class, false,
-                (livingEntity) -> !livingEntity.getType().is(YummyTagRegister.HEROBRINE)));
+                (livingEntity) -> !livingEntity.getType().is(YummyTags.HEROBRINE)));
     }
 
     @Override
@@ -80,10 +80,10 @@ public class ShadowHerobrine extends PathfinderMob implements PowerableMob, Enem
     private class FollowHerobrineGoal extends Goal {
         public static final double START_FOLLOWING_DISTANCE = 12;
 
-        private final LegacyHerobrine herobrine;
+        private final Herobrine herobrine;
         private int timeToRecalculatePath;
 
-        public FollowHerobrineGoal(LegacyHerobrine herobrine) {
+        public FollowHerobrineGoal(Herobrine herobrine) {
             this.herobrine = herobrine;
         }
 

@@ -2,12 +2,11 @@ package com.lalaalal.yummy.entity.skill;
 
 import com.lalaalal.yummy.YummyUtil;
 import com.lalaalal.yummy.block.YummyBlocks;
-import com.lalaalal.yummy.effect.YummyEffects;
+import com.lalaalal.yummy.entity.CameraShakingEntity;
 import com.lalaalal.yummy.entity.FloatingBlockEntity;
 import com.lalaalal.yummy.entity.TransformingBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.EntityDamageSource;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
@@ -61,15 +60,17 @@ public class NarakaWaveSkill extends TickableSkill {
     }
 
     private void shakeEntities(int tick) {
+        if (usingEntity instanceof CameraShakingEntity cameraShakingEntity) {
+            if (tick == 0)
+                cameraShakingEntity.setCameraShaking(true);
+            if (tick == SKILL_DURATION)
+                cameraShakingEntity.setCameraShaking(false);
+        }
+
         AABB area = usingEntity.getBoundingBox().inflate(15);
         List<LivingEntity> entities = level.getNearbyEntities(LivingEntity.class, TargetingConditions.DEFAULT, usingEntity, area);
-        for (LivingEntity entity : entities) {
-            if (tick == 0) {
-                MobEffectInstance stunEffectInstance = new MobEffectInstance(YummyEffects.STUN.get(), tickDuration);
-                entity.addEffect(stunEffectInstance);
-            }
+        for (LivingEntity entity : entities)
             entity.hurt(new EntityDamageSource("naraka_wave", usingEntity), 1);
-        }
     }
 
     private void floatBlock(int tick) {

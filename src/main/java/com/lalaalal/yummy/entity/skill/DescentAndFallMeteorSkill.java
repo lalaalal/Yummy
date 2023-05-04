@@ -1,6 +1,8 @@
 package com.lalaalal.yummy.entity.skill;
 
 import com.lalaalal.yummy.YummyUtil;
+import com.lalaalal.yummy.effect.HerobrineMark;
+import com.lalaalal.yummy.entity.CameraShakingEntity;
 import com.lalaalal.yummy.entity.Meteor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.EntityDamageSource;
@@ -46,6 +48,8 @@ public class DescentAndFallMeteorSkill extends TickableSkill {
             summonMeteors();
         if (tick >= 7)
             fallMeteor(tick - 7);
+        if (tick == 10 && usingEntity instanceof CameraShakingEntity cameraShakingEntity)
+            cameraShakingEntity.setCameraShaking(false);
 
         return super.tick(tick);
     }
@@ -65,9 +69,13 @@ public class DescentAndFallMeteorSkill extends TickableSkill {
         usingEntity.moveTo(targetPos);
         AABB area = usingEntity.getBoundingBox().inflate(4);
         LivingEntity entity = level.getNearestEntity(LivingEntity.class, TargetingConditions.DEFAULT, usingEntity, targetPos.x, targetPos.y, targetPos.z, area);
-        if (entity != null)
+        if (entity != null) {
             entity.hurt(new EntityDamageSource("descent", usingEntity), 1);
+            HerobrineMark.overlapMark(entity, usingEntity);
+        }
         usingEntity.setNoGravity(false);
+        if (usingEntity instanceof CameraShakingEntity cameraShakingEntity)
+            cameraShakingEntity.setCameraShaking(true);
     }
 
     private void summonMeteors() {

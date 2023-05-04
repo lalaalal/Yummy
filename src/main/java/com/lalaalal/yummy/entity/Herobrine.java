@@ -15,7 +15,10 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -41,7 +44,7 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Herobrine extends PathfinderMob implements IAnimatable, SkillUsable, Enemy {
+public class Herobrine extends CameraShakingEntity implements IAnimatable, SkillUsable, Enemy {
     private static final EntityDataAccessor<String> DATA_USING_SKILL_NAME = SynchedEntityData.defineId(Herobrine.class, EntityDataSerializers.STRING);
     private static final float[] PHASE_HEALTHS = {600, 60, 6};
     private static final BossEvent.BossBarColor[] PHASE_COLORS = {BossEvent.BossBarColor.BLUE, BossEvent.BossBarColor.YELLOW, BossEvent.BossBarColor.RED};
@@ -161,7 +164,7 @@ public class Herobrine extends PathfinderMob implements IAnimatable, SkillUsable
         if (!skillName.equals("none")) {
             hurtAnimationTick = 0;
             String animationName = String.format("animation.herobrine.%s", skillName);
-            event.getController().setAnimation(new AnimationBuilder().playAndHold(animationName));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation(animationName, ILoopType.EDefaultLoopTypes.PLAY_ONCE));
             return PlayState.CONTINUE;
         }
 
@@ -203,8 +206,7 @@ public class Herobrine extends PathfinderMob implements IAnimatable, SkillUsable
 
         hurtAnimationTick += 37;
         if (invulnerableTick > 0)
-            return false;
-
+            return true;
 
         return super.hurt(source, amount);
     }
