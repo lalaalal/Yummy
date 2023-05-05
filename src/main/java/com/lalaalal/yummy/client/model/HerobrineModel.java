@@ -6,9 +6,9 @@ import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 
 public class HerobrineModel extends AnimatedGeoModel<Herobrine> {
-    private static final ResourceLocation MODEL_RESOURCE = new ResourceLocation(YummyMod.MOD_ID, "geo/herobrine.geo.json");
+    protected static final ResourceLocation MODEL_RESOURCE = new ResourceLocation(YummyMod.MOD_ID, "geo/herobrine.geo.json");
     public static final ResourceLocation TEXTURE_RESOURCE = new ResourceLocation(YummyMod.MOD_ID, "textures/entity/herobrine.png");
-    private static final ResourceLocation ANIMATION_RESOURCE = new ResourceLocation(YummyMod.MOD_ID, "animations/herobrine.animation.json");
+    protected static final ResourceLocation ANIMATION_RESOURCE = new ResourceLocation(YummyMod.MOD_ID, "animations/herobrine.animation.json");
 
     @Override
     public ResourceLocation getModelResource(Herobrine object) {

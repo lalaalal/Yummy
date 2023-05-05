@@ -39,6 +39,11 @@ public class TickableSkillUseGoal<T extends PathfinderMob & SkillUsable> extends
         skills.sort((o1, o2) -> o2.getCooldown() - o1.getCooldown());
     }
 
+    public void removeSkill(TickableSkill skill) {
+        skills.remove(skill);
+        skillUsedTimeMap.remove(skill);
+    }
+
     protected void setUsingSkill(@Nullable TickableSkill skill) {
         this.usingSkill = skill;
         usingEntity.setUsingSkill(skill);

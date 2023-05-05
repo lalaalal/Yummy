@@ -15,11 +15,10 @@ import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
-public class ShadowHerobrine extends PathfinderMob implements PowerableMob, Enemy {
+public class ShadowHerobrine extends Herobrine implements PowerableMob {
     private Herobrine herobrine;
 
     public static AttributeSupplier.Builder getHerobrineAttributes() {
@@ -32,7 +31,7 @@ public class ShadowHerobrine extends PathfinderMob implements PowerableMob, Enem
                 .add(Attributes.KNOCKBACK_RESISTANCE, 3);
     }
 
-    protected ShadowHerobrine(EntityType<? extends PathfinderMob> entityType, Level level) {
+    protected ShadowHerobrine(EntityType<? extends Herobrine> entityType, Level level) {
         super(entityType, level);
     }
 
@@ -65,7 +64,7 @@ public class ShadowHerobrine extends PathfinderMob implements PowerableMob, Enem
     public boolean doHurtTarget(Entity entity) {
         if (entity instanceof LivingEntity livingEntity) {
             HerobrineMark.overlapMark(livingEntity);
-            MobEffectInstance mobEffectInstance = new MobEffectInstance(MobEffects.WEAKNESS, 3, 1);
+            MobEffectInstance mobEffectInstance = new MobEffectInstance(MobEffects.WEAKNESS, 120, 5);
             livingEntity.addEffect(mobEffectInstance);
         }
 

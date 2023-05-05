@@ -139,6 +139,15 @@ public class Herobrine extends CameraShakingEntity implements IAnimatable, Skill
         skillUseGoal.addSkill(skill);
     }
 
+    public void removeSkill(String name) {
+        TickableSkill skill = skills.get(name);
+        if (skill != null) {
+            skills.remove(name);
+            skillNames.remove(skill);
+            skillUseGoal.removeSkill(skill);
+        }
+    }
+
     private void changePhase(int phase) {
         invulnerableTick = 30;
         setInvulnerable(true);
