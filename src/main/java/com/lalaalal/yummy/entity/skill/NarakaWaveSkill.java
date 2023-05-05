@@ -1,5 +1,6 @@
 package com.lalaalal.yummy.entity.skill;
 
+import com.lalaalal.yummy.YummyAttributeModifiers;
 import com.lalaalal.yummy.YummyUtil;
 import com.lalaalal.yummy.block.YummyBlocks;
 import com.lalaalal.yummy.entity.CameraShakingEntity;
@@ -17,7 +18,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 
 public class NarakaWaveSkill extends TickableSkill {
-    public static final int SKILL_DURATION = 8;
+    public static final int WAVE_DURATION = 8;
     public static final Vec3 TRANSFORMING_BLOCK_VELOCITY = new Vec3(0, 0.8, 0);
     public static final Vec3 FLOATING_BLOCK_VELOCITY = new Vec3(0, 0.6, 0);
     private final int maxTransform = level.random.nextInt(6, 13);
@@ -43,6 +44,8 @@ public class NarakaWaveSkill extends TickableSkill {
 
     @Override
     public boolean animationTick(int tick) {
+        if (tick == 0)
+            YummyAttributeModifiers.addTransientModifier(usingEntity, YummyAttributeModifiers.IGNORE_KNOCKBACK);
         if (tick == animationDuration)
             prepare();
 
@@ -52,7 +55,9 @@ public class NarakaWaveSkill extends TickableSkill {
     @Override
     public boolean tick(int tick) {
         shakeEntities(tick);
-        if (tick > SKILL_DURATION)
+        if (tick == WAVE_DURATION)
+            YummyAttributeModifiers.removeModifier(usingEntity, YummyAttributeModifiers.IGNORE_KNOCKBACK);
+        if (tick > WAVE_DURATION)
             return super.tick(tick);
 
         floatBlock(tick);
@@ -63,7 +68,7 @@ public class NarakaWaveSkill extends TickableSkill {
         if (usingEntity instanceof CameraShakingEntity cameraShakingEntity) {
             if (tick == 0)
                 cameraShakingEntity.setCameraShaking(true);
-            if (tick == SKILL_DURATION)
+            if (tick == WAVE_DURATION)
                 cameraShakingEntity.setCameraShaking(false);
         }
 

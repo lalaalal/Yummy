@@ -20,6 +20,7 @@ public class DescentAndFallMeteorSkill extends TickableSkill {
     private boolean meteorMark = false;
     private final Queue<Meteor> meteors = new LinkedList<>();
     private final int meteorGroupNum = 4;
+    private double rotationFactor;
 
 
     public DescentAndFallMeteorSkill(PathfinderMob usingEntity, int cooldown) {
@@ -61,8 +62,11 @@ public class DescentAndFallMeteorSkill extends TickableSkill {
         if (target == null)
             return;
         usingEntity.setNoGravity(true);
-        double zOffset = -1;
-        usingEntity.moveTo(target.getX(), target.getY() + 10, target.getZ() + zOffset);
+        Vec3 viewVector = usingEntity.getViewVector(0);
+        rotationFactor = Math.atan(viewVector.z / viewVector.x) - Math.PI / 2.25;
+        if (viewVector.x < 0)
+            rotationFactor += Math.PI;
+        usingEntity.moveTo(target.getX() - viewVector.x, target.getY() + 10, target.getZ() - viewVector.z);
     }
 
     private void descend() {
@@ -83,8 +87,8 @@ public class DescentAndFallMeteorSkill extends TickableSkill {
     private void summonMeteors() {
         Vec3 basePos = new Vec3(usingEntity.getX(), usingEntity.getY() + 10, usingEntity.getZ());
         for (int groupIndex = 0; groupIndex < meteorGroupNum; groupIndex++) {
-            double xGroupOffset = Math.cos(Math.PI / meteorGroupNum * groupIndex) * 7;
-            double zGroupOffset = Math.sin(Math.PI / meteorGroupNum * groupIndex) * 7;
+            double xGroupOffset = Math.cos(Math.PI / meteorGroupNum * groupIndex + rotationFactor) * 7;
+            double zGroupOffset = Math.sin(Math.PI / meteorGroupNum * groupIndex + rotationFactor) * 7;
             Vec3 groupOffset = new Vec3(xGroupOffset, 0, zGroupOffset);
             Vec3 groupPos = basePos.add(groupOffset);
             int meteorPerGroupNum = 3;
@@ -110,8 +114,9 @@ public class DescentAndFallMeteorSkill extends TickableSkill {
     private void fallMeteor(int relativeTick) {
         if (relativeTick % 10 == 0) {
             int groupIndex = relativeTick / 10;
-            double x = Math.cos(Math.PI / meteorGroupNum * groupIndex + Math.PI) * 0.03;
-            double z = Math.sin(Math.PI / meteorGroupNum * groupIndex + Math.PI) * 0.03;
+            double theta = (Math.PI / meteorGroupNum * groupIndex) + Math.PI * 0.75 + rotationFactor;
+            double x = Math.cos(theta) * 0.03;
+            double z = Math.sin(theta) * 0.03;
 
             for (int i = 0; i < 3; i++) {
                 if (meteors.isEmpty())

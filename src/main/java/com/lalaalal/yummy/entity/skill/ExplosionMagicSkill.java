@@ -1,5 +1,6 @@
 package com.lalaalal.yummy.entity.skill;
 
+import com.lalaalal.yummy.YummyAttributeModifiers;
 import com.lalaalal.yummy.YummyUtil;
 import com.lalaalal.yummy.entity.CameraShakingEntity;
 import com.lalaalal.yummy.entity.NarakaMagicCircle;
@@ -27,6 +28,8 @@ public class ExplosionMagicSkill extends TickableSkill {
 
     @Override
     public boolean animationTick(int tick) {
+        if (tick == 0)
+            YummyAttributeModifiers.addTransientModifier(usingEntity, YummyAttributeModifiers.IGNORE_KNOCKBACK);
         if (tick == animationDuration)
             usingPos = usingEntity.getOnPos();
 
@@ -37,8 +40,10 @@ public class ExplosionMagicSkill extends TickableSkill {
     public boolean tick(int tick) {
         createMagicCircles(tick);
 
-        if (tick == EXPLODE_TICK)
+        if (tick == EXPLODE_TICK) {
             explodeMagicCircles();
+            YummyAttributeModifiers.removeModifier(usingEntity, YummyAttributeModifiers.IGNORE_KNOCKBACK);
+        }
         if (tick == tickDuration && usingEntity instanceof CameraShakingEntity cameraShakingEntity)
             cameraShakingEntity.setCameraShaking(false);
         return super.tick(tick);
