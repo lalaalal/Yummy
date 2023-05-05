@@ -16,14 +16,14 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class DescentAndFallMeteorSkill extends TickableSkill {
-//    private static final int DESCENT_TICK = 12;
-private boolean meteorMark = false;
+    private static final int DESCENT_TICK = 14;
+    private boolean meteorMark = false;
     private final Queue<Meteor> meteors = new LinkedList<>();
     private final int meteorGroupNum = 4;
 
 
     public DescentAndFallMeteorSkill(PathfinderMob usingEntity, int cooldown) {
-        super(usingEntity, cooldown, 10, 50);
+        super(usingEntity, cooldown, 10, 60);
     }
 
     public void setMeteorMark(boolean meteorMark) {
@@ -44,13 +44,13 @@ private boolean meteorMark = false;
     public boolean tick(int tick) {
         if (tick == 0)
             teleportAboveTarget();
-        if (tick == 14)
+        if (tick == DESCENT_TICK)
             descend();
-        if (tick == 15)
+        if (tick == DESCENT_TICK + 1)
             summonMeteors();
-        if (tick >= 17)
-            fallMeteor(tick - 17);
-        if (tick == 15 && usingEntity instanceof CameraShakingEntity cameraShakingEntity)
+        if (tick >= DESCENT_TICK + 3)
+            fallMeteor(tick - DESCENT_TICK + 3);
+        if (tick == DESCENT_TICK + 3 && usingEntity instanceof CameraShakingEntity cameraShakingEntity)
             cameraShakingEntity.setCameraShaking(false);
 
         return super.tick(tick);

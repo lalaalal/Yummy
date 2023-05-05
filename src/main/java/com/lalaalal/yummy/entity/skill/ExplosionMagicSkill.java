@@ -45,7 +45,7 @@ public class ExplosionMagicSkill extends TickableSkill {
     }
 
     private void createMagicCircles(int tick) {
-        if (tick % 5 == 0 && tick <= 30) {
+        if (tick % 5 == 0 && tick <= 15) {
             int circleNum = tick / 5;
             int firstCircleBlockCount = 6;
             int radius = 3 * circleNum - 1;
@@ -55,7 +55,7 @@ public class ExplosionMagicSkill extends TickableSkill {
     }
 
     private void createMagicCircle(BlockPos blockPos) {
-        if (usingEntity.getRandom().nextInt(0, 3) == 0) {
+        if (usingEntity.getRandom().nextInt(0, 2) == 0) {
             NarakaMagicCircle narakaMagicCircle = new NarakaMagicCircle(level, YummyUtil.findHorizonPos(blockPos, level), usingEntity);
             narakaMagicCircle.setRadius(1);
             level.addFreshEntity(narakaMagicCircle);

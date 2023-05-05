@@ -19,6 +19,9 @@ import net.minecraft.world.phys.AABB;
 public class NarakaMagicCircle extends Entity {
     private int radius = 3;
     private int lifetime = 20 * 10;
+    private int tick = 0;
+    private double rotationDegree = 0;
+    private double deltaRotation = 360 / 24.0;
     private LivingEntity owner;
 
     public NarakaMagicCircle(EntityType<?> entityType, Level level) {
@@ -39,13 +42,21 @@ public class NarakaMagicCircle extends Entity {
         return radius;
     }
 
+    public double getRotationDegree() {
+        return rotationDegree;
+    }
+
     @Override
     public void tick() {
-        if (lifetime == 0) {
+        rotationDegree += deltaRotation;
+        if (tick % 24 == 0)
+            deltaRotation += 5;
+
+        if (tick == lifetime) {
             explode();
             discard();
         }
-        lifetime -= 1;
+        tick += 1;
     }
 
     public void explode() {

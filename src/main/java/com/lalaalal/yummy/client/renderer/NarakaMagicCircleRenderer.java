@@ -27,7 +27,7 @@ public class NarakaMagicCircleRenderer extends EntityRenderer<NarakaMagicCircle>
         VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityTranslucent(this.getTextureLocation(entity)));
         poseStack.scale(entity.getRadius(), entity.getRadius(), entity.getRadius());
         poseStack.translate(0, 0.001, 0);
-        poseStack.mulPose(Vector3f.YP.rotationDegrees(1));
+        poseStack.mulPose(Vector3f.YP.rotationDegrees((float) entity.getRotationDegree()));
 
         PoseStack.Pose pose = poseStack.last();
         Matrix4f matrix4f = pose.pose();
