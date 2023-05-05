@@ -129,7 +129,7 @@ public class Herobrine extends CameraShakingEntity implements IAnimatable, Skill
         registerSkill(new NarakaWaveSkill(this, 20 * 15), "naraka_wave");
         registerSkill(new ThrowNarakaFireballSkill(this, 20 * 6), "throw_naraka_fireball");
         registerSkill(new DescentAndFallMeteorSkill(this, 20 * 12), "descent_fall_meteor");
-        registerSkill(new ExplosionMagicSkill(this, 20 * 30), "explosion_magic");
+        registerSkill(new ExplosionMagicSkill(this, 20 * 30), "explosion_spell");
         registerSkill(new RushSkill(this, 20 * 10), "rush");
     }
 

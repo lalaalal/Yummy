@@ -14,7 +14,7 @@ public class ThrowNarakaFireballSkill extends TickableSkill {
     private double originalKnockbackResistance;
 
     public ThrowNarakaFireballSkill(PathfinderMob usingEntity, int cooldown) {
-        super(usingEntity, cooldown, 20, 5);
+        super(usingEntity, cooldown, 10, 5);
     }
 
     private void increaseKnockbackResistance() {
@@ -41,9 +41,8 @@ public class ThrowNarakaFireballSkill extends TickableSkill {
     public boolean animationTick(int tick) {
         if (tick == 0) {
             increaseKnockbackResistance();
-            Vec3 offset = YummyUtil.calcXZRotation(usingEntity.getViewVector(1), Math.PI / 2, 1)
-                    .multiply(0, 1, 0)
-                    .add(0, 2, 0);
+            Vec3 offset = YummyUtil.calcXZRotation(usingEntity.getViewVector(1), Math.PI / -2, 0.8)
+                    .add(0, 1.4, 0);
             meteor = new Meteor(level, usingEntity, 0, 0, 0, true);
             meteor.move(MoverType.SELF, offset);
             level.addFreshEntity(meteor);

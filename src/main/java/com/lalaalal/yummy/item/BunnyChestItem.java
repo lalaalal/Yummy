@@ -1,12 +1,13 @@
 package com.lalaalal.yummy.item;
 
-import com.lalaalal.yummy.entity.YummyEntities;
-import net.minecraft.server.level.ServerLevel;
+import com.lalaalal.yummy.entity.BunnyChest;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
 
 public class BunnyChestItem extends Item {
     public BunnyChestItem(Properties properties) {
@@ -17,11 +18,16 @@ public class BunnyChestItem extends Item {
     public InteractionResult useOn(UseOnContext context) {
         ItemStack itemStack = context.getItemInHand();
         itemStack.shrink(1);
-        if (context.getLevel() instanceof ServerLevel serverLevel)
-            YummyEntities.BUNNY_CHEST.get().spawn(serverLevel, itemStack,
-                    context.getPlayer(),
-                    context.getClickedPos(),
-                    MobSpawnType.SPAWN_EGG, true, true);
+        Level level = context.getLevel();
+        BlockPos clickedPos = context.getClickedPos();
+        if (!level.isClientSide) {
+            BunnyChest bunnyChest = new BunnyChest(level);
+            bunnyChest.setPos(clickedPos.getX(), clickedPos.getY() + 1, clickedPos.getZ());
+            level.addFreshEntity(bunnyChest);
+            CompoundTag compoundTag = itemStack.getTag();
+            if (compoundTag != null)
+                bunnyChest.readAdditionalSaveData(compoundTag);
+        }
 
         return super.useOn(context);
     }

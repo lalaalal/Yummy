@@ -5,7 +5,7 @@ plugins {
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
 }
 
-version = "${minecraft_version}-1.5.4"
+version = "${minecraft_version}-1.5.5"
 group = 'com.lalaalal.yummy' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'yummy'
 
@@ -55,6 +55,9 @@ minecraft {
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             property 'forge.enabledGameTestNamespaces', 'yummy'
 
+            property 'geckolib.disable_examples', 'true'
+
+
             mods {
                 yummy {
                     source sourceSets.main
@@ -72,6 +75,9 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             property 'forge.enabledGameTestNamespaces', 'yummy'
+
+            property 'geckolib.disable_examples', 'true'
+
 
             mods {
                 yummy {

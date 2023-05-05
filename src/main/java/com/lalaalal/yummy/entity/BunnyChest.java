@@ -1,6 +1,7 @@
 package com.lalaalal.yummy.entity;
 
 import com.lalaalal.yummy.YummyUtil;
+import com.lalaalal.yummy.item.YummyItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -18,6 +19,7 @@ import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -51,6 +53,10 @@ public class BunnyChest extends TamableAnimal implements Container, MenuProvider
     protected BunnyChest(EntityType<? extends BunnyChest> entityType, Level level) {
         super(entityType, level);
         this.color = Color.PINK;
+    }
+
+    public BunnyChest(Level level) {
+        this(YummyEntities.BUNNY_CHEST.get(), level);
     }
 
     @Nullable
@@ -160,6 +166,25 @@ public class BunnyChest extends TamableAnimal implements Container, MenuProvider
     }
 
     @Override
+    public boolean hurt(DamageSource source, float amount) {
+        if (source.getEntity() instanceof Player player
+                && Objects.equals(player.getUUID(), getOwnerUUID())
+                && player.isShiftKeyDown()) {
+            ItemStack itemStack = new ItemStack(YummyItems.BUNNY_CHEST_ITEM.get());
+            CompoundTag compoundTag = new CompoundTag();
+            addAdditionalSaveData(compoundTag);
+            itemStack.setTag(compoundTag);
+
+            ItemEntity itemEntity = new ItemEntity(level, getX(), getY(), getZ(), itemStack);
+            level.addFreshEntity(itemEntity);
+            discard();
+            return false;
+        }
+
+        return super.hurt(source, amount);
+    }
+
+    @Override
     public void die(DamageSource pCause) {
         super.die(pCause);
         Containers.dropContents(level, this, this);
@@ -192,7 +217,7 @@ public class BunnyChest extends TamableAnimal implements Container, MenuProvider
     @Override
     public void playerTouch(Player player) {
         super.playerTouch(player);
-        if (getOwner() == null)
+        if (getOwnerUUID() == null)
             setOwnerUUID(player.getUUID());
     }
 
@@ -260,7 +285,6 @@ public class BunnyChest extends TamableAnimal implements Container, MenuProvider
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        travel(Vec3.ZERO);
         if (!level.isClientSide && player.isShiftKeyDown()) {
             setFollowing(!isFollowing());
             String key = isFollowing() ? "info.yummy.bunny_chest.following" : "info.yummy.bunny_chest.not_following";
