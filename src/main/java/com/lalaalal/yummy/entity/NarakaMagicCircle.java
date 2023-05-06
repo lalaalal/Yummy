@@ -17,8 +17,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
 public class NarakaMagicCircle extends Entity {
+    private static final int LIFE_TIME = 20 * 10;
     private int radius = 3;
-    private int lifetime = 20 * 10;
     private int tick = 0;
     private double rotationDegree = 0;
     private double deltaRotation = 360 / 24.0;
@@ -52,7 +52,7 @@ public class NarakaMagicCircle extends Entity {
         if (tick % 24 == 0)
             deltaRotation += 5;
 
-        if (tick == lifetime) {
+        if (tick == LIFE_TIME) {
             explode();
             discard();
         }
@@ -64,8 +64,8 @@ public class NarakaMagicCircle extends Entity {
             AABB area = getBoundingBox().inflate(radius);
             LivingEntity target = level.getNearestEntity(LivingEntity.class, TargetingConditions.DEFAULT, owner, getX(), getY(), getZ(), area);
             if (target != null && owner != null) {
-                target.hurt(new EntityDamageSource("explosion_magic", owner), 166);
                 level.explode(owner, getX(), getY(), getZ(), 1, false, Explosion.BlockInteraction.NONE);
+                target.hurt(new EntityDamageSource("explosion_magic", owner), 166);
                 HerobrineMark.overlapMark(target, owner);
             }
             ((ServerLevel) level).sendParticles(ParticleTypes.EXPLOSION_EMITTER, getX(), getY(), getZ(), 1, 0, 0, 0, 1);

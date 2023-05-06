@@ -1,5 +1,6 @@
 package com.lalaalal.yummy.entity.skill;
 
+import com.lalaalal.yummy.YummyAttributeModifiers;
 import com.lalaalal.yummy.YummyUtil;
 import com.lalaalal.yummy.effect.HerobrineMark;
 import com.lalaalal.yummy.entity.CameraShakingEntity;
@@ -43,8 +44,10 @@ public class DescentAndFallMeteorSkill extends TickableSkill {
 
     @Override
     public boolean tick(int tick) {
-        if (tick == 0)
+        if (tick == 0) {
             teleportAboveTarget();
+            YummyAttributeModifiers.addTransientModifier(usingEntity, YummyAttributeModifiers.IGNORE_KNOCKBACK);
+        }
         if (tick == DESCENT_TICK)
             descend();
         if (tick == DESCENT_TICK + 1)
@@ -53,8 +56,15 @@ public class DescentAndFallMeteorSkill extends TickableSkill {
             fallMeteor(tick - DESCENT_TICK + 3);
         if (tick == DESCENT_TICK + 3 && usingEntity instanceof CameraShakingEntity cameraShakingEntity)
             cameraShakingEntity.setCameraShaking(false);
+        if (tick == tickDuration)
+            YummyAttributeModifiers.removeModifier(usingEntity, YummyAttributeModifiers.IGNORE_KNOCKBACK);
 
         return super.tick(tick);
+    }
+
+    @Override
+    public void interrupted() {
+        YummyAttributeModifiers.removeModifier(usingEntity, YummyAttributeModifiers.IGNORE_KNOCKBACK);
     }
 
     private void teleportAboveTarget() {

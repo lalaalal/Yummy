@@ -13,6 +13,7 @@ public class YummyAttributeModifiers {
     private static final Map<AttributeModifier, Attribute> MODIFIER_DEFINITION = new HashMap<>();
 
     public static final AttributeModifier IGNORE_KNOCKBACK = defineModifier(Attributes.KNOCKBACK_RESISTANCE, "IgnoreKnockback", 1.0, AttributeModifier.Operation.ADDITION);
+    public static final AttributeModifier PREVENT_MOVING = defineModifier(Attributes.MOVEMENT_SPEED, "StopMoving", 0.0, AttributeModifier.Operation.MULTIPLY_TOTAL);
 
     public static AttributeModifier defineModifier(Attribute attribute, String name, double amount, AttributeModifier.Operation operation) {
         AttributeModifier modifier = new AttributeModifier(name, amount, operation);
@@ -26,7 +27,7 @@ public class YummyAttributeModifiers {
         if (attribute == null)
             return;
         AttributeInstance attributeInstance = livingEntity.getAttribute(attribute);
-        if (attributeInstance != null)
+        if (attributeInstance != null && !attributeInstance.hasModifier(modifier))
             attributeInstance.addTransientModifier(modifier);
     }
 
@@ -35,7 +36,7 @@ public class YummyAttributeModifiers {
         if (attribute == null)
             return;
         AttributeInstance attributeInstance = livingEntity.getAttribute(attribute);
-        if (attributeInstance != null)
+        if (attributeInstance != null && attributeInstance.hasModifier(modifier))
             attributeInstance.removeModifier(modifier);
     }
 }

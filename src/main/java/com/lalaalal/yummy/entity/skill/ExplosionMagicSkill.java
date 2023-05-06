@@ -49,6 +49,11 @@ public class ExplosionMagicSkill extends TickableSkill {
         return super.tick(tick);
     }
 
+    @Override
+    public void interrupted() {
+        YummyAttributeModifiers.removeModifier(usingEntity, YummyAttributeModifiers.IGNORE_KNOCKBACK);
+    }
+
     private void createMagicCircles(int tick) {
         if (tick % 5 == 0 && tick <= 15) {
             int circleNum = tick / 5;

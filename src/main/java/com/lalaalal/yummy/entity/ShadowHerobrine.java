@@ -4,10 +4,14 @@ import com.lalaalal.yummy.YummyUtil;
 import com.lalaalal.yummy.effect.HerobrineMark;
 import com.lalaalal.yummy.tags.YummyTags;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -17,9 +21,15 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.builder.ILoopType;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 
-public class ShadowHerobrine extends Herobrine implements PowerableMob {
-    private Herobrine herobrine;
+public class ShadowHerobrine extends Herobrine {
+    private LivingEntity parent;
 
     public static AttributeSupplier.Builder getHerobrineAttributes() {
         return Mob.createMobAttributes()
@@ -35,18 +45,42 @@ public class ShadowHerobrine extends Herobrine implements PowerableMob {
         super(entityType, level);
     }
 
-    public boolean hasOwner() {
-        return herobrine != null;
+    public ShadowHerobrine(Level level, Vec3 position) {
+        this(YummyEntities.SHADOW_HEROBRINE.get(), level);
+        setPos(position);
     }
 
-    public void setHerobrine(Herobrine herobrine) {
-        this.herobrine = herobrine;
-        this.goalSelector.addGoal(1, new FollowHerobrineGoal(herobrine));
+    @Override
+    protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+        if (!event.isMoving())
+            return PlayState.STOP;
+
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.herobrine.walk", ILoopType.EDefaultLoopTypes.LOOP));
+        return PlayState.CONTINUE;
+    }
+
+    public boolean hasParent() {
+        return parent != null;
+    }
+
+    public void setParent(LivingEntity parent) {
+        this.parent = parent;
+        this.goalSelector.addGoal(1, new FollowParentGoal(parent));
     }
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
         return !source.isBypassInvul();
+    }
+
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        return super.hurt(source, amount);
+    }
+
+    @Override
+    protected void registerSkills() {
+
     }
 
     @Override
@@ -63,7 +97,7 @@ public class ShadowHerobrine extends Herobrine implements PowerableMob {
     @Override
     public boolean doHurtTarget(Entity entity) {
         if (entity instanceof LivingEntity livingEntity) {
-            HerobrineMark.overlapMark(livingEntity);
+            HerobrineMark.overlapMark(livingEntity, parent);
             MobEffectInstance mobEffectInstance = new MobEffectInstance(MobEffects.WEAKNESS, 120, 5);
             livingEntity.addEffect(mobEffectInstance);
         }
@@ -72,23 +106,35 @@ public class ShadowHerobrine extends Herobrine implements PowerableMob {
     }
 
     @Override
-    public boolean isPowered() {
-        return true;
+    protected void customServerAiStep() {
+        if ((!hasParent() || !parent.isAlive()) && tickCount > 200) {
+            discard();
+        }
     }
 
-    private class FollowHerobrineGoal extends Goal {
-        public static final double START_FOLLOWING_DISTANCE = 12;
+    @Override
+    public void startSeenByPlayer(ServerPlayer serverPlayer) {
 
-        private final Herobrine herobrine;
+    }
+
+    @Override
+    public void stopSeenByPlayer(ServerPlayer serverPlayer) {
+
+    }
+
+    private class FollowParentGoal extends Goal {
+        public static final double START_FOLLOWING_DISTANCE = 24;
+
+        private final LivingEntity parent;
         private int timeToRecalculatePath;
 
-        public FollowHerobrineGoal(Herobrine herobrine) {
-            this.herobrine = herobrine;
+        public FollowParentGoal(LivingEntity parent) {
+            this.parent = parent;
         }
 
         @Override
         public boolean canUse() {
-            return distanceToSqr(herobrine) > START_FOLLOWING_DISTANCE * START_FOLLOWING_DISTANCE;
+            return distanceToSqr(parent) > START_FOLLOWING_DISTANCE * START_FOLLOWING_DISTANCE;
         }
 
         @Override
@@ -104,19 +150,19 @@ public class ShadowHerobrine extends Herobrine implements PowerableMob {
         public void tick() {
             super.tick();
 
-            getLookControl().setLookAt(herobrine, 10.0F, (float) getMaxHeadXRot());
+            getLookControl().setLookAt(parent, 10.0F, (float) getMaxHeadXRot());
             if (--this.timeToRecalculatePath <= 0) {
                 this.timeToRecalculatePath = this.adjustedTickDelay(10);
-                if (distanceToSqr(herobrine) >= (20 * 20)) {
+                if (distanceToSqr(parent) >= (START_FOLLOWING_DISTANCE * START_FOLLOWING_DISTANCE)) {
                     teleportToHerobrine();
                 } else {
-                    navigation.moveTo(herobrine, 1);
+                    navigation.moveTo(parent, 1);
                 }
             }
         }
 
         private void teleportToHerobrine() {
-            BlockPos blockpos = this.herobrine.blockPosition();
+            BlockPos blockpos = this.parent.blockPosition();
             BlockPos teleportPos = YummyUtil.randomPos(blockpos, 5, level.getRandom());
 
             moveTo(teleportPos, 0, 0);

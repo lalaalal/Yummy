@@ -19,7 +19,7 @@ public class YummyEntities {
                     .build(YummyMod.MOD_ID + ":herobrine"));
 
     public static final RegistryObject<EntityType<ShadowHerobrine>> SHADOW_HEROBRINE = ENTITY_TYPES.register("shadow_herobrine",
-            () -> EntityType.Builder.of(ShadowHerobrine::new, MobCategory.CREATURE)
+            () -> EntityType.Builder.of((EntityType.EntityFactory<ShadowHerobrine>) ShadowHerobrine::new, MobCategory.CREATURE)
                     .sized(0.6f, 2.0f)
                     .fireImmune()
                     .build(YummyMod.MOD_ID + ":shadow_herobrine"));

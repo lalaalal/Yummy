@@ -95,4 +95,11 @@ public class TickableSkillUseGoal<T extends PathfinderMob & SkillUsable> extends
             }
         }
     }
+
+    public void interrupt() {
+        if (usingSkill != null)
+            usingSkill.interrupted();
+        setUsingSkill(null);
+        skillToUse = null;
+    }
 }

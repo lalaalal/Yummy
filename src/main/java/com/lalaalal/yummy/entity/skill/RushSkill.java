@@ -20,13 +20,15 @@ public class RushSkill extends TickableSkill {
     public static final float ATTACK_REACH = 14;
     public static final Vec3 FLOATING_BLOCK_VELOCITY = new Vec3(0, 0.4, 0);
     private static final double MOVE_DISTANCE = 14;
-    private static final int RUSH_DURATION = 10;
+    private static final int RUSH_DURATION = 8;
     private static final int FLOATING_DURATION = 12;
     private static final int START_RUN_TIME = 15;
     private Vec3 viewVector = Vec3.ZERO;
     private Vec3 targetPos = Vec3.ZERO;
     private Vec3 rushStartPos = Vec3.ZERO;
     private Vec3 moveVector = Vec3.ZERO;
+    private float xRot = 0;
+    private float yRot = 0;
     private boolean pushed = false;
     private final Set<BlockPos> floatedBlocks = new HashSet<>();
 
@@ -52,8 +54,10 @@ public class RushSkill extends TickableSkill {
         if (target == null)
             return true;
         if (tick < START_RUN_TIME) {
-            usingEntity.lookAt(target, 0, 0);
-            viewVector = usingEntity.getViewVector(2).multiply(1, 0, 1);
+            usingEntity.lookAt(target, 360, 360);
+            viewVector = usingEntity.getViewVector(0);
+            xRot = usingEntity.getXRot();
+            yRot = usingEntity.getYRot();
         }
         if (START_RUN_TIME <= tick)
             run();
@@ -69,7 +73,7 @@ public class RushSkill extends TickableSkill {
             return super.tick(tick);
 
         if (tick == 0) {
-            moveVector = viewVector.scale(MOVE_DISTANCE);
+            moveVector = viewVector.scale(MOVE_DISTANCE).multiply(1, 0, 1);
             rushStartPos = new Vec3(usingEntity.getX(), usingEntity.getY(), usingEntity.getZ());
             targetPos = rushStartPos.add(moveVector);
         }
@@ -83,7 +87,14 @@ public class RushSkill extends TickableSkill {
         return false;
     }
 
+    @Override
+    public void interrupted() {
+
+    }
+
     private void run() {
+        usingEntity.setXRot(xRot);
+        usingEntity.setYRot(yRot);
         usingEntity.move(MoverType.SELF, viewVector.scale(1));
     }
 
@@ -92,6 +103,7 @@ public class RushSkill extends TickableSkill {
         Vec3 stepPos = rushStartPos.add(stepMovement);
         BlockPos sturdyBlockPos = YummyUtil.findHorizonPos(new BlockPos(targetPos), level);
         usingEntity.moveTo(stepPos.x, sturdyBlockPos.getY(), stepPos.z);
+        usingEntity.setDeltaMovement(Vec3.ZERO);
         LivingEntity target = usingEntity.getTarget();
         if (target == null)
             return;

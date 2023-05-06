@@ -87,7 +87,6 @@ public class YummyClientEventBus {
 
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        event.registerLayerDefinition(ShadowHerobrineModel.LAYER_LOCATION, ShadowHerobrineModel::createBodyLayer);
         event.registerLayerDefinition(BunnyChestModel.LAYER_LOCATION, BunnyChestModel::createBodyLayer);
         event.registerLayerDefinition(ThrownSpearModel.LAYER_LOCATION, ThrownSpearModel::createBodyLayer);
         event.registerLayerDefinition(ThrownMightyHolySpearModel.LAYER_LOCATION, ThrownMightyHolySpearModel::createBodyLayer);

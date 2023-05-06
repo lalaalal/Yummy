@@ -1,11 +1,13 @@
 package com.lalaalal.yummy.entity;
 
+import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.entity.goal.FollowTargetGoal;
 import com.lalaalal.yummy.entity.goal.TickableSkillUseGoal;
 import com.lalaalal.yummy.entity.skill.*;
 import com.lalaalal.yummy.misc.PhaseManager;
 import com.lalaalal.yummy.networking.YummyMessages;
 import com.lalaalal.yummy.networking.packet.ToggleHerobrineMusicPacket;
+import com.lalaalal.yummy.tags.YummyTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -24,6 +26,8 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -99,8 +103,23 @@ public class Herobrine extends CameraShakingEntity implements IAnimatable, Skill
 
         phaseManager.addPhaseChangeListener(this::changePhase);
         phaseManager.addPhaseChangeListener(this::enterPhase2, 2);
+        this.goalSelector.addGoal(1, skillUseGoal);
         registerSkills();
         setPersistenceRequired();
+    }
+
+    @Override
+    protected boolean shouldDespawnInPeaceful() {
+        return true;
+    }
+
+    @Override
+    protected PathNavigation createNavigation(Level pLevel) {
+        GroundPathNavigation pathNavigation = new GroundPathNavigation(this, level);
+        pathNavigation.setCanOpenDoors(true);
+        pathNavigation.setCanFloat(true);
+        pathNavigation.setAvoidSun(false);
+        return pathNavigation;
     }
 
     @Override
@@ -110,6 +129,7 @@ public class Herobrine extends CameraShakingEntity implements IAnimatable, Skill
             return;
         }
         String name = skillNames.get(skill);
+        YummyMod.LOGGER.debug("Setting using skill to " + name);
         this.entityData.set(DATA_USING_SKILL_NAME, name);
     }
 
@@ -125,7 +145,6 @@ public class Herobrine extends CameraShakingEntity implements IAnimatable, Skill
     }
 
     protected void registerSkills() {
-        this.goalSelector.addGoal(1, skillUseGoal);
         registerSkill(new NarakaWaveSkill(this, 20 * 15), "naraka_wave");
         registerSkill(new ThrowNarakaFireballSkill(this, 20 * 6), "throw_naraka_fireball");
         registerSkill(new DescentAndFallMeteorSkill(this, 20 * 12), "descent_fall_meteor");
@@ -134,9 +153,11 @@ public class Herobrine extends CameraShakingEntity implements IAnimatable, Skill
     }
 
     public void registerSkill(TickableSkill skill, String name) {
-        skills.put(name, skill);
-        skillNames.put(skill, name);
-        skillUseGoal.addSkill(skill);
+        if (!skills.containsKey(name)) {
+            skills.put(name, skill);
+            skillNames.put(skill, name);
+            skillUseGoal.addSkill(skill);
+        }
     }
 
     public void removeSkill(String name) {
@@ -148,11 +169,13 @@ public class Herobrine extends CameraShakingEntity implements IAnimatable, Skill
         }
     }
 
-    private void changePhase(int phase) {
+    private void changePhase(int from, int to) {
+        if (from > to)
+            return;
         invulnerableTick = 30;
         setInvulnerable(true);
         LevelChunk levelChunk = level.getChunkAt(getOnPos());
-        YummyMessages.sendToPlayer(new ToggleHerobrineMusicPacket(true, phase), levelChunk);
+        YummyMessages.sendToPlayer(new ToggleHerobrineMusicPacket(true, to), levelChunk);
         setHealth(phaseManager.getActualCurrentPhaseMaxHealth());
     }
 
@@ -162,13 +185,15 @@ public class Herobrine extends CameraShakingEntity implements IAnimatable, Skill
             attributeInstance.setBaseValue(66);
         if (skills.get("descent_fall_meteor") instanceof DescentAndFallMeteorSkill descentAndFallMeteorSkill)
             descentAndFallMeteorSkill.setMeteorMark(true);
+        registerSkill(new SummonShadowHerobrineSkill(this, 20 * 60), "none");
+        skillUseGoal.interrupt();
     }
 
     public int getPhase() {
         return phaseManager.getCurrentPhase();
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         String skillName = getUsingSkillName();
         if (!skillName.equals("none")) {
             hurtAnimationTick = 0;
@@ -204,8 +229,8 @@ public class Herobrine extends CameraShakingEntity implements IAnimatable, Skill
     protected void registerGoals() {
         this.goalSelector.addGoal(2, new FollowTargetGoal(this, 5, 1));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, false));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false, false));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, false, false, (livingEntity) -> !livingEntity.getType().is(YummyTags.HEROBRINE)));
     }
 
     @Override

@@ -64,6 +64,11 @@ public class NarakaWaveSkill extends TickableSkill {
         return false;
     }
 
+    @Override
+    public void interrupted() {
+        YummyAttributeModifiers.removeModifier(usingEntity, YummyAttributeModifiers.IGNORE_KNOCKBACK);
+    }
+
     private void shakeEntities(int tick) {
         if (usingEntity instanceof CameraShakingEntity cameraShakingEntity) {
             if (tick == 0)

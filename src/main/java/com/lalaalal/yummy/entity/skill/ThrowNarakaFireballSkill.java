@@ -41,11 +41,16 @@ public class ThrowNarakaFireballSkill extends TickableSkill {
     public boolean tick(int tick) {
         if (tick == 0) {
             YummyAttributeModifiers.removeModifier(usingEntity, YummyAttributeModifiers.IGNORE_KNOCKBACK);
-            Vec3 viewVector = usingEntity.getViewVector(1);
+            Vec3 viewVector = usingEntity.getViewVector(0);
             meteor.setPos(usingEntity.getEyePosition());
             meteor.shoot(viewVector.x, viewVector.y, viewVector.z, 1, 0);
         }
 
         return super.tick(tick);
+    }
+
+    @Override
+    public void interrupted() {
+        YummyAttributeModifiers.removeModifier(usingEntity, YummyAttributeModifiers.IGNORE_KNOCKBACK);
     }
 }

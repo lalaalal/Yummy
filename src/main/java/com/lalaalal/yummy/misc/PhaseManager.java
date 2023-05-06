@@ -89,7 +89,7 @@ public class PhaseManager {
             BossEvent.BossBarColor color = getPhaseColor(phase);
             bossEvent.setColor(color);
             for (PhaseChangeListener listener : listeners)
-                listener.onPhaseChange(phase);
+                listener.onPhaseChange(prevPhase, phase);
             prevPhase = phase;
         }
         updateProgressBar(bossEvent, phase);
@@ -128,13 +128,13 @@ public class PhaseManager {
 
     @FunctionalInterface
     public interface PhaseChangeListener {
-        void onPhaseChange(int phase);
+        void onPhaseChange(int from, int to);
     }
 
     private record SpecificPhaseChangeListener(Runnable runnable, int targetPhase) implements PhaseChangeListener {
         @Override
-        public void onPhaseChange(int phase) {
-            if (targetPhase == phase)
+        public void onPhaseChange(int from, int to) {
+            if (from < to && targetPhase == to)
                 runnable.run();
         }
     }

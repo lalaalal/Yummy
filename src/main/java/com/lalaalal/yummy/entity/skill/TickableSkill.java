@@ -39,4 +39,6 @@ public abstract class TickableSkill {
     public boolean tick(int tick) {
         return tick >= tickDuration;
     }
+
+    public abstract void interrupted();
 }

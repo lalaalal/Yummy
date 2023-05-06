@@ -1,7 +1,4 @@
-package com.lalaalal.yummy.client.model;// Made with Blockbench 4.7.2
-// Exported for Minecraft version 1.17 or later with Mojang mappings
-// Paste this class into your mod and generate all required imports
-
+package com.lalaalal.yummy.client.model;
 
 import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.entity.BunnyChest;
