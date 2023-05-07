@@ -1,4 +1,4 @@
-package com.lalaalal.yummy;
+package com.lalaalal.yummy.entity.ai;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;

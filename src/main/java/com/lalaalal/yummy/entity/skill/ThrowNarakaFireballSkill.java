@@ -1,8 +1,8 @@
 package com.lalaalal.yummy.entity.skill;
 
-import com.lalaalal.yummy.YummyAttributeModifiers;
 import com.lalaalal.yummy.YummyUtil;
 import com.lalaalal.yummy.entity.Meteor;
+import com.lalaalal.yummy.entity.ai.YummyAttributeModifiers;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.PathfinderMob;
@@ -13,6 +13,11 @@ public class ThrowNarakaFireballSkill extends TickableSkill {
 
     public ThrowNarakaFireballSkill(PathfinderMob usingEntity, int cooldown) {
         super(usingEntity, cooldown, 10, 5);
+    }
+
+    @Override
+    public String getBaseName() {
+        return "throw_naraka_fireball";
     }
 
     @Override

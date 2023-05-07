@@ -7,6 +7,7 @@ import com.lalaalal.yummy.networking.YummyMessages;
 import com.lalaalal.yummy.networking.packet.ToggleHerobrineMusicPacket;
 import com.lalaalal.yummy.tags.YummyTags;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -42,7 +43,7 @@ public class Herobrine extends AbstractHerobrine {
     private static final float[] PHASE_HEALTHS = {600, 60, 6};
     private static final BossEvent.BossBarColor[] PHASE_COLORS = {BossEvent.BossBarColor.BLUE, BossEvent.BossBarColor.YELLOW, BossEvent.BossBarColor.RED};
 
-    private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
+    private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this, false);
     private final PhaseManager phaseManager = new PhaseManager(PHASE_HEALTHS, PHASE_COLORS, this);
     private final ServerBossEvent bossEvent = (ServerBossEvent) (new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.PROGRESS))
             .setDarkenScreen(true)
@@ -50,10 +51,9 @@ public class Herobrine extends AbstractHerobrine {
 
     private BlockPos structurePos;
     private DamageSource deathDamageSource;
-    private boolean structureDestroyed = false;
     private int hurtAnimationTick = 0;
     private int invulnerableTick = 30;
-    private int lightEmissionTick = 0;
+    private int lightEmissionTick = LIGHT_EMISSION_DURATION;
     private int deathTick = 0;
 
     public static boolean canSummonHerobrine(Level level, BlockPos headPos) {
@@ -66,14 +66,6 @@ public class Herobrine extends AbstractHerobrine {
                 && netherBlock == Blocks.CHISELED_NETHER_BRICKS
                 && goldBlock1 == Blocks.GOLD_BLOCK
                 && goldBlock2 == Blocks.GOLD_BLOCK;
-    }
-
-    public static void destroySpawnStructure(ServerLevel level, BlockPos headPos) {
-        level.destroyBlock(headPos, false);
-        level.destroyBlock(headPos.below(1), false);
-        level.destroyBlock(headPos.below(2), false);
-        level.destroyBlock(headPos.below(3), false);
-        EntityType.LIGHTNING_BOLT.spawn(level, null, null, headPos.below(3), MobSpawnType.TRIGGERED, true, true);
     }
 
     public static AttributeSupplier.Builder getHerobrineAttributes() {
@@ -123,7 +115,7 @@ public class Herobrine extends AbstractHerobrine {
             attributeInstance.setBaseValue(66);
         if (getSkill("descent_fall_meteor") instanceof DescentAndFallMeteorSkill descentAndFallMeteorSkill)
             descentAndFallMeteorSkill.setMeteorMark(true);
-        registerSkill(new SummonShadowHerobrineSkill(this, 20 * 60), "summon_shadow");
+        registerSkill(new SummonShadowHerobrineSkill(this, 20 * 60));
         interrupt();
     }
 
@@ -147,18 +139,18 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     protected void registerSkills() {
-        registerSkill(new NarakaWaveSkill(this, 20 * 15), "naraka_wave");
-        registerSkill(new ThrowNarakaFireballSkill(this, 20 * 6), "throw_naraka_fireball");
-        registerSkill(new DescentAndFallMeteorSkill(this, 20 * 12), "descent_fall_meteor");
-        registerSkill(new ExplosionMagicSkill(this, 20 * 30), "explosion_spell");
-        registerSkill(new RushSkill(this, 20 * 10), "rush");
+        registerSkill(new NarakaWaveSkill(this, 20 * 15));
+        registerSkill(new ThrowNarakaFireballSkill(this, 20 * 6));
+        registerSkill(new DescentAndFallMeteorSkill(this, 20 * 12));
+        registerSkill(new ExplosionMagicSkill(this, 20 * 30));
+        registerSkill(new RushSkill(this, 20 * 10));
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         String skillName = getUsingSkillName();
-        if (!skillName.equals("none")) {
+        if (!skillName.equals(SKILL_NONE)) {
             hurtAnimationTick = 0;
-            String animationName = String.format("animation.herobrine.%s", skillName);
+            String animationName = "animation.herobrine." + skillName;
             event.getController().setAnimation(new AnimationBuilder().addAnimation(animationName, ILoopType.EDefaultLoopTypes.PLAY_ONCE));
             return PlayState.CONTINUE;
         }
@@ -204,30 +196,16 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if (deathTick > 0)
-            return false;
         if (source.isBypassInvul())
             return super.hurt(source, amount);
+        if (deathTick > 0)
+            return false;
 
-        hurtAnimationTick = 37;
+        hurtAnimationTick += 40;
         if (invulnerableTick > 0)
             return false;
 
         return super.hurt(source, Math.min(amount, currentPhaseMaxHurtDamage()));
-    }
-
-    @Override
-    public void aiStep() {
-        if (!structureDestroyed && structurePos != null
-                && lightEmissionTick == LIGHT_EMISSION_DURATION
-                && !level.isClientSide) {
-            destroySpawnStructure((ServerLevel) level, structurePos);
-            structureDestroyed = true;
-        }
-        if (lightEmissionTick >= LIGHT_EMISSION_DURATION)
-            super.aiStep();
-        else
-            lightEmissionTick += 1;
     }
 
     @Override
@@ -253,6 +231,8 @@ public class Herobrine extends AbstractHerobrine {
             setDeltaMovement(0, 0.7, 0);
             setNoGravity(true);
         }
+        if (deathTick % 15 == 0 && !level.isClientSide)
+            ((ServerLevel) this.level).sendParticles(ParticleTypes.EXPLOSION_EMITTER, getX(), getY(), getZ(), 1, 0, 0, 0, 1);
         move(MoverType.SELF, getDeltaMovement());
         Vec3 velocity = getDeltaMovement().add(0, -0.04, 0);
         if (velocity.y > 0)
@@ -260,9 +240,10 @@ public class Herobrine extends AbstractHerobrine {
         if (lightEmissionTick == LIGHT_EMISSION_DURATION) {
             this.remove(Entity.RemovalReason.KILLED);
             this.gameEvent(GameEvent.ENTITY_DIE);
-            if (deathDamageSource != null) {
+            if (deathDamageSource != null && !level.isClientSide) {
                 dead = true;
                 dropAllDeathLoot(deathDamageSource);
+                ExperienceOrb.award((ServerLevel) this.level, this.position(), xpReward);
             }
         }
         lightEmissionTick = deathTick += 1;

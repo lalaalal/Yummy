@@ -18,6 +18,12 @@ public abstract class TickableSkill {
         this.tickDuration = tickDuration;
     }
 
+    public abstract String getBaseName();
+
+    public String getName() {
+        return getBaseName();
+    }
+
     public abstract boolean canUse();
 
     public int getCooldown() {

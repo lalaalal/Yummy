@@ -22,7 +22,7 @@ public class ShadowHerobrineRenderer extends AbstractHerobrineRenderer<ShadowHer
 
     @Override
     public void render(GeoModel model, ShadowHerobrine animatable, float partialTick, RenderType type, PoseStack poseStack, @Nullable MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        super.render(model, animatable, partialTick, type, poseStack, bufferSource, buffer, packedLight, packedOverlay, red, green, blue, 0.8f);
+        super.render(model, animatable, partialTick, type, poseStack, bufferSource, buffer, packedLight, packedOverlay, red, green, blue, 0.7f);
     }
 
     @Override

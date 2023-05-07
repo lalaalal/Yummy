@@ -1,11 +1,11 @@
 package com.lalaalal.yummy.entity.skill;
 
-import com.lalaalal.yummy.YummyAttributeModifiers;
 import com.lalaalal.yummy.YummyUtil;
 import com.lalaalal.yummy.block.YummyBlocks;
 import com.lalaalal.yummy.entity.CameraShakingEntity;
 import com.lalaalal.yummy.entity.FloatingBlockEntity;
 import com.lalaalal.yummy.entity.TransformingBlockEntity;
+import com.lalaalal.yummy.entity.ai.YummyAttributeModifiers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -29,6 +29,11 @@ public class NarakaWaveSkill extends TickableSkill {
 
     public NarakaWaveSkill(PathfinderMob usingEntity, int cooldown) {
         super(usingEntity, cooldown, 10, 30);
+    }
+
+    @Override
+    public String getBaseName() {
+        return "naraka_wave";
     }
 
     protected void prepare() {

@@ -37,6 +37,11 @@ public class RushSkill extends TickableSkill {
     }
 
     @Override
+    public String getBaseName() {
+        return "rush";
+    }
+
+    @Override
     public boolean canUse() {
         LivingEntity target = usingEntity.getTarget();
         if (target == null)

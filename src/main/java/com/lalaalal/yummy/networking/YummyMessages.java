@@ -2,7 +2,6 @@ package com.lalaalal.yummy.networking;
 
 import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.networking.packet.ShowParticlePacket;
-import com.lalaalal.yummy.networking.packet.SpawnHerobrinePacket;
 import com.lalaalal.yummy.networking.packet.ToggleHerobrineMusicPacket;
 import com.lalaalal.yummy.networking.packet.UseSteelArmorPacket;
 import net.minecraft.resources.ResourceLocation;
@@ -30,11 +29,6 @@ public class YummyMessages {
                 .serverAcceptedVersions(s -> true)
                 .simpleChannel();
 
-        INSTANCE.messageBuilder(SpawnHerobrinePacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(SpawnHerobrinePacket::new)
-                .encoder(SpawnHerobrinePacket::encode)
-                .consumerMainThread(SpawnHerobrinePacket::handle)
-                .add();
         INSTANCE.messageBuilder(UseSteelArmorPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
                 .decoder(UseSteelArmorPacket::new)
                 .encoder(UseSteelArmorPacket::encode)

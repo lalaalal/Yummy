@@ -19,6 +19,9 @@ public class YummyBlockEntities {
     public static final RegistryObject<BlockEntityType<PollutedBlockEntity>> CORRUPTED_POLLUTED_BLOCK_ENTITY_TYPE
             = register("corrupted_polluted_block_entity_type", (blockPos, blockState) -> new PollutedBlockEntity(YummyBlockEntities.CORRUPTED_POLLUTED_BLOCK_ENTITY_TYPE.get(), blockPos, blockState), YummyBlocks.CORRUPTED_POLLUTED_BLOCK);
 
+    public static final RegistryObject<BlockEntityType<HerobrineSpawnerBlockEntity>> HEROBRINE_SPAWNER_BLOCK_ENTITY
+            = register("herobrine_spawner_block_entity_type", (blockPos, blockState) -> new HerobrineSpawnerBlockEntity(YummyBlockEntities.HEROBRINE_SPAWNER_BLOCK_ENTITY.get(), blockPos, blockState), YummyBlocks.HEROBRINE_SPAWNER_BLOCK);
+
     public static final RegistryObject<BlockEntityType<YummySignBlockEntity>> YUMMY_SIGN_BLOCK_ENTITY
             = BLOCK_ENTITY_TYPES.register("yummy_sign_block_entity", () -> BlockEntityType.Builder.of(YummySignBlockEntity::new,
             YummyBlocks.EBONY_SIGN.get(),

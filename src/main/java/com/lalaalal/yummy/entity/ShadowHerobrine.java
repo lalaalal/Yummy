@@ -2,6 +2,8 @@ package com.lalaalal.yummy.entity;
 
 import com.lalaalal.yummy.YummyUtil;
 import com.lalaalal.yummy.effect.HerobrineMark;
+import com.lalaalal.yummy.entity.goal.FollowTargetGoal;
+import com.lalaalal.yummy.entity.skill.PunchSkill;
 import com.lalaalal.yummy.tags.YummyTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.DamageSource;
@@ -14,7 +16,6 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
@@ -32,8 +33,14 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class ShadowHerobrine extends AbstractHerobrine {
-    private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
+    private static final int FIRST_MOVING_DURATION = 80;
+    private static final int START_MOVING_TICK = 8;
+
+    private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this, false);
     private LivingEntity parent;
+    private Vec3 firstPos;
+    private int firstMovingTick = 0;
+    private int tickOffset = 0;
 
     public static AttributeSupplier.Builder getHerobrineAttributes() {
         return Mob.createMobAttributes()
@@ -54,13 +61,23 @@ public class ShadowHerobrine extends AbstractHerobrine {
         setPos(position);
     }
 
+    public void setTickOffset(int tickOffset) {
+        this.tickOffset = tickOffset;
+    }
+
+    public ShadowHerobrine(Level level, Vec3 position, Vec3 firstPos) {
+        this(YummyEntities.SHADOW_HEROBRINE.get(), level);
+        setPos(position);
+        this.firstPos = firstPos;
+    }
+
     public boolean hasParent() {
         return parent != null;
     }
 
     public void setParent(LivingEntity parent) {
         this.parent = parent;
-        this.goalSelector.addGoal(1, new FollowParentGoal(parent));
+        this.goalSelector.addGoal(2, new FollowParentGoal(parent));
     }
 
     @Override
@@ -70,13 +87,13 @@ public class ShadowHerobrine extends AbstractHerobrine {
 
     @Override
     protected void registerSkills() {
-
+        registerSkill(new PunchSkill(this, 0));
     }
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1, true));
-        this.goalSelector.addGoal(3, new RandomStrollGoal(this, 1));
+        goalSelector.addGoal(2, new FollowTargetGoal(this));
+        goalSelector.addGoal(3, new RandomStrollGoal(this, 1));
 
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this, Herobrine.class));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false, false));
@@ -96,17 +113,37 @@ public class ShadowHerobrine extends AbstractHerobrine {
     }
 
     @Override
-    protected void customServerAiStep() {
-        if ((!hasParent() || !parent.isAlive()) && tickCount > 200)
-            discard();
+    public void aiStep() {
+        if (tickCount > START_MOVING_TICK + tickOffset)
+            super.aiStep();
+        else if (!level.isClientSide && firstPos != null)
+            moveTo(firstPos);
     }
 
+    @Override
+    protected void customServerAiStep() {
+        if ((!hasParent() || !parent.isAlive()) && tickCount > 200)
+            kill();
+    }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+        if (firstMovingTick < FIRST_MOVING_DURATION) {
+            firstMovingTick += 1;
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.shadow_herobrine.summoned_shadow", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
+            return PlayState.CONTINUE;
+        }
+
+        String skillName = getUsingSkillName();
+        if (!skillName.equals(SKILL_NONE)) {
+            String animationName = "animation.shadow_herobrine." + skillName;
+            event.getController().setAnimation(new AnimationBuilder().addAnimation(animationName, ILoopType.EDefaultLoopTypes.PLAY_ONCE));
+            return PlayState.CONTINUE;
+        }
+
         if (!event.isMoving())
             return PlayState.STOP;
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.herobrine.walk", ILoopType.EDefaultLoopTypes.LOOP));
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.shadow_herobrine.walk", ILoopType.EDefaultLoopTypes.LOOP));
         return PlayState.CONTINUE;
     }
 
@@ -119,6 +156,7 @@ public class ShadowHerobrine extends AbstractHerobrine {
     public AnimationFactory getFactory() {
         return animationFactory;
     }
+
 
     private class FollowParentGoal extends Goal {
         public static final double START_FOLLOWING_DISTANCE = 24;

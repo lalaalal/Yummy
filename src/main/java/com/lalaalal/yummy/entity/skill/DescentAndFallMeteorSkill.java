@@ -1,10 +1,10 @@
 package com.lalaalal.yummy.entity.skill;
 
-import com.lalaalal.yummy.YummyAttributeModifiers;
 import com.lalaalal.yummy.YummyUtil;
 import com.lalaalal.yummy.effect.HerobrineMark;
 import com.lalaalal.yummy.entity.CameraShakingEntity;
 import com.lalaalal.yummy.entity.Meteor;
+import com.lalaalal.yummy.entity.ai.YummyAttributeModifiers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -26,6 +26,11 @@ public class DescentAndFallMeteorSkill extends TickableSkill {
 
     public DescentAndFallMeteorSkill(PathfinderMob usingEntity, int cooldown) {
         super(usingEntity, cooldown, 10, 60);
+    }
+
+    @Override
+    public String getBaseName() {
+        return "descent_fall_meteor";
     }
 
     public void setMeteorMark(boolean meteorMark) {

@@ -1,6 +1,7 @@
 package com.lalaalal.yummy.event;
 
 import com.lalaalal.yummy.YummyMod;
+import com.lalaalal.yummy.block.YummyBlocks;
 import com.lalaalal.yummy.effect.YummyEffects;
 import com.lalaalal.yummy.entity.Herobrine;
 import net.minecraft.core.BlockPos;
@@ -31,8 +32,7 @@ public class YummyForgeEvent {
         if ((item.is(Items.FLINT_AND_STEEL) || item.is(Items.FIRE_CHARGE))
                 && direction == Direction.UP
                 && Herobrine.canSummonHerobrine(level, blockPos)) {
-            Herobrine herobrine = new Herobrine(level, blockPos.above(), blockPos);
-            level.addFreshEntity(herobrine);
+            level.setBlock(blockPos.below(), YummyBlocks.HEROBRINE_SPAWNER_BLOCK.get().defaultBlockState(), 3);
         }
     }
 

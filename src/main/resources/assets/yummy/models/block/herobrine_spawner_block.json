@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "yummy:block/herobrine_spawner_block"
+  }
+}

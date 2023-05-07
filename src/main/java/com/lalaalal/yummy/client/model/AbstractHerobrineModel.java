@@ -11,6 +11,7 @@ public class AbstractHerobrineModel<T extends AbstractHerobrine> extends Animate
     public static final ResourceLocation TEXTURE_RESOURCE = new ResourceLocation(YummyMod.MOD_ID, "textures/entity/herobrine.png");
     public static final ResourceLocation SHADOW_TEXTURE_RESOURCE = new ResourceLocation(YummyMod.MOD_ID, "textures/entity/shadow_herobrine.png");
     public static final ResourceLocation ANIMATION_RESOURCE = new ResourceLocation(YummyMod.MOD_ID, "animations/herobrine.animation.json");
+    public static final ResourceLocation SHADOW_ANIMATION_RESOURCE = new ResourceLocation(YummyMod.MOD_ID, "animations/shadow_herobrine.animation.json");
 
     @Override
     public final ResourceLocation getModelResource(T object) {
@@ -24,6 +25,6 @@ public class AbstractHerobrineModel<T extends AbstractHerobrine> extends Animate
 
     @Override
     public ResourceLocation getAnimationResource(T animatable) {
-        return ANIMATION_RESOURCE;
+        return animatable.isShadow ? SHADOW_ANIMATION_RESOURCE : ANIMATION_RESOURCE;
     }
 }

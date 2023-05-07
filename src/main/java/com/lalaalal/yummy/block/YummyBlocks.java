@@ -51,6 +51,13 @@ public class YummyBlocks {
                     .strength(5f, 6f)
                     .requiresCorrectToolForDrops()),
             YummyMod.TAB);
+    public static final RegistryObject<Block> HEROBRINE_SPAWNER_BLOCK = register("herobrine_spawner_block",
+            () -> new HerobrineSpawnerBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.NETHER)
+                    .requiresCorrectToolForDrops()
+                    .strength(2.0F, 6.0F)
+                    .sound(SoundType.NETHER_BRICKS)
+                    .lightLevel(blockState -> 7)),
+            YummyMod.TAB);
 
     public static final RegistryObject<Block> PURIFIED_SOUL_BLOCK = BLOCKS.register("purified_soul_block",
             () -> new Block(BlockBehaviour.Properties.of(Material.DIRT)
