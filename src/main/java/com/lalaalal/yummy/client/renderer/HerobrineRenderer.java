@@ -1,7 +1,6 @@
 package com.lalaalal.yummy.client.renderer;
 
-import com.lalaalal.yummy.client.layer.HerobrineEyeLayer;
-import com.lalaalal.yummy.client.model.HerobrineModel;
+import com.lalaalal.yummy.client.model.AbstractHerobrineModel;
 import com.lalaalal.yummy.entity.Herobrine;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -12,19 +11,16 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.util.RandomSource;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
-import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
-public class HerobrineRenderer extends GeoEntityRenderer<Herobrine> {
+public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine> {
     private static final float HALF_SQRT_3 = (float) (Math.sqrt(3.0D) / 2.0D);
 
     public HerobrineRenderer(EntityRendererProvider.Context renderManager) {
-        this(renderManager, new HerobrineModel());
+        this(renderManager, new AbstractHerobrineModel<>());
     }
 
     public HerobrineRenderer(EntityRendererProvider.Context renderManager, AnimatedGeoModel<Herobrine> model) {
         super(renderManager, model);
-        this.shadowRadius = 0.3f;
-        addLayer(new HerobrineEyeLayer<>(this));
     }
 
     @Override

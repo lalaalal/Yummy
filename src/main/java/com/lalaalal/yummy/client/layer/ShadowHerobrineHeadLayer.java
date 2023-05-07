@@ -1,6 +1,5 @@
 package com.lalaalal.yummy.client.layer;
 
-import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.entity.ShadowHerobrine;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -9,10 +8,8 @@ import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 import software.bernie.geckolib3.renderers.geo.layer.AbstractLayerGeo;
 
 public class ShadowHerobrineHeadLayer extends AbstractLayerGeo<ShadowHerobrine> {
-    public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(YummyMod.MOD_ID, "textures/entity/shadow_herobrine_head.png");
-
     public ShadowHerobrineHeadLayer(GeoEntityRenderer<ShadowHerobrine> renderer) {
-        super(renderer, (entity) -> TEXTURE_LOCATION, renderer.getGeoModelProvider()::getModelResource);
+        super(renderer, renderer.getGeoModelProvider()::getTextureResource, renderer.getGeoModelProvider()::getModelResource);
     }
 
     @Override

@@ -20,7 +20,6 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -38,7 +37,7 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
-public class Herobrine extends CameraShakingEntity implements IAnimatable, Enemy {
+public class Herobrine extends AbstractHerobrine {
     public static final int LIGHT_EMISSION_DURATION = 100;
     private static final float[] PHASE_HEALTHS = {600, 60, 6};
     private static final BossEvent.BossBarColor[] PHASE_COLORS = {BossEvent.BossBarColor.BLUE, BossEvent.BossBarColor.YELLOW, BossEvent.BossBarColor.RED};
@@ -50,6 +49,7 @@ public class Herobrine extends CameraShakingEntity implements IAnimatable, Enemy
             .setPlayBossMusic(true);
 
     private BlockPos structurePos;
+    private DamageSource deathDamageSource;
     private boolean structureDestroyed = false;
     private int hurtAnimationTick = 0;
     private int invulnerableTick = 30;
@@ -88,7 +88,7 @@ public class Herobrine extends CameraShakingEntity implements IAnimatable, Enemy
     }
 
     protected Herobrine(EntityType<? extends Herobrine> entityType, Level level) {
-        super(entityType, level);
+        super(entityType, level, false);
         this.noCulling = true;
         this.xpReward = 666;
 
@@ -194,6 +194,14 @@ public class Herobrine extends CameraShakingEntity implements IAnimatable, Enemy
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, false, false, (livingEntity) -> !livingEntity.getType().is(YummyTags.HEROBRINE)));
     }
 
+    private float currentPhaseMaxHurtDamage() {
+        return switch (getPhase()) {
+            case 1 -> 20.0f;
+            case 2 -> 6f;
+            default -> 1f;
+        };
+    }
+
     @Override
     public boolean hurt(DamageSource source, float amount) {
         if (deathTick > 0)
@@ -205,7 +213,7 @@ public class Herobrine extends CameraShakingEntity implements IAnimatable, Enemy
         if (invulnerableTick > 0)
             return false;
 
-        return super.hurt(source, amount);
+        return super.hurt(source, Math.min(amount, currentPhaseMaxHurtDamage()));
     }
 
     @Override
@@ -234,6 +242,11 @@ public class Herobrine extends CameraShakingEntity implements IAnimatable, Enemy
     }
 
     @Override
+    public void die(DamageSource damageSource) {
+        this.deathDamageSource = damageSource;
+    }
+
+    @Override
     protected void tickDeath() {
         if (deathTick == 0) {
             lightEmissionTick = 0;
@@ -247,13 +260,16 @@ public class Herobrine extends CameraShakingEntity implements IAnimatable, Enemy
         if (lightEmissionTick == LIGHT_EMISSION_DURATION) {
             this.remove(Entity.RemovalReason.KILLED);
             this.gameEvent(GameEvent.ENTITY_DIE);
+            if (deathDamageSource != null) {
+                dead = true;
+                dropAllDeathLoot(deathDamageSource);
+            }
         }
         lightEmissionTick = deathTick += 1;
     }
 
     @Override
     public void startSeenByPlayer(ServerPlayer serverPlayer) {
-        super.startSeenByPlayer(serverPlayer);
         bossEvent.addPlayer(serverPlayer);
         phaseManager.updatePhase(bossEvent);
         YummyMessages.sendToPlayer(new ToggleHerobrineMusicPacket(true, getPhase()), serverPlayer);
@@ -261,9 +277,7 @@ public class Herobrine extends CameraShakingEntity implements IAnimatable, Enemy
 
     @Override
     public void stopSeenByPlayer(ServerPlayer serverPlayer) {
-        super.stopSeenByPlayer(serverPlayer);
         bossEvent.removePlayer(serverPlayer);
-
         YummyMessages.sendToPlayer(new ToggleHerobrineMusicPacket(false), serverPlayer);
     }
 }

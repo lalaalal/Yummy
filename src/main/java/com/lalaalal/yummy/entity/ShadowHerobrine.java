@@ -18,7 +18,6 @@ import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -32,7 +31,7 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
-public class ShadowHerobrine extends SkillUsableMob implements IAnimatable, Enemy {
+public class ShadowHerobrine extends AbstractHerobrine {
     private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
     private LivingEntity parent;
 
@@ -47,7 +46,7 @@ public class ShadowHerobrine extends SkillUsableMob implements IAnimatable, Enem
     }
 
     protected ShadowHerobrine(EntityType<? extends ShadowHerobrine> entityType, Level level) {
-        super(entityType, level);
+        super(entityType, level, true);
     }
 
     public ShadowHerobrine(Level level, Vec3 position) {
