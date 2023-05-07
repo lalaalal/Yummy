@@ -1,6 +1,6 @@
 package com.lalaalal.yummy.client.layer;
 
-import com.lalaalal.yummy.client.model.HerobrineModel;
+import com.lalaalal.yummy.client.model.ShadowHerobrineModel;
 import com.lalaalal.yummy.entity.ShadowHerobrine;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -23,7 +23,7 @@ public class ShadowHerobrineArmorLayer extends GeoLayerRenderer<ShadowHerobrine>
         matrixStackIn.scale(1.01f, 1.01f, 1.01f);
         float offset = ((entityLivingBaseIn.tickCount + partialTicks) * 0.01f) % 1;
         RenderType renderType = RenderType.energySwirl(TEXTURE_LOCATION, offset, offset);
-        getRenderer().render(getEntityModel().getModel(HerobrineModel.MODEL_RESOURCE), entityLivingBaseIn, partialTicks, renderType, matrixStackIn, bufferIn, bufferIn.getBuffer(renderType), packedLightIn, OverlayTexture.NO_OVERLAY, 0.5f, 0.5f, 0.5f, 1.0f);
+        getRenderer().render(getEntityModel().getModel(ShadowHerobrineModel.MODEL_RESOURCE), entityLivingBaseIn, partialTicks, renderType, matrixStackIn, bufferIn, bufferIn.getBuffer(renderType), packedLightIn, OverlayTexture.NO_OVERLAY, 0.5f, 0.5f, 0.5f, 1.0f);
         matrixStackIn.popPose();
     }
 

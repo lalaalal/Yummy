@@ -52,11 +52,10 @@ public class YummyBlocks {
                     .requiresCorrectToolForDrops()),
             YummyMod.TAB);
 
-    public static final RegistryObject<Block> PURIFIED_SOUL_BLOCK = register("purified_soul_block",
+    public static final RegistryObject<Block> PURIFIED_SOUL_BLOCK = BLOCKS.register("purified_soul_block",
             () -> new Block(BlockBehaviour.Properties.of(Material.DIRT)
                     .strength(0.5F)
-                    .speedFactor(0.4F)),
-            YummyMod.TAB);
+                    .speedFactor(0.4F)));
     public static final RegistryObject<Block> PURIFIED_SOUL_FIRE_BLOCK = BLOCKS.register("purified_soul_fire",
             () -> new PurifiedSoulFireBlock(BlockBehaviour.Properties.of(Material.FIRE, MaterialColor.COLOR_BLACK)
                     .noCollission()
@@ -132,6 +131,11 @@ public class YummyBlocks {
     public static final RegistryObject<Block> POTTED_LIME_FLOWER = BLOCKS.register("potted_lime_flower",
             () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, LIME_FLOWER,
                     BlockBehaviour.Properties.copy(Blocks.POTTED_DANDELION).color(MaterialColor.COLOR_LIGHT_GREEN)));
+
+    public static final RegistryObject<Item> PURIFIED_SOUL_BLOCK_ITEM = ITEMS.register("purified_soul_block",
+            () -> new BlockItem(PURIFIED_SOUL_BLOCK.get(), new Item.Properties()
+                    .fireResistant()
+                    .tab(YummyMod.TAB)));
 
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> block, CreativeModeTab tab) {
         RegistryObject<T> registryObject = BLOCKS.register(name, block);

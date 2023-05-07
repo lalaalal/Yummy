@@ -12,8 +12,9 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.geo.render.built.GeoModel;
+import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
-public class ShadowHerobrineRenderer extends HerobrineRenderer<ShadowHerobrine> {
+public class ShadowHerobrineRenderer extends GeoEntityRenderer<ShadowHerobrine> {
     public ShadowHerobrineRenderer(EntityRendererProvider.Context context) {
         super(context, new ShadowHerobrineModel());
         addLayer(new ShadowHerobrineArmorLayer(this));

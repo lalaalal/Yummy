@@ -30,7 +30,7 @@ public class NarakaMagicCircle extends Entity {
 
     public NarakaMagicCircle(Level level, BlockPos blockPos, LivingEntity owner) {
         super(YummyEntities.NARAKA_MAGIC_CIRCLE.get(), level);
-        setPos(blockPos.getX() + 0.5, blockPos.getY() + 0.2, blockPos.getZ() + 0.5);
+        setPos(blockPos.getX() + 0.5, blockPos.getY() + 0.1, blockPos.getZ() + 0.5);
         this.owner = owner;
     }
 

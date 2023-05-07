@@ -4,13 +4,12 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.level.Level;
 
-public class CameraShakingEntity extends PathfinderMob {
+public abstract class CameraShakingEntity extends SkillUsableMob {
     private static final EntityDataAccessor<Boolean> DATA_CAMERA_SHAKING = SynchedEntityData.defineId(CameraShakingEntity.class, EntityDataSerializers.BOOLEAN);
 
-    protected CameraShakingEntity(EntityType<? extends PathfinderMob> entityType, Level level) {
+    protected CameraShakingEntity(EntityType<? extends CameraShakingEntity> entityType, Level level) {
         super(entityType, level);
     }
 

@@ -13,7 +13,7 @@ public class YummyEntities {
             = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, YummyMod.MOD_ID);
 
     public static final RegistryObject<EntityType<Herobrine>> HEROBRINE = ENTITY_TYPES.register("herobrine",
-            () -> EntityType.Builder.of(Herobrine::new, MobCategory.CREATURE)
+            () -> EntityType.Builder.of((EntityType.EntityFactory<Herobrine>) Herobrine::new, MobCategory.CREATURE)
                     .sized(0.6f, 2.0f)
                     .fireImmune()
                     .build(YummyMod.MOD_ID + ":herobrine"));

@@ -1,26 +1,18 @@
 package com.lalaalal.yummy.entity;
 
-import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.entity.goal.FollowTargetGoal;
-import com.lalaalal.yummy.entity.goal.TickableSkillUseGoal;
 import com.lalaalal.yummy.entity.skill.*;
 import com.lalaalal.yummy.misc.PhaseManager;
 import com.lalaalal.yummy.networking.YummyMessages;
 import com.lalaalal.yummy.networking.packet.ToggleHerobrineMusicPacket;
 import com.lalaalal.yummy.tags.YummyTags;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -34,7 +26,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.LevelChunk;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -45,16 +38,10 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class Herobrine extends CameraShakingEntity implements IAnimatable, SkillUsable, Enemy {
-    private static final EntityDataAccessor<String> DATA_USING_SKILL_NAME = SynchedEntityData.defineId(Herobrine.class, EntityDataSerializers.STRING);
+public class Herobrine extends CameraShakingEntity implements IAnimatable, Enemy {
+    public static final int LIGHT_EMISSION_DURATION = 100;
     private static final float[] PHASE_HEALTHS = {600, 60, 6};
     private static final BossEvent.BossBarColor[] PHASE_COLORS = {BossEvent.BossBarColor.BLUE, BossEvent.BossBarColor.YELLOW, BossEvent.BossBarColor.RED};
-    private final Map<TickableSkill, String> skillNames = new HashMap<>();
-    private final Map<String, TickableSkill> skills = new HashMap<>();
-    private final TickableSkillUseGoal<Herobrine> skillUseGoal = new TickableSkillUseGoal<>(this);
 
     private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
     private final PhaseManager phaseManager = new PhaseManager(PHASE_HEALTHS, PHASE_COLORS, this);
@@ -62,8 +49,12 @@ public class Herobrine extends CameraShakingEntity implements IAnimatable, Skill
             .setDarkenScreen(true)
             .setPlayBossMusic(true);
 
+    private BlockPos structurePos;
+    private boolean structureDestroyed = false;
     private int hurtAnimationTick = 0;
     private int invulnerableTick = 30;
+    private int lightEmissionTick = 0;
+    private int deathTick = 0;
 
     public static boolean canSummonHerobrine(Level level, BlockPos headPos) {
         Block soulSandBlock = level.getBlockState(headPos).getBlock();
@@ -103,9 +94,41 @@ public class Herobrine extends CameraShakingEntity implements IAnimatable, Skill
 
         phaseManager.addPhaseChangeListener(this::changePhase);
         phaseManager.addPhaseChangeListener(this::enterPhase2, 2);
-        this.goalSelector.addGoal(1, skillUseGoal);
-        registerSkills();
         setPersistenceRequired();
+    }
+
+    public Herobrine(Level level, BlockPos spawnPos, BlockPos structurePos) {
+        this(YummyEntities.HEROBRINE.get(), level);
+        this.structurePos = structurePos;
+        setPos(spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5);
+    }
+
+    public int getLightEmissionTick() {
+        return lightEmissionTick;
+    }
+
+    private void changePhase(int from, int to) {
+        if (from > to)
+            return;
+        invulnerableTick = 30;
+        setInvulnerable(true);
+        LevelChunk levelChunk = level.getChunkAt(getOnPos());
+        YummyMessages.sendToPlayer(new ToggleHerobrineMusicPacket(true, to), levelChunk);
+        setHealth(phaseManager.getActualCurrentPhaseMaxHealth());
+    }
+
+    private void enterPhase2() {
+        AttributeInstance attributeInstance = getAttribute(Attributes.ARMOR);
+        if (attributeInstance != null)
+            attributeInstance.setBaseValue(66);
+        if (getSkill("descent_fall_meteor") instanceof DescentAndFallMeteorSkill descentAndFallMeteorSkill)
+            descentAndFallMeteorSkill.setMeteorMark(true);
+        registerSkill(new SummonShadowHerobrineSkill(this, 20 * 60), "summon_shadow");
+        interrupt();
+    }
+
+    public int getPhase() {
+        return phaseManager.getCurrentPhase();
     }
 
     @Override
@@ -123,27 +146,6 @@ public class Herobrine extends CameraShakingEntity implements IAnimatable, Skill
     }
 
     @Override
-    public void setUsingSkill(@Nullable TickableSkill skill) {
-        if (skill == null) {
-            this.entityData.set(DATA_USING_SKILL_NAME, "none");
-            return;
-        }
-        String name = skillNames.get(skill);
-        YummyMod.LOGGER.debug("Setting using skill to " + name);
-        this.entityData.set(DATA_USING_SKILL_NAME, name);
-    }
-
-    @Override
-    public String getUsingSkillName() {
-        return this.entityData.get(DATA_USING_SKILL_NAME);
-    }
-
-    @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(DATA_USING_SKILL_NAME, "none");
-    }
-
     protected void registerSkills() {
         registerSkill(new NarakaWaveSkill(this, 20 * 15), "naraka_wave");
         registerSkill(new ThrowNarakaFireballSkill(this, 20 * 6), "throw_naraka_fireball");
@@ -152,48 +154,7 @@ public class Herobrine extends CameraShakingEntity implements IAnimatable, Skill
         registerSkill(new RushSkill(this, 20 * 10), "rush");
     }
 
-    public void registerSkill(TickableSkill skill, String name) {
-        if (!skills.containsKey(name)) {
-            skills.put(name, skill);
-            skillNames.put(skill, name);
-            skillUseGoal.addSkill(skill);
-        }
-    }
-
-    public void removeSkill(String name) {
-        TickableSkill skill = skills.get(name);
-        if (skill != null) {
-            skills.remove(name);
-            skillNames.remove(skill);
-            skillUseGoal.removeSkill(skill);
-        }
-    }
-
-    private void changePhase(int from, int to) {
-        if (from > to)
-            return;
-        invulnerableTick = 30;
-        setInvulnerable(true);
-        LevelChunk levelChunk = level.getChunkAt(getOnPos());
-        YummyMessages.sendToPlayer(new ToggleHerobrineMusicPacket(true, to), levelChunk);
-        setHealth(phaseManager.getActualCurrentPhaseMaxHealth());
-    }
-
-    private void enterPhase2() {
-        AttributeInstance attributeInstance = getAttribute(Attributes.ARMOR);
-        if (attributeInstance != null)
-            attributeInstance.setBaseValue(66);
-        if (skills.get("descent_fall_meteor") instanceof DescentAndFallMeteorSkill descentAndFallMeteorSkill)
-            descentAndFallMeteorSkill.setMeteorMark(true);
-        registerSkill(new SummonShadowHerobrineSkill(this, 20 * 60), "none");
-        skillUseGoal.interrupt();
-    }
-
-    public int getPhase() {
-        return phaseManager.getCurrentPhase();
-    }
-
-    protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         String skillName = getUsingSkillName();
         if (!skillName.equals("none")) {
             hurtAnimationTick = 0;
@@ -235,14 +196,30 @@ public class Herobrine extends CameraShakingEntity implements IAnimatable, Skill
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
+        if (deathTick > 0)
+            return false;
         if (source.isBypassInvul())
             return super.hurt(source, amount);
 
-        hurtAnimationTick += 37;
+        hurtAnimationTick = 37;
         if (invulnerableTick > 0)
-            return true;
+            return false;
 
         return super.hurt(source, amount);
+    }
+
+    @Override
+    public void aiStep() {
+        if (!structureDestroyed && structurePos != null
+                && lightEmissionTick == LIGHT_EMISSION_DURATION
+                && !level.isClientSide) {
+            destroySpawnStructure((ServerLevel) level, structurePos);
+            structureDestroyed = true;
+        }
+        if (lightEmissionTick >= LIGHT_EMISSION_DURATION)
+            super.aiStep();
+        else
+            lightEmissionTick += 1;
     }
 
     @Override
@@ -254,6 +231,24 @@ public class Herobrine extends CameraShakingEntity implements IAnimatable, Skill
         }
 
         phaseManager.updatePhase(bossEvent);
+    }
+
+    @Override
+    protected void tickDeath() {
+        if (deathTick == 0) {
+            lightEmissionTick = 0;
+            setDeltaMovement(0, 0.7, 0);
+            setNoGravity(true);
+        }
+        move(MoverType.SELF, getDeltaMovement());
+        Vec3 velocity = getDeltaMovement().add(0, -0.04, 0);
+        if (velocity.y > 0)
+            setDeltaMovement(velocity);
+        if (lightEmissionTick == LIGHT_EMISSION_DURATION) {
+            this.remove(Entity.RemovalReason.KILLED);
+            this.gameEvent(GameEvent.ENTITY_DIE);
+        }
+        lightEmissionTick = deathTick += 1;
     }
 
     @Override

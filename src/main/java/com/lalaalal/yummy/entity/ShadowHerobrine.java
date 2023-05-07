@@ -4,7 +4,6 @@ import com.lalaalal.yummy.YummyUtil;
 import com.lalaalal.yummy.effect.HerobrineMark;
 import com.lalaalal.yummy.tags.YummyTags;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -19,6 +18,7 @@ import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -26,9 +26,14 @@ import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.builder.ILoopType;
+import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
+import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
-public class ShadowHerobrine extends Herobrine {
+public class ShadowHerobrine extends SkillUsableMob implements IAnimatable, Enemy {
+    private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
     private LivingEntity parent;
 
     public static AttributeSupplier.Builder getHerobrineAttributes() {
@@ -41,22 +46,13 @@ public class ShadowHerobrine extends Herobrine {
                 .add(Attributes.KNOCKBACK_RESISTANCE, 3);
     }
 
-    protected ShadowHerobrine(EntityType<? extends Herobrine> entityType, Level level) {
+    protected ShadowHerobrine(EntityType<? extends ShadowHerobrine> entityType, Level level) {
         super(entityType, level);
     }
 
     public ShadowHerobrine(Level level, Vec3 position) {
         this(YummyEntities.SHADOW_HEROBRINE.get(), level);
         setPos(position);
-    }
-
-    @Override
-    protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (!event.isMoving())
-            return PlayState.STOP;
-
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.herobrine.walk", ILoopType.EDefaultLoopTypes.LOOP));
-        return PlayState.CONTINUE;
     }
 
     public boolean hasParent() {
@@ -71,11 +67,6 @@ public class ShadowHerobrine extends Herobrine {
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
         return !source.isBypassInvul();
-    }
-
-    @Override
-    public boolean hurt(DamageSource source, float amount) {
-        return super.hurt(source, amount);
     }
 
     @Override
@@ -107,19 +98,27 @@ public class ShadowHerobrine extends Herobrine {
 
     @Override
     protected void customServerAiStep() {
-        if ((!hasParent() || !parent.isAlive()) && tickCount > 200) {
+        if ((!hasParent() || !parent.isAlive()) && tickCount > 200)
             discard();
-        }
+    }
+
+
+    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+        if (!event.isMoving())
+            return PlayState.STOP;
+
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.herobrine.walk", ILoopType.EDefaultLoopTypes.LOOP));
+        return PlayState.CONTINUE;
     }
 
     @Override
-    public void startSeenByPlayer(ServerPlayer serverPlayer) {
-
+    public void registerControllers(AnimationData data) {
+        data.addAnimationController(new AnimationController<>(this, "shadow_controller", 0, this::predicate));
     }
 
     @Override
-    public void stopSeenByPlayer(ServerPlayer serverPlayer) {
-
+    public AnimationFactory getFactory() {
+        return animationFactory;
     }
 
     private class FollowParentGoal extends Goal {
