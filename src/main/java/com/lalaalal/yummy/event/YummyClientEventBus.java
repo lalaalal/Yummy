@@ -80,6 +80,7 @@ public class YummyClientEventBus {
         event.registerEntityRenderer(YummyEntities.TRANSFORMING_BLOCK_ENTITY.get(), FloatingBlockRenderer::new);
         event.registerEntityRenderer(YummyEntities.NARAKA_MAGIC_CIRCLE.get(), FlatImageEntityRenderer::new);
         event.registerEntityRenderer(YummyEntities.NARAKA_STORM.get(), FlatImageEntityRenderer::new);
+        event.registerEntityRenderer(YummyEntities.FRACTURE_ENTITY.get(), FractureEntityRenderer::new);
         event.registerEntityRenderer(YummyEntities.EBONY_BOAT.get(), (context) -> new EbonyBoatRenderer(context, false));
         event.registerEntityRenderer(YummyEntities.EBONY_CHEST_BOAT.get(), (context) -> new EbonyBoatRenderer(context, true));
 

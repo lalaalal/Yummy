@@ -7,7 +7,6 @@ import com.lalaalal.yummy.networking.YummyMessages;
 import com.lalaalal.yummy.networking.packet.ToggleHerobrineMusicPacket;
 import com.lalaalal.yummy.tags.YummyTags;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -39,7 +38,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class Herobrine extends AbstractHerobrine {
-    public static final int LIGHT_EMISSION_DURATION = 100;
+    public static final int DEATH_TICK_DURATION = 100;
     private static final int HURT_ANIMATION_DURATION = 37;
     private static final int CONSUME_MARK_HEAL = 66;
     private static final float[] PHASE_HEALTHS = {600, 60, 6};
@@ -55,7 +54,6 @@ public class Herobrine extends AbstractHerobrine {
     private DamageSource deathDamageSource;
     private int hurtAnimationTick = 0;
     private int invulnerableTick = 30;
-    private int lightEmissionTick = LIGHT_EMISSION_DURATION;
     private int deathTick = 0;
 
     public static boolean canSummonHerobrine(Level level, BlockPos headPos) {
@@ -88,6 +86,7 @@ public class Herobrine extends AbstractHerobrine {
 
         phaseManager.addPhaseChangeListener(this::changePhase);
         phaseManager.addPhaseChangeListener(this::enterPhase2, 2);
+        phaseManager.addPhaseChangeListener(this::enterPhase3, 3);
         setPersistenceRequired();
     }
 
@@ -102,8 +101,8 @@ public class Herobrine extends AbstractHerobrine {
         setHealth(Math.min(getHealth() + CONSUME_MARK_HEAL, currentMaxHealth));
     }
 
-    public int getLightEmissionTick() {
-        return lightEmissionTick;
+    public int getDeathTick() {
+        return deathTick;
     }
 
     private void changePhase(int from, int to) {
@@ -125,8 +124,14 @@ public class Herobrine extends AbstractHerobrine {
             registerSkill(new NarakaStormSkill(this, 20 * 20, descentAndFallMeteorSkill));
         }
         registerSkill(new SummonShadowHerobrineSkill(this, 20 * 60));
+        registerSkill(new FractureRushSkill(this, 20 * 10));
         removeSkill("rush");
         interrupt();
+    }
+
+    private void enterPhase3() {
+        if (structurePos != null)
+            moveTo(structurePos, getYRot(), getXRot());
     }
 
     public int getPhase() {
@@ -206,6 +211,8 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
+        if (source.equals(DamageSource.IN_WALL))
+            destroyNearbyBlocks();
         if (source.isBypassInvul())
             return super.hurt(source, amount);
         if (deathTick > 0)
@@ -216,6 +223,21 @@ public class Herobrine extends AbstractHerobrine {
             return false;
 
         return super.hurt(source, Math.min(amount, currentPhaseMaxHurtDamage()));
+    }
+
+    private void destroyNearbyBlocks() {
+        if (level.isClientSide)
+            return;
+
+        BlockPos basePos = getOnPos().west().north();
+        for (int x = 0; x < 3; x++) {
+            for (int z = 0; z < 3; z++) {
+                for (int y = 0; y < 3; y++) {
+                    BlockPos blockPos = basePos.east(x).south(z).above(y);
+                    level.destroyBlock(blockPos, false);
+                }
+            }
+        }
     }
 
     @Override
@@ -237,17 +259,14 @@ public class Herobrine extends AbstractHerobrine {
     @Override
     protected void tickDeath() {
         if (deathTick == 0) {
-            lightEmissionTick = 0;
             setDeltaMovement(0, 0.7, 0);
             setNoGravity(true);
         }
-        if (deathTick % 15 == 0 && !level.isClientSide)
-            ((ServerLevel) this.level).sendParticles(ParticleTypes.EXPLOSION_EMITTER, getX(), getY(), getZ(), 1, 0, 0, 0, 1);
         move(MoverType.SELF, getDeltaMovement());
         Vec3 velocity = getDeltaMovement().add(0, -0.04, 0);
         if (velocity.y > 0)
             setDeltaMovement(velocity);
-        if (lightEmissionTick == LIGHT_EMISSION_DURATION) {
+        if (deathTick == DEATH_TICK_DURATION) {
             this.remove(Entity.RemovalReason.KILLED);
             this.gameEvent(GameEvent.ENTITY_DIE);
             if (deathDamageSource != null && !level.isClientSide) {
@@ -256,7 +275,7 @@ public class Herobrine extends AbstractHerobrine {
                 ExperienceOrb.award((ServerLevel) this.level, this.position(), xpReward);
             }
         }
-        lightEmissionTick = deathTick += 1;
+        deathTick += 1;
     }
 
     @Override

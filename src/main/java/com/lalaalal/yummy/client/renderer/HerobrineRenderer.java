@@ -32,20 +32,33 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine> {
 
     @Override
     public void render(Herobrine animatable, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
-        if (animatable.getLightEmissionTick() >= Herobrine.LIGHT_EMISSION_DURATION) {
-            super.render(animatable, entityYaw, partialTick, poseStack, bufferSource, packedLight);
+        if (animatable.getDeathTick() > 0) {
+            float tickRate = animatable.getDeathTick() / (float) Herobrine.DEATH_TICK_DURATION;
+
+            renderExploding(poseStack, bufferSource, partialTick, packedLight, tickRate);
+            renderLight(poseStack, bufferSource, tickRate);
             return;
         }
 
-        float tickRate = animatable.getLightEmissionTick() / (float) Herobrine.LIGHT_EMISSION_DURATION;
-        float offset = Math.min(tickRate > 0.8F ? (tickRate - 0.8F) / 0.2F : 0.0F, 1.0F);
+        super.render(animatable, entityYaw, partialTick, poseStack, bufferSource, packedLight);
+    }
 
+    private void renderExploding(PoseStack poseStack, MultiBufferSource bufferSource, float partialTick, int packedLight, float tickRate) {
         GeoModelProvider<Herobrine> modelProvider = getGeoModelProvider();
         GeoModel model = modelProvider.getModel(modelProvider.getModelResource(animatable));
-        VertexConsumer vertexconsumer = bufferSource.getBuffer(RenderType.dragonExplosionAlpha(HEROBRINE_EXPLODING_LOCATION));
 
-        render(model, animatable, partialTick, RenderType.dragonExplosionAlpha(HEROBRINE_EXPLODING_LOCATION), poseStack, bufferSource, vertexconsumer, packedLight, OverlayTexture.pack(0.0F, true), 1f, 1f, 1f, tickRate);
-        render(model, animatable, partialTick, RenderType.entityTranslucent(getTextureLocation(animatable)), poseStack, bufferSource, null, packedLight, OverlayTexture.pack(0.0F, true), 1f, 1f, 1f, 1 - tickRate);
+        RenderType explosionAlpha = RenderType.dragonExplosionAlpha(HEROBRINE_EXPLODING_LOCATION);
+        VertexConsumer explosionVertexConsumer = bufferSource.getBuffer(explosionAlpha);
+        render(model, animatable, partialTick, explosionAlpha, poseStack, bufferSource, explosionVertexConsumer, packedLight, OverlayTexture.pack(0.0F, true), 1f, 1f, 1f, tickRate);
+
+        RenderType decal = RenderType.entityDecal(getTextureLocation(animatable));
+        VertexConsumer decalVertexConsumer = bufferSource.getBuffer(decal);
+        render(model, animatable, partialTick, decal, poseStack, bufferSource, decalVertexConsumer, packedLight, OverlayTexture.pack(0.0F, true), 1f, 1f, 1f, 1f);
+
+    }
+
+    private void renderLight(PoseStack poseStack, MultiBufferSource bufferSource, float tickRate) {
+        float offset = Math.min(tickRate > 0.8F ? (tickRate - 0.8F) / 0.2F : 0.0F, 1.0F);
 
         RandomSource randomsource = RandomSource.create(432L);
         VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.lightning());
@@ -94,7 +107,7 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine> {
 
     @Override
     public RenderType getRenderType(Herobrine animatable, float partialTick, PoseStack poseStack, @Nullable MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, int packedLight, ResourceLocation texture) {
-        if (animatable.getLightEmissionTick() >= Herobrine.LIGHT_EMISSION_DURATION)
+        if (animatable.getDeathTick() >= Herobrine.DEATH_TICK_DURATION)
             return super.getRenderType(animatable, partialTick, poseStack, bufferSource, buffer, packedLight, texture);
         return RenderType.entityTranslucent(getTextureLocation(animatable));
     }

@@ -26,7 +26,7 @@ public class DescentAndFallMeteorSkill extends TickableSkill {
 
 
     public DescentAndFallMeteorSkill(PathfinderMob usingEntity, int cooldown) {
-        super(usingEntity, cooldown, 10, 20);
+        super(usingEntity, cooldown, 10, 25);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class DescentAndFallMeteorSkill extends TickableSkill {
             descend();
         if (tick == DESCENT_TICK + 1)
             summonMeteors();
-        if (tick == DESCENT_TICK + 3 && usingEntity instanceof CameraShakingEntity cameraShakingEntity)
+        if (tick == DESCENT_TICK + 5 && usingEntity instanceof CameraShakingEntity cameraShakingEntity)
             cameraShakingEntity.setCameraShaking(false);
         if (tick == tickDuration)
             YummyAttributeModifiers.removeModifier(usingEntity, YummyAttributeModifiers.IGNORE_KNOCKBACK);
