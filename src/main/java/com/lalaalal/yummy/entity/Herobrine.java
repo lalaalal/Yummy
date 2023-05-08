@@ -120,8 +120,10 @@ public class Herobrine extends AbstractHerobrine {
         AttributeInstance attributeInstance = getAttribute(Attributes.ARMOR);
         if (attributeInstance != null)
             attributeInstance.setBaseValue(66);
-        if (getSkill("descent_fall_meteor") instanceof DescentAndFallMeteorSkill descentAndFallMeteorSkill)
+        if (getSkill("descent_fall_meteor") instanceof DescentAndFallMeteorSkill descentAndFallMeteorSkill) {
             descentAndFallMeteorSkill.setMeteorMark(true);
+            registerSkill(new NarakaStormSkill(this, 20 * 20, descentAndFallMeteorSkill));
+        }
         registerSkill(new SummonShadowHerobrineSkill(this, 20 * 60));
         interrupt();
     }

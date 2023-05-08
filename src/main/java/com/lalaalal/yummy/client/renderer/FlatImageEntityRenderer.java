@@ -1,7 +1,7 @@
 package com.lalaalal.yummy.client.renderer;
 
 import com.lalaalal.yummy.YummyMod;
-import com.lalaalal.yummy.entity.NarakaMagicCircle;
+import com.lalaalal.yummy.entity.FlatImageEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix3f;
@@ -14,18 +14,16 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
-public class NarakaMagicCircleRenderer extends EntityRenderer<NarakaMagicCircle> {
-    public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(YummyMod.MOD_ID, "textures/entity/magic_circle.png");
-
-    public NarakaMagicCircleRenderer(EntityRendererProvider.Context pContext) {
+public class FlatImageEntityRenderer extends EntityRenderer<FlatImageEntity> {
+    public FlatImageEntityRenderer(EntityRendererProvider.Context pContext) {
         super(pContext);
     }
 
     @Override
-    public void render(NarakaMagicCircle entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+    public void render(FlatImageEntity entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
         VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityTranslucent(this.getTextureLocation(entity)));
-        poseStack.scale(entity.getRadius(), entity.getRadius(), entity.getRadius());
+        poseStack.scale(entity.getWidth(), entity.getWidth(), entity.getWidth());
         poseStack.translate(0, 0.001, 0);
         poseStack.mulPose(Vector3f.YP.rotationDegrees((float) entity.getRotationDegree()));
 
@@ -44,8 +42,8 @@ public class NarakaMagicCircleRenderer extends EntityRenderer<NarakaMagicCircle>
     }
 
     @Override
-    public ResourceLocation getTextureLocation(NarakaMagicCircle pEntity) {
-        return TEXTURE_LOCATION;
+    public ResourceLocation getTextureLocation(FlatImageEntity entity) {
+        return new ResourceLocation(YummyMod.MOD_ID, "textures/entity/" + entity.imageName + ".png");
     }
 
     public void drawVertex(Matrix4f matrix4f, Matrix3f matrix3f, VertexConsumer vertexConsumer, int poseX, int poseY, int poseZ, float u, float v, int normalX, int normalZ, int normalY, int lightUV) {

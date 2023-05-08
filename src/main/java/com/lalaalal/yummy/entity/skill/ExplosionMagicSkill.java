@@ -8,15 +8,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 
-import java.util.ArrayList;
-
 public class ExplosionMagicSkill extends TickableSkill {
-    private static final int EXPLODE_TICK = 45;
+    private static final int EXPLODE_TICK = 25;
+    private static final int EXPLODE_INTERVAL = 5;
     private BlockPos usingPos = BlockPos.ZERO;
-    private final ArrayList<NarakaMagicCircle> narakaMagicCircles = new ArrayList<>();
 
     public ExplosionMagicSkill(PathfinderMob usingEntity, int cooldown) {
-        super(usingEntity, cooldown, 20, 50);
+        super(usingEntity, cooldown, 20, 30);
     }
 
     @Override
@@ -46,7 +44,8 @@ public class ExplosionMagicSkill extends TickableSkill {
         createMagicCircles(tick);
 
         if (tick == EXPLODE_TICK) {
-            explodeMagicCircles();
+            if (usingEntity instanceof CameraShakingEntity cameraShakingEntity)
+                cameraShakingEntity.setCameraShaking(true);
             YummyAttributeModifiers.removeModifier(usingEntity, YummyAttributeModifiers.IGNORE_KNOCKBACK);
         }
         if (tick == tickDuration && usingEntity instanceof CameraShakingEntity cameraShakingEntity)
@@ -60,31 +59,22 @@ public class ExplosionMagicSkill extends TickableSkill {
     }
 
     private void createMagicCircles(int tick) {
-        if (tick % 5 == 0 && tick <= 15) {
-            int circleNum = tick / 5;
+        if (tick % EXPLODE_INTERVAL == 0 && tick <= 15) {
+            int circleNum = tick / EXPLODE_INTERVAL;
             int firstCircleBlockCount = 6;
             int radius = 3 * circleNum - 1;
 
-            YummyUtil.doCircle(firstCircleBlockCount * circleNum, radius, usingPos, this::createMagicCircle);
+            YummyUtil.doCircle(firstCircleBlockCount * circleNum, radius, usingPos,
+                    blockPos -> createMagicCircle(blockPos, circleNum));
         }
     }
 
-    private void createMagicCircle(BlockPos blockPos) {
+    private void createMagicCircle(BlockPos blockPos, int circleNum) {
         if (usingEntity.getRandom().nextInt(0, 2) == 0) {
             NarakaMagicCircle narakaMagicCircle = new NarakaMagicCircle(level, YummyUtil.findHorizonPos(blockPos, level), usingEntity);
-            narakaMagicCircle.setRadius(1);
+            narakaMagicCircle.setWidth(1);
+            narakaMagicCircle.setExplodeTime(EXPLODE_TICK - (circleNum - 2) * EXPLODE_INTERVAL);
             level.addFreshEntity(narakaMagicCircle);
-            narakaMagicCircles.add(narakaMagicCircle);
         }
-    }
-
-    private void explodeMagicCircles() {
-        for (NarakaMagicCircle narakaMagicCircle : narakaMagicCircles) {
-            narakaMagicCircle.explode();
-            narakaMagicCircle.discard();
-        }
-        narakaMagicCircles.clear();
-        if (usingEntity instanceof CameraShakingEntity cameraShakingEntity)
-            cameraShakingEntity.setCameraShaking(true);
     }
 }

@@ -28,7 +28,7 @@ public class NarakaWaveSkill extends TickableSkill {
     private BlockPos usingPos;
 
     public NarakaWaveSkill(PathfinderMob usingEntity, int cooldown) {
-        super(usingEntity, cooldown, 10, 30);
+        super(usingEntity, cooldown, 10, 25);
     }
 
     @Override

@@ -18,6 +18,7 @@ import java.util.Queue;
 
 public class DescentAndFallMeteorSkill extends TickableSkill {
     private static final int DESCENT_TICK = 14;
+    private static final int FALL_METEOR_INTERVAL = 10;
     private boolean meteorMark = false;
     private final Queue<Meteor> meteors = new LinkedList<>();
     private final int meteorGroupNum = 4;
@@ -25,7 +26,7 @@ public class DescentAndFallMeteorSkill extends TickableSkill {
 
 
     public DescentAndFallMeteorSkill(PathfinderMob usingEntity, int cooldown) {
-        super(usingEntity, cooldown, 10, 60);
+        super(usingEntity, cooldown, 10, 20);
     }
 
     @Override
@@ -50,6 +51,7 @@ public class DescentAndFallMeteorSkill extends TickableSkill {
     @Override
     public boolean tick(int tick) {
         if (tick == 0) {
+            meteors.clear();
             teleportAboveTarget();
             YummyAttributeModifiers.addTransientModifier(usingEntity, YummyAttributeModifiers.IGNORE_KNOCKBACK);
         }
@@ -57,8 +59,6 @@ public class DescentAndFallMeteorSkill extends TickableSkill {
             descend();
         if (tick == DESCENT_TICK + 1)
             summonMeteors();
-        if (tick >= DESCENT_TICK + 3)
-            fallMeteor(tick - DESCENT_TICK + 3);
         if (tick == DESCENT_TICK + 3 && usingEntity instanceof CameraShakingEntity cameraShakingEntity)
             cameraShakingEntity.setCameraShaking(false);
         if (tick == tickDuration)
@@ -115,6 +115,7 @@ public class DescentAndFallMeteorSkill extends TickableSkill {
                 level.addFreshEntity(meteor);
                 meteors.add(meteor);
             }
+            registerAutoFire(groupIndex);
         }
     }
 
@@ -126,22 +127,16 @@ public class DescentAndFallMeteorSkill extends TickableSkill {
         return meteor;
     }
 
-    private void fallMeteor(int relativeTick) {
-        if (relativeTick % 10 == 0) {
-            int groupIndex = relativeTick / 10;
-            double theta = (Math.PI / meteorGroupNum * groupIndex) + Math.PI * 0.75 + rotationFactor;
-            double x = Math.cos(theta) * 0.03;
-            double z = Math.sin(theta) * 0.03;
+    private void registerAutoFire(int groupIndex) {
+        double theta = (Math.PI / meteorGroupNum * groupIndex) + Math.PI + rotationFactor;
+        double x = Math.cos(theta) * 0.03;
+        double z = Math.sin(theta) * 0.03;
 
-            for (int i = 0; i < 3; i++) {
-                if (meteors.isEmpty())
-                    return;
-                Meteor meteor = meteors.poll();
-                meteor.xPower = x;
-                meteor.yPower = -0.1;
-                meteor.zPower = z;
-                meteor.setDeltaMovement(Vec3.ZERO);
-            }
+        for (int i = 0; i < 3; i++) {
+            if (meteors.isEmpty())
+                return;
+            Meteor meteor = meteors.poll();
+            meteor.autoFire(new Vec3(x, -0.1, z), FALL_METEOR_INTERVAL * (groupIndex + 1));
         }
     }
 }

@@ -2,6 +2,7 @@ package com.lalaalal.yummy.entity.skill;
 
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class TickableSkill {
     protected final PathfinderMob usingEntity;
@@ -47,4 +48,9 @@ public abstract class TickableSkill {
     }
 
     public abstract void interrupted();
+
+    @Nullable
+    public TickableSkill getNextSkill() {
+        return null;
+    }
 }

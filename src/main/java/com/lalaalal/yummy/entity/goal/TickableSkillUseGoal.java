@@ -87,13 +87,19 @@ public class TickableSkillUseGoal<T extends PathfinderMob & SkillUsable> extends
 
         usingEntity.getNavigation().stop();
         if (usingSkill.animationTick(animationTick++)) {
-            if (usingSkill.tick(tick++)) {
-                skillUsedTimeMap.put(usingSkill, level.getGameTime());
-                setUsingSkill(null);
-                skillToUse = null;
-                lastSkillEndTime = level.getGameTime();
-            }
+            if (usingSkill.tick(tick++))
+                finishSkill();
         }
+    }
+
+    private void finishSkill() {
+        skillUsedTimeMap.put(usingSkill, level.getGameTime());
+        lastSkillEndTime = level.getGameTime();
+        TickableSkill nextSkill = usingSkill.getNextSkill();
+        setUsingSkill(nextSkill);
+        skillToUse = nextSkill;
+        if (nextSkill != null)
+            start();
     }
 
     public void interrupt() {

@@ -68,6 +68,10 @@ public class YummyEntities {
             () -> EntityType.Builder.of((EntityType.EntityFactory<NarakaMagicCircle>) NarakaMagicCircle::new, MobCategory.MISC)
                     .sized(1f, 0.1f)
                     .build(YummyMod.MOD_ID + ":naraka_magic_circle"));
+    public static final RegistryObject<EntityType<NarakaStormEntity>> NARAKA_STORM = ENTITY_TYPES.register("naraka_storm",
+            () -> EntityType.Builder.of((EntityType.EntityFactory<NarakaStormEntity>) NarakaStormEntity::new, MobCategory.MISC)
+                    .sized(1f, 0.1f)
+                    .build(YummyMod.MOD_ID + ":naraka_storm"));
 
     public static final RegistryObject<EntityType<EbonyBoat>> EBONY_BOAT = ENTITY_TYPES.register("ebony_boat",
             () -> EntityType.Builder.of((EntityType.EntityFactory<EbonyBoat>) EbonyBoat::new, MobCategory.MISC)

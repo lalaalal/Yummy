@@ -11,8 +11,11 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class Meteor extends MarkFireball {
+    private int tick = 0;
+    private int autoFireTime = -1;
     private int rotationDegree = 0;
     private int rotationSpeed = 20;
+    private Vec3 power;
 
     public Meteor(EntityType<? extends MarkFireball> entityType, Level level) {
         super(entityType, level);
@@ -39,7 +42,23 @@ public class Meteor extends MarkFireball {
     public void tick() {
         super.tick();
 
+        if (tick == autoFireTime)
+            fire();
+
         rotationDegree = (rotationDegree + rotationSpeed) % 360;
+        tick += 1;
+    }
+
+    public void autoFire(Vec3 power, int tickAfter) {
+        this.power = power;
+        autoFireTime = tick + tickAfter;
+    }
+
+    private void fire() {
+        setDeltaMovement(Vec3.ZERO);
+        this.xPower = power.x;
+        this.yPower = power.y;
+        this.zPower = power.z;
     }
 
     @Override

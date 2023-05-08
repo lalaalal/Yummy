@@ -24,6 +24,13 @@ public class SummonShadowHerobrineSkill extends TickableSkill {
 
     @Override
     public boolean canUse() {
+        ArrayList<ShadowHerobrine> deadHerobrines = new ArrayList<>(SHADOW_LIMIT);
+        for (ShadowHerobrine shadowHerobrine : shadowHerobrines) {
+            if (shadowHerobrine.isDeadOrDying())
+                deadHerobrines.add(shadowHerobrine);
+        }
+        shadowHerobrines.removeAll(deadHerobrines);
+
         return shadowHerobrines.size() < SHADOW_LIMIT;
     }
 

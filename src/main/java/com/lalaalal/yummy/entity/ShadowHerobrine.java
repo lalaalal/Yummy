@@ -54,11 +54,13 @@ public class ShadowHerobrine extends AbstractHerobrine {
 
     protected ShadowHerobrine(EntityType<? extends ShadowHerobrine> entityType, Level level) {
         super(entityType, level, true);
+        setPersistenceRequired();
     }
 
     public ShadowHerobrine(Level level, Vec3 position) {
         this(YummyEntities.SHADOW_HEROBRINE.get(), level);
         setPos(position);
+        setPersistenceRequired();
     }
 
     public void setTickOffset(int tickOffset) {

@@ -1,6 +1,5 @@
 package com.lalaalal.yummy.entity;
 
-import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.entity.goal.TickableSkillUseGoal;
 import com.lalaalal.yummy.entity.skill.SkillUsable;
 import com.lalaalal.yummy.entity.skill.TickableSkill;
@@ -41,7 +40,6 @@ public abstract class SkillUsableMob extends PathfinderMob implements SkillUsabl
             return;
         }
         String name = skill.getName();
-        YummyMod.LOGGER.debug("Setting using skill to " + name);
         this.entityData.set(DATA_USING_SKILL_NAME, name);
     }
 
