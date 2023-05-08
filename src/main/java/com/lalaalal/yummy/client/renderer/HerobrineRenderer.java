@@ -1,19 +1,25 @@
 package com.lalaalal.yummy.client.renderer;
 
+import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.client.model.AbstractHerobrineModel;
 import com.lalaalal.yummy.entity.Herobrine;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib3.geo.render.built.GeoModel;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib3.model.provider.GeoModelProvider;
 
 public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine> {
+    private static final ResourceLocation HEROBRINE_EXPLODING_LOCATION = new ResourceLocation(YummyMod.MOD_ID, "textures/entity/herobrine_exploding.png");
     private static final float HALF_SQRT_3 = (float) (Math.sqrt(3.0D) / 2.0D);
 
     public HerobrineRenderer(EntityRendererProvider.Context renderManager) {
@@ -26,14 +32,20 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine> {
 
     @Override
     public void render(Herobrine animatable, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
-        boolean isGlowing = animatable.getLightEmissionTick() >= Herobrine.LIGHT_EMISSION_DURATION;
-        packedLight = isGlowing ? packedLight : LightTexture.FULL_BRIGHT;
-        super.render(animatable, entityYaw, partialTick, poseStack, bufferSource, packedLight);
-        if (animatable.getLightEmissionTick() >= Herobrine.LIGHT_EMISSION_DURATION)
+        if (animatable.getLightEmissionTick() >= Herobrine.LIGHT_EMISSION_DURATION) {
+            super.render(animatable, entityYaw, partialTick, poseStack, bufferSource, packedLight);
             return;
+        }
 
         float tickRate = animatable.getLightEmissionTick() / (float) Herobrine.LIGHT_EMISSION_DURATION;
         float offset = Math.min(tickRate > 0.8F ? (tickRate - 0.8F) / 0.2F : 0.0F, 1.0F);
+
+        GeoModelProvider<Herobrine> modelProvider = getGeoModelProvider();
+        GeoModel model = modelProvider.getModel(modelProvider.getModelResource(animatable));
+        VertexConsumer vertexconsumer = bufferSource.getBuffer(RenderType.dragonExplosionAlpha(HEROBRINE_EXPLODING_LOCATION));
+
+        render(model, animatable, partialTick, RenderType.dragonExplosionAlpha(HEROBRINE_EXPLODING_LOCATION), poseStack, bufferSource, vertexconsumer, packedLight, OverlayTexture.pack(0.0F, true), 1f, 1f, 1f, tickRate);
+        render(model, animatable, partialTick, RenderType.entityTranslucent(getTextureLocation(animatable)), poseStack, bufferSource, null, packedLight, OverlayTexture.pack(0.0F, true), 1f, 1f, 1f, 1 - tickRate);
 
         RandomSource randomsource = RandomSource.create(432L);
         VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.lightning());
@@ -78,5 +90,12 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine> {
 
     private static void vertex4(VertexConsumer vertexConsumer, Matrix4f matrix4f, float y, float z) {
         vertexConsumer.vertex(matrix4f, 0.0F, y, z).color(255, 0, 255, 0).endVertex();
+    }
+
+    @Override
+    public RenderType getRenderType(Herobrine animatable, float partialTick, PoseStack poseStack, @Nullable MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, int packedLight, ResourceLocation texture) {
+        if (animatable.getLightEmissionTick() >= Herobrine.LIGHT_EMISSION_DURATION)
+            return super.getRenderType(animatable, partialTick, poseStack, bufferSource, buffer, packedLight, texture);
+        return RenderType.entityTranslucent(getTextureLocation(animatable));
     }
 }

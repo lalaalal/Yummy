@@ -125,6 +125,7 @@ public class Herobrine extends AbstractHerobrine {
             registerSkill(new NarakaStormSkill(this, 20 * 20, descentAndFallMeteorSkill));
         }
         registerSkill(new SummonShadowHerobrineSkill(this, 20 * 60));
+        removeSkill("rush");
         interrupt();
     }
 
