@@ -40,6 +40,8 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class Herobrine extends AbstractHerobrine {
     public static final int LIGHT_EMISSION_DURATION = 100;
+    private static final int HURT_ANIMATION_DURATION = 37;
+    private static final int CONSUME_MARK_HEAL = 66;
     private static final float[] PHASE_HEALTHS = {600, 60, 6};
     private static final BossEvent.BossBarColor[] PHASE_COLORS = {BossEvent.BossBarColor.BLUE, BossEvent.BossBarColor.YELLOW, BossEvent.BossBarColor.RED};
 
@@ -93,6 +95,11 @@ public class Herobrine extends AbstractHerobrine {
         this(YummyEntities.HEROBRINE.get(), level);
         this.structurePos = structurePos;
         setPos(spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5);
+    }
+
+    public void consumeMark() {
+        final float currentMaxHealth = phaseManager.getActualCurrentPhaseMaxHealth();
+        setHealth(Math.min(getHealth() + CONSUME_MARK_HEAL, currentMaxHealth));
     }
 
     public int getLightEmissionTick() {
@@ -201,7 +208,7 @@ public class Herobrine extends AbstractHerobrine {
         if (deathTick > 0)
             return false;
 
-        hurtAnimationTick += 40;
+        hurtAnimationTick = (hurtAnimationTick + HURT_ANIMATION_DURATION) % (HURT_ANIMATION_DURATION * 2);
         if (invulnerableTick > 0)
             return false;
 

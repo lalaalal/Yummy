@@ -23,7 +23,7 @@ public class MarkFireball extends Fireball {
     protected float explosionPower = 1;
     protected int time = 0;
     private int discardTime = 20 * 7;
-    private Herobrine herobrine;
+    private LivingEntity markConsumer;
 
     public MarkFireball(EntityType<? extends Fireball> entityType, Level level) {
         super(entityType, level);
@@ -31,16 +31,14 @@ public class MarkFireball extends Fireball {
 
     public MarkFireball(Level level, LivingEntity shooter, double offsetX, double offsetY, double offsetZ) {
         super(YummyEntities.MARK_FIREBALL.get(), shooter, offsetX, offsetY, offsetZ, level);
+        this.markConsumer = shooter;
     }
 
     public MarkFireball(EntityType<? extends Fireball> entityType, Level level, LivingEntity shooter, double offsetX, double offsetY, double offsetZ, int explosionPower, boolean markEntities) {
         super(entityType, shooter, offsetX, offsetY, offsetZ, level);
         this.explosionPower = explosionPower;
         setMarkEntities(markEntities);
-    }
-
-    public void setHerobrine(Herobrine herobrine) {
-        this.herobrine = herobrine;
+        this.markConsumer = shooter;
     }
 
     @Override
@@ -96,7 +94,7 @@ public class MarkFireball extends Fireball {
     private void markEntities(Level level) {
         AABB area = getBoundingBox().inflate(3);
         for (LivingEntity livingEntity : level.getEntitiesOfClass(LivingEntity.class, area))
-            HerobrineMark.overlapMark(livingEntity, herobrine);
+            HerobrineMark.overlapMark(livingEntity, markConsumer);
     }
 
     @Override

@@ -64,8 +64,7 @@ public class PhaseManager {
         return health;
     }
 
-    public float getActualCurrentPhaseMaxHealth() {
-        int phase = getCurrentPhase();
+    public float getActualPhaseMaxHealth(int phase) {
         float health = 0;
         for (int i = 0; i < phaseHealthArray.length - phase + 1; i++) {
             int index = phaseHealthArray.length - i - 1;
@@ -73,6 +72,10 @@ public class PhaseManager {
         }
 
         return health;
+    }
+
+    public float getActualCurrentPhaseMaxHealth() {
+        return getActualPhaseMaxHealth(getCurrentPhase());
     }
 
     private BossEvent.BossBarColor getPhaseColor(int phase) {

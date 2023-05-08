@@ -1,5 +1,6 @@
 package com.lalaalal.yummy.effect;
 
+import com.lalaalal.yummy.entity.Herobrine;
 import com.lalaalal.yummy.misc.EffectDamageSource;
 import com.lalaalal.yummy.tags.YummyTags;
 import net.minecraft.world.damagesource.DamageSource;
@@ -10,7 +11,7 @@ import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 
 public class HerobrineMark extends MobEffect {
-    public static void overlapMark(LivingEntity entity, @Nullable LivingEntity herobrine) {
+    public static void overlapMark(LivingEntity entity, @Nullable LivingEntity markConsumer) {
         if (entity.getType().is(YummyTags.HEROBRINE))
             return;
 
@@ -20,11 +21,18 @@ public class HerobrineMark extends MobEffect {
         if (mobEffectInstance != null) {
             int amplifier = Math.min(mobEffectInstance.getAmplifier() + 1, 6);
             entity.addEffect(new MobEffectInstance(HEROBRINE_MARK, 20 * 66, amplifier));
-            if (amplifier == 6 && herobrine != null)
-                herobrine.setHealth(herobrine.getHealth() + 66);
+            if (amplifier == 6 && markConsumer != null)
+                consumeMark(markConsumer);
         } else {
             entity.addEffect(new MobEffectInstance(HEROBRINE_MARK, 20 * 66, 0));
         }
+    }
+
+    private static void consumeMark(LivingEntity markConsumer) {
+        if (markConsumer instanceof Herobrine herobrine)
+            herobrine.consumeMark();
+        else
+            markConsumer.setHealth(markConsumer.getHealth() + 66);
     }
 
     public static void overlapMark(LivingEntity entity) {

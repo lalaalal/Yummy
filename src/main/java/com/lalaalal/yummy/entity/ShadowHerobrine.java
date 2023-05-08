@@ -33,7 +33,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class ShadowHerobrine extends AbstractHerobrine {
-    private static final int FIRST_MOVING_DURATION = 80;
+    private static final int FIRST_MOVING_DURATION = 150;
     private static final int START_MOVING_TICK = 8;
 
     private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this, false);
