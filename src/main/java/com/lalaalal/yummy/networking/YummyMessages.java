@@ -1,6 +1,7 @@
 package com.lalaalal.yummy.networking;
 
 import com.lalaalal.yummy.YummyMod;
+import com.lalaalal.yummy.networking.packet.PlayerDeltaMovePacket;
 import com.lalaalal.yummy.networking.packet.ShowParticlePacket;
 import com.lalaalal.yummy.networking.packet.ToggleHerobrineMusicPacket;
 import com.lalaalal.yummy.networking.packet.UseSteelArmorPacket;
@@ -43,6 +44,11 @@ public class YummyMessages {
                 .decoder(ToggleHerobrineMusicPacket::new)
                 .encoder(ToggleHerobrineMusicPacket::encode)
                 .consumerMainThread(ToggleHerobrineMusicPacket::handle)
+                .add();
+        INSTANCE.messageBuilder(PlayerDeltaMovePacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(PlayerDeltaMovePacket::new)
+                .encoder(PlayerDeltaMovePacket::encode)
+                .consumerMainThread(PlayerDeltaMovePacket::handle)
                 .add();
     }
 

@@ -3,7 +3,7 @@ package com.lalaalal.yummy.entity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
-import net.minecraft.world.damagesource.EntityDamageSource;
+import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -43,7 +43,7 @@ public class FractureEntity extends Entity {
             if (spawner != null) {
                 List<LivingEntity> entities = level.getNearbyEntities(LivingEntity.class, TargetingConditions.DEFAULT, spawner, getBoundingBox());
                 for (LivingEntity entity : entities)
-                    entity.hurt(new EntityDamageSource("fracture_explosion", this), 166);
+                    entity.hurt(new IndirectEntityDamageSource("fracture_explosion", this, spawner), 166);
             }
 
             discard();
