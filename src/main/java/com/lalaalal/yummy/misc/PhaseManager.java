@@ -92,24 +92,26 @@ public class PhaseManager {
 
     public void updatePhase(BossEvent bossEvent) {
         int phase = getCurrentPhase();
+        updateProgressBar(bossEvent, phase);
+
+        if (prevPhase != phase) {
+            for (PhaseChangeListener listener : phaseChangeListeners)
+                listener.onPhaseChange(prevPhase, phase);
+            prevPhase = phase;
+        }
 
         float currentHealth = entity.getHealth();
         if (prevHealth != currentHealth) {
             for (HealthChangeListener listener : healthChangeListeners)
                 listener.onHealthChange(prevHealth, currentHealth);
-
             prevHealth = currentHealth;
         }
-        updateProgressBar(bossEvent, phase);
     }
 
     private void updateProgressBar(BossEvent bossEvent, int phase) {
         if (prevPhase != phase) {
             BossEvent.BossBarColor color = getPhaseColor(phase);
             bossEvent.setColor(color);
-            for (PhaseChangeListener listener : phaseChangeListeners)
-                listener.onPhaseChange(prevPhase, phase);
-            prevPhase = phase;
         }
 
         if (entity.getAbsorptionAmount() > 0) {
@@ -127,10 +129,10 @@ public class PhaseManager {
         }
     }
 
-    public void updateBossBarColorOnly(BossEvent bossEvent) {
-        this.prevPhase = getCurrentPhase();
-        BossEvent.BossBarColor color = getPhaseColor(prevPhase);
-        bossEvent.setColor(color);
+    public void updateBossBarOnly(BossEvent bossEvent) {
+        int phase = getCurrentPhase();
+        updateProgressBar(bossEvent, phase);
+        this.prevPhase = phase;
     }
 
     private float calculateProgress(int phase) {

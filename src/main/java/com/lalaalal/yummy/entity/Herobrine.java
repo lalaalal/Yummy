@@ -19,6 +19,8 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
@@ -30,6 +32,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -111,7 +114,7 @@ public class Herobrine extends AbstractHerobrine {
     @Override
     public void readAdditionalSaveData(CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
-        phaseManager.updateBossBarColorOnly(bossEvent);
+        phaseManager.updateBossBarOnly(bossEvent);
         structurePos = YummyUtil.readBlockPos(compoundTag, "StructurePos");
         preserveHealth = true;
         if (getPhase() >= 2)
@@ -183,6 +186,10 @@ public class Herobrine extends AbstractHerobrine {
             shadowHerobrine.registerSkill(new FractureRushSkill(shadowHerobrine, 20 * 5));
         }
 
+        Goal followTargetGoal = findFollowTargetGoal();
+        if (followTargetGoal != null)
+            goalSelector.removeGoal(followTargetGoal);
+
         YummyAttributeModifiers.addPermanentModifier(this, YummyAttributeModifiers.PREVENT_MOVING);
         YummyAttributeModifiers.addPermanentModifier(this, YummyAttributeModifiers.IGNORE_KNOCKBACK);
 
@@ -205,6 +212,15 @@ public class Herobrine extends AbstractHerobrine {
                     shadowHerobrine.changeSpeed(ShadowHerobrine.DEFAULT_MOVEMENT_SPEED * Math.pow(1.2, i + 1));
             }
         }
+    }
+
+    @Nullable
+    private Goal findFollowTargetGoal() {
+        for (WrappedGoal availableGoal : goalSelector.getAvailableGoals()) {
+            if (availableGoal.getGoal() instanceof FollowTargetGoal)
+                return availableGoal.getGoal();
+        }
+        return null;
     }
 
     public double calcCurrentShadowSpeed() {
@@ -354,7 +370,10 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     public void die(DamageSource damageSource) {
+        if (damageSource.equals(DamageSource.OUT_OF_WORLD))
+            remove(RemovalReason.KILLED);
         this.deathDamageSource = damageSource;
+        phaseManager.updateBossBarOnly(bossEvent);
     }
 
     @Override
