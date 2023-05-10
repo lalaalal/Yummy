@@ -1,11 +1,14 @@
 package com.lalaalal.yummy.entity.skill;
 
+import com.lalaalal.yummy.YummyUtil;
 import com.lalaalal.yummy.entity.FractureEntity;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.phys.Vec3;
 
 public class FractureRushSkill extends TickableSkill {
+    public static final String NAME = "fracture_rush";
     private static final double RUSH_DISTANCE = 6.66;
 
     public FractureRushSkill(PathfinderMob usingEntity, int cooldown) {
@@ -14,7 +17,7 @@ public class FractureRushSkill extends TickableSkill {
 
     @Override
     public String getBaseName() {
-        return "fracture_rush";
+        return NAME;
     }
 
     @Override
@@ -28,9 +31,11 @@ public class FractureRushSkill extends TickableSkill {
         if (tick == 0) {
             Vec3 originalPos = usingEntity.position();
             Vec3 targetPos = originalPos.add(usingEntity.getViewVector(0).scale(RUSH_DISTANCE));
-            usingEntity.moveTo(targetPos);
+            int y = YummyUtil.findHorizonPos(new BlockPos(targetPos), level).above().getY();
+            usingEntity.moveTo(new Vec3(targetPos.x, y, targetPos.z));
             Vec3 fracturePos = originalPos.add(targetPos).scale(0.5);
             FractureEntity fractureEntity = new FractureEntity(level, fracturePos);
+            fractureEntity.setLifetime(100);
             fractureEntity.setXRot(usingEntity.getXRot());
             fractureEntity.setYRot(usingEntity.getYRot());
             fractureEntity.setSpawner(usingEntity);
@@ -44,7 +49,7 @@ public class FractureRushSkill extends TickableSkill {
     }
 
     @Override
-    public void interrupted() {
+    public void interrupt() {
 
     }
 }

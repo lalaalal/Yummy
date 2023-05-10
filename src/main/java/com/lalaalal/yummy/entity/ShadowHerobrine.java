@@ -3,6 +3,7 @@ package com.lalaalal.yummy.entity;
 import com.lalaalal.yummy.YummyUtil;
 import com.lalaalal.yummy.effect.HerobrineMark;
 import com.lalaalal.yummy.entity.goal.FollowTargetGoal;
+import com.lalaalal.yummy.entity.skill.FractureRushSkill;
 import com.lalaalal.yummy.entity.skill.PunchSkill;
 import com.lalaalal.yummy.tags.YummyTags;
 import net.minecraft.core.BlockPos;
@@ -13,6 +14,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -33,11 +35,12 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class ShadowHerobrine extends AbstractHerobrine {
+    public static final float DEFAULT_MOVEMENT_SPEED = 0.18f;
     private static final int FIRST_MOVING_DURATION = 150;
     private static final int START_MOVING_TICK = 8;
 
     private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this, false);
-    private LivingEntity parent;
+    private Herobrine herobrine;
     private Vec3 firstPos;
     private int firstMovingTick = 0;
     private int tickOffset = 0;
@@ -48,7 +51,7 @@ public class ShadowHerobrine extends AbstractHerobrine {
                 .add(Attributes.MAX_HEALTH, 66)
                 .add(Attributes.ARMOR, 6)
                 .add(Attributes.ATTACK_DAMAGE, 6)
-                .add(Attributes.MOVEMENT_SPEED, 0.18)
+                .add(Attributes.MOVEMENT_SPEED, DEFAULT_MOVEMENT_SPEED)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 3);
     }
 
@@ -74,12 +77,18 @@ public class ShadowHerobrine extends AbstractHerobrine {
     }
 
     public boolean hasParent() {
-        return parent != null;
+        return herobrine != null;
     }
 
-    public void setParent(LivingEntity parent) {
-        this.parent = parent;
-        this.goalSelector.addGoal(2, new FollowParentGoal(parent));
+    public void setHerobrine(Herobrine herobrine) {
+        this.herobrine = herobrine;
+        this.goalSelector.addGoal(2, new FollowParentGoal(herobrine));
+    }
+
+    public void changeSpeed(double value) {
+        AttributeInstance attributeInstance = getAttribute(Attributes.MOVEMENT_SPEED);
+        if (attributeInstance != null)
+            attributeInstance.setBaseValue(value);
     }
 
     @Override
@@ -90,6 +99,13 @@ public class ShadowHerobrine extends AbstractHerobrine {
     @Override
     protected void registerSkills() {
         registerSkill(new PunchSkill(this, 0));
+
+        addSkillFinishListener((skill, interrupted) -> {
+            if (!interrupted && skill.getBaseName().equals(FractureRushSkill.NAME)) {
+                if (herobrine != null)
+                    herobrine.increaseCorruptedWaveStack();
+            }
+        });
     }
 
     @Override
@@ -106,7 +122,7 @@ public class ShadowHerobrine extends AbstractHerobrine {
     @Override
     public boolean doHurtTarget(Entity entity) {
         if (entity instanceof LivingEntity livingEntity) {
-            HerobrineMark.overlapMark(livingEntity, parent);
+            HerobrineMark.overlapMark(livingEntity, herobrine);
             MobEffectInstance mobEffectInstance = new MobEffectInstance(MobEffects.WEAKNESS, 120, 5);
             livingEntity.addEffect(mobEffectInstance);
         }
@@ -124,7 +140,7 @@ public class ShadowHerobrine extends AbstractHerobrine {
 
     @Override
     protected void customServerAiStep() {
-        if ((!hasParent() || !parent.isAlive()) && tickCount > 200)
+        if ((!hasParent() || !herobrine.isAlive()) && tickCount > 200)
             kill();
     }
 

@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class RushSkill extends TickableSkill {
+    public static final String NAME = "rush";
     public static final float MIN_ATTACK_REACH = 5;
     public static final float ATTACK_REACH = 14;
     public static final Vec3 FLOATING_BLOCK_VELOCITY = new Vec3(0, 0.4, 0);
@@ -38,7 +39,7 @@ public class RushSkill extends TickableSkill {
 
     @Override
     public String getBaseName() {
-        return "rush";
+        return NAME;
     }
 
     @Override
@@ -93,7 +94,7 @@ public class RushSkill extends TickableSkill {
     }
 
     @Override
-    public void interrupted() {
+    public void interrupt() {
 
     }
 

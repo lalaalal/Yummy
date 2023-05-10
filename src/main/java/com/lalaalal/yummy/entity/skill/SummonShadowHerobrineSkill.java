@@ -1,25 +1,32 @@
 package com.lalaalal.yummy.entity.skill;
 
 import com.lalaalal.yummy.YummyUtil;
+import com.lalaalal.yummy.entity.Herobrine;
 import com.lalaalal.yummy.entity.ShadowHerobrine;
 import com.lalaalal.yummy.entity.ai.YummyAttributeModifiers;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 
 public class SummonShadowHerobrineSkill extends TickableSkill {
+    public static final String NAME = "summon_shadow";
     private static final int SHADOW_LIMIT = 3;
+    private final Herobrine herobrine;
     private final ArrayList<ShadowHerobrine> shadowHerobrines = new ArrayList<>(SHADOW_LIMIT);
 
-    public SummonShadowHerobrineSkill(PathfinderMob usingEntity, int cooldown) {
+    public SummonShadowHerobrineSkill(Herobrine usingEntity, int cooldown) {
         super(usingEntity, cooldown, 10, 10);
+        this.herobrine = usingEntity;
+    }
+
+    public ArrayList<ShadowHerobrine> getShadowHerobrines() {
+        return shadowHerobrines;
     }
 
     @Override
     public String getBaseName() {
-        return "summon_shadow";
+        return NAME;
     }
 
     @Override
@@ -44,7 +51,7 @@ public class SummonShadowHerobrineSkill extends TickableSkill {
             int y = YummyUtil.findHorizonPos(new BlockPos(x, usingEntity.getY(), z), level).getY() + 1;
             Vec3 targetPos = new Vec3(x, y, z);
             ShadowHerobrine shadowHerobrine = new ShadowHerobrine(level, usingEntity.position(), targetPos);
-            shadowHerobrine.setParent(usingEntity);
+            shadowHerobrine.setHerobrine(herobrine);
             shadowHerobrine.setTickOffset(index);
             shadowHerobrines.add(shadowHerobrine);
         }
@@ -67,7 +74,7 @@ public class SummonShadowHerobrineSkill extends TickableSkill {
     }
 
     @Override
-    public void interrupted() {
+    public void interrupt() {
         YummyAttributeModifiers.removeModifier(usingEntity, YummyAttributeModifiers.PREVENT_MOVING);
     }
 }

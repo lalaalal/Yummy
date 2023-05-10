@@ -18,22 +18,29 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 
 public class NarakaWaveSkill extends TickableSkill {
+    public static final String NAME = "naraka_wave";
     public static final int WAVE_DURATION = 8;
     public static final Vec3 TRANSFORMING_BLOCK_VELOCITY = new Vec3(0, 0.8, 0);
     public static final Vec3 FLOATING_BLOCK_VELOCITY = new Vec3(0, 0.6, 0);
     private final int maxTransform = level.random.nextInt(6, 13);
     private int transformed = 0;
     private boolean prevTransformed = false;
+    private final BlockState transformState;
 
     private BlockPos usingPos;
 
     public NarakaWaveSkill(PathfinderMob usingEntity, int cooldown) {
+        this(usingEntity, cooldown, YummyBlocks.POLLUTED_BLOCK.get().defaultBlockState());
+    }
+
+    public NarakaWaveSkill(PathfinderMob usingEntity, int cooldown, BlockState transformState) {
         super(usingEntity, cooldown, 10, 25);
+        this.transformState = transformState;
     }
 
     @Override
     public String getBaseName() {
-        return "naraka_wave";
+        return NAME;
     }
 
     protected void prepare() {
@@ -70,7 +77,7 @@ public class NarakaWaveSkill extends TickableSkill {
     }
 
     @Override
-    public void interrupted() {
+    public void interrupt() {
         YummyAttributeModifiers.removeModifier(usingEntity, YummyAttributeModifiers.IGNORE_KNOCKBACK);
     }
 
@@ -99,7 +106,7 @@ public class NarakaWaveSkill extends TickableSkill {
                     && !prevTransformed
                     && (tick == 2 || tick == 4)
                     && level.random.nextInt(3) == 0) {
-                if (TransformingBlockEntity.floatAndTransformBlock(level, floatingBlockPos, TRANSFORMING_BLOCK_VELOCITY, state, YummyBlocks.POLLUTED_BLOCK.get().defaultBlockState()) != null) {
+                if (TransformingBlockEntity.floatAndTransformBlock(level, floatingBlockPos, TRANSFORMING_BLOCK_VELOCITY, state, transformState) != null) {
                     transformed += 1;
                     prevTransformed = true;
                 }

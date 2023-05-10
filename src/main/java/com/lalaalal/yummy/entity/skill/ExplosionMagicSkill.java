@@ -9,6 +9,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 
 public class ExplosionMagicSkill extends TickableSkill {
+    public static final String NAME = "explosion_spell";
     private static final int EXPLODE_TICK = 25;
     private static final int EXPLODE_INTERVAL = 5;
     private BlockPos usingPos = BlockPos.ZERO;
@@ -19,7 +20,7 @@ public class ExplosionMagicSkill extends TickableSkill {
 
     @Override
     public String getBaseName() {
-        return "explosion_spell";
+        return NAME;
     }
 
     @Override
@@ -54,7 +55,7 @@ public class ExplosionMagicSkill extends TickableSkill {
     }
 
     @Override
-    public void interrupted() {
+    public void interrupt() {
         YummyAttributeModifiers.removeModifier(usingEntity, YummyAttributeModifiers.IGNORE_KNOCKBACK);
     }
 

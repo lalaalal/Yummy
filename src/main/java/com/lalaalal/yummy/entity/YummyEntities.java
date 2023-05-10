@@ -75,7 +75,7 @@ public class YummyEntities {
 
     public static final RegistryObject<EntityType<FractureEntity>> FRACTURE_ENTITY = ENTITY_TYPES.register("fracture_entity",
             () -> EntityType.Builder.of((EntityType.EntityFactory<FractureEntity>) FractureEntity::new, MobCategory.MISC)
-                    .sized(3, 3)
+                    .sized(4, 2)
                     .build(YummyMod.MOD_ID + ":fracture_entity"));
 
     public static final RegistryObject<EntityType<EbonyBoat>> EBONY_BOAT = ENTITY_TYPES.register("ebony_boat",

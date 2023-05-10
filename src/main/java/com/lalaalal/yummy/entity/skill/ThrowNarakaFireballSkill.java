@@ -9,6 +9,8 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.phys.Vec3;
 
 public class ThrowNarakaFireballSkill extends TickableSkill {
+    public static final String NAME = "throw_naraka_fireball";
+
     private Meteor meteor;
 
     public ThrowNarakaFireballSkill(PathfinderMob usingEntity, int cooldown) {
@@ -17,7 +19,7 @@ public class ThrowNarakaFireballSkill extends TickableSkill {
 
     @Override
     public String getBaseName() {
-        return "throw_naraka_fireball";
+        return NAME;
     }
 
     @Override
@@ -55,7 +57,7 @@ public class ThrowNarakaFireballSkill extends TickableSkill {
     }
 
     @Override
-    public void interrupted() {
+    public void interrupt() {
         YummyAttributeModifiers.removeModifier(usingEntity, YummyAttributeModifiers.IGNORE_KNOCKBACK);
     }
 }

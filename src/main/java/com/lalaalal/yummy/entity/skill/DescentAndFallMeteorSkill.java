@@ -17,6 +17,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class DescentAndFallMeteorSkill extends TickableSkill {
+    public static final String NAME = "descent_fall_meteor";
     private static final int DESCENT_TICK = 14;
     private static final int FALL_METEOR_INTERVAL = 10;
     private boolean meteorMark = false;
@@ -31,7 +32,7 @@ public class DescentAndFallMeteorSkill extends TickableSkill {
 
     @Override
     public String getBaseName() {
-        return "descent_fall_meteor";
+        return NAME;
     }
 
     public void setMeteorMark(boolean meteorMark) {
@@ -68,7 +69,7 @@ public class DescentAndFallMeteorSkill extends TickableSkill {
     }
 
     @Override
-    public void interrupted() {
+    public void interrupt() {
         YummyAttributeModifiers.removeModifier(usingEntity, YummyAttributeModifiers.IGNORE_KNOCKBACK);
     }
 

@@ -37,20 +37,20 @@ public class PollutedParticle extends TextureSheetParticle {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public static class PollutedParticleProvider implements ParticleProvider<SimpleParticleType> {
+    public static class Provider implements ParticleProvider<SimpleParticleType> {
         protected final SpriteSet spriteSet;
         private final float r;
         private final float g;
         private final float b;
 
-        public PollutedParticleProvider(SpriteSet spriteSet, float r, float g, float b) {
+        public Provider(SpriteSet spriteSet, float r, float g, float b) {
             this.spriteSet = spriteSet;
             this.r = r;
             this.g = g;
             this.b = b;
         }
 
-        public PollutedParticleProvider(SpriteSet spriteSet, int color) {
+        public Provider(SpriteSet spriteSet, int color) {
             this(spriteSet, ((color & 0xFF0000) >> 16) / 255f, ((color & 0x00FF00) >> 8) / 255f, (color & 0x0000FF) / 255f);
         }
 

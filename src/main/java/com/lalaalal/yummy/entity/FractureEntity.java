@@ -15,17 +15,21 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 
 public class FractureEntity extends Entity {
+    public static final int SHAPE_VARIETY = 2;
     private int tick = 0;
-    private int lifetime = 100;
+    private int lifetime = -1;
     private LivingEntity spawner;
+    public final int shape;
 
     protected FractureEntity(EntityType<? extends FractureEntity> entityType, Level level) {
         super(entityType, level);
+        shape = 0;
     }
 
     public FractureEntity(Level level, Vec3 pos) {
         super(YummyEntities.FRACTURE_ENTITY.get(), level);
         this.setPos(pos);
+        shape = level.getRandom().nextInt(SHAPE_VARIETY);
     }
 
     public void setSpawner(LivingEntity spawner) {
@@ -41,7 +45,7 @@ public class FractureEntity extends Entity {
         if (tick == lifetime && !level.isClientSide) {
             level.explode(this, null, null, getX(), getY(), getZ(), 1, false, Explosion.BlockInteraction.NONE);
             if (spawner != null) {
-                List<LivingEntity> entities = level.getNearbyEntities(LivingEntity.class, TargetingConditions.DEFAULT, spawner, getBoundingBox());
+                List<LivingEntity> entities = level.getNearbyEntities(LivingEntity.class, TargetingConditions.DEFAULT, spawner, getBoundingBox().inflate(2));
                 for (LivingEntity entity : entities)
                     entity.hurt(new IndirectEntityDamageSource("fracture_explosion", this, spawner), 166);
             }

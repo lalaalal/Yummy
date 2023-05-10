@@ -22,6 +22,15 @@ public class YummyAttributeModifiers {
         return modifier;
     }
 
+    public static void addPermanentModifier(LivingEntity livingEntity, AttributeModifier modifier) {
+        Attribute attribute = MODIFIER_DEFINITION.get(modifier);
+        if (attribute == null)
+            return;
+        AttributeInstance attributeInstance = livingEntity.getAttribute(attribute);
+        if (attributeInstance != null && !attributeInstance.hasModifier(modifier))
+            attributeInstance.addPermanentModifier(modifier);
+    }
+
     public static void addTransientModifier(LivingEntity livingEntity, AttributeModifier modifier) {
         Attribute attribute = MODIFIER_DEFINITION.get(modifier);
         if (attribute == null)

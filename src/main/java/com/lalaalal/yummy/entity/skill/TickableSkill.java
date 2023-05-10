@@ -47,7 +47,7 @@ public abstract class TickableSkill {
         return tick >= tickDuration;
     }
 
-    public abstract void interrupted();
+    public abstract void interrupt();
 
     @Nullable
     public TickableSkill getNextSkill() {

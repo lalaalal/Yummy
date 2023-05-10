@@ -23,7 +23,8 @@ public abstract class SkillUsableMob extends PathfinderMob implements SkillUsabl
 
     protected SkillUsableMob(EntityType<? extends SkillUsableMob> entityType, Level level) {
         super(entityType, level);
-        this.goalSelector.addGoal(1, skillUseGoal);
+        if (!level.isClientSide)
+            this.goalSelector.addGoal(1, skillUseGoal);
         registerSkills();
     }
 
@@ -51,10 +52,14 @@ public abstract class SkillUsableMob extends PathfinderMob implements SkillUsabl
     protected abstract void registerSkills();
 
     public void registerSkill(TickableSkill skill) {
+        registerSkill(skill, false);
+    }
+
+    public void registerSkill(TickableSkill skill, boolean mustUseFirst) {
         String name = skill.getBaseName();
         if (!skills.containsKey(name)) {
             skills.put(name, skill);
-            skillUseGoal.addSkill(skill);
+            skillUseGoal.addSkill(skill, mustUseFirst);
         }
     }
 
@@ -69,6 +74,10 @@ public abstract class SkillUsableMob extends PathfinderMob implements SkillUsabl
     @Nullable
     public TickableSkill getSkill(String name) {
         return skills.get(name);
+    }
+
+    public void addSkillFinishListener(TickableSkillUseGoal.SkillFinishListener listener) {
+        skillUseGoal.addSkillFinishListener(listener);
     }
 
     public void interrupt() {

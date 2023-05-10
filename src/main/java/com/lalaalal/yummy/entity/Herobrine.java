@@ -1,5 +1,6 @@
 package com.lalaalal.yummy.entity;
 
+import com.lalaalal.yummy.entity.ai.YummyAttributeModifiers;
 import com.lalaalal.yummy.entity.goal.FollowTargetGoal;
 import com.lalaalal.yummy.entity.skill.*;
 import com.lalaalal.yummy.misc.PhaseManager;
@@ -37,11 +38,15 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class Herobrine extends AbstractHerobrine {
     public static final int DEATH_TICK_DURATION = 100;
     private static final int HURT_ANIMATION_DURATION = 37;
     private static final int CONSUME_MARK_HEAL = 66;
     private static final float[] PHASE_HEALTHS = {600, 60, 6};
+    private static final float[] HEALTH_CHANGE_CHECK = {12, 18, 24};
     private static final BossEvent.BossBarColor[] PHASE_COLORS = {BossEvent.BossBarColor.BLUE, BossEvent.BossBarColor.YELLOW, BossEvent.BossBarColor.RED};
 
     private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this, false);
@@ -52,9 +57,12 @@ public class Herobrine extends AbstractHerobrine {
 
     private BlockPos structurePos;
     private DamageSource deathDamageSource;
+    private final SummonShadowHerobrineSkill summonShadowHerobrineSkill = new SummonShadowHerobrineSkill(this, 20 * 60);
+    private final FollowTargetGoal followTargetGoal = new FollowTargetGoal(this, 5, 1);
     private int hurtAnimationTick = 0;
     private int invulnerableTick = 30;
     private int deathTick = 0;
+    private int corruptedWaveStack = 0;
 
     public static boolean canSummonHerobrine(Level level, BlockPos headPos) {
         Block soulSandBlock = level.getBlockState(headPos).getBlock();
@@ -87,6 +95,9 @@ public class Herobrine extends AbstractHerobrine {
         phaseManager.addPhaseChangeListener(this::changePhase);
         phaseManager.addPhaseChangeListener(this::enterPhase2, 2);
         phaseManager.addPhaseChangeListener(this::enterPhase3, 3);
+        phaseManager.addHealthChangeListener(this::updateShadowSpeed);
+        if (!level.isClientSide)
+            this.goalSelector.addGoal(2, followTargetGoal);
         setPersistenceRequired();
     }
 
@@ -105,6 +116,18 @@ public class Herobrine extends AbstractHerobrine {
         return deathTick;
     }
 
+    public void increaseCorruptedWaveStack() {
+        corruptedWaveStack += 1;
+    }
+
+    public boolean canUseCorruptedWave() {
+        return getPhase() == 3 && corruptedWaveStack >= 6;
+    }
+
+    public void resetCorruptedWaveStack() {
+        corruptedWaveStack = 0;
+    }
+
     private void changePhase(int from, int to) {
         if (from > to)
             return;
@@ -119,19 +142,47 @@ public class Herobrine extends AbstractHerobrine {
         AttributeInstance attributeInstance = getAttribute(Attributes.ARMOR);
         if (attributeInstance != null)
             attributeInstance.setBaseValue(66);
-        if (getSkill("descent_fall_meteor") instanceof DescentAndFallMeteorSkill descentAndFallMeteorSkill) {
+        if (getSkill(DescentAndFallMeteorSkill.NAME) instanceof DescentAndFallMeteorSkill descentAndFallMeteorSkill) {
             descentAndFallMeteorSkill.setMeteorMark(true);
-            registerSkill(new NarakaStormSkill(this, 20 * 20, descentAndFallMeteorSkill));
+            registerSkill(new NarakaStormSkill(this, 20 * 40, descentAndFallMeteorSkill));
         }
-        registerSkill(new SummonShadowHerobrineSkill(this, 20 * 60));
-        registerSkill(new FractureRushSkill(this, 20 * 10));
-        removeSkill("rush");
         interrupt();
+        registerSkill(summonShadowHerobrineSkill, true);
+        registerSkill(new FractureRushSkill(this, 20 * 5));
+        removeSkill(RushSkill.NAME);
     }
 
     private void enterPhase3() {
         if (structurePos != null)
             moveTo(structurePos, getYRot(), getXRot());
+
+        for (ShadowHerobrine shadowHerobrine : summonShadowHerobrineSkill.getShadowHerobrines()) {
+            shadowHerobrine.changeSpeed(ShadowHerobrine.DEFAULT_MOVEMENT_SPEED * 2);
+            shadowHerobrine.registerSkill(new FractureRushSkill(shadowHerobrine, 20 * 5));
+        }
+
+        YummyAttributeModifiers.addPermanentModifier(this, YummyAttributeModifiers.PREVENT_MOVING);
+        goalSelector.removeGoal(followTargetGoal);
+
+        removeSkill(NarakaWaveSkill.NAME);
+        removeSkill(ThrowNarakaFireballSkill.NAME);
+        removeSkill(DescentAndFallMeteorSkill.NAME);
+        removeSkill(ExplosionMagicSkill.NAME);
+        removeSkill(RushSkill.NAME);
+        removeSkill(NarakaStormSkill.NAME);
+        removeSkill(FractureRushSkill.NAME);
+
+        registerSkill(new CorruptedWaveSkill(this, 0));
+    }
+
+    private void updateShadowSpeed(float prevHealth, float currentHealth) {
+        for (int i = 0; i < HEALTH_CHANGE_CHECK.length; i++) {
+            float checkHealth = HEALTH_CHANGE_CHECK[i];
+            if (currentHealth <= checkHealth && checkHealth < prevHealth) {
+                for (ShadowHerobrine shadowHerobrine : summonShadowHerobrineSkill.getShadowHerobrines())
+                    shadowHerobrine.changeSpeed(ShadowHerobrine.DEFAULT_MOVEMENT_SPEED * Math.pow(1.2, i + 1));
+            }
+        }
     }
 
     public int getPhase() {
@@ -170,6 +221,11 @@ public class Herobrine extends AbstractHerobrine {
             return PlayState.CONTINUE;
         }
 
+        if (getPhase() == 3) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.herobrine.phase_3_basic", ILoopType.EDefaultLoopTypes.LOOP));
+            return PlayState.CONTINUE;
+        }
+
         if (hurtAnimationTick > 0) {
             hurtAnimationTick -= 1;
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.herobrine.hit", ILoopType.EDefaultLoopTypes.LOOP));
@@ -195,8 +251,7 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(2, new FollowTargetGoal(this, 5, 1));
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this, ShadowHerobrine.class));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false, false));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, false, false, (livingEntity) -> !livingEntity.getType().is(YummyTags.HEROBRINE)));
     }
@@ -215,6 +270,14 @@ public class Herobrine extends AbstractHerobrine {
             destroyNearbyBlocks();
         if (source.isBypassInvul())
             return super.hurt(source, amount);
+
+        if (getPhase() == 3) {
+            Entity entity = source.getEntity();
+            if (entity != null && entity.getType().is(YummyTags.HEROBRINE))
+                return super.hurt(source.bypassArmor(), 1);
+            return false;
+        }
+
         if (deathTick > 0)
             return false;
 
@@ -259,13 +322,18 @@ public class Herobrine extends AbstractHerobrine {
     @Override
     protected void tickDeath() {
         if (deathTick == 0) {
-            setDeltaMovement(0, 0.7, 0);
+            setDeltaMovement(0, 0.4, 0);
             setNoGravity(true);
         }
         move(MoverType.SELF, getDeltaMovement());
         Vec3 velocity = getDeltaMovement().add(0, -0.04, 0);
-        if (velocity.y > 0)
+        if (velocity.y > 0) {
             setDeltaMovement(velocity);
+        } else {
+            if (!level.isClientSide && deathTick % 4 == 0)
+                destroyBlocks(deathTick / 4);
+        }
+
         if (deathTick == DEATH_TICK_DURATION) {
             this.remove(Entity.RemovalReason.KILLED);
             this.gameEvent(GameEvent.ENTITY_DIE);
@@ -276,6 +344,26 @@ public class Herobrine extends AbstractHerobrine {
             }
         }
         deathTick += 1;
+    }
+
+    private void destroyBlocks(int radius) {
+        Set<BlockPos> destroyedPos = new HashSet<>();
+        for (double y_t = 0; y_t < 180; y_t += 0.25) {
+            double currentRadius = Math.sin(y_t * Math.PI / 180) * radius;
+            double y = Math.floor(getY() + Math.cos(y_t * Math.PI / 180) * radius);
+
+            for (double xz_t = 0; xz_t < 360; xz_t += 0.25) {
+                double x = getX() + Math.cos(xz_t * Math.PI / 180) * currentRadius;
+                double z = getZ() + Math.sin(xz_t * Math.PI / 180) * currentRadius;
+
+                BlockPos pos = new BlockPos(x, y, z);
+                if (destroyedPos.contains(pos) || level.getBlockState(pos).is(Blocks.BEDROCK))
+                    continue;
+                level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+                destroyedPos.add(pos);
+            }
+        }
+
     }
 
     @Override

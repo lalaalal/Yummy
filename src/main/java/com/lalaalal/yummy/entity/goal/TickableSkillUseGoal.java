@@ -8,11 +8,14 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 public class TickableSkillUseGoal<T extends PathfinderMob & SkillUsable> extends Goal {
     private final ArrayList<TickableSkill> skills = new ArrayList<>();
+    private final ArrayList<TickableSkill> mustUseFistSkills = new ArrayList<>();
+    private final ArrayList<SkillFinishListener> skillFinishListeners = new ArrayList<>();
     private final Map<TickableSkill, Long> skillUsedTimeMap = new HashMap<>();
     private final T usingEntity;
     private final Level level;
@@ -36,7 +39,16 @@ public class TickableSkillUseGoal<T extends PathfinderMob & SkillUsable> extends
     public void addSkill(TickableSkill skill) {
         skills.add(skill);
         skillUsedTimeMap.put(skill, 0L);
-        skills.sort((o1, o2) -> o2.getCooldown() - o1.getCooldown());
+    }
+
+    public void addSkill(TickableSkill skill, boolean mustUseFirst) {
+        if (!mustUseFirst) {
+            addSkill(skill);
+            return;
+        }
+        mustUseFistSkills.add(skill);
+        skillUsedTimeMap.put(skill, 0L);
+        mustUseFistSkills.sort((o1, o2) -> o2.getCooldown() - o1.getCooldown());
     }
 
     public void removeSkill(TickableSkill skill) {
@@ -49,8 +61,19 @@ public class TickableSkillUseGoal<T extends PathfinderMob & SkillUsable> extends
         usingEntity.setUsingSkill(skill);
     }
 
+    public void addSkillFinishListener(SkillFinishListener listener) {
+        skillFinishListeners.add(listener);
+    }
+
     @Nullable
     private TickableSkill findUsableSkill() {
+        for (TickableSkill skill : mustUseFistSkills) {
+            if (skill.getCooldown() < level.getGameTime() - skillUsedTimeMap.get(skill)
+                    && skill.canUse())
+                return skill;
+        }
+
+        Collections.shuffle(skills);
         for (TickableSkill skill : skills) {
             if (skill.getCooldown() < level.getGameTime() - skillUsedTimeMap.get(skill)
                     && skill.canUse())
@@ -93,6 +116,8 @@ public class TickableSkillUseGoal<T extends PathfinderMob & SkillUsable> extends
     }
 
     private void finishSkill() {
+        for (SkillFinishListener skillFinishListener : skillFinishListeners)
+            skillFinishListener.onSkillFinish(usingSkill, false);
         skillUsedTimeMap.put(usingSkill, level.getGameTime());
         lastSkillEndTime = level.getGameTime();
         TickableSkill nextSkill = usingSkill.getNextSkill();
@@ -103,9 +128,17 @@ public class TickableSkillUseGoal<T extends PathfinderMob & SkillUsable> extends
     }
 
     public void interrupt() {
-        if (usingSkill != null)
-            usingSkill.interrupted();
+        if (usingSkill != null) {
+            for (SkillFinishListener skillFinishListener : skillFinishListeners)
+                skillFinishListener.onSkillFinish(usingSkill, true);
+            usingSkill.interrupt();
+        }
         setUsingSkill(null);
         skillToUse = null;
+    }
+
+    @FunctionalInterface
+    public interface SkillFinishListener {
+        void onSkillFinish(TickableSkill skill, boolean interrupted);
     }
 }

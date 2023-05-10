@@ -10,6 +10,7 @@ import com.lalaalal.yummy.entity.YummyEntities;
 import com.lalaalal.yummy.particle.PollutedParticle;
 import com.lalaalal.yummy.particle.YummyParticles;
 import com.lalaalal.yummy.util.KeyBinding;
+import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
@@ -56,11 +57,13 @@ public class YummyClientEventBus {
     @SubscribeEvent
     public static void registerParticleFactories(final RegisterParticleProvidersEvent event) {
         event.register(YummyParticles.POLLUTED_PARTICLE_RED.get(),
-                (spriteSet) -> new PollutedParticle.PollutedParticleProvider(spriteSet, 0x441f0b));
+                (spriteSet) -> new PollutedParticle.Provider(spriteSet, 0x441f0b));
         event.register(YummyParticles.POLLUTED_PARTICLE_BLUE.get(),
-                (spriteSet) -> new PollutedParticle.PollutedParticleProvider(spriteSet, 0x019ea3));
+                (spriteSet) -> new PollutedParticle.Provider(spriteSet, 0x019ea3));
         event.register(YummyParticles.POLLUTED_PARTICLE_PURPLE.get(),
-                (spriteSet) -> new PollutedParticle.PollutedParticleProvider(spriteSet, 0x201a33));
+                (spriteSet) -> new PollutedParticle.Provider(spriteSet, 0x201a33));
+        event.register(YummyParticles.CORRUPTED_SMALL_FLAME.get(),
+                FlameParticle.SmallFlameProvider::new);
     }
 
     @SubscribeEvent

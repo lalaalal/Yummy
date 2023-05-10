@@ -8,9 +8,11 @@ import java.util.ArrayList;
 public class PhaseManager {
     protected final LivingEntity entity;
     private final float[] phaseHealthArray;
+    private float prevHealth;
     private int prevPhase = 1;
     private final BossEvent.BossBarColor[] bossBarColors;
-    private final ArrayList<PhaseChangeListener> listeners = new ArrayList<>();
+    private final ArrayList<PhaseChangeListener> phaseChangeListeners = new ArrayList<>();
+    private final ArrayList<HealthChangeListener> healthChangeListeners = new ArrayList<>();
     private Runnable onAbsorptionDisappear = () -> {
     };
     private float maxAbsorption = 0;
@@ -20,6 +22,7 @@ public class PhaseManager {
         this.entity = entity;
         this.phaseHealthArray = phaseHealthArray;
         this.bossBarColors = bossBarColors;
+        this.prevHealth = entity.getHealth();
     }
 
     public void setAbsorptionDisappearAction(Runnable runnable) {
@@ -91,9 +94,17 @@ public class PhaseManager {
         if (prevPhase != phase) {
             BossEvent.BossBarColor color = getPhaseColor(phase);
             bossEvent.setColor(color);
-            for (PhaseChangeListener listener : listeners)
+            for (PhaseChangeListener listener : phaseChangeListeners)
                 listener.onPhaseChange(prevPhase, phase);
             prevPhase = phase;
+        }
+
+        float currentHealth = entity.getHealth();
+        if (prevHealth != currentHealth) {
+            for (HealthChangeListener listener : healthChangeListeners)
+                listener.onHealthChange(prevHealth, currentHealth);
+
+            prevHealth = currentHealth;
         }
         updateProgressBar(bossEvent, phase);
     }
@@ -122,11 +133,25 @@ public class PhaseManager {
     }
 
     public void addPhaseChangeListener(PhaseChangeListener listener) {
-        listeners.add(listener);
+        phaseChangeListeners.add(listener);
     }
 
     public void addPhaseChangeListener(Runnable runnable, int phase) {
-        listeners.add(new SpecificPhaseChangeListener(runnable, phase));
+        phaseChangeListeners.add((from, to) -> {
+            if (from < to && phase == to)
+                runnable.run();
+        });
+    }
+
+    public void addHealthChangeListener(HealthChangeListener listener) {
+        healthChangeListeners.add(listener);
+    }
+
+    public void addHealthUnderListener(Runnable runnable, final float pivotHealth) {
+        healthChangeListeners.add((prevHealth, currentHealth) -> {
+            if (currentHealth <= pivotHealth && pivotHealth < prevHealth)
+                runnable.run();
+        });
     }
 
     @FunctionalInterface
@@ -134,11 +159,8 @@ public class PhaseManager {
         void onPhaseChange(int from, int to);
     }
 
-    private record SpecificPhaseChangeListener(Runnable runnable, int targetPhase) implements PhaseChangeListener {
-        @Override
-        public void onPhaseChange(int from, int to) {
-            if (from < to && targetPhase == to)
-                runnable.run();
-        }
+    @FunctionalInterface
+    public interface HealthChangeListener {
+        void onHealthChange(float prevHealth, float currentHealth);
     }
 }
