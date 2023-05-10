@@ -1,5 +1,6 @@
 package com.lalaalal.yummy.entity;
 
+import com.lalaalal.yummy.YummyUtil;
 import com.lalaalal.yummy.entity.ai.YummyAttributeModifiers;
 import com.lalaalal.yummy.entity.goal.FollowTargetGoal;
 import com.lalaalal.yummy.entity.skill.*;
@@ -8,6 +9,7 @@ import com.lalaalal.yummy.networking.YummyMessages;
 import com.lalaalal.yummy.networking.packet.ToggleHerobrineMusicPacket;
 import com.lalaalal.yummy.tags.YummyTags;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -58,11 +60,11 @@ public class Herobrine extends AbstractHerobrine {
     private BlockPos structurePos;
     private DamageSource deathDamageSource;
     private final SummonShadowHerobrineSkill summonShadowHerobrineSkill = new SummonShadowHerobrineSkill(this, 20 * 60);
-    private final FollowTargetGoal followTargetGoal = new FollowTargetGoal(this, 5, 1);
     private int hurtAnimationTick = 0;
     private int invulnerableTick = 30;
     private int deathTick = 0;
     private int corruptedWaveStack = 0;
+    private boolean preserveHealth = false;
 
     public static boolean canSummonHerobrine(Level level, BlockPos headPos) {
         Block soulSandBlock = level.getBlockState(headPos).getBlock();
@@ -96,8 +98,7 @@ public class Herobrine extends AbstractHerobrine {
         phaseManager.addPhaseChangeListener(this::enterPhase2, 2);
         phaseManager.addPhaseChangeListener(this::enterPhase3, 3);
         phaseManager.addHealthChangeListener(this::updateShadowSpeed);
-        if (!level.isClientSide)
-            this.goalSelector.addGoal(2, followTargetGoal);
+
         setPersistenceRequired();
     }
 
@@ -105,6 +106,27 @@ public class Herobrine extends AbstractHerobrine {
         this(YummyEntities.HEROBRINE.get(), level);
         this.structurePos = structurePos;
         setPos(spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag compoundTag) {
+        super.readAdditionalSaveData(compoundTag);
+        phaseManager.updateBossBarColorOnly(bossEvent);
+        structurePos = YummyUtil.readBlockPos(compoundTag, "StructurePos");
+        preserveHealth = true;
+        if (getPhase() >= 2)
+            enterPhase2();
+        if (getPhase() == 3)
+            enterPhase3();
+
+        preserveHealth = false;
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag compoundTag) {
+        super.addAdditionalSaveData(compoundTag);
+        if (structurePos != null)
+            YummyUtil.saveBlockPos(compoundTag, "StructurePos", structurePos);
     }
 
     public void consumeMark() {
@@ -129,7 +151,7 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private void changePhase(int from, int to) {
-        if (from > to)
+        if (from > to || preserveHealth)
             return;
         invulnerableTick = 30;
         setInvulnerable(true);
@@ -162,7 +184,7 @@ public class Herobrine extends AbstractHerobrine {
         }
 
         YummyAttributeModifiers.addPermanentModifier(this, YummyAttributeModifiers.PREVENT_MOVING);
-        goalSelector.removeGoal(followTargetGoal);
+        YummyAttributeModifiers.addPermanentModifier(this, YummyAttributeModifiers.IGNORE_KNOCKBACK);
 
         removeSkill(NarakaWaveSkill.NAME);
         removeSkill(ThrowNarakaFireballSkill.NAME);
@@ -183,6 +205,21 @@ public class Herobrine extends AbstractHerobrine {
                     shadowHerobrine.changeSpeed(ShadowHerobrine.DEFAULT_MOVEMENT_SPEED * Math.pow(1.2, i + 1));
             }
         }
+    }
+
+    public double calcCurrentShadowSpeed() {
+        if (getPhase() == 3)
+            return ShadowHerobrine.DEFAULT_MOVEMENT_SPEED * 2;
+
+        float currentHealth = getHealth();
+        for (int i = 0; i < HEALTH_CHANGE_CHECK.length; i++) {
+            float checkHealth = HEALTH_CHANGE_CHECK[i];
+            if (currentHealth <= checkHealth) {
+                return ShadowHerobrine.DEFAULT_MOVEMENT_SPEED * Math.pow(1.2, i + 1);
+            }
+        }
+
+        return ShadowHerobrine.DEFAULT_MOVEMENT_SPEED;
     }
 
     public int getPhase() {
@@ -251,6 +288,7 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     protected void registerGoals() {
+        this.goalSelector.addGoal(2, new FollowTargetGoal(this, 5, 1));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this, ShadowHerobrine.class));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false, false));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, false, false, (livingEntity) -> !livingEntity.getType().is(YummyTags.HEROBRINE)));
@@ -322,7 +360,7 @@ public class Herobrine extends AbstractHerobrine {
     @Override
     protected void tickDeath() {
         if (deathTick == 0) {
-            setDeltaMovement(0, 0.4, 0);
+            setDeltaMovement(0, 0.7, 0);
             setNoGravity(true);
         }
         move(MoverType.SELF, getDeltaMovement());

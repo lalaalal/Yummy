@@ -51,8 +51,11 @@ public class SummonShadowHerobrineSkill extends TickableSkill {
             int y = YummyUtil.findHorizonPos(new BlockPos(x, usingEntity.getY(), z), level).getY() + 1;
             Vec3 targetPos = new Vec3(x, y, z);
             ShadowHerobrine shadowHerobrine = new ShadowHerobrine(level, usingEntity.position(), targetPos);
+            shadowHerobrine.changeSpeed(herobrine.calcCurrentShadowSpeed());
             shadowHerobrine.setHerobrine(herobrine);
             shadowHerobrine.setTickOffset(index);
+            if (herobrine.getPhase() == 3)
+                shadowHerobrine.registerSkill(new FractureRushSkill(shadowHerobrine, 20 * 5));
             shadowHerobrines.add(shadowHerobrine);
         }
 

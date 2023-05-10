@@ -17,7 +17,7 @@ import java.util.List;
 public class FractureEntity extends Entity {
     public static final int SHAPE_VARIETY = 2;
     private int tick = 0;
-    private int lifetime = -1;
+    private int lifetime = 100;
     private LivingEntity spawner;
     public final int shape;
 

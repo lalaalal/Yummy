@@ -9,7 +9,7 @@ public class PhaseManager {
     protected final LivingEntity entity;
     private final float[] phaseHealthArray;
     private float prevHealth;
-    private int prevPhase = 1;
+    private int prevPhase;
     private final BossEvent.BossBarColor[] bossBarColors;
     private final ArrayList<PhaseChangeListener> phaseChangeListeners = new ArrayList<>();
     private final ArrayList<HealthChangeListener> healthChangeListeners = new ArrayList<>();
@@ -23,6 +23,7 @@ public class PhaseManager {
         this.phaseHealthArray = phaseHealthArray;
         this.bossBarColors = bossBarColors;
         this.prevHealth = entity.getHealth();
+        this.prevPhase = getCurrentPhase();
     }
 
     public void setAbsorptionDisappearAction(Runnable runnable) {
@@ -91,13 +92,6 @@ public class PhaseManager {
 
     public void updatePhase(BossEvent bossEvent) {
         int phase = getCurrentPhase();
-        if (prevPhase != phase) {
-            BossEvent.BossBarColor color = getPhaseColor(phase);
-            bossEvent.setColor(color);
-            for (PhaseChangeListener listener : phaseChangeListeners)
-                listener.onPhaseChange(prevPhase, phase);
-            prevPhase = phase;
-        }
 
         float currentHealth = entity.getHealth();
         if (prevHealth != currentHealth) {
@@ -110,6 +104,14 @@ public class PhaseManager {
     }
 
     private void updateProgressBar(BossEvent bossEvent, int phase) {
+        if (prevPhase != phase) {
+            BossEvent.BossBarColor color = getPhaseColor(phase);
+            bossEvent.setColor(color);
+            for (PhaseChangeListener listener : phaseChangeListeners)
+                listener.onPhaseChange(prevPhase, phase);
+            prevPhase = phase;
+        }
+
         if (entity.getAbsorptionAmount() > 0) {
             bossEvent.setColor(BossEvent.BossBarColor.WHITE);
             bossEvent.setProgress(entity.getAbsorptionAmount() / maxAbsorption);
@@ -123,6 +125,12 @@ public class PhaseManager {
             }
             bossEvent.setProgress(calculateProgress(phase));
         }
+    }
+
+    public void updateBossBarColorOnly(BossEvent bossEvent) {
+        this.prevPhase = getCurrentPhase();
+        BossEvent.BossBarColor color = getPhaseColor(prevPhase);
+        bossEvent.setColor(color);
     }
 
     private float calculateProgress(int phase) {

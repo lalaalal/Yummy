@@ -2,9 +2,11 @@ package com.lalaalal.yummy;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 
@@ -33,14 +35,6 @@ public class YummyUtil {
         return findHorizonPos(pos.above(), level);
     }
 
-    public static byte makeUnit(double value) {
-        if (value > 0)
-            return 1;
-        if (value < 0)
-            return -1;
-        return 0;
-    }
-
     public static Vec3 calcXZRotation(Vec3 vec3, double angle, double scale) {
         double x = vec3.x * Math.cos(angle) - vec3.z * Math.sin(angle);
         double z = vec3.x * Math.sin(angle) + vec3.z * Math.cos(angle);
@@ -65,5 +59,25 @@ public class YummyUtil {
 
             consumer.accept(new BlockPos(x, basePos.getY(), z));
         }
+    }
+
+    public static void saveBlockPos(CompoundTag compoundTag, String name, BlockPos blockPos) {
+        compoundTag.putInt(name + "X", blockPos.getX());
+        compoundTag.putInt(name + "Y", blockPos.getY());
+        compoundTag.putInt(name + "Z", blockPos.getZ());
+    }
+
+    @Nullable
+    public static BlockPos readBlockPos(CompoundTag compoundTag, String name) {
+        if (compoundTag.contains(name + "X")
+                && compoundTag.contains(name + "Y")
+                && compoundTag.contains(name + "Z")) {
+            int x = compoundTag.getInt(name + "X");
+            int y = compoundTag.getInt(name + "Y");
+            int z = compoundTag.getInt(name + "Z");
+            return new BlockPos(x, y, z);
+        }
+
+        return null;
     }
 }

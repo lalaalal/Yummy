@@ -23,9 +23,10 @@ public abstract class SkillUsableMob extends PathfinderMob implements SkillUsabl
 
     protected SkillUsableMob(EntityType<? extends SkillUsableMob> entityType, Level level) {
         super(entityType, level);
-        if (!level.isClientSide)
+        if (!level.isClientSide) {
             this.goalSelector.addGoal(1, skillUseGoal);
-        registerSkills();
+            registerSkills();
+        }
     }
 
     @Override
