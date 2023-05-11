@@ -1,5 +1,6 @@
 package com.lalaalal.yummy.entity.skill;
 
+import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.YummyUtil;
 import com.lalaalal.yummy.effect.HerobrineMark;
 import com.lalaalal.yummy.entity.FloatingBlockEntity;
@@ -115,7 +116,7 @@ public class RushSkill extends TickableSkill {
             return;
 
         if (!pushed && usingEntity.distanceToSqr(target) < 2) {
-            target.hurt(new EntityDamageSource("rush", usingEntity), 1);
+            target.hurt(new EntityDamageSource(YummyMod.MOD_ID + ".herobrine.rush", usingEntity), 1);
             target.knockback(6, -viewVector.x, -viewVector.z);
             HerobrineMark.overlapMark(target, usingEntity);
         }

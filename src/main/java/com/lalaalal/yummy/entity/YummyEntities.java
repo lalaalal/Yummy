@@ -73,10 +73,10 @@ public class YummyEntities {
                     .sized(1f, 0.1f)
                     .build(YummyMod.MOD_ID + ":naraka_storm"));
 
-    public static final RegistryObject<EntityType<FractureEntity>> FRACTURE_ENTITY = ENTITY_TYPES.register("fracture_entity",
+    public static final RegistryObject<EntityType<FractureEntity>> FRACTURE_ENTITY = ENTITY_TYPES.register("fracture",
             () -> EntityType.Builder.of((EntityType.EntityFactory<FractureEntity>) FractureEntity::new, MobCategory.MISC)
                     .sized(4, 2)
-                    .build(YummyMod.MOD_ID + ":fracture_entity"));
+                    .build(YummyMod.MOD_ID + ":fracture"));
 
     public static final RegistryObject<EntityType<EbonyBoat>> EBONY_BOAT = ENTITY_TYPES.register("ebony_boat",
             () -> EntityType.Builder.of((EntityType.EntityFactory<EbonyBoat>) EbonyBoat::new, MobCategory.MISC)

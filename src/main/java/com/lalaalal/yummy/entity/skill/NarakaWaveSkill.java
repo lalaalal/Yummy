@@ -1,5 +1,6 @@
 package com.lalaalal.yummy.entity.skill;
 
+import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.YummyUtil;
 import com.lalaalal.yummy.block.YummyBlocks;
 import com.lalaalal.yummy.entity.CameraShakingEntity;
@@ -92,7 +93,7 @@ public class NarakaWaveSkill extends TickableSkill {
         AABB area = usingEntity.getBoundingBox().inflate(15);
         List<LivingEntity> entities = level.getNearbyEntities(LivingEntity.class, TargetingConditions.DEFAULT, usingEntity, area);
         for (LivingEntity entity : entities)
-            entity.hurt(new EntityDamageSource("naraka_wave", usingEntity), 1);
+            entity.hurt(new EntityDamageSource(YummyMod.MOD_ID + ".herobrine.naraka_wave", usingEntity), 1);
     }
 
     private void floatBlock(int tick) {

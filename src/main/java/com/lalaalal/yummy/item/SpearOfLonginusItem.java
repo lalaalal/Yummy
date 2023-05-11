@@ -1,5 +1,6 @@
 package com.lalaalal.yummy.item;
 
+import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.entity.ThrownSpearOfLonginus;
 import com.lalaalal.yummy.misc.ItemDamageSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -18,7 +19,7 @@ public class SpearOfLonginusItem extends SpearItem {
         if (user instanceof Player player && player.getAbilities().instabuild)
             return;
 
-        DamageSource damageSource = new ItemDamageSource("spear_of_longinus", null, itemStack);
+        DamageSource damageSource = new ItemDamageSource(YummyMod.MOD_ID + ".spear_of_longinus", null, itemStack);
         damageSource.bypassArmor();
         float damage = user.getMaxHealth() * damageRate;
         user.hurt(damageSource, damage);
@@ -27,7 +28,7 @@ public class SpearOfLonginusItem extends SpearItem {
     @Override
     public boolean onLeftClickEntity(ItemStack itemStack, Player player, Entity entity) {
         if (!player.level.isClientSide) {
-            DamageSource damageSource = new ItemDamageSource("spear_of_longinus", player, itemStack);
+            DamageSource damageSource = new ItemDamageSource(YummyMod.MOD_ID + ".spear_of_longinus", player, itemStack);
             damageSource.bypassArmor().bypassInvul();
             entity.hurt(damageSource, Float.MAX_VALUE);
             if (entity instanceof LivingEntity livingEntity && livingEntity.getHealth() > 0)

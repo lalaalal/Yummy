@@ -1,8 +1,10 @@
 package com.lalaalal.yummy.entity.skill;
 
+import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.YummyUtil;
 import com.lalaalal.yummy.entity.FractureEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.phys.Vec3;
@@ -42,7 +44,7 @@ public class FractureRushSkill extends TickableSkill {
             level.addFreshEntity(fractureEntity);
             LivingEntity target = usingEntity.getTarget();
             if (target != null)
-                usingEntity.doHurtTarget(target);
+                target.hurt(new EntityDamageSource(YummyMod.MOD_ID + ".herobrine.fracture_rush", usingEntity), 6);
         }
 
         return super.tick(tick);

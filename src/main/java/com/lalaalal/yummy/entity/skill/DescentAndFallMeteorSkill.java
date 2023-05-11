@@ -1,5 +1,6 @@
 package com.lalaalal.yummy.entity.skill;
 
+import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.YummyUtil;
 import com.lalaalal.yummy.effect.HerobrineMark;
 import com.lalaalal.yummy.entity.CameraShakingEntity;
@@ -92,7 +93,7 @@ public class DescentAndFallMeteorSkill extends TickableSkill {
         AABB area = usingEntity.getBoundingBox().inflate(4);
         LivingEntity entity = level.getNearestEntity(LivingEntity.class, TargetingConditions.DEFAULT, usingEntity, targetPos.x, targetPos.y, targetPos.z, area);
         if (entity != null) {
-            entity.hurt(new EntityDamageSource("descent", usingEntity), 1);
+            entity.hurt(new EntityDamageSource(YummyMod.MOD_ID + ".herobrine.descent", usingEntity), 1);
             HerobrineMark.overlapMark(entity, usingEntity);
         }
         usingEntity.setNoGravity(false);

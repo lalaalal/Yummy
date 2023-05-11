@@ -1,5 +1,6 @@
 package com.lalaalal.yummy.entity;
 
+import com.lalaalal.yummy.YummyMod;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
@@ -47,7 +48,7 @@ public class FractureEntity extends Entity {
             if (spawner != null) {
                 List<LivingEntity> entities = level.getNearbyEntities(LivingEntity.class, TargetingConditions.DEFAULT, spawner, getBoundingBox().inflate(2));
                 for (LivingEntity entity : entities)
-                    entity.hurt(new IndirectEntityDamageSource("fracture_explosion", this, spawner), 166);
+                    entity.hurt(new IndirectEntityDamageSource(YummyMod.MOD_ID + ".fracture", this, spawner), 166);
             }
 
             discard();

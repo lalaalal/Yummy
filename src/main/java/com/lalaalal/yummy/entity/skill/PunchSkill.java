@@ -42,7 +42,7 @@ public class PunchSkill extends TickableSkill {
     public boolean tick(int tick) {
         if (tick == 0) {
             LivingEntity target = usingEntity.getTarget();
-            if (target != null)
+            if (target != null && usingEntity.distanceToSqr(target) < ATTACK_REACH * ATTACK_REACH)
                 usingEntity.doHurtTarget(target);
         }
 

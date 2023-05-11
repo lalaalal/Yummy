@@ -1,5 +1,6 @@
 package com.lalaalal.yummy.effect;
 
+import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.entity.Herobrine;
 import com.lalaalal.yummy.misc.EffectDamageSource;
 import com.lalaalal.yummy.tags.YummyTags;
@@ -59,7 +60,7 @@ public class HerobrineMark extends MobEffect {
     @Override
     public void applyEffectTick(LivingEntity livingEntity, int amplifier) {
         if (!livingEntity.getLevel().isClientSide && amplifier >= 6) {
-            DamageSource damageSource = new EffectDamageSource("mark", this);
+            DamageSource damageSource = new EffectDamageSource(YummyMod.MOD_ID + ".mark", this);
             damageSource.bypassArmor().bypassInvul();
             livingEntity.removeAllEffects();
             livingEntity.hurt(damageSource, Float.MAX_VALUE);

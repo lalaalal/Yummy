@@ -6,7 +6,7 @@ import com.lalaalal.yummy.particle.YummyParticles;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.damagesource.EntityDamageSource;
+import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -91,7 +91,7 @@ public class NarakaStormEntity extends FlatImageEntity {
         for (Entity entity : entities) {
             if (entity instanceof LivingEntity livingEntity) {
                 livingEntity.setSecondsOnFire(6);
-                livingEntity.hurt(new EntityDamageSource(YummyMod.MOD_ID + ".naraka_storm", spawner), damage);
+                livingEntity.hurt(new IndirectEntityDamageSource(YummyMod.MOD_ID + "naraka_storm", this, spawner), damage);
                 HerobrineMark.overlapMark(livingEntity, spawner);
                 markedEntities.add(livingEntity);
             }
