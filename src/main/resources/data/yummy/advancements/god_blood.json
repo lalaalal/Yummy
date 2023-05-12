@@ -1,0 +1,37 @@
+{
+    "parent": "yummy:kill_herobrine",
+    "display": {
+        "icon": {
+            "item": "yummy:god_blood"
+        },
+        "title": {
+            "translate": "advancements.yummy.god_blood.title"
+        },
+        "description": {
+            "translate": "advancements.yummy.god_blood.description"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria": {
+        "has_god_blood": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "yummy:god_blood"
+                        ]
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        }
+    },
+    "requirements": [
+        [
+            "has_god_blood"
+        ]
+    ]
+}

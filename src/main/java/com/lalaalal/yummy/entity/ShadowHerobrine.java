@@ -140,7 +140,7 @@ public class ShadowHerobrine extends AbstractHerobrine {
 
     @Override
     protected void customServerAiStep() {
-        if ((!hasParent() || !herobrine.isAlive()) && tickCount > 200)
+        if ((!hasParent() || !herobrine.isAlive()))
             kill();
     }
 

@@ -126,16 +126,16 @@ public class YummyItems {
             () -> new ForgeSpawnEggItem(YummyEntities.HEROBRINE, 0x0f0f0f, 0xff0000, new Item.Properties().tab(YummyMod.TAB)));
 
     public static final RegistryObject<Item> UNSTABLE_ECHO_MATTER = ITEMS.register("unstable_echo_matter",
-            () -> new Item(new Item.Properties().tab(YummyMod.TAB)));
+            () -> new TooltipItem(new Item.Properties().tab(YummyMod.TAB)));
 
     public static final RegistryObject<Item> ECHO_INGOT = ITEMS.register("echo_ingot",
-            () -> new Item(new Item.Properties().tab(YummyMod.TAB)));
+            () -> new TooltipItem(new Item.Properties().tab(YummyMod.TAB)));
 
     public static final RegistryObject<Item> ECHO_KNIFE = ITEMS.register("echo_knife",
             () -> new Item(new Item.Properties().tab(YummyMod.TAB)));
 
     public static final RegistryObject<Item> ECHO_SWORD = ITEMS.register("echo_sword",
-            () -> new SwordItem(Tiers.DIAMOND, 1, 1, new Item.Properties().tab(YummyMod.TAB)));
+            () -> new EchoSwordItem(Tiers.DIAMOND, 11, 8, new Item.Properties().tab(YummyMod.TAB)));
 
     public static final RegistryObject<Item> BONE_MEAL = VANILLA_ITEMS.register("bone_meal",
             () -> new YummyBoneMealItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));

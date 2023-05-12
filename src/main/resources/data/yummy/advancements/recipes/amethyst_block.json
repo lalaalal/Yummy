@@ -1,0 +1,28 @@
+{
+    "parent": "yummy:recipes/root",
+    "criteria": {
+        "has_amethyst_shard": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "minecraft:amethyst_shard"
+                        ]
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        }
+    },
+    "requirements": [
+        [
+            "has_amethyst_shard"
+        ]
+    ],
+    "rewards": {
+        "recipes": [
+            "yummy:amethyst_block",
+            "yummy:amethyst_from_block"
+        ]
+    }
+}

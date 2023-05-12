@@ -1,0 +1,27 @@
+{
+    "parent": "yummy:recipes/root",
+    "criteria": {
+        "has_god_blood": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "yummy:god_blood"
+                        ]
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        }
+    },
+    "requirements": [
+        [
+            "has_god_blood"
+        ]
+    ],
+    "rewards": {
+        "recipes": [
+            "yummy:mighty_holy_spear"
+        ]
+    }
+}

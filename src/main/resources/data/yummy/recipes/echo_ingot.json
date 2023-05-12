@@ -1,0 +1,24 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "yummy:unstable_echo_matter"
+        },
+        {
+            "item": "minecraft:ghast_tear"
+        },
+        {
+            "item": "minecraft:ghast_tear"
+        },
+        {
+            "item": "yummy:purified_soul_shard"
+        },
+        {
+            "item": "yummy:purified_soul_shard"
+        }
+    ],
+    "result": {
+        "item": "yummy:echo_ingot",
+        "count": 1
+    }
+}

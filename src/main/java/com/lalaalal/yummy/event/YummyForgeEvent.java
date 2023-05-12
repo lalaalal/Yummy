@@ -2,6 +2,8 @@ package com.lalaalal.yummy.event;
 
 import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.block.YummyBlocks;
+import com.lalaalal.yummy.block.entity.HerobrineSpawnerBlockEntity;
+import com.lalaalal.yummy.block.entity.YummyBlockEntities;
 import com.lalaalal.yummy.effect.YummyEffects;
 import com.lalaalal.yummy.entity.Herobrine;
 import net.minecraft.core.BlockPos;
@@ -19,6 +21,8 @@ import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.Optional;
+
 @Mod.EventBusSubscriber(modid = YummyMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class YummyForgeEvent {
     @SubscribeEvent
@@ -33,6 +37,11 @@ public class YummyForgeEvent {
                 && direction == Direction.UP
                 && Herobrine.canSummonHerobrine(level, blockPos)) {
             level.setBlock(blockPos.below(), YummyBlocks.HEROBRINE_SPAWNER_BLOCK.get().defaultBlockState(), 3);
+            Optional<HerobrineSpawnerBlockEntity> optional = level.getBlockEntity(blockPos.below(), YummyBlockEntities.HEROBRINE_SPAWNER_BLOCK_ENTITY.get());
+            if (optional.isPresent()) {
+                HerobrineSpawnerBlockEntity spawner = optional.get();
+                spawner.setTriggeredPlayerUUID(event.getEntity().getUUID());
+            }
         }
     }
 

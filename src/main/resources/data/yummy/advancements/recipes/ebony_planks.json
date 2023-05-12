@@ -1,0 +1,35 @@
+{
+    "parent": "yummy:recipes/root",
+    "criteria": {
+        "has_ebony_logs": {
+            "conditions": {
+                "items": [
+                    {
+                        "tag": "yummy:ebony_logs"
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        }
+    },
+    "requirements": [
+        [
+            "has_ebony_logs"
+        ]
+    ],
+    "rewards": {
+        "recipes": [
+            "yummy:ebony_button",
+            "yummy:ebony_door",
+            "yummy:ebony_fence",
+            "yummy:ebony_fence_gate",
+            "yummy:ebony_planks",
+            "yummy:ebony_pressure_plate",
+            "yummy:ebony_sign",
+            "yummy:ebony_slab",
+            "yummy:ebony_stairs",
+            "yummy:ebony_trapdoor",
+            "yummy:ebony_wood"
+        ]
+    }
+}

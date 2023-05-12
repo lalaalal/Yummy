@@ -193,6 +193,8 @@ public class Herobrine extends AbstractHerobrine {
         YummyAttributeModifiers.addPermanentModifier(this, YummyAttributeModifiers.PREVENT_MOVING);
         YummyAttributeModifiers.addPermanentModifier(this, YummyAttributeModifiers.IGNORE_KNOCKBACK);
 
+        interrupt();
+
         removeSkill(NarakaWaveSkill.NAME);
         removeSkill(ThrowNarakaFireballSkill.NAME);
         removeSkill(DescentAndFallMeteorSkill.NAME);
@@ -420,7 +422,6 @@ public class Herobrine extends AbstractHerobrine {
                 destroyedPos.add(pos);
             }
         }
-
     }
 
     @Override

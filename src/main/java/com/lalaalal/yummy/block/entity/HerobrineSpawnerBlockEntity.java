@@ -2,10 +2,13 @@ package com.lalaalal.yummy.block.entity;
 
 import com.lalaalal.yummy.block.YummyBlocks;
 import com.lalaalal.yummy.entity.Herobrine;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -13,15 +16,22 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
+import java.util.UUID;
+
 public class HerobrineSpawnerBlockEntity extends BlockEntity {
     private static final Block[] STRUCTURE_BLOCK_TYPES = {Blocks.GOLD_BLOCK, Blocks.GOLD_BLOCK, YummyBlocks.HEROBRINE_SPAWNER_BLOCK.get(), Blocks.SOUL_SAND};
     private static final BlockState[] REPLACE_BLOCK_STATES = {YummyBlocks.CORRUPTED_POLLUTED_BLOCK.get().defaultBlockState(), YummyBlocks.CORRUPTED_POLLUTED_BLOCK.get().defaultBlockState(), YummyBlocks.HEROBRINE_SPAWNER_BLOCK.get().defaultBlockState(), YummyBlocks.POLLUTED_BLOCK.get().defaultBlockState()};
     private static final int BLOCK_CHANGE_INTERVAL = 20;
     private int tick = -20;
     private boolean structureExists = false;
+    private UUID triggeredPlayerUUID;
 
     public HerobrineSpawnerBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState state) {
         super(blockEntityType, pos, state);
+    }
+
+    public void setTriggeredPlayerUUID(UUID triggeredPlayerUUID) {
+        this.triggeredPlayerUUID = triggeredPlayerUUID;
     }
 
     public void tick(ServerLevel level, BlockPos pos) {
@@ -64,6 +74,10 @@ public class HerobrineSpawnerBlockEntity extends BlockEntity {
     private void summonHerobrine(ServerLevel level, BlockPos summonPos) {
         EntityType.LIGHTNING_BOLT.spawn(level, null, null, summonPos, MobSpawnType.TRIGGERED, true, true);
         Herobrine herobrine = new Herobrine(level, summonPos, summonPos);
+
+        Player player = level.getPlayerByUUID(triggeredPlayerUUID);
+        if (player instanceof ServerPlayer serverPlayer)
+            CriteriaTriggers.SUMMONED_ENTITY.trigger(serverPlayer, herobrine);
         level.addFreshEntity(herobrine);
     }
 

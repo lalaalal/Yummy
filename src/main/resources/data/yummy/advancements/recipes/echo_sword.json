@@ -1,0 +1,27 @@
+{
+    "parent": "yummy:recipes/root",
+    "criteria": {
+        "has_echo_ingot": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "yummy:echo_ingot"
+                        ]
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        }
+    },
+    "requirements": [
+        [
+            "has_echo_ingot"
+        ]
+    ],
+    "rewards": {
+        "recipes": [
+            "yummy:echo_sword"
+        ]
+    }
+}

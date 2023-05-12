@@ -1,0 +1,27 @@
+{
+    "parent": "yummy:recipes/root",
+    "criteria": {
+        "has_spear": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "minecraft:iron_ingot"
+                        ]
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        }
+    },
+    "requirements": [
+        [
+            "has_spear"
+        ]
+    ],
+    "rewards": {
+        "recipes": [
+            "yummy:spear"
+        ]
+    }
+}

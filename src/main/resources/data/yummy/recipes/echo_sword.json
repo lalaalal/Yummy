@@ -1,0 +1,12 @@
+{
+    "type": "minecraft:smithing",
+    "base": {
+        "item": "yummy:purified_soul_sword"
+    },
+    "addition": {
+        "item": "yummy:echo_ingot"
+    },
+    "result": {
+        "item": "yummy:echo_sword"
+    }
+}
