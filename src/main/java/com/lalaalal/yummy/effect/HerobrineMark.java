@@ -4,6 +4,8 @@ import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.entity.Herobrine;
 import com.lalaalal.yummy.misc.EffectDamageSource;
 import com.lalaalal.yummy.tags.YummyTags;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -70,5 +72,10 @@ public class HerobrineMark extends MobEffect {
     @Override
     public boolean isDurationEffectTick(int duration, int amplifier) {
         return true;
+    }
+
+    @Override
+    public Component getDisplayName() {
+        return Component.translatable(this.getDescriptionId()).withStyle(ChatFormatting.RED);
     }
 }

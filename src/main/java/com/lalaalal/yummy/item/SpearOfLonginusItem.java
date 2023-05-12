@@ -3,6 +3,8 @@ package com.lalaalal.yummy.item;
 import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.entity.ThrownSpearOfLonginus;
 import com.lalaalal.yummy.misc.ItemDamageSource;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -44,5 +46,10 @@ public class SpearOfLonginusItem extends SpearItem {
     protected void throwSpear(ItemStack itemStack, Level level, LivingEntity livingEntity) {
         hurtUser(itemStack, livingEntity, 0.9f);
         super.throwSpear(itemStack, level, livingEntity);
+    }
+
+    @Override
+    public Component getName(ItemStack pStack) {
+        return Component.translatable(getDescriptionId()).withStyle(ChatFormatting.RED);
     }
 }

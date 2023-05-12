@@ -1,12 +1,12 @@
 {
     "parent": "yummy:recipes/root",
     "criteria": {
-        "has_iron_ingot": {
+        "has_rubellite": {
             "conditions": {
                 "items": [
                     {
                         "items": [
-                            "minecraft:iron_ingot"
+                            "yummy:rubellite"
                         ]
                     }
                 ]
@@ -16,12 +16,20 @@
     },
     "requirements": [
         [
-            "has_iron_ingot"
+            "has_rubellite"
         ]
     ],
     "rewards": {
         "recipes": [
-            "yummy:spear"
+            "yummy:steel_axe",
+            "yummy:steel_boots",
+            "yummy:steel_chestplate",
+            "yummy:steel_helmet",
+            "yummy:steel_hoe",
+            "yummy:steel_leggings",
+            "yummy:steel_pickaxe",
+            "yummy:steel_shovel",
+            "yummy:steel_sword"
         ]
     }
 }

@@ -50,6 +50,30 @@
                     "chance": 0.0006
                 }
             ]
+        },
+        {
+            "rolls": 1,
+            "bonus_rolls": 0,
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "yummy:meteor_staff"
+                },
+                {
+                    "type": "minecraft:item",
+                    "name": "yummy:floating_stick"
+                },
+                {
+                    "type": "minecraft:item",
+                    "name": "yummy:mark_fireball"
+                }
+            ],
+            "conditions": [
+                {
+                    "condition": "minecraft:random_chance",
+                    "chance": 0.01
+                }
+            ]
         }
     ]
 }

@@ -22,16 +22,7 @@
     "rewards": {
         "recipes": [
             "yummy:rubellite_from_block",
-            "yummy:rubellite_block",
-            "yummy:steel_axe",
-            "yummy:steel_boots",
-            "yummy:steel_chestplate",
-            "yummy:steel_helmet",
-            "yummy:steel_hoe",
-            "yummy:steel_leggings",
-            "yummy:steel_pickaxe",
-            "yummy:steel_shovel",
-            "yummy:steel_sword"
+            "yummy:rubellite_block"
         ]
     }
 }

@@ -26,6 +26,7 @@ public class Echo extends MobEffect {
         if (amplifier >= 19) {
             float damage = livingEntity.getHealth() / 2;
             livingEntity.hurt(DamageSource.MAGIC, damage);
+            livingEntity.removeEffect(YummyEffects.ECHO.get());
         }
     }
 }

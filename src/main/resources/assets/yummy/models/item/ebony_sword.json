@@ -1,6 +1,6 @@
 {
     "parent": "minecraft:item/handheld",
     "textures": {
-        "layer0": "yummy:item/meteor_staff"
+        "layer0": "yummy:item/ebony_sword"
     }
 }

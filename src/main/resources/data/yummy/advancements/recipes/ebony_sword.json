@@ -1,12 +1,12 @@
 {
     "parent": "yummy:recipes/root",
     "criteria": {
-        "has_iron_ingot": {
+        "has_hard_ebony_planks": {
             "conditions": {
                 "items": [
                     {
                         "items": [
-                            "minecraft:iron_ingot"
+                            "yummy:hard_ebony_planks"
                         ]
                     }
                 ]
@@ -16,12 +16,12 @@
     },
     "requirements": [
         [
-            "has_iron_ingot"
+            "has_hard_ebony_planks"
         ]
     ],
     "rewards": {
         "recipes": [
-            "yummy:spear"
+            "yummy:ebony_sword"
         ]
     }
 }
