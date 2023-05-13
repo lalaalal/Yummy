@@ -19,6 +19,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Supplier;
 
+@SuppressWarnings("unused")
 public class YummyBlocks {
     private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, YummyMod.MOD_ID);
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, YummyMod.MOD_ID);
@@ -50,12 +51,18 @@ public class YummyBlocks {
                     .strength(5f, 6f)
                     .requiresCorrectToolForDrops()),
             YummyMod.TAB);
+    public static final RegistryObject<Block> HEROBRINE_SPAWNER_BLOCK = register("herobrine_spawner_block",
+            () -> new HerobrineSpawnerBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.NETHER)
+                    .requiresCorrectToolForDrops()
+                    .strength(2.0F, 6.0F)
+                    .sound(SoundType.NETHER_BRICKS)
+                    .lightLevel(blockState -> 7)),
+            YummyMod.TAB);
 
-    public static final RegistryObject<Block> PURIFIED_SOUL_BLOCK = register("purified_soul_block",
+    public static final RegistryObject<Block> PURIFIED_SOUL_BLOCK = BLOCKS.register("purified_soul_block",
             () -> new Block(BlockBehaviour.Properties.of(Material.DIRT)
                     .strength(0.5F)
-                    .speedFactor(0.4F)),
-            YummyMod.TAB);
+                    .speedFactor(0.4F)));
     public static final RegistryObject<Block> PURIFIED_SOUL_FIRE_BLOCK = BLOCKS.register("purified_soul_fire",
             () -> new PurifiedSoulFireBlock(BlockBehaviour.Properties.of(Material.FIRE, MaterialColor.COLOR_BLACK)
                     .noCollission()
@@ -97,9 +104,9 @@ public class YummyBlocks {
     public static final RegistryObject<Block> EBONY_DOOR = register("ebony_door",
             () -> new DoorBlock(BlockBehaviour.Properties.copy(Blocks.OAK_DOOR)), YummyMod.TAB);
     public static final RegistryObject<SignBlock> EBONY_SIGN = BLOCKS.register("ebony_sign",
-            () -> new YummyStandingSignBlock(BlockBehaviour.Properties.copy(Blocks.OAK_SIGN), YummyTypes.EBONY));
+            () -> new YummyStandingSignBlock(BlockBehaviour.Properties.copy(Blocks.OAK_SIGN), YummyTypes.WOOD_EBONY));
     public static final RegistryObject<SignBlock> EBONY_WALL_SIGN = BLOCKS.register("ebony_wall_sign",
-            () -> new YummyWallSignBlock(BlockBehaviour.Properties.copy(Blocks.OAK_WALL_SIGN), YummyTypes.EBONY));
+            () -> new YummyWallSignBlock(BlockBehaviour.Properties.copy(Blocks.OAK_WALL_SIGN), YummyTypes.WOOD_EBONY));
     public static final RegistryObject<Block> EBONY_TRAPDOOR = register("ebony_trapdoor",
             () -> new TrapDoorBlock(BlockBehaviour.Properties.copy(Blocks.OAK_TRAPDOOR)), YummyMod.TAB);
 
@@ -131,6 +138,11 @@ public class YummyBlocks {
     public static final RegistryObject<Block> POTTED_LIME_FLOWER = BLOCKS.register("potted_lime_flower",
             () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, LIME_FLOWER,
                     BlockBehaviour.Properties.copy(Blocks.POTTED_DANDELION).color(MaterialColor.COLOR_LIGHT_GREEN)));
+
+    public static final RegistryObject<Item> PURIFIED_SOUL_BLOCK_ITEM = ITEMS.register("purified_soul_block",
+            () -> new BlockItem(PURIFIED_SOUL_BLOCK.get(), new Item.Properties()
+                    .fireResistant()
+                    .tab(YummyMod.TAB)));
 
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> block, CreativeModeTab tab) {
         RegistryObject<T> registryObject = BLOCKS.register(name, block);

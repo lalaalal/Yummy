@@ -1,0 +1,26 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#S#",
+        "#C#",
+        "R#R"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:rabbit_hide"
+        },
+        "S": {
+            "item": "minecraft:shulker_shell"
+        },
+        "C": {
+            "item": "minecraft:chest"
+        },
+        "R": {
+            "item": "minecraft:rabbit_foot"
+        }
+    },
+    "result": {
+        "item": "yummy:bunny_chest",
+        "count": 1
+    }
+}

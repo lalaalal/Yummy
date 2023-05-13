@@ -1,26 +1,16 @@
 package com.lalaalal.yummy;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.function.Consumer;
 
 public class YummyUtil {
-    public static AABB createArea(BlockPos blockPos, int range) {
-        int x = blockPos.getX();
-        int y = blockPos.getY();
-        int z = blockPos.getZ();
-        BlockPos start = new BlockPos(x - range, y - range, z - range);
-        BlockPos end = new BlockPos(x + range + 1, y + range + 1, z + range + 1);
-
-        return new AABB(start, end);
-    }
-
-    public static AABB createArea(double x, double y, double z, int range) {
-        return createArea(new BlockPos(x, y, z), range);
-    }
-
     public static BlockPos randomPos(BlockPos pos, int range, RandomSource random) {
         return randomPos(pos.getX(), pos.getY(), pos.getZ(), range, random);
     }
@@ -34,19 +24,60 @@ public class YummyUtil {
     }
 
     public static BlockPos findHorizonPos(BlockPos pos, Level level) {
-        if (level.getBlockState(pos).is(Blocks.AIR)) {
-            if (level.getBlockState(pos.below()).is(Blocks.AIR))
+        if (pos.getY() < -64 || pos.getY() > 256)
+            return pos;
+
+        if (!level.getBlockState(pos).isFaceSturdy(level, pos, Direction.UP)) {
+            if (!level.getBlockState(pos.below()).isFaceSturdy(level, pos.below(), Direction.UP))
                 return findHorizonPos(pos.below(), level);
             return pos;
         }
         return findHorizonPos(pos.above(), level);
     }
 
-    public static byte makeUnit(double value) {
-        if (value > 0)
-            return 1;
-        if (value < 0)
-            return -1;
-        return 0;
+    public static Vec3 calcXZRotation(Vec3 vec3, double angle, double scale) {
+        double x = vec3.x * Math.cos(angle) - vec3.z * Math.sin(angle);
+        double z = vec3.x * Math.sin(angle) + vec3.z * Math.cos(angle);
+
+        return new Vec3(x * scale, vec3.y, z * scale);
+    }
+
+    public static void doCircle(int count, int radius, BlockPos basePos, Consumer<BlockPos> consumer) {
+        for (int i = 0; i < count; i++) {
+            double t = (2 * Math.PI) / count * i;
+            double x = Math.cos(t) * radius + basePos.getX();
+            double z = Math.sin(t) * radius + basePos.getZ();
+
+            if (0 < t && t < Math.PI)
+                z += 1;
+            if ((1.5 * Math.PI) < t || t < (0.5 * Math.PI))
+                x += 1;
+            if (t == Math.PI)
+                x -= 1;
+            if (t == Math.PI * 1.5)
+                z -= 1;
+
+            consumer.accept(new BlockPos(x, basePos.getY(), z));
+        }
+    }
+
+    public static void saveBlockPos(CompoundTag compoundTag, String name, BlockPos blockPos) {
+        compoundTag.putInt(name + "X", blockPos.getX());
+        compoundTag.putInt(name + "Y", blockPos.getY());
+        compoundTag.putInt(name + "Z", blockPos.getZ());
+    }
+
+    @Nullable
+    public static BlockPos readBlockPos(CompoundTag compoundTag, String name) {
+        if (compoundTag.contains(name + "X")
+                && compoundTag.contains(name + "Y")
+                && compoundTag.contains(name + "Z")) {
+            int x = compoundTag.getInt(name + "X");
+            int y = compoundTag.getInt(name + "Y");
+            int z = compoundTag.getInt(name + "Z");
+            return new BlockPos(x, y, z);
+        }
+
+        return null;
     }
 }

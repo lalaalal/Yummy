@@ -1,0 +1,37 @@
+{
+    "parent": "yummy:mighty_holy_spear",
+    "display": {
+        "icon": {
+            "item": "yummy:spear_of_longinus"
+        },
+        "title": {
+            "translate": "advancements.yummy.spear_of_longinus.title"
+        },
+        "description": {
+            "translate": "advancements.yummy.spear_of_longinus.description"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria": {
+        "has_spear_of_longinus": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "yummy:spear_of_longinus"
+                        ]
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        }
+    },
+    "requirements": [
+        [
+            "has_spear_of_longinus"
+        ]
+    ]
+}

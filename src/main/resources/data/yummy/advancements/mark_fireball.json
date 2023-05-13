@@ -1,0 +1,37 @@
+{
+    "parent": "yummy:kill_herobrine",
+    "display": {
+        "icon": {
+            "item": "yummy:mark_fireball"
+        },
+        "title": {
+            "translate": "advancements.yummy.mark_fireball.title"
+        },
+        "description": {
+            "translate": "advancements.yummy.mark_fireball.description"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria": {
+        "has_mark_fireball": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "yummy:mark_fireball"
+                        ]
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        }
+    },
+    "requirements": [
+        [
+            "has_mark_fireball"
+        ]
+    ]
+}

@@ -39,6 +39,7 @@ public class ToggleHerobrineMusicPacket extends YummyPacket {
     @Override
     protected void handleWork(NetworkEvent.Context context) {
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
+            Minecraft.getInstance().getMusicManager().stopPlaying();
             SoundManager soundManager = Minecraft.getInstance().getSoundManager();
             soundManager.stop(HerobrineMusic.getResourceLocation(1), SoundSource.RECORDS);
             soundManager.stop(HerobrineMusic.getResourceLocation(2), SoundSource.RECORDS);

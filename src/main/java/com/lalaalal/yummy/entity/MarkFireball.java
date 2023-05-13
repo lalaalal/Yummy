@@ -1,8 +1,10 @@
 package com.lalaalal.yummy.entity;
 
-import com.lalaalal.yummy.YummyUtil;
 import com.lalaalal.yummy.effect.HerobrineMark;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -13,11 +15,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
 
 public class MarkFireball extends Fireball {
+    private static final EntityDataAccessor<Boolean> DATA_MARK = SynchedEntityData.defineId(MarkFireball.class, EntityDataSerializers.BOOLEAN);
+
+    protected boolean explosion = true;
     protected float explosionPower = 1;
-    protected boolean markEntities = true;
+    protected int time = 0;
+    private int discardTime = 20 * 7;
+    private LivingEntity markConsumer;
 
     public MarkFireball(EntityType<? extends Fireball> entityType, Level level) {
         super(entityType, level);
@@ -25,31 +31,70 @@ public class MarkFireball extends Fireball {
 
     public MarkFireball(Level level, LivingEntity shooter, double offsetX, double offsetY, double offsetZ) {
         super(YummyEntities.MARK_FIREBALL.get(), shooter, offsetX, offsetY, offsetZ, level);
+        this.markConsumer = shooter;
     }
 
     public MarkFireball(EntityType<? extends Fireball> entityType, Level level, LivingEntity shooter, double offsetX, double offsetY, double offsetZ, int explosionPower, boolean markEntities) {
         super(entityType, shooter, offsetX, offsetY, offsetZ, level);
         this.explosionPower = explosionPower;
-        this.markEntities = markEntities;
+        setMarkEntities(markEntities);
+        this.markConsumer = shooter;
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        entityData.define(DATA_MARK, true);
+    }
+
+    public void setExplosion(boolean explosion) {
+        this.explosion = explosion;
+    }
+
+    public void setExplosionPower(float explosionPower) {
+        this.explosionPower = explosionPower;
+    }
+
+    public boolean isMarkEntities() {
+        return entityData.get(DATA_MARK);
+    }
+
+    public void setMarkEntities(boolean markEntities) {
+        entityData.set(DATA_MARK, markEntities);
+    }
+
+    public void setDiscardTime(int discardTime) {
+        this.discardTime = discardTime;
+    }
+
+    public void explodeAndDiscard() {
+        if (!this.level.isClientSide) {
+            if (isMarkEntities())
+                markEntities(level);
+            if (explosion)
+                this.level.explode(this.getOwner(), DamageSource.fireball(this, getOwner()), null, this.getX(), this.getY(), this.getZ(), explosionPower, true, Explosion.BlockInteraction.DESTROY);
+            this.discard();
+        }
     }
 
     @Override
     protected void onHit(HitResult result) {
         super.onHit(result);
-        if (!this.level.isClientSide) {
-            Vec3 hitLocation = result.getLocation();
-            if (markEntities)
-                markEntities(level, hitLocation);
-            this.level.explode(this.getOwner(), this.getX(), this.getY(), this.getZ(), explosionPower, true, Explosion.BlockInteraction.DESTROY);
-
-            this.discard();
-        }
+        explodeAndDiscard();
     }
 
-    private void markEntities(Level level, Vec3 location) {
-        AABB area = YummyUtil.createArea(location.x, location.y, location.z, 5);
+    @Override
+    public void tick() {
+        if (time++ > discardTime)
+            explodeAndDiscard();
+
+        super.tick();
+    }
+
+    private void markEntities(Level level) {
+        AABB area = getBoundingBox().inflate(3);
         for (LivingEntity livingEntity : level.getEntitiesOfClass(LivingEntity.class, area))
-            HerobrineMark.overlapMark(livingEntity);
+            HerobrineMark.overlapMark(livingEntity, markConsumer);
     }
 
     @Override
@@ -62,16 +107,18 @@ public class MarkFireball extends Fireball {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag pCompound) {
-        super.addAdditionalSaveData(pCompound);
-        pCompound.putByte("ExplosionPower", (byte) this.explosionPower);
+    public void addAdditionalSaveData(CompoundTag compoundTag) {
+        super.addAdditionalSaveData(compoundTag);
+        compoundTag.putByte("ExplosionPower", (byte) this.explosionPower);
+        compoundTag.putBoolean("Mark", isMarkEntities());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag pCompound) {
-        super.readAdditionalSaveData(pCompound);
-        if (pCompound.contains("ExplosionPower", 99)) {
-            this.explosionPower = pCompound.getByte("ExplosionPower");
+    public void readAdditionalSaveData(CompoundTag compoundTag) {
+        super.readAdditionalSaveData(compoundTag);
+        if (compoundTag.contains("ExplosionPower")) {
+            this.explosionPower = compoundTag.getByte("ExplosionPower");
+            setMarkEntities(compoundTag.getBoolean("Mark"));
         }
     }
 }

@@ -24,6 +24,10 @@ public class YummyParticles {
             = PARTICLE_TYPES.register("polluted_particle_purple",
             () -> new SimpleParticleType(true));
 
+    public static final RegistryObject<SimpleParticleType> CORRUPTED_SMALL_FLAME
+            = PARTICLE_TYPES.register("corrupted_small_flame",
+            () -> new SimpleParticleType(true));
+
     public static void register(IEventBus eventBus) {
         PARTICLE_TYPES.register(eventBus);
     }

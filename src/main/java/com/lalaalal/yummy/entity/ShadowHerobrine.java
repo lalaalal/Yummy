@@ -2,25 +2,48 @@ package com.lalaalal.yummy.entity;
 
 import com.lalaalal.yummy.YummyUtil;
 import com.lalaalal.yummy.effect.HerobrineMark;
-import com.lalaalal.yummy.tags.YummyTagRegister;
+import com.lalaalal.yummy.entity.goal.FollowTargetGoal;
+import com.lalaalal.yummy.entity.skill.FractureRushSkill;
+import com.lalaalal.yummy.entity.skill.PunchSkill;
+import com.lalaalal.yummy.tags.YummyTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.builder.ILoopType;
+import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
+import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
-public class ShadowHerobrine extends PathfinderMob implements PowerableMob, Enemy {
+public class ShadowHerobrine extends AbstractHerobrine {
+    public static final float DEFAULT_MOVEMENT_SPEED = 0.18f;
+    private static final int FIRST_MOVING_DURATION = 150;
+    private static final int START_MOVING_TICK = 8;
+
+    private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this, false);
     private Herobrine herobrine;
+    private Vec3 firstPos;
+    private int firstMovingTick = 0;
+    private int tickOffset = 0;
 
     public static AttributeSupplier.Builder getHerobrineAttributes() {
         return Mob.createMobAttributes()
@@ -28,21 +51,44 @@ public class ShadowHerobrine extends PathfinderMob implements PowerableMob, Enem
                 .add(Attributes.MAX_HEALTH, 66)
                 .add(Attributes.ARMOR, 6)
                 .add(Attributes.ATTACK_DAMAGE, 6)
-                .add(Attributes.MOVEMENT_SPEED, 0.18)
+                .add(Attributes.MOVEMENT_SPEED, DEFAULT_MOVEMENT_SPEED)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 3);
     }
 
-    protected ShadowHerobrine(EntityType<? extends PathfinderMob> entityType, Level level) {
-        super(entityType, level);
+    protected ShadowHerobrine(EntityType<? extends ShadowHerobrine> entityType, Level level) {
+        super(entityType, level, true);
+        setPersistenceRequired();
     }
 
-    public boolean hasOwner() {
+    public ShadowHerobrine(Level level, Vec3 position) {
+        this(YummyEntities.SHADOW_HEROBRINE.get(), level);
+        setPos(position);
+        setPersistenceRequired();
+    }
+
+    public void setTickOffset(int tickOffset) {
+        this.tickOffset = tickOffset;
+    }
+
+    public ShadowHerobrine(Level level, Vec3 position, Vec3 firstPos) {
+        this(YummyEntities.SHADOW_HEROBRINE.get(), level);
+        setPos(position);
+        this.firstPos = firstPos;
+    }
+
+    public boolean hasParent() {
         return herobrine != null;
     }
 
     public void setHerobrine(Herobrine herobrine) {
         this.herobrine = herobrine;
-        this.goalSelector.addGoal(1, new FollowHerobrineGoal(herobrine));
+        this.goalSelector.addGoal(2, new FollowParentGoal(herobrine));
+    }
+
+    public void changeSpeed(double value) {
+        AttributeInstance attributeInstance = getAttribute(Attributes.MOVEMENT_SPEED);
+        if (attributeInstance != null)
+            attributeInstance.setBaseValue(value);
     }
 
     @Override
@@ -51,21 +97,33 @@ public class ShadowHerobrine extends PathfinderMob implements PowerableMob, Enem
     }
 
     @Override
+    protected void registerSkills() {
+        registerSkill(new PunchSkill(this, 0));
+
+        addSkillFinishListener((skill, interrupted) -> {
+            if (!interrupted && skill.getBaseName().equals(FractureRushSkill.NAME)) {
+                if (herobrine != null)
+                    herobrine.increaseCorruptedWaveStack();
+            }
+        });
+    }
+
+    @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1, true));
-        this.goalSelector.addGoal(3, new RandomStrollGoal(this, 1));
+        goalSelector.addGoal(2, new FollowTargetGoal(this));
+        goalSelector.addGoal(3, new RandomStrollGoal(this, 1));
 
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this, Herobrine.class));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false, false));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Mob.class, false,
-                (livingEntity) -> !livingEntity.getType().is(YummyTagRegister.HEROBRINE)));
+                (livingEntity) -> !livingEntity.getType().is(YummyTags.HEROBRINE)));
     }
 
     @Override
     public boolean doHurtTarget(Entity entity) {
         if (entity instanceof LivingEntity livingEntity) {
-            HerobrineMark.overlapMark(livingEntity);
-            MobEffectInstance mobEffectInstance = new MobEffectInstance(MobEffects.WEAKNESS, 3, 1);
+            HerobrineMark.overlapMark(livingEntity, herobrine);
+            MobEffectInstance mobEffectInstance = new MobEffectInstance(MobEffects.WEAKNESS, 120, 5);
             livingEntity.addEffect(mobEffectInstance);
         }
 
@@ -73,23 +131,64 @@ public class ShadowHerobrine extends PathfinderMob implements PowerableMob, Enem
     }
 
     @Override
-    public boolean isPowered() {
-        return true;
+    public void aiStep() {
+        if (tickCount > START_MOVING_TICK + tickOffset)
+            super.aiStep();
+        else if (!level.isClientSide && firstPos != null)
+            moveTo(firstPos);
     }
 
-    private class FollowHerobrineGoal extends Goal {
-        public static final double START_FOLLOWING_DISTANCE = 12;
+    @Override
+    protected void customServerAiStep() {
+        if ((!hasParent() || !herobrine.isAlive()))
+            kill();
+    }
 
-        private final Herobrine herobrine;
+    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+        if (firstMovingTick < FIRST_MOVING_DURATION) {
+            firstMovingTick += 1;
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.shadow_herobrine.summoned_shadow", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
+            return PlayState.CONTINUE;
+        }
+
+        String skillName = getUsingSkillName();
+        if (!skillName.equals(SKILL_NONE)) {
+            String animationName = "animation.shadow_herobrine." + skillName;
+            event.getController().setAnimation(new AnimationBuilder().addAnimation(animationName, ILoopType.EDefaultLoopTypes.PLAY_ONCE));
+            return PlayState.CONTINUE;
+        }
+
+        if (!event.isMoving())
+            return PlayState.STOP;
+
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.shadow_herobrine.walk", ILoopType.EDefaultLoopTypes.LOOP));
+        return PlayState.CONTINUE;
+    }
+
+    @Override
+    public void registerControllers(AnimationData data) {
+        data.addAnimationController(new AnimationController<>(this, "shadow_controller", 0, this::predicate));
+    }
+
+    @Override
+    public AnimationFactory getFactory() {
+        return animationFactory;
+    }
+
+
+    private class FollowParentGoal extends Goal {
+        public static final double START_FOLLOWING_DISTANCE = 24;
+
+        private final LivingEntity parent;
         private int timeToRecalculatePath;
 
-        public FollowHerobrineGoal(Herobrine herobrine) {
-            this.herobrine = herobrine;
+        public FollowParentGoal(LivingEntity parent) {
+            this.parent = parent;
         }
 
         @Override
         public boolean canUse() {
-            return distanceToSqr(herobrine) > START_FOLLOWING_DISTANCE * START_FOLLOWING_DISTANCE;
+            return distanceToSqr(parent) > START_FOLLOWING_DISTANCE * START_FOLLOWING_DISTANCE;
         }
 
         @Override
@@ -105,19 +204,19 @@ public class ShadowHerobrine extends PathfinderMob implements PowerableMob, Enem
         public void tick() {
             super.tick();
 
-            getLookControl().setLookAt(herobrine, 10.0F, (float) getMaxHeadXRot());
+            getLookControl().setLookAt(parent, 10.0F, (float) getMaxHeadXRot());
             if (--this.timeToRecalculatePath <= 0) {
                 this.timeToRecalculatePath = this.adjustedTickDelay(10);
-                if (distanceToSqr(herobrine) >= (20 * 20)) {
+                if (distanceToSqr(parent) >= (START_FOLLOWING_DISTANCE * START_FOLLOWING_DISTANCE)) {
                     teleportToHerobrine();
                 } else {
-                    navigation.moveTo(herobrine, 1);
+                    navigation.moveTo(parent, 1);
                 }
             }
         }
 
         private void teleportToHerobrine() {
-            BlockPos blockpos = this.herobrine.blockPosition();
+            BlockPos blockpos = this.parent.blockPosition();
             BlockPos teleportPos = YummyUtil.randomPos(blockpos, 5, level.getRandom());
 
             moveTo(teleportPos, 0, 0);

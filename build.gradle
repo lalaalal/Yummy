@@ -5,7 +5,7 @@ plugins {
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
 }
 
-version = "${minecraft_version}-1.5.1"
+version = "${minecraft_version}-1.6.7"
 group = 'com.lalaalal.yummy' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'yummy'
 
@@ -55,6 +55,9 @@ minecraft {
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             property 'forge.enabledGameTestNamespaces', 'yummy'
 
+            property 'geckolib.disable_examples', 'true'
+
+
             mods {
                 yummy {
                     source sourceSets.main
@@ -72,6 +75,9 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             property 'forge.enabledGameTestNamespaces', 'yummy'
+
+            property 'geckolib.disable_examples', 'true'
+
 
             mods {
                 yummy {
@@ -129,6 +135,7 @@ repositories {
     // flatDir {
     //     dir 'libs'
     // }
+    maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
 }
 
 dependencies {
@@ -136,6 +143,7 @@ dependencies {
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     minecraft 'net.minecraftforge:forge:1.19.2-43.2.8'
+    implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.19:3.1.40')
 
     // Real mod deobf dependency examples - these get remapped to your current mappings
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency

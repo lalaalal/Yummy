@@ -1,0 +1,27 @@
+{
+    "parent": "yummy:recipes/root",
+    "criteria": {
+        "has_mighty_holy_spear": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "yummy:mighty_holy_spear"
+                        ]
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        }
+    },
+    "requirements": [
+        [
+            "has_mighty_holy_spear"
+        ]
+    ],
+    "rewards": {
+        "recipes": [
+            "yummy:spear_of_longinus"
+        ]
+    }
+}

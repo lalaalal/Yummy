@@ -65,7 +65,7 @@ public class PollutedBlock extends BaseEntityBlock {
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         if (state.getValue(CORRUPTED))
             return new PollutedBlockEntity(YummyBlockEntities.CORRUPTED_POLLUTED_BLOCK_ENTITY_TYPE.get(), pos, state,
-                    20 * 6, Integer.MIN_VALUE, 20);
+                    60, 80, 20);
         return new PollutedBlockEntity(pos, state);
     }
 

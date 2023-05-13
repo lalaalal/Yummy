@@ -9,7 +9,10 @@ import com.lalaalal.yummy.client.renderer.*;
 import com.lalaalal.yummy.entity.YummyEntities;
 import com.lalaalal.yummy.particle.PollutedParticle;
 import com.lalaalal.yummy.particle.YummyParticles;
+import com.lalaalal.yummy.util.KeyBinding;
+import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.client.renderer.BiomeColors;
+import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.FoliageColor;
@@ -18,6 +21,7 @@ import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -27,7 +31,13 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 public class YummyClientEventBus {
     @SubscribeEvent
     public static void clientSetup(final FMLClientSetupEvent event) {
-        WoodType.register(YummyTypes.EBONY);
+        Sheets.addWoodType(YummyTypes.WOOD_EBONY);
+        WoodType.register(YummyTypes.WOOD_EBONY);
+    }
+
+    @SubscribeEvent
+    public static void onKeyRegister(RegisterKeyMappingsEvent event) {
+        event.register(KeyBinding.STEEL_ARMOR_KEY);
     }
 
     @SubscribeEvent
@@ -47,32 +57,42 @@ public class YummyClientEventBus {
     @SubscribeEvent
     public static void registerParticleFactories(final RegisterParticleProvidersEvent event) {
         event.register(YummyParticles.POLLUTED_PARTICLE_RED.get(),
-                (spriteSet) -> new PollutedParticle.PollutedParticleProvider(spriteSet, 0x441f0b));
+                (spriteSet) -> new PollutedParticle.Provider(spriteSet, 0x441f0b));
         event.register(YummyParticles.POLLUTED_PARTICLE_BLUE.get(),
-                (spriteSet) -> new PollutedParticle.PollutedParticleProvider(spriteSet, 0x019ea3));
+                (spriteSet) -> new PollutedParticle.Provider(spriteSet, 0x019ea3));
         event.register(YummyParticles.POLLUTED_PARTICLE_PURPLE.get(),
-                (spriteSet) -> new PollutedParticle.PollutedParticleProvider(spriteSet, 0x201a33));
+                (spriteSet) -> new PollutedParticle.Provider(spriteSet, 0x201a33));
+        event.register(YummyParticles.CORRUPTED_SMALL_FLAME.get(),
+                FlameParticle.SmallFlameProvider::new);
     }
 
     @SubscribeEvent
     public static void entityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(YummyEntities.HEROBRINE.get(), HerobrineRenderer::new);
         event.registerEntityRenderer(YummyEntities.SHADOW_HEROBRINE.get(), ShadowHerobrineRenderer::new);
+        event.registerEntityRenderer(YummyEntities.BUNNY_CHEST.get(), BunnyChestRenderer::new);
         event.registerEntityRenderer(YummyEntities.SPEAR.get(), ThrownSpearRenderer::new);
         event.registerEntityRenderer(YummyEntities.MIGHTY_HOLY_SPEAR.get(), context -> new ThrownSpearRenderer<>(context, "mighty_holy_spear", () -> new ThrownMightyHolySpearModel<>(
                 context.bakeLayer(ThrownMightyHolySpearModel.LAYER_LOCATION)
         )));
         event.registerEntityRenderer(YummyEntities.THROWN_SPEAR_OF_LONGINUS.get(), ThrownSpearOfLonginusRenderer::new);
         event.registerEntityRenderer(YummyEntities.MARK_FIREBALL.get(),
-                (context) -> new YummyItemEntityRenderer<>(context, "mark_fireball", 3));
+                (context) -> new YummyItemEntityRenderer<>(context, "mark_fireball", 1));
         event.registerEntityRenderer(YummyEntities.METEOR.get(), MeteorRenderer::new);
+        event.registerEntityRenderer(YummyEntities.FLOATING_BLOCK_ENTITY.get(), FloatingBlockRenderer::new);
+        event.registerEntityRenderer(YummyEntities.TRANSFORMING_BLOCK_ENTITY.get(), FloatingBlockRenderer::new);
+        event.registerEntityRenderer(YummyEntities.NARAKA_MAGIC_CIRCLE.get(), FlatImageEntityRenderer::new);
+        event.registerEntityRenderer(YummyEntities.NARAKA_STORM.get(), FlatImageEntityRenderer::new);
+        event.registerEntityRenderer(YummyEntities.FRACTURE_ENTITY.get(), FractureEntityRenderer::new);
+        event.registerEntityRenderer(YummyEntities.EBONY_BOAT.get(), (context) -> new EbonyBoatRenderer(context, false));
+        event.registerEntityRenderer(YummyEntities.EBONY_CHEST_BOAT.get(), (context) -> new EbonyBoatRenderer(context, true));
+
         event.registerBlockEntityRenderer(YummyBlockEntities.YUMMY_SIGN_BLOCK_ENTITY.get(), SignRenderer::new);
     }
 
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        event.registerLayerDefinition(HerobrineModel.LAYER_LOCATION, HerobrineModel::createBodyLayer);
-        event.registerLayerDefinition(ShadowHerobrineModel.LAYER_LOCATION, ShadowHerobrineModel::createBodyLayer);
+        event.registerLayerDefinition(BunnyChestModel.LAYER_LOCATION, BunnyChestModel::createBodyLayer);
         event.registerLayerDefinition(ThrownSpearModel.LAYER_LOCATION, ThrownSpearModel::createBodyLayer);
         event.registerLayerDefinition(ThrownMightyHolySpearModel.LAYER_LOCATION, ThrownMightyHolySpearModel::createBodyLayer);
         event.registerLayerDefinition(ThrownSpearOfLonginusModel.LAYER_LOCATION, ThrownSpearOfLonginusModel::createBodyLayer);

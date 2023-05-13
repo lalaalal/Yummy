@@ -12,6 +12,8 @@ public class YummyEffects {
             = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, YummyMod.MOD_ID);
 
     public static final RegistryObject<MobEffect> HEROBRINE_MARK = MOB_EFFECTS.register("herobrine_mark", HerobrineMark::new);
+    public static final RegistryObject<MobEffect> ECHO_MARK = MOB_EFFECTS.register("echo_mark", EchoMark::new);
+    public static final RegistryObject<MobEffect> ECHO = MOB_EFFECTS.register("echo", Echo::new);
     public static final RegistryObject<MobEffect> STUN = MOB_EFFECTS.register("stun", Stun::new);
 
     public static void register(IEventBus eventBus) {
