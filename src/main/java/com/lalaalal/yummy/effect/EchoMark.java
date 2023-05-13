@@ -18,15 +18,20 @@ public class EchoMark extends MobEffect {
         target.addEffect(effectInstance);
     }
 
-    public static void useMark(LivingEntity attacker) {
+    public static boolean useMark(LivingEntity attacker) {
         ArrayList<LivingEntity> targets = new ArrayList<>();
         targetMap.keySet()
                 .stream()
-                .filter(livingEntity -> targetMap.get(livingEntity).equals(attacker))
+                .filter(target -> targetMap.get(target).equals(attacker))
                 .forEach(targets::add);
 
+        int deadTargetCount = 0;
         for (LivingEntity target : targets) {
             targetMap.remove(target);
+            if (target.isDeadOrDying()) {
+                deadTargetCount += 1;
+                continue;
+            }
             target.moveTo(attacker.position());
             target.removeEffect(YummyEffects.ECHO_MARK.get());
 
@@ -34,6 +39,8 @@ public class EchoMark extends MobEffect {
             target.addEffect(stunEffectInstance);
             Echo.overlapEcho(target);
         }
+
+        return targets.size() - deadTargetCount > 0;
     }
 
     protected EchoMark() {

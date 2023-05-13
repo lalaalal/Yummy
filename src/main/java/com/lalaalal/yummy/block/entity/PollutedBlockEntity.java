@@ -93,7 +93,7 @@ public class PollutedBlockEntity extends BlockEntity {
         if (blockState.getValue(PollutedBlock.CORRUPTED))
             HerobrineMark.overlapMark(entity, herobrine);
 
-        MobEffectInstance mobEffectInstance = new MobEffectInstance(YummyEffects.STUN.get(), 20 * 6, 0);
+        MobEffectInstance mobEffectInstance = new MobEffectInstance(YummyEffects.STUN.get(), stunDuration);
         if (!entity.getType().is(YummyTags.HEROBRINE))
             entity.addEffect(mobEffectInstance);
     }

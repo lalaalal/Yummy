@@ -32,22 +32,28 @@ public class FractureRushSkill extends TickableSkill {
     public boolean tick(int tick) {
         if (tick == 0) {
             Vec3 originalPos = usingEntity.position();
-            Vec3 targetPos = originalPos.add(usingEntity.getViewVector(0).scale(RUSH_DISTANCE));
+            Vec3 viewVector = usingEntity.getViewVector(0);
+            Vec3 targetPos = originalPos.add(viewVector.scale(RUSH_DISTANCE));
             int y = YummyUtil.findHorizonPos(new BlockPos(targetPos), level).above().getY();
             usingEntity.moveTo(new Vec3(targetPos.x, y, targetPos.z));
             Vec3 fracturePos = originalPos.add(targetPos).scale(0.5);
-            FractureEntity fractureEntity = new FractureEntity(level, fracturePos);
-            fractureEntity.setLifetime(100);
-            fractureEntity.setXRot(usingEntity.getXRot());
-            fractureEntity.setYRot(usingEntity.getYRot());
-            fractureEntity.setSpawner(usingEntity);
-            level.addFreshEntity(fractureEntity);
+
+            createFracture(fracturePos, 75);
             LivingEntity target = usingEntity.getTarget();
             if (target != null)
                 target.hurt(new EntityDamageSource(YummyMod.MOD_ID + ".herobrine.fracture_rush", usingEntity), 6);
         }
 
         return super.tick(tick);
+    }
+
+    private void createFracture(Vec3 fracturePos, int rotateDegree) {
+        FractureEntity fractureEntity = new FractureEntity(level, fracturePos, rotateDegree);
+        fractureEntity.setLifetime(100);
+        fractureEntity.setXRot(usingEntity.getXRot());
+        fractureEntity.setYRot(usingEntity.getYRot());
+        fractureEntity.setSpawner(usingEntity);
+        level.addFreshEntity(fractureEntity);
     }
 
     @Override

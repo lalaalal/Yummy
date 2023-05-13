@@ -46,10 +46,10 @@ public class FlatImageEntityRenderer extends EntityRenderer<FlatImageEntity> {
         return new ResourceLocation(YummyMod.MOD_ID, "textures/entity/" + entity.imageName + ".png");
     }
 
-    public void drawVertex(Matrix4f matrix4f, Matrix3f matrix3f, VertexConsumer vertexConsumer, int poseX, int poseY, int poseZ, float u, float v, int normalX, int normalZ, int normalY, int lightUV) {
-        vertexConsumer.vertex(matrix4f, (float) poseX, (float) poseY, (float) poseZ)
+    public void drawVertex(Matrix4f pose, Matrix3f normal, VertexConsumer vertexConsumer, float poseX, float poseY, float poseZ, float u, float v, float normalX, float normalZ, float normalY, int packedLight) {
+        vertexConsumer.vertex(pose, poseX, poseY, poseZ)
                 .color(255, 255, 255, 255)
-                .uv(u, v).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(lightUV)
-                .normal(matrix3f, (float) normalX, (float) normalY, (float) normalZ).endVertex();
+                .uv(u, v).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight)
+                .normal(normal, normalX, normalY, normalZ).endVertex();
     }
 }

@@ -1,5 +1,9 @@
 package com.lalaalal.yummy;
 
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Matrix3f;
+import com.mojang.math.Matrix4f;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -79,5 +83,12 @@ public class YummyUtil {
         }
 
         return null;
+    }
+
+    public static void vertex(VertexConsumer vertexConsumer, Matrix4f pose, Matrix3f normal, float poseX, float poseY, float poseZ, float u, float v, float normalX, float normalY, float normalZ, int packedLight) {
+        vertexConsumer.vertex(pose, poseX, poseY, poseZ)
+                .color(255, 255, 255, 255)
+                .uv(u, v).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight)
+                .normal(normal, normalX, normalY, normalZ).endVertex();
     }
 }

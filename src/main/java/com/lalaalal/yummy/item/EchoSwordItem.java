@@ -4,6 +4,8 @@ import com.lalaalal.yummy.effect.Echo;
 import com.lalaalal.yummy.effect.EchoMark;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.DamageSource;
@@ -37,8 +39,10 @@ public class EchoSwordItem extends SwordItem {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
-        if (!level.isClientSide) {
-            EchoMark.useMark(player);
+        if (!level.isClientSide && EchoMark.useMark(player)) {
+            level.playSound(null, player.getOnPos(), SoundEvents.AMETHYST_BLOCK_FALL, SoundSource.PLAYERS, 1, 2);
+            level.playSound(null, player.getOnPos(), SoundEvents.BELL_RESONATE, SoundSource.PLAYERS, 1, 2);
+            player.getCooldowns().addCooldown(this, 20 * 20);
             return InteractionResultHolder.success(player.getItemInHand(usedHand));
         }
 
