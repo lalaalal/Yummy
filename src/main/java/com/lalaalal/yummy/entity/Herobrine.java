@@ -118,9 +118,9 @@ public class Herobrine extends AbstractHerobrine {
         structurePos = YummyUtil.readBlockPos(compoundTag, "StructurePos");
         preserveHealth = true;
         if (getPhase() >= 2)
-            enterPhase2();
+            enterPhase2(1);
         if (getPhase() == 3)
-            enterPhase3();
+            enterPhase3(2);
 
         preserveHealth = false;
     }
@@ -163,7 +163,7 @@ public class Herobrine extends AbstractHerobrine {
         setHealth(phaseManager.getActualCurrentPhaseMaxHealth());
     }
 
-    private void enterPhase2() {
+    private void enterPhase2(int from) {
         AttributeInstance attributeInstance = getAttribute(Attributes.ARMOR);
         if (attributeInstance != null)
             attributeInstance.setBaseValue(66);
@@ -177,7 +177,9 @@ public class Herobrine extends AbstractHerobrine {
         removeSkill(RushSkill.NAME);
     }
 
-    private void enterPhase3() {
+    private void enterPhase3(int from) {
+        if (from < 2)
+            enterPhase2(from);
         if (structurePos != null)
             moveTo(structurePos, getYRot(), getXRot());
 
@@ -324,8 +326,18 @@ public class Herobrine extends AbstractHerobrine {
     public boolean hurt(DamageSource source, float amount) {
         if (source.equals(DamageSource.IN_WALL))
             destroyNearbyBlocks();
-        if (source.isBypassInvul())
+        if (source.isBypassInvul()) {
+            if (amount == Float.MAX_VALUE)
+                return super.hurt(source, amount);
+            float actualDamage = getDamageAfterArmorAbsorb(source, amount);
+            actualDamage = getDamageAfterMagicAbsorb(source, actualDamage);
+            if (getPhase() < 3 && getHealth() - actualDamage <= 0) {
+                super.hurt(source, 1);
+                setHealth(6);
+                return true;
+            }
             return super.hurt(source, amount);
+        }
 
         if (getPhase() == 3) {
             Entity entity = source.getEntity();

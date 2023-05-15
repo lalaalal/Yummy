@@ -4,6 +4,7 @@ import net.minecraft.world.BossEvent;
 import net.minecraft.world.entity.LivingEntity;
 
 import java.util.ArrayList;
+import java.util.function.Consumer;
 
 public class PhaseManager {
     protected final LivingEntity entity;
@@ -146,10 +147,10 @@ public class PhaseManager {
         phaseChangeListeners.add(listener);
     }
 
-    public void addPhaseChangeListener(Runnable runnable, int phase) {
+    public void addPhaseChangeListener(Consumer<Integer> consumer, int phase) {
         phaseChangeListeners.add((from, to) -> {
             if (from < to && phase == to)
-                runnable.run();
+                consumer.accept(from);
         });
     }
 

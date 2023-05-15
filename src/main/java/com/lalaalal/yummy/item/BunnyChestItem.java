@@ -29,6 +29,6 @@ public class BunnyChestItem extends Item {
                 bunnyChest.readAdditionalSaveData(compoundTag);
         }
 
-        return super.useOn(context);
+        return InteractionResult.SUCCESS;
     }
 }

@@ -38,7 +38,7 @@ public class FractureRushSkill extends TickableSkill {
             usingEntity.moveTo(new Vec3(targetPos.x, y, targetPos.z));
             Vec3 fracturePos = originalPos.add(targetPos).scale(0.5);
 
-            createFracture(fracturePos, 75);
+            createFracture(fracturePos);
             LivingEntity target = usingEntity.getTarget();
             if (target != null)
                 target.hurt(new EntityDamageSource(YummyMod.MOD_ID + ".herobrine.fracture_rush", usingEntity), 6);
@@ -47,8 +47,8 @@ public class FractureRushSkill extends TickableSkill {
         return super.tick(tick);
     }
 
-    private void createFracture(Vec3 fracturePos, int rotateDegree) {
-        FractureEntity fractureEntity = new FractureEntity(level, fracturePos, rotateDegree);
+    private void createFracture(Vec3 fracturePos) {
+        FractureEntity fractureEntity = new FractureEntity(level, fracturePos);
         fractureEntity.setLifetime(100);
         fractureEntity.setXRot(usingEntity.getXRot());
         fractureEntity.setYRot(usingEntity.getYRot());

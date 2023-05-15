@@ -27,14 +27,12 @@ public class EchoSwordItem extends SwordItem {
 
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        int damage = damageItem(stack, 1, attacker, (entity) -> {
-        });
-        float damageModifier = target.getMaxHealth() * 0.4f;
-        target.hurt(DamageSource.mobAttack(attacker), damage + damageModifier);
+        float damage = target.getMaxHealth() * 0.4f;
+        target.hurt(DamageSource.mobAttack(attacker).bypassInvul(), damage);
         EchoMark.markTarget(target, attacker);
         Echo.overlapEcho(target);
 
-        return super.hurtEnemy(stack, target, attacker);
+        return true;
     }
 
     @Override
@@ -48,6 +46,8 @@ public class EchoSwordItem extends SwordItem {
 
         return super.use(level, player, usedHand);
     }
+
+
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {

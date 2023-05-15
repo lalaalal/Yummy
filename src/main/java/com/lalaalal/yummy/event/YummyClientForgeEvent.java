@@ -2,15 +2,11 @@ package com.lalaalal.yummy.event;
 
 import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.entity.CameraShakingEntity;
-import com.lalaalal.yummy.networking.YummyMessages;
-import com.lalaalal.yummy.networking.packet.UseSteelArmorPacket;
-import com.lalaalal.yummy.util.KeyBinding;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -31,11 +27,5 @@ public class YummyClientForgeEvent {
                 event.setRoll((float) (event.getRoll() + shakeAmplitude * Math.cos(ticksExistedDelta * 4.0F) * 25.0));
             }
         }
-    }
-
-    @SubscribeEvent
-    public static void onKeyInput(InputEvent.Key event) {
-        if (KeyBinding.STEEL_ARMOR_KEY.consumeClick())
-            YummyMessages.sendToServer(new UseSteelArmorPacket());
     }
 }

@@ -29,18 +29,18 @@ public class FractureEntity extends Entity {
     protected FractureEntity(EntityType<? extends FractureEntity> entityType, Level level) {
         super(entityType, level);
         shape = level.getRandom().nextInt(SHAPE_VARIETY);
-        setRotateDegree(75);
+        setRotateDegree();
     }
 
-    public FractureEntity(Level level, Vec3 pos, int rotateDegree) {
+    public FractureEntity(Level level, Vec3 pos) {
         super(YummyEntities.FRACTURE_ENTITY.get(), level);
         this.setPos(pos);
         shape = level.getRandom().nextInt(SHAPE_VARIETY);
-        setRotateDegree(rotateDegree);
+        setRotateDegree();
     }
 
-    public void setRotateDegree(int rotateDegree) {
-        this.rotateDegree = rotateDegree;
+    private void setRotateDegree() {
+        this.rotateDegree = 75;
         double rotate = rotateDegree * Math.PI / 180;
         this.width = Math.sin(rotate) * SCALE * 1.8;
         this.height = Math.cos(rotate) * SCALE;

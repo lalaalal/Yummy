@@ -1,7 +1,7 @@
 {
     "display": {
         "icon": {
-            "item": "yummy:purified_soul_block"
+            "item": "yummy:herobrine_spawner_block"
         },
         "title": {
             "translate": "advancements.yummy.summon_herobrine.title"

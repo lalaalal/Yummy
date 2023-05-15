@@ -6,7 +6,7 @@
                 "items": [
                     {
                         "items": [
-                            "minecraft:echo_shard"
+                            "yummy:purified_soul_block"
                         ]
                     }
                 ]
@@ -21,8 +21,8 @@
     ],
     "rewards": {
         "recipes": [
-            "yummy:unstable_echo_matter_blasting",
-            "yummy:echo_ingot"
+            "yummy:purified_soul_shard",
+            "yummy:purified_soul_metal"
         ]
     }
 }

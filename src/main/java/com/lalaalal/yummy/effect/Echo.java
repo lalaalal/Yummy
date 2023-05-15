@@ -24,9 +24,14 @@ public class Echo extends MobEffect {
     @Override
     public void applyEffectTick(LivingEntity livingEntity, int amplifier) {
         if (amplifier >= 19) {
-            float damage = livingEntity.getHealth() / 2;
-            livingEntity.hurt(DamageSource.MAGIC, damage);
+            float damage = livingEntity.getHealth() * 0.6f;
+            livingEntity.hurt(DamageSource.MAGIC.bypassInvul(), damage);
             livingEntity.removeEffect(YummyEffects.ECHO.get());
         }
+    }
+
+    @Override
+    public boolean isDurationEffectTick(int duration, int amplifier) {
+        return true;
     }
 }
