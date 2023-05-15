@@ -8,6 +8,7 @@ import com.lalaalal.yummy.misc.PhaseManager;
 import com.lalaalal.yummy.networking.YummyMessages;
 import com.lalaalal.yummy.networking.packet.ToggleHerobrineMusicPacket;
 import com.lalaalal.yummy.tags.YummyTags;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerBossEvent;
@@ -54,6 +55,7 @@ public class Herobrine extends AbstractHerobrine {
     private static final float[] HEALTH_CHANGE_CHECK = {12, 18, 24};
     private static final BossEvent.BossBarColor[] PHASE_COLORS = {BossEvent.BossBarColor.BLUE, BossEvent.BossBarColor.YELLOW, BossEvent.BossBarColor.RED};
 
+    private final Set<ServerPlayer> hurtPlayers = new HashSet<>();
     private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this, false);
     private final PhaseManager phaseManager = new PhaseManager(PHASE_HEALTHS, PHASE_COLORS, this);
     private final ServerBossEvent bossEvent = (ServerBossEvent) (new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.PROGRESS))
@@ -324,6 +326,10 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
+        Entity entity = source.getEntity();
+        if (entity instanceof ServerPlayer player && !hurtPlayers.contains(entity))
+            hurtPlayers.add(player);
+
         if (source.equals(DamageSource.IN_WALL))
             destroyNearbyBlocks();
         if (source.isBypassInvul()) {
@@ -340,7 +346,6 @@ public class Herobrine extends AbstractHerobrine {
         }
 
         if (getPhase() == 3) {
-            Entity entity = source.getEntity();
             if (entity != null && entity.getType().is(YummyTags.HEROBRINE))
                 return super.hurt(source.bypassArmor(), 1);
             return false;
@@ -384,6 +389,9 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     public void die(DamageSource damageSource) {
+        for (ServerPlayer hurtPlayer : hurtPlayers)
+            CriteriaTriggers.PLAYER_KILLED_ENTITY.trigger(hurtPlayer, this, damageSource);
+
         if (damageSource.equals(DamageSource.OUT_OF_WORLD))
             remove(RemovalReason.KILLED);
         this.deathDamageSource = damageSource;
