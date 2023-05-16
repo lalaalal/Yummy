@@ -24,8 +24,8 @@ public class Echo extends MobEffect {
     @Override
     public void applyEffectTick(LivingEntity livingEntity, int amplifier) {
         if (amplifier >= 19) {
-            float damage = livingEntity.getHealth() * 0.6f;
-            livingEntity.hurt(DamageSource.MAGIC.bypassInvul(), damage);
+            float damage = livingEntity.getHealth() * 0.5f;
+            livingEntity.hurt(DamageSource.MAGIC, damage);
             livingEntity.removeEffect(YummyEffects.ECHO.get());
         }
     }

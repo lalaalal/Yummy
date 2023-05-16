@@ -122,10 +122,14 @@ public class YummyItems {
             () -> new Item(new Item.Properties().tab(YummyMod.TAB)));
 
     public static final RegistryObject<Item> ECHO_SWORD = ITEMS.register("echo_sword",
-            () -> new EchoSwordItem(Tiers.DIAMOND, 11, 8, new Item.Properties()
-                    .fireResistant()
+            () -> new EchoSwordItem(YummyTiers.PURIFIED_SOUL, 11, 8, new Item.Properties()
                     .tab(YummyMod.TAB)
                     .rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> GOD_ECHO_SWORD = ITEMS.register("god_echo_sword",
+            () -> new EchoSwordItem(YummyTiers.GOD, 11, 8, new Item.Properties()
+                    .fireResistant()
+                    .tab(YummyMod.TAB)
+                    .rarity(Rarity.EPIC)));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

@@ -51,9 +51,9 @@ public class YummyForgeEvent {
     public static void echoCheck(LivingHurtEvent event) {
         LivingEntity livingEntity = event.getEntity();
         MobEffectInstance instance = livingEntity.getEffect(YummyEffects.ECHO.get());
-        if (instance != null) {
-            float multiple = 1 + 0.1f * instance.getAmplifier();
-            float amount = event.getAmount() * multiple - event.getAmount();
+        if (instance != null && instance.getAmplifier() < 19) {
+            float multiple = 0.1f * instance.getAmplifier();
+            float amount = event.getAmount() * multiple;
             if (event.getAmount() != Float.MAX_VALUE)
                 livingEntity.hurt(event.getSource(), amount);
         }

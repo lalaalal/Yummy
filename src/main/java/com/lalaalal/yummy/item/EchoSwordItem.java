@@ -28,7 +28,10 @@ public class EchoSwordItem extends SwordItem {
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         float damage = target.getMaxHealth() * 0.4f;
-        target.hurt(DamageSource.mobAttack(attacker).bypassInvul(), damage);
+        DamageSource damageSource = DamageSource.mobAttack(attacker);
+        if (getTier() == YummyTiers.GOD)
+            damageSource = damageSource.bypassInvul();
+        target.hurt(damageSource, damage);
         EchoMark.markTarget(target, attacker);
         Echo.overlapEcho(target);
 
@@ -37,23 +40,22 @@ public class EchoSwordItem extends SwordItem {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
+        ItemStack itemStack = player.getItemInHand(usedHand);
         if (!level.isClientSide && EchoMark.useMark(player)) {
             level.playSound(null, player.getOnPos(), SoundEvents.AMETHYST_BLOCK_FALL, SoundSource.PLAYERS, 1, 2);
             level.playSound(null, player.getOnPos(), SoundEvents.BELL_RESONATE, SoundSource.PLAYERS, 1, 2);
             player.getCooldowns().addCooldown(this, 20 * 20);
-            return InteractionResultHolder.success(player.getItemInHand(usedHand));
+            return InteractionResultHolder.success(itemStack);
         }
 
-        return super.use(level, player, usedHand);
+        return InteractionResultHolder.pass(itemStack);
     }
-
-
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
         super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
-        tooltipComponents.add(Component.translatable(getDescriptionId() + ".desc1").withStyle(ChatFormatting.GRAY));
-        tooltipComponents.add(Component.translatable(getDescriptionId() + ".desc2").withStyle(ChatFormatting.GRAY));
-        tooltipComponents.add(Component.translatable(getDescriptionId() + ".desc3").withStyle(ChatFormatting.GRAY));
+        tooltipComponents.add(Component.translatable("item.yummy.echo_sword.desc1").withStyle(ChatFormatting.GRAY));
+        tooltipComponents.add(Component.translatable("item.yummy.echo_sword.desc2").withStyle(ChatFormatting.GRAY));
+        tooltipComponents.add(Component.translatable("item.yummy.echo_sword.desc3").withStyle(ChatFormatting.GRAY));
     }
 }
