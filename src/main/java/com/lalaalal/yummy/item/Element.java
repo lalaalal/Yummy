@@ -8,7 +8,14 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 public enum Element {
-    REDSTONE(YummyEffects.STUN, Map.of());
+    AMETHYST(YummyEffects.STUN, Map.of()),
+    COPPER(YummyEffects.STUN, Map.of()),
+    DIAMOND(YummyEffects.STUN, Map.of()),
+    EMERALD(YummyEffects.STUN, Map.of()),
+    GOLD(YummyEffects.STUN, Map.of()),
+    LAPIS(YummyEffects.STUN, Map.of()),
+    REDSTONE(YummyEffects.STUN, Map.of()),
+    RUBELLITE(YummyEffects.STUN, Map.of());
 
     private final Supplier<MobEffect> effectSupplier;
     private final Map<Element, Supplier<MobEffect>> reaction;

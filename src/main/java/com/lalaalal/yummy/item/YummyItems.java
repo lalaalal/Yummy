@@ -130,6 +130,33 @@ public class YummyItems {
                     .fireResistant()
                     .tab(YummyMod.TAB)
                     .rarity(Rarity.EPIC)));
+    public static final RegistryObject<Item> SOUL_AMETHYST_SWORD = registerElementSword("soul_amethyst_sword", Element.AMETHYST, 4, -1.6f);
+    public static final RegistryObject<Item> SOUL_COPPER_SWORD = registerElementSword("soul_copper_sword", Element.COPPER, 4, -1.6f);
+    public static final RegistryObject<Item> SOUL_DIAMOND_SWORD = registerElementSword("soul_diamond_sword", Element.DIAMOND, 8, -1.4f);
+    public static final RegistryObject<Item> SOUL_EMERALD_SWORD = registerElementSword("soul_emerald_sword", Element.EMERALD, 4, -1.6f);
+    public static final RegistryObject<Item> SOUL_GOLD_SWORD = registerElementSword("soul_gold_sword", Element.GOLD, 4, -1.6f);
+    public static final RegistryObject<Item> SOUL_LAPIS_SWORD = registerElementSword("soul_lapis_sword", Element.LAPIS, 4, -1.6f);
+    public static final RegistryObject<Item> SOUL_REDSTONE_SWORD = registerElementSword("soul_redstone_sword", Element.REDSTONE, 4, -1.6f);
+    public static final RegistryObject<Item> SOUL_RUBELLITE_SWORD = registerElementSword("soul_rubellite_sword", Element.RUBELLITE, 4, -1.6f);
+
+    public static final RegistryObject<Item> SOUL_AMETHYST_INGOT = registerElementIngot("soul_amethyst_ingot");
+    public static final RegistryObject<Item> SOUL_COPPER_INGOT = registerElementIngot("soul_copper_ingot");
+    public static final RegistryObject<Item> SOUL_DIAMOND_INGOT = registerElementIngot("soul_diamond_ingot");
+    public static final RegistryObject<Item> SOUL_EMERALD_INGOT = registerElementIngot("soul_emerald_ingot");
+    public static final RegistryObject<Item> SOUL_GOLD_INGOT = registerElementIngot("soul_gold_ingot");
+    public static final RegistryObject<Item> SOUL_LAPIS_INGOT = registerElementIngot("soul_lapis_ingot");
+    public static final RegistryObject<Item> SOUL_REDSTONE_INGOT = registerElementIngot("soul_redstone_ingot");
+    public static final RegistryObject<Item> SOUL_RUBELLITE_INGOT = registerElementIngot("soul_rubellite_ingot");
+
+    private static RegistryObject<Item> registerElementSword(String name, Element element, int attackDamageModifier, float attackSpeedModifier) {
+        return ITEMS.register(name, () -> new ElementSwordItem(YummyTiers.PURIFIED_SOUL, element, attackDamageModifier, attackSpeedModifier, new Item.Properties()
+                .tab(YummyMod.TAB)
+                .rarity(Rarity.RARE)));
+    }
+
+    private static RegistryObject<Item> registerElementIngot(String name) {
+        return ITEMS.register(name, () -> new Item(new Item.Properties().tab(YummyMod.TAB)));
+    }
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

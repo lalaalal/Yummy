@@ -1,0 +1,12 @@
+{
+    "type": "minecraft:smithing",
+    "base": {
+        "item": "yummy:purified_soul_metal"
+    },
+    "addition": {
+        "item": "yummy:rubellite"
+    },
+    "result": {
+        "item": "yummy:soul_rubellite_ingot"
+    }
+}

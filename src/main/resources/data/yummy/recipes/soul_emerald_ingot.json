@@ -1,0 +1,12 @@
+{
+    "type": "minecraft:smithing",
+    "base": {
+        "item": "yummy:purified_soul_metal"
+    },
+    "addition": {
+        "item": "minecraft:emerald"
+    },
+    "result": {
+        "item": "yummy:soul_emerald_ingot"
+    }
+}

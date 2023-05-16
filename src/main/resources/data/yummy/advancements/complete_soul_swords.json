@@ -1,0 +1,142 @@
+{
+    "parent": "yummy:purified_soul_sword",
+    "display": {
+        "icon": {
+            "item": "yummy:soul_redstone_sword"
+        },
+        "title": {
+            "translate": "advancements.yummy.complete_soul_swords.title"
+        },
+        "description": {
+            "translate": "advancements.yummy.complete_soul_swords.description"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria": {
+        "soul_amethyst_sword": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "yummy:soul_amethyst_sword"
+                        ]
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        },
+        "soul_copper_sword": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "yummy:soul_copper_sword"
+                        ]
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        },
+        "soul_diamond_sword": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "yummy:soul_diamond_sword"
+                        ]
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        },
+        "soul_emerald_sword": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "yummy:soul_emerald_sword"
+                        ]
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        },
+        "soul_gold_sword": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "yummy:soul_gold_sword"
+                        ]
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        },
+        "soul_lapis_sword": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "yummy:soul_lapis_sword"
+                        ]
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        },
+        "soul_redstone_sword": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "yummy:soul_redstone_sword"
+                        ]
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        },
+        "soul_rubellite_sword": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "yummy:soul_rubellite_sword"
+                        ]
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        }
+    },
+    "requirements": [
+        [
+            "soul_amethyst_sword"
+        ],
+        [
+            "soul_copper_sword"
+        ],
+        [
+            "soul_diamond_sword"
+        ],
+        [
+            "soul_emerald_sword"
+        ],
+        [
+            "soul_gold_sword"
+        ],
+        [
+            "soul_lapis_sword"
+        ],
+        [
+            "soul_redstone_sword"
+        ],
+        [
+            "soul_rubellite_sword"
+        ]
+    ]
+}
