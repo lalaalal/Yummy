@@ -5,6 +5,8 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.lalaalal.yummy.entity.ThrownSpear;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -20,13 +22,18 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.ForgeMod;
 
+import java.util.Set;
 import java.util.UUID;
 
 public class SpearItem extends Item {
+    private static final Set<Enchantment> ENCHANTABLE = Set.of(Enchantments.LOYALTY, Enchantments.MENDING, Enchantments.UNBREAKING);
     protected static final UUID ATTACK_REACH_MODIFIER = UUID.fromString("63d316c1-7d6d-41be-81c3-41fc1a216c27");
     private final Multimap<Attribute, AttributeModifier> defaultModifiers;
     private final SpearProvider spearProvider;
@@ -98,6 +105,24 @@ public class SpearItem extends Item {
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
         return slot == EquipmentSlot.MAINHAND ? defaultModifiers : super.getAttributeModifiers(slot, stack);
+    }
+
+    @Override
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        return ENCHANTABLE.contains(enchantment);
+    }
+
+    @Override
+    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+        CompoundTag compoundTag = book.getTag();
+        if (compoundTag == null)
+            return false;
+        ListTag listTag = compoundTag.getList("StoredEnchantments", 10);
+        for (Enchantment enchantment : EnchantmentHelper.deserializeEnchantments(listTag).keySet()) {
+            if (!ENCHANTABLE.contains(enchantment))
+                return false;
+        }
+        return true;
     }
 
     @FunctionalInterface

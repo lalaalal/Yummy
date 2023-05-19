@@ -1,4 +1,4 @@
-package com.lalaalal.yummy.misc;
+package com.lalaalal.yummy.world.damagesource;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;

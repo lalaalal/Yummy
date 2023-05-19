@@ -1,4 +1,4 @@
-package com.lalaalal.yummy.entity.skill;
+package com.lalaalal.yummy.entity.ai.skill;
 
 import com.lalaalal.yummy.block.YummyBlocks;
 import com.lalaalal.yummy.entity.Herobrine;
@@ -28,7 +28,7 @@ public class CorruptedWaveSkill extends NarakaWaveSkill {
 
     @Override
     public boolean animationTick(int tick) {
-        if (tick < animationDuration + NarakaWaveSkill.WAVE_DURATION)
+        if (tick < animationDuration + WAVE_DURATION)
             NarakaStormSkill.pullEntities(level, usingEntity);
         return super.animationTick(tick);
     }

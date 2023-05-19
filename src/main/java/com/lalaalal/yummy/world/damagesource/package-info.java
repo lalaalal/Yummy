@@ -1,6 +1,6 @@
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-package com.lalaalal.yummy.entity.skill;
+package com.lalaalal.yummy.world.damagesource;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 

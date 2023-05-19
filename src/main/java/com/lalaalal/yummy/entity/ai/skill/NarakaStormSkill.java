@@ -1,4 +1,4 @@
-package com.lalaalal.yummy.entity.skill;
+package com.lalaalal.yummy.entity.ai.skill;
 
 import com.lalaalal.yummy.entity.NarakaStormEntity;
 import com.lalaalal.yummy.entity.ai.YummyAttributeModifiers;

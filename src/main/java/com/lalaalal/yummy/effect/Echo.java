@@ -7,6 +7,8 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 
 public class Echo extends MobEffect {
+    public static final int MAX_AMPLIFIER = 3;
+
     public static void overlapEcho(LivingEntity livingEntity) {
         MobEffectInstance existingInstance = livingEntity.getEffect(YummyEffects.ECHO.get());
         int amplifier = 0;
@@ -23,9 +25,9 @@ public class Echo extends MobEffect {
 
     @Override
     public void applyEffectTick(LivingEntity livingEntity, int amplifier) {
-        if (amplifier >= 19) {
-            float damage = livingEntity.getHealth() * 0.5f;
-            livingEntity.hurt(DamageSource.MAGIC, damage);
+        if (amplifier >= MAX_AMPLIFIER) {
+            float damage = livingEntity.getHealth() * 0.25f;
+            livingEntity.hurt(DamageSource.MAGIC.bypassInvul(), damage);
             livingEntity.removeEffect(YummyEffects.ECHO.get());
         }
     }

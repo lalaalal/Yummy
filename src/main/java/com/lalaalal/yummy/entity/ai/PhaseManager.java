@@ -1,4 +1,4 @@
-package com.lalaalal.yummy.misc;
+package com.lalaalal.yummy.entity.ai;
 
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,8 +14,7 @@ public class PhaseManager {
     private final BossEvent.BossBarColor[] bossBarColors;
     private final ArrayList<PhaseChangeListener> phaseChangeListeners = new ArrayList<>();
     private final ArrayList<HealthChangeListener> healthChangeListeners = new ArrayList<>();
-    private Runnable onAbsorptionDisappear = () -> {
-    };
+    private Runnable onAbsorptionDisappear = () -> { };
     private float maxAbsorption = 0;
     private float prevAbsorption = 0;
 

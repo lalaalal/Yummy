@@ -1,7 +1,7 @@
-package com.lalaalal.yummy.entity.goal;
+package com.lalaalal.yummy.entity.ai.goal;
 
-import com.lalaalal.yummy.entity.skill.SkillUsable;
-import com.lalaalal.yummy.entity.skill.TickableSkill;
+import com.lalaalal.yummy.entity.ai.skill.SkillUsable;
+import com.lalaalal.yummy.entity.ai.skill.TickableSkill;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.Level;

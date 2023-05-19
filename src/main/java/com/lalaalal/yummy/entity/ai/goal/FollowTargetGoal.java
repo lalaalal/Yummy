@@ -1,4 +1,4 @@
-package com.lalaalal.yummy.entity.goal;
+package com.lalaalal.yummy.entity.ai.goal;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;

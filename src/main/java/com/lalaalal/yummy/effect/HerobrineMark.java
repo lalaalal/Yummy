@@ -2,8 +2,8 @@ package com.lalaalal.yummy.effect;
 
 import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.entity.Herobrine;
-import com.lalaalal.yummy.misc.EffectDamageSource;
 import com.lalaalal.yummy.tags.YummyTags;
+import com.lalaalal.yummy.world.damagesource.EffectDamageSource;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;

@@ -1,8 +1,8 @@
 package com.lalaalal.yummy.entity;
 
-import com.lalaalal.yummy.entity.goal.TickableSkillUseGoal;
-import com.lalaalal.yummy.entity.skill.SkillUsable;
-import com.lalaalal.yummy.entity.skill.TickableSkill;
+import com.lalaalal.yummy.entity.ai.goal.TickableSkillUseGoal;
+import com.lalaalal.yummy.entity.ai.skill.SkillUsable;
+import com.lalaalal.yummy.entity.ai.skill.TickableSkill;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;

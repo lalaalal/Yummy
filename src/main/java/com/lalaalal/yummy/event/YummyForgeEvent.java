@@ -4,6 +4,7 @@ import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.block.YummyBlocks;
 import com.lalaalal.yummy.block.entity.HerobrineSpawnerBlockEntity;
 import com.lalaalal.yummy.block.entity.YummyBlockEntities;
+import com.lalaalal.yummy.effect.Echo;
 import com.lalaalal.yummy.effect.YummyEffects;
 import com.lalaalal.yummy.entity.Herobrine;
 import net.minecraft.core.BlockPos;
@@ -51,11 +52,11 @@ public class YummyForgeEvent {
     public static void echoCheck(LivingHurtEvent event) {
         LivingEntity livingEntity = event.getEntity();
         MobEffectInstance instance = livingEntity.getEffect(YummyEffects.ECHO.get());
-        if (instance != null && instance.getAmplifier() < 19) {
+        if (instance != null && instance.getAmplifier() < Echo.MAX_AMPLIFIER) {
             float multiple = 0.1f * instance.getAmplifier();
             float amount = event.getAmount() * multiple;
             if (event.getAmount() != Float.MAX_VALUE)
-                livingEntity.hurt(event.getSource(), amount);
+                livingEntity.hurt(event.getSource().bypassInvul(), amount);
         }
     }
 

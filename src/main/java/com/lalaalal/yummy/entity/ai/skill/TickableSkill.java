@@ -1,4 +1,4 @@
-package com.lalaalal.yummy.entity.skill;
+package com.lalaalal.yummy.entity.ai.skill;
 
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.level.Level;

@@ -1,10 +1,10 @@
 package com.lalaalal.yummy.entity;
 
 import com.lalaalal.yummy.YummyUtil;
+import com.lalaalal.yummy.entity.ai.PhaseManager;
 import com.lalaalal.yummy.entity.ai.YummyAttributeModifiers;
-import com.lalaalal.yummy.entity.goal.FollowTargetGoal;
-import com.lalaalal.yummy.entity.skill.*;
-import com.lalaalal.yummy.misc.PhaseManager;
+import com.lalaalal.yummy.entity.ai.goal.FollowTargetGoal;
+import com.lalaalal.yummy.entity.ai.skill.*;
 import com.lalaalal.yummy.networking.YummyMessages;
 import com.lalaalal.yummy.networking.packet.ToggleHerobrineMusicPacket;
 import com.lalaalal.yummy.tags.YummyTags;

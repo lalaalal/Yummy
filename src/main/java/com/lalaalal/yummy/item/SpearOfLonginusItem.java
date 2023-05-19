@@ -2,7 +2,7 @@ package com.lalaalal.yummy.item;
 
 import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.entity.ThrownSpearOfLonginus;
-import com.lalaalal.yummy.misc.ItemDamageSource;
+import com.lalaalal.yummy.world.damagesource.ItemDamageSource;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
@@ -10,6 +10,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 
 public class SpearOfLonginusItem extends SpearItem {
@@ -51,5 +52,15 @@ public class SpearOfLonginusItem extends SpearItem {
     @Override
     public Component getName(ItemStack pStack) {
         return Component.translatable(getDescriptionId()).withStyle(ChatFormatting.RED);
+    }
+
+    @Override
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        return false;
+    }
+
+    @Override
+    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+        return false;
     }
 }

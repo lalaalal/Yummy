@@ -1,7 +1,7 @@
 package com.lalaalal.yummy.entity;
 
 import com.lalaalal.yummy.YummyMod;
-import com.lalaalal.yummy.misc.ItemDamageSource;
+import com.lalaalal.yummy.world.damagesource.ItemDamageSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;

@@ -44,7 +44,7 @@ public class EchoSwordItem extends SwordItem {
         if (!level.isClientSide && EchoMark.useMark(player)) {
             level.playSound(null, player.getOnPos(), SoundEvents.AMETHYST_BLOCK_FALL, SoundSource.PLAYERS, 1, 2);
             level.playSound(null, player.getOnPos(), SoundEvents.BELL_RESONATE, SoundSource.PLAYERS, 1, 2);
-            player.getCooldowns().addCooldown(this, 20 * 20);
+            player.getCooldowns().addCooldown(this, 20 * 10);
             return InteractionResultHolder.success(itemStack);
         }
 

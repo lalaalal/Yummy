@@ -1,6 +1,6 @@
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-package com.lalaalal.yummy.entity.goal;
+package com.lalaalal.yummy.entity.ai.skill;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 
