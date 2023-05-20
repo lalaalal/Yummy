@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -20,6 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class AlembicBlockEntity extends BaseContainerBlockEntity implements MenuProvider {
     public static final int INGREDIENT_SLOT = 0;
@@ -74,12 +76,19 @@ public class AlembicBlockEntity extends BaseContainerBlockEntity implements Menu
             progress = tag.getInt("Progress");
             distillProgress = tag.getInt("DistillProgress");
         }
+        if (tag.contains("CurrentIngredientID")) {
+            ResourceLocation id = new ResourceLocation(tag.getString("CurrentIngredientID"));
+            currentIngredient = ForgeRegistries.ITEMS.getValue(id);
+        }
     }
 
     @Override
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
         ContainerHelper.saveAllItems(tag, items);
+        ResourceLocation id = ForgeRegistries.ITEMS.getKey(currentIngredient);
+        if (id != null)
+            tag.putString("CurrentIngredientID", id.toString());
         tag.putInt("Progress", progress);
         tag.putInt("DistillProgress", distillProgress);
     }
