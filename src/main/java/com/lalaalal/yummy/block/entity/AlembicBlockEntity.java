@@ -199,8 +199,8 @@ public class AlembicBlockEntity extends BaseContainerBlockEntity implements Menu
     public static void tick(Level level, BlockPos pos, BlockState state, AlembicBlockEntity alembicBlockEntity) {
         if (alembicBlockEntity.isDistillable()) {
             if (alembicBlockEntity.distillProgress == 0) {
-                if (!state.getValue(AlembicBlock.ON))
-                    level.setBlock(pos, state.setValue(AlembicBlock.ON, true), 3);
+                if (!state.getValue(AlembicBlock.LIT))
+                    level.setBlock(pos, state.setValue(AlembicBlock.LIT, true), 3);
                 alembicBlockEntity.takeIngredientAndFuel();
             }
 
@@ -212,8 +212,8 @@ public class AlembicBlockEntity extends BaseContainerBlockEntity implements Menu
             if (alembicBlockEntity.progress >= alembicBlockEntity.getRequiredIngredientCount())
                 alembicBlockEntity.createEssence();
         } else {
-            if (state.getValue(AlembicBlock.ON))
-                level.setBlock(pos, state.setValue(AlembicBlock.ON, false), 3);
+            if (state.getValue(AlembicBlock.LIT))
+                level.setBlock(pos, state.setValue(AlembicBlock.LIT, false), 3);
             alembicBlockEntity.distillProgress = 0;
         }
     }

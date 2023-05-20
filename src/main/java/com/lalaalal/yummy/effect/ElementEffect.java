@@ -28,7 +28,7 @@ public class ElementEffect extends MobEffect {
         }
         if (reactionSucceed)
             livingEntity.removeEffect(this);
-        livingEntity.hurt(DamageSource.MAGIC, 2 * amplifier);
+        livingEntity.hurt(DamageSource.MAGIC, 2 * (amplifier + 1));
     }
 
     private boolean react(LivingEntity livingEntity, MobEffectInstance effectInstance) {
@@ -41,6 +41,10 @@ public class ElementEffect extends MobEffect {
                 return true;
             }
         }
+        if (this == YummyEffects.FIRE.get())
+            livingEntity.setSecondsOnFire(2);
+        if (this == YummyEffects.WATER.get())
+            livingEntity.clearFire();
 
         return false;
     }
