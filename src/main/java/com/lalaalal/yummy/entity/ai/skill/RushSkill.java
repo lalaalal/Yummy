@@ -119,6 +119,7 @@ public class RushSkill extends TickableSkill {
             target.hurt(new EntityDamageSource(YummyMod.MOD_ID + ".herobrine.rush", usingEntity), 1);
             target.knockback(6, -viewVector.x, -viewVector.z);
             HerobrineMark.overlapMark(target, usingEntity);
+            pushed = true;
         }
     }
 
