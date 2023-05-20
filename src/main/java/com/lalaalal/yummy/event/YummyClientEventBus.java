@@ -7,10 +7,11 @@ import com.lalaalal.yummy.block.entity.YummyBlockEntities;
 import com.lalaalal.yummy.client.model.*;
 import com.lalaalal.yummy.client.renderer.*;
 import com.lalaalal.yummy.entity.YummyEntities;
-import com.lalaalal.yummy.item.YummyItems;
 import com.lalaalal.yummy.particle.PollutedParticle;
 import com.lalaalal.yummy.particle.YummyParticles;
-import net.minecraft.client.Minecraft;
+import com.lalaalal.yummy.screen.AlembicScreen;
+import com.lalaalal.yummy.world.inventory.YummyMenuTypes;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.Sheets;
@@ -33,9 +34,8 @@ public class YummyClientEventBus {
     public static void clientSetup(final FMLClientSetupEvent event) {
         Sheets.addWoodType(YummyTypes.WOOD_EBONY);
         WoodType.register(YummyTypes.WOOD_EBONY);
-        Minecraft.getInstance().getItemRenderer().getItemModelShaper().register(YummyItems.SPEAR.get(), new ModelResourceLocation(YummyMod.MOD_ID, "spear_inventory", "inventory"));
-        Minecraft.getInstance().getItemRenderer().getItemModelShaper().register(YummyItems.SPEAR.get(), new ModelResourceLocation(YummyMod.MOD_ID, "spear_throwing", "inventory"));
-        Minecraft.getInstance().getItemRenderer().getItemModelShaper().register(YummyItems.SPEAR.get(), new ModelResourceLocation(YummyMod.MOD_ID, "spear", "inventory"));
+
+        MenuScreens.register(YummyMenuTypes.ALEMBIC_MENU.get(), AlembicScreen::new);
     }
 
     @SubscribeEvent

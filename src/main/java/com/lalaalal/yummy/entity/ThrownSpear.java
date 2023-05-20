@@ -123,4 +123,8 @@ public class ThrownSpear extends AbstractArrow {
     protected ItemStack getPickupItem() {
         return spearItem.copy();
     }
+
+    public boolean hasFoil() {
+        return spearItem.hasFoil();
+    }
 }

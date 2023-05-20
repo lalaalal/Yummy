@@ -6,6 +6,7 @@ import com.lalaalal.yummy.entity.BunnyChest;
 import com.lalaalal.yummy.entity.Herobrine;
 import com.lalaalal.yummy.entity.ShadowHerobrine;
 import com.lalaalal.yummy.entity.YummyEntities;
+import com.lalaalal.yummy.item.distill.EssenceDistilling;
 import com.lalaalal.yummy.networking.YummyMessages;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -19,6 +20,8 @@ public class YummyCommonEventBus {
         event.enqueueWork(() -> {
             YummyBlocks.EBONY_LOG.get().addAxeModifiedState(YummyBlocks.EBONY_LOG.get(), YummyBlocks.STRIPPED_EBONY_LOG.get());
             YummyBlocks.EBONY_WOOD.get().addAxeModifiedState(YummyBlocks.EBONY_WOOD.get(), YummyBlocks.STRIPPED_EBONY_WOOD.get());
+
+            EssenceDistilling.init();
         });
 
         YummyMessages.register();

@@ -8,14 +8,14 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 public enum Element {
-    AMETHYST(YummyEffects.STUN, Map.of()),
-    COPPER(YummyEffects.STUN, Map.of()),
-    DIAMOND(YummyEffects.STUN, Map.of()),
-    EMERALD(YummyEffects.STUN, Map.of()),
-    GOLD(YummyEffects.STUN, Map.of()),
-    LAPIS(YummyEffects.STUN, Map.of()),
-    REDSTONE(YummyEffects.STUN, Map.of()),
-    RUBELLITE(YummyEffects.STUN, Map.of());
+    EARTH(YummyEffects.STUN, Map.of()),
+    ELECTRICITY(YummyEffects.STUN, Map.of()),
+    FIRE(YummyEffects.STUN, Map.of()),
+    ICE(YummyEffects.STUN, Map.of()),
+    LIFE(YummyEffects.STUN, Map.of()),
+    SOUND(YummyEffects.STUN, Map.of()),
+    WATER(YummyEffects.STUN, Map.of()),
+    WIND(YummyEffects.STUN, Map.of());
 
     private final Supplier<MobEffect> effectSupplier;
     private final Map<Element, Supplier<MobEffect>> reaction;
@@ -32,5 +32,10 @@ public enum Element {
     @Nullable
     public MobEffect reactionResult(Element element) {
         return reaction.get(element).get();
+    }
+
+    @Override
+    public String toString() {
+        return super.toString().toLowerCase();
     }
 }

@@ -14,4 +14,5 @@ public class YummyTags {
     public static final TagKey<Item> EBONY_LOGS_ITEM_TAG = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation(YummyMod.MOD_ID, "ebony_logs"));
     public static final TagKey<Block> EBONY_LOGS_BLOCK_TAG = TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation(YummyMod.MOD_ID, "ebony_logs"));
     public static final TagKey<Item> STEEL_ARMORS = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation(YummyMod.MOD_ID, "steel_armors"));
+    public static final TagKey<Item> ESSENCE_INGREDIENTS = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation(YummyMod.MOD_ID, "essence_ingredients"));
 }

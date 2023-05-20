@@ -2,7 +2,7 @@
     "parent": "yummy:purified_soul_sword",
     "display": {
         "icon": {
-            "item": "yummy:soul_redstone_sword"
+            "item": "yummy:sword_of_fire"
         },
         "title": {
             "translate": "advancements.yummy.complete_soul_swords.title"
@@ -16,96 +16,96 @@
         "hidden": false
     },
     "criteria": {
-        "soul_amethyst_sword": {
+        "sword_of_earth": {
             "conditions": {
                 "items": [
                     {
                         "items": [
-                            "yummy:soul_amethyst_sword"
+                            "yummy:sword_of_earth"
                         ]
                     }
                 ]
             },
             "trigger": "minecraft:inventory_changed"
         },
-        "soul_copper_sword": {
+        "sword_of_electricity": {
             "conditions": {
                 "items": [
                     {
                         "items": [
-                            "yummy:soul_copper_sword"
+                            "yummy:sword_of_electricity"
                         ]
                     }
                 ]
             },
             "trigger": "minecraft:inventory_changed"
         },
-        "soul_diamond_sword": {
+        "sword_of_fire": {
             "conditions": {
                 "items": [
                     {
                         "items": [
-                            "yummy:soul_diamond_sword"
+                            "yummy:sword_of_fire"
                         ]
                     }
                 ]
             },
             "trigger": "minecraft:inventory_changed"
         },
-        "soul_emerald_sword": {
+        "sword_of_ice": {
             "conditions": {
                 "items": [
                     {
                         "items": [
-                            "yummy:soul_emerald_sword"
+                            "yummy:sword_of_ice"
                         ]
                     }
                 ]
             },
             "trigger": "minecraft:inventory_changed"
         },
-        "soul_gold_sword": {
+        "sword_of_life": {
             "conditions": {
                 "items": [
                     {
                         "items": [
-                            "yummy:soul_gold_sword"
+                            "yummy:sword_of_life"
                         ]
                     }
                 ]
             },
             "trigger": "minecraft:inventory_changed"
         },
-        "soul_lapis_sword": {
+        "sword_of_sound": {
             "conditions": {
                 "items": [
                     {
                         "items": [
-                            "yummy:soul_lapis_sword"
+                            "yummy:sword_of_sound"
                         ]
                     }
                 ]
             },
             "trigger": "minecraft:inventory_changed"
         },
-        "soul_redstone_sword": {
+        "sword_of_water": {
             "conditions": {
                 "items": [
                     {
                         "items": [
-                            "yummy:soul_redstone_sword"
+                            "yummy:sword_of_water"
                         ]
                     }
                 ]
             },
             "trigger": "minecraft:inventory_changed"
         },
-        "soul_rubellite_sword": {
+        "sword_of_wind": {
             "conditions": {
                 "items": [
                     {
                         "items": [
-                            "yummy:soul_rubellite_sword"
+                            "yummy:sword_of_wind"
                         ]
                     }
                 ]
@@ -114,29 +114,13 @@
         }
     },
     "requirements": [
-        [
-            "soul_amethyst_sword"
-        ],
-        [
-            "soul_copper_sword"
-        ],
-        [
-            "soul_diamond_sword"
-        ],
-        [
-            "soul_emerald_sword"
-        ],
-        [
-            "soul_gold_sword"
-        ],
-        [
-            "soul_lapis_sword"
-        ],
-        [
-            "soul_redstone_sword"
-        ],
-        [
-            "soul_rubellite_sword"
-        ]
+        [ "sword_of_earth" ],
+        [ "sword_of_electricity" ],
+        [ "sword_of_fire" ],
+        [ "sword_of_ice" ],
+        [ "sword_of_life" ],
+        [ "sword_of_sound" ],
+        [ "sword_of_water" ],
+        [ "sword_of_wind" ]
     ]
 }

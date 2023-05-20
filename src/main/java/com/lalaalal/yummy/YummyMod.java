@@ -9,6 +9,7 @@ import com.lalaalal.yummy.particle.YummyParticles;
 import com.lalaalal.yummy.sound.YummySounds;
 import com.lalaalal.yummy.world.feature.YummyConfiguredFeatures;
 import com.lalaalal.yummy.world.feature.YummyPlacedFeatures;
+import com.lalaalal.yummy.world.inventory.YummyMenuTypes;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -41,5 +42,6 @@ public class YummyMod
         YummySounds.register(modEventBus);
         YummyConfiguredFeatures.register(modEventBus);
         YummyPlacedFeatures.register(modEventBus);
+        YummyMenuTypes.register(modEventBus);
     }
 }

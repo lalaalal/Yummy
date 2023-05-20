@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "on=false": {
+            "model": "yummy:block/alembic"
+        },
+        "on=true": {
+            "model": "yummy:block/alembic_on"
+        }
+    }
+}
