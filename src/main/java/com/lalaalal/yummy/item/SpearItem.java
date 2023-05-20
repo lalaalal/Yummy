@@ -3,7 +3,9 @@ package com.lalaalal.yummy.item;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import com.lalaalal.yummy.client.renderer.YummyBlockEntityWithoutLevelRenderer;
 import com.lalaalal.yummy.entity.ThrownSpear;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -17,41 +19,49 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.ForgeMod;
 
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 public class SpearItem extends Item {
-    private static final Set<Enchantment> ENCHANTABLE = Set.of(Enchantments.LOYALTY, Enchantments.MENDING, Enchantments.UNBREAKING);
+    private static final Set<Enchantment> ENCHANTABLE = Set.of(Enchantments.LOYALTY, Enchantments.MENDING, Enchantments.UNBREAKING, Enchantments.IMPALING);
     protected static final UUID ATTACK_REACH_MODIFIER = UUID.fromString("63d316c1-7d6d-41be-81c3-41fc1a216c27");
     private final Multimap<Attribute, AttributeModifier> defaultModifiers;
     private final SpearProvider spearProvider;
+    private final Tier tier;
 
-    public SpearItem(Properties properties) {
-        this(properties, ThrownSpear::new);
+    public SpearItem(Properties properties, Tier tier) {
+        this(properties, tier, ThrownSpear::new);
     }
 
-    public SpearItem(Properties properties, SpearProvider spearProvider) {
-        super(properties);
+    public SpearItem(Properties properties, Tier tier, EntityType<? extends ThrownSpear> spearType) {
+        this(properties, tier, (level, shooter, itemStack) -> new ThrownSpear(spearType, level, shooter, itemStack));
+    }
+
+    public SpearItem(Properties properties, Tier tier, SpearProvider spearProvider) {
+        super(properties.durability(tier.getUses()));
         this.spearProvider = spearProvider;
+        this.tier = tier;
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(ForgeMod.REACH_DISTANCE.get(), new AttributeModifier(ATTACK_REACH_MODIFIER, "Weapon modifier", 3, AttributeModifier.Operation.ADDITION));
+        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", tier.getAttackDamageBonus(), AttributeModifier.Operation.ADDITION));
+        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", tier.getSpeed(), AttributeModifier.Operation.ADDITION));
         this.defaultModifiers = builder.build();
-    }
-
-    public SpearItem(Properties properties, EntityType<? extends ThrownSpear> spearType) {
-        this(properties, (level, shooter, itemStack) -> new ThrownSpear(spearType, level, shooter, itemStack));
     }
 
     @Override
@@ -123,6 +133,16 @@ public class SpearItem extends Item {
                 return false;
         }
         return true;
+    }
+
+    @Override
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new IClientItemExtensions() {
+            @Override
+            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+                return YummyBlockEntityWithoutLevelRenderer.getInstance();
+            }
+        });
     }
 
     @FunctionalInterface

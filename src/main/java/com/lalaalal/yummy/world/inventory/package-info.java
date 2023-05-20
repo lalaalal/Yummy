@@ -1,6 +1,6 @@
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-package com.lalaalal.yummy.misc;
+package com.lalaalal.yummy.world.inventory;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 

@@ -21,21 +21,21 @@
     ],
     "rewards": {
         "recipes": [
-            "yummy:soul_amethyst_ingot",
+            "yummy:soul_amethyst_essence",
             "yummy:soul_amethyst_sword",
-            "yummy:soul_copper_ingot",
+            "yummy:soul_copper_essence",
             "yummy:soul_copper_sword",
-            "yummy:soul_diamond_ingot",
+            "yummy:soul_diamond_essence",
             "yummy:soul_diamond_sword",
-            "yummy:soul_emerald_ingot",
+            "yummy:soul_emerald_essence",
             "yummy:soul_emerald_sword",
-            "yummy:soul_gold_ingot",
+            "yummy:soul_gold_essence",
             "yummy:soul_gold_sword",
-            "yummy:soul_lapis_ingot",
+            "yummy:soul_lapis_essence",
             "yummy:soul_lapis_sword",
-            "yummy:soul_redstone_ingot",
+            "yummy:soul_redstone_essence",
             "yummy:soul_redstone_sword",
-            "yummy:soul_rubellite_ingot",
+            "yummy:soul_rubellite_essence",
             "yummy:soul_rubellite_sword"
         ]
     }

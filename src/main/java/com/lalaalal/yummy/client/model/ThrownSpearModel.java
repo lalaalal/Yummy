@@ -13,7 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class ThrownSpearModel<T extends ThrownSpear> extends EntityModel<T> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(YummyMod.MOD_ID, "spear"), "main");
-    public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(YummyMod.MOD_ID, "textures/entity/mighty_holy_spear.png");
+    public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(YummyMod.MOD_ID, "textures/entity/spear.png");
     private final ModelPart bb_main;
 
     public ThrownSpearModel(ModelPart root) {

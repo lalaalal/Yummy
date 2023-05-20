@@ -4,9 +4,9 @@
         "item": "yummy:purified_soul_metal"
     },
     "addition": {
-        "item": "minecraft:lapis_lazuli"
+        "item": "minecraft:gold_essence"
     },
     "result": {
-        "item": "yummy:soul_lapis_ingot"
+        "item": "yummy:soul_gold_essence"
     }
 }

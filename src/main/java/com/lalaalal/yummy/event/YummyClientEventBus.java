@@ -7,20 +7,22 @@ import com.lalaalal.yummy.block.entity.YummyBlockEntities;
 import com.lalaalal.yummy.client.model.*;
 import com.lalaalal.yummy.client.renderer.*;
 import com.lalaalal.yummy.entity.YummyEntities;
+import com.lalaalal.yummy.item.YummyItems;
 import com.lalaalal.yummy.particle.PollutedParticle;
 import com.lalaalal.yummy.particle.YummyParticles;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.RegisterColorHandlersEvent;
-import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -31,6 +33,9 @@ public class YummyClientEventBus {
     public static void clientSetup(final FMLClientSetupEvent event) {
         Sheets.addWoodType(YummyTypes.WOOD_EBONY);
         WoodType.register(YummyTypes.WOOD_EBONY);
+        Minecraft.getInstance().getItemRenderer().getItemModelShaper().register(YummyItems.SPEAR.get(), new ModelResourceLocation(YummyMod.MOD_ID, "spear_inventory", "inventory"));
+        Minecraft.getInstance().getItemRenderer().getItemModelShaper().register(YummyItems.SPEAR.get(), new ModelResourceLocation(YummyMod.MOD_ID, "spear_throwing", "inventory"));
+        Minecraft.getInstance().getItemRenderer().getItemModelShaper().register(YummyItems.SPEAR.get(), new ModelResourceLocation(YummyMod.MOD_ID, "spear", "inventory"));
     }
 
     @SubscribeEvent
@@ -91,5 +96,22 @@ public class YummyClientEventBus {
         event.registerLayerDefinition(ThrownMightyHolySpearModel.LAYER_LOCATION, ThrownMightyHolySpearModel::createBodyLayer);
         event.registerLayerDefinition(ThrownSpearOfLonginusModel.LAYER_LOCATION, ThrownSpearOfLonginusModel::createBodyLayer);
         event.registerLayerDefinition(MeteorModel.LAYER_LOCATION, MeteorModel::createBodyLayer);
+    }
+
+    @SubscribeEvent
+    public static void onTexture(TextureStitchEvent.Pre event) {
+        ResourceLocation location = event.getAtlas().location();
+        if (location.equals(new ResourceLocation("textures/atlas/blocks.png"))) {
+            event.addSprite(new ResourceLocation(YummyMod.MOD_ID, "item/spear"));
+            event.addSprite(new ResourceLocation(YummyMod.MOD_ID, "item/mighty_holy_spear"));
+            event.addSprite(new ResourceLocation(YummyMod.MOD_ID, "item/spear_of_longinus"));
+        }
+    }
+
+    @SubscribeEvent
+    public static void onModelBake(ModelEvent.RegisterAdditional event) {
+        event.register(new ModelResourceLocation(YummyMod.MOD_ID, "spear_inventory", "inventory"));
+        event.register(new ModelResourceLocation(YummyMod.MOD_ID, "mighty_holy_spear_inventory", "inventory"));
+        event.register(new ModelResourceLocation(YummyMod.MOD_ID, "spear_of_longinus_inventory", "inventory"));
     }
 }

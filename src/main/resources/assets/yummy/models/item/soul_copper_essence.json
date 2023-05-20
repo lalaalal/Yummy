@@ -1,6 +1,6 @@
 {
     "parent": "minecraft:item/generated",
     "textures": {
-        "layer0": "yummy:item/soul_diamond_ingot"
+        "layer0": "yummy:item/soul_copper_essence"
     }
 }

@@ -4,9 +4,9 @@
         "item": "yummy:purified_soul_metal"
     },
     "addition": {
-        "item": "minecraft:gold_ingot"
+        "item": "minecraft:diamond"
     },
     "result": {
-        "item": "yummy:soul_gold_ingot"
+        "item": "yummy:soul_diamond_essence"
     }
 }

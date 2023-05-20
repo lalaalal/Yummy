@@ -127,6 +127,9 @@ public class YummyBlocks {
                     .fireResistant()
                     .tab(YummyMod.TAB)));
 
+    public static final RegistryObject<Block> ALEMBIC_BLOCK = register("alembic",
+            () -> new AlembicBlock(BlockBehaviour.Properties.of(Material.GLASS)), YummyMod.TAB);
+
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> block, CreativeModeTab tab) {
         RegistryObject<T> registryObject = BLOCKS.register(name, block);
         registerBlockItem(name, registryObject, tab);

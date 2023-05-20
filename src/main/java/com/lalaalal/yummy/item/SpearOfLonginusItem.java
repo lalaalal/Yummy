@@ -15,7 +15,7 @@ import net.minecraft.world.level.Level;
 
 public class SpearOfLonginusItem extends SpearItem {
     public SpearOfLonginusItem(Properties properties) {
-        super(properties, ThrownSpearOfLonginus::new);
+        super(properties, YummyTiers.GOD, ThrownSpearOfLonginus::new);
     }
 
     private void hurtUser(ItemStack itemStack, LivingEntity user, float damageRate) {

@@ -31,13 +31,11 @@ public class YummyItems {
 
     public static final RegistryObject<Item> SPEAR = ITEMS.register("spear",
             () -> new SpearItem(new Item.Properties()
-                    .durability(250)
-                    .tab(YummyMod.TAB)));
+                    .tab(YummyMod.TAB), Tiers.IRON));
     public static final RegistryObject<Item> MIGHTY_HOLY_SPEAR = ITEMS.register("mighty_holy_spear",
             () -> new SpearItem(new Item.Properties()
                     .tab(YummyMod.TAB)
-                    .durability(0)
-                    .rarity(Rarity.EPIC), YummyEntities.MIGHTY_HOLY_SPEAR.get()));
+                    .rarity(Rarity.EPIC), YummyTiers.GOD, YummyEntities.MIGHTY_HOLY_SPEAR.get()));
     public static final RegistryObject<Item> SPEAR_OF_LONGINUS = ITEMS.register("spear_of_longinus",
             () -> new SpearOfLonginusItem(new Item.Properties()
                     .durability(0)
@@ -122,11 +120,11 @@ public class YummyItems {
             () -> new Item(new Item.Properties().tab(YummyMod.TAB)));
 
     public static final RegistryObject<Item> ECHO_SWORD = ITEMS.register("echo_sword",
-            () -> new EchoSwordItem(YummyTiers.PURIFIED_SOUL, 11, 8, new Item.Properties()
+            () -> new EchoSwordItem(YummyTiers.PURIFIED_SOUL, 9, 8, new Item.Properties()
                     .tab(YummyMod.TAB)
                     .rarity(Rarity.RARE)));
     public static final RegistryObject<Item> GOD_ECHO_SWORD = ITEMS.register("god_echo_sword",
-            () -> new EchoSwordItem(YummyTiers.GOD, 11, 8, new Item.Properties()
+            () -> new EchoSwordItem(YummyTiers.GOD, -51, 8, new Item.Properties()
                     .fireResistant()
                     .tab(YummyMod.TAB)
                     .rarity(Rarity.EPIC)));
@@ -139,14 +137,14 @@ public class YummyItems {
     public static final RegistryObject<Item> SOUL_REDSTONE_SWORD = registerElementSword("soul_redstone_sword", Element.REDSTONE, 4, -1.6f);
     public static final RegistryObject<Item> SOUL_RUBELLITE_SWORD = registerElementSword("soul_rubellite_sword", Element.RUBELLITE, 4, -1.6f);
 
-    public static final RegistryObject<Item> SOUL_AMETHYST_INGOT = registerElementIngot("soul_amethyst_ingot");
-    public static final RegistryObject<Item> SOUL_COPPER_INGOT = registerElementIngot("soul_copper_ingot");
-    public static final RegistryObject<Item> SOUL_DIAMOND_INGOT = registerElementIngot("soul_diamond_ingot");
-    public static final RegistryObject<Item> SOUL_EMERALD_INGOT = registerElementIngot("soul_emerald_ingot");
-    public static final RegistryObject<Item> SOUL_GOLD_INGOT = registerElementIngot("soul_gold_ingot");
-    public static final RegistryObject<Item> SOUL_LAPIS_INGOT = registerElementIngot("soul_lapis_ingot");
-    public static final RegistryObject<Item> SOUL_REDSTONE_INGOT = registerElementIngot("soul_redstone_ingot");
-    public static final RegistryObject<Item> SOUL_RUBELLITE_INGOT = registerElementIngot("soul_rubellite_ingot");
+    public static final RegistryObject<Item> SOUL_AMETHYST_ESSENCE = registerElementIngot("soul_amethyst_essence");
+    public static final RegistryObject<Item> SOUL_COPPER_ESSENCE = registerElementIngot("soul_copper_essence");
+    public static final RegistryObject<Item> SOUL_DIAMOND_ESSENCE = registerElementIngot("soul_diamond_essence");
+    public static final RegistryObject<Item> SOUL_EMERALD_ESSENCE = registerElementIngot("soul_emerald_essence");
+    public static final RegistryObject<Item> SOUL_GOLD_ESSENCE = registerElementIngot("soul_gold_essence");
+    public static final RegistryObject<Item> SOUL_LAPIS_ESSENCE = registerElementIngot("soul_lapis_essence");
+    public static final RegistryObject<Item> SOUL_REDSTONE_ESSENCE = registerElementIngot("soul_redstone_essence");
+    public static final RegistryObject<Item> SOUL_RUBELLITE_ESSENCE = registerElementIngot("soul_rubellite_essence");
 
     private static RegistryObject<Item> registerElementSword(String name, Element element, int attackDamageModifier, float attackSpeedModifier) {
         return ITEMS.register(name, () -> new ElementSwordItem(YummyTiers.PURIFIED_SOUL, element, attackDamageModifier, attackSpeedModifier, new Item.Properties()

@@ -4,9 +4,9 @@
         "item": "yummy:purified_soul_metal"
     },
     "addition": {
-        "item": "minecraft:amethyst_shard"
+        "item": "yummy:rubellite"
     },
     "result": {
-        "item": "yummy:soul_amethyst_ingot"
+        "item": "yummy:soul_rubellite_essence"
     }
 }

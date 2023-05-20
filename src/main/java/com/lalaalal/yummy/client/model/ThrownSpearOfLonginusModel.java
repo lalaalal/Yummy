@@ -13,6 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class ThrownSpearOfLonginusModel extends EntityModel<ThrownSpearOfLonginus> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(YummyMod.MOD_ID, "spear_of_longinus"), "main");
+    public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(YummyMod.MOD_ID, "textures/entity/spear_of_longinus.png");
     private final ModelPart bone_a;
     private final ModelPart bone_b;
     private final ModelPart bb_main;

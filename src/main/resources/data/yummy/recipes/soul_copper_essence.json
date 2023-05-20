@@ -4,9 +4,9 @@
         "item": "yummy:purified_soul_metal"
     },
     "addition": {
-        "item": "minecraft:emerald"
+        "item": "minecraft:copper_essence"
     },
     "result": {
-        "item": "yummy:soul_emerald_ingot"
+        "item": "yummy:soul_copper_essence"
     }
 }

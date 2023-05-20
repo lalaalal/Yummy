@@ -27,10 +27,12 @@ public class EchoSwordItem extends SwordItem {
 
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        float damage = target.getMaxHealth() * 0.4f;
+        float damage = (float) (Math.floor(target.getMaxHealth() / 5) * 2);
         DamageSource damageSource = DamageSource.mobAttack(attacker);
-        if (getTier() == YummyTiers.GOD)
+        if (getTier() == YummyTiers.GOD) {
             damageSource = damageSource.bypassInvul();
+            damage = damage * 1.5f + target.getMaxHealth() * 0.02f;
+        }
         target.hurt(damageSource, damage);
         EchoMark.markTarget(target, attacker);
         Echo.overlapEcho(target);
@@ -54,8 +56,8 @@ public class EchoSwordItem extends SwordItem {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
         super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
-        tooltipComponents.add(Component.translatable("item.yummy.echo_sword.desc1").withStyle(ChatFormatting.GRAY));
-        tooltipComponents.add(Component.translatable("item.yummy.echo_sword.desc2").withStyle(ChatFormatting.GRAY));
-        tooltipComponents.add(Component.translatable("item.yummy.echo_sword.desc3").withStyle(ChatFormatting.GRAY));
+        tooltipComponents.add(Component.translatable(getDescriptionId() + ".desc1").withStyle(ChatFormatting.GRAY));
+        tooltipComponents.add(Component.translatable(getDescriptionId() + ".desc2").withStyle(ChatFormatting.GRAY));
+        tooltipComponents.add(Component.translatable(getDescriptionId() + ".desc3").withStyle(ChatFormatting.GRAY));
     }
 }
