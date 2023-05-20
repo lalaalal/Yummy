@@ -2,6 +2,7 @@ package com.lalaalal.yummy.item;
 
 import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.block.YummyBlocks;
+import com.lalaalal.yummy.effect.Element;
 import com.lalaalal.yummy.entity.YummyEntities;
 import com.lalaalal.yummy.sound.YummySounds;
 import net.minecraft.world.item.*;

@@ -2,6 +2,7 @@ package com.lalaalal.yummy.event;
 
 import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.block.YummyBlocks;
+import com.lalaalal.yummy.effect.ElementReactions;
 import com.lalaalal.yummy.entity.BunnyChest;
 import com.lalaalal.yummy.entity.Herobrine;
 import com.lalaalal.yummy.entity.ShadowHerobrine;
@@ -22,6 +23,7 @@ public class YummyCommonEventBus {
             YummyBlocks.EBONY_WOOD.get().addAxeModifiedState(YummyBlocks.EBONY_WOOD.get(), YummyBlocks.STRIPPED_EBONY_WOOD.get());
 
             EssenceDistilling.init();
+            ElementReactions.init();
         });
 
         YummyMessages.register();
