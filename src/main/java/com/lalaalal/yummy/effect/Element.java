@@ -12,7 +12,8 @@ public enum Element {
     LIFE(YummyEffects.LIFE),
     SOUND(YummyEffects.SOUND),
     WATER(YummyEffects.WATER),
-    WIND(YummyEffects.WIND);
+    WIND(YummyEffects.WIND),
+    PURITY(YummyEffects.HEROBRINE_MARK);
 
     private final Supplier<MobEffect> effectSupplier;
 

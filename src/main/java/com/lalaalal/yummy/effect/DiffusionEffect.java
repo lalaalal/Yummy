@@ -11,8 +11,8 @@ public class DiffusionEffect extends MobEffect {
     }
 
     @Override
-    public boolean isDurationEffectTick(int pDuration, int pAmplifier) {
-        return super.isDurationEffectTick(pDuration, pAmplifier);
+    public boolean isDurationEffectTick(int duration, int amplifier) {
+        return duration % 20 == 0;
     }
 
     @Override

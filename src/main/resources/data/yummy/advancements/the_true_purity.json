@@ -1,0 +1,37 @@
+{
+    "parent": "yummy:complete_soul_swords",
+    "display": {
+        "icon": {
+            "item": "yummy:the_true_purity"
+        },
+        "title": {
+            "translate": "advancements.yummy.the_true_purity.title"
+        },
+        "description": {
+            "translate": "advancements.yummy.the_true_purity.description"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria": {
+        "has_item": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "yummy:the_true_purity"
+                        ]
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        }
+    },
+    "requirements": [
+        [
+            "has_item"
+        ]
+    ]
+}

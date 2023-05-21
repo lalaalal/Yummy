@@ -17,7 +17,7 @@ public class ThrownSpearOfLonginus extends ThrownSpear {
     }
 
     public ThrownSpearOfLonginus(Level level, LivingEntity shooter, ItemStack stack) {
-        super(YummyEntities.THROWN_SPEAR_OF_LONGINUS.get(), level, shooter, stack);
+        super(YummyEntities.SPEAR_OF_LONGINUS.get(), level, shooter, stack);
     }
 
     @Override

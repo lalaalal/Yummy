@@ -1,5 +1,6 @@
 package com.lalaalal.yummy.entity;
 
+import com.lalaalal.yummy.entity.ai.YummyAttributeModifiers;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -11,20 +12,19 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.Collection;
-
 public class ThrownSpear extends AbstractArrow {
     private static final EntityDataAccessor<Byte> ID_LOYALTY = SynchedEntityData.defineId(ThrownSpear.class, EntityDataSerializers.BYTE);
+    private static final EntityDataAccessor<Boolean> ID_FOIL = SynchedEntityData.defineId(ThrownSpear.class, EntityDataSerializers.BOOLEAN);
     protected ItemStack spearItem = new ItemStack(Items.AIR);
     private boolean dealtDamage = false;
     private int clientSideReturnTickCount = 0;
@@ -41,12 +41,14 @@ public class ThrownSpear extends AbstractArrow {
         super(entityType, shooter, level);
         spearItem = stack.copy();
         this.entityData.set(ID_LOYALTY, (byte) EnchantmentHelper.getLoyalty(stack));
+        this.entityData.set(ID_FOIL, spearItem.hasFoil());
     }
 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(ID_LOYALTY, (byte) 0);
+        this.entityData.define(ID_FOIL, false);
     }
 
     @Override
@@ -98,18 +100,19 @@ public class ThrownSpear extends AbstractArrow {
     protected void onHitEntity(EntityHitResult result) {
         SoundEvent soundevent = SoundEvents.TRIDENT_HIT;
         Entity entity = result.getEntity();
+
         hurtHitEntity(entity);
+        if (this.getType() != YummyEntities.SPEAR_OF_LONGINUS.get() && entity.getType() == EntityType.ENDERMAN)
+            return;
 
         this.setDeltaMovement(this.getDeltaMovement().multiply(-0.01D, -0.1D, -0.01D));
         this.playSound(soundevent, 1.0F, 1.0F);
     }
 
     protected void hurtHitEntity(Entity entity) {
-        float damage = 1;
+        float damage = YummyAttributeModifiers.calcItemAttribute(1, spearItem, EquipmentSlot.MAINHAND, Attributes.ATTACK_DAMAGE);
         Entity owner = getOwner();
-        Collection<AttributeModifier> attributeModifiers = spearItem.getAttributeModifiers(EquipmentSlot.MAINHAND).get(Attributes.ATTACK_DAMAGE);
-        for (AttributeModifier attributeModifier : attributeModifiers)
-            damage += attributeModifier.getAmount();
+        damage += spearItem.getEnchantmentLevel(Enchantments.IMPALING);
         DamageSource damageSource = DamageSource.thrown(owner == null ? entity : owner, this);
         entity.hurt(damageSource, damage);
     }
@@ -125,6 +128,6 @@ public class ThrownSpear extends AbstractArrow {
     }
 
     public boolean hasFoil() {
-        return spearItem.hasFoil();
+        return this.entityData.get(ID_FOIL);
     }
 }

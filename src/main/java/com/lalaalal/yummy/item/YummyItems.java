@@ -32,11 +32,11 @@ public class YummyItems {
 
     public static final RegistryObject<Item> SPEAR = ITEMS.register("spear",
             () -> new SpearItem(new Item.Properties()
-                    .tab(YummyMod.TAB), Tiers.IRON));
+                    .tab(YummyMod.TAB), Tiers.IRON, 2, 2, 3));
     public static final RegistryObject<Item> MIGHTY_HOLY_SPEAR = ITEMS.register("mighty_holy_spear",
             () -> new SpearItem(new Item.Properties()
                     .tab(YummyMod.TAB)
-                    .rarity(Rarity.EPIC), YummyTiers.GOD, YummyEntities.MIGHTY_HOLY_SPEAR.get()));
+                    .rarity(Rarity.EPIC), YummyTiers.GOD, -1, 2, 3, YummyEntities.MIGHTY_HOLY_SPEAR.get()));
     public static final RegistryObject<Item> SPEAR_OF_LONGINUS = ITEMS.register("spear_of_longinus",
             () -> new SpearOfLonginusItem(new Item.Properties()
                     .durability(0)
@@ -146,23 +146,29 @@ public class YummyItems {
             () -> new Item(new Item.Properties().tab(YummyMod.TAB)));
     public static final RegistryObject<Item> ESSENCE_OF_WIND = ITEMS.register("essence_of_wind",
             () -> new Item(new Item.Properties().tab(YummyMod.TAB)));
+    public static final RegistryObject<Item> ESSENCE_OF_PURITY = ITEMS.register("essence_of_purity",
+            () -> new Item(new Item.Properties().tab(YummyMod.TAB)));
 
     public static final RegistryObject<Item> SWORD_OF_EARTH
             = registerElementSword(Element.EARTH, 2, -2);
     public static final RegistryObject<Item> SWORD_OF_ELECTRICITY
             = registerElementSword(Element.ELECTRICITY, 0, 2);
     public static final RegistryObject<Item> SWORD_OF_FIRE
-            = registerElementSword(Element.FIRE, 0, 0);
+            = registerElementSword(Element.FIRE, 1, 0);
     public static final RegistryObject<Item> SWORD_OF_ICE
-            = registerElementSword(Element.ICE, 0, 0);
+            = registerElementSword(Element.ICE, 1, 0);
     public static final RegistryObject<Item> SWORD_OF_LIFE
             = registerElementSword(Element.LIFE, 0, 0);
     public static final RegistryObject<Item> SWORD_OF_SOUND
-            = registerElementSword(Element.SOUND, 0, 0);
+            = registerElementSword(Element.SOUND, -4, 0);
     public static final RegistryObject<Item> SWORD_OF_WATER
             = registerElementSword(Element.WATER, 0, 0);
     public static final RegistryObject<Item> SWORD_OF_WIND
             = registerElementSword(Element.WIND, 0, 0);
+    public static final RegistryObject<Item> THE_TRUE_PURITY = ITEMS.register("the_true_purity",
+            () -> new TheTruePurity(YummyTiers.GOD, Element.PURITY, 710, 3,
+                    new Item.Properties()
+                            .tab(YummyMod.TAB)));
 
     private static RegistryObject<Item> registerElementSword(Element element, int attackDamageModifier, float attackSpeedModifier) {
         return ITEMS.register("sword_of_" + element, () -> new ElementSwordItem(YummyTiers.ELEMENT, element, attackDamageModifier, attackSpeedModifier, new Item.Properties()

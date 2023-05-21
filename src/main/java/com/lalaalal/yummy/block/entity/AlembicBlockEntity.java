@@ -31,6 +31,7 @@ public class AlembicBlockEntity extends BaseContainerBlockEntity implements Menu
     public static final int DATA_MAX_DISTILL_PROGRESS = 1;
     public static final int DATA_PROGRESS = 2;
     public static final int DATA_MAX_PROGRESS = 3;
+    public static final int MAX_DISTILL_PROGRESS = 200;
 
     private final NonNullList<ItemStack> items = NonNullList.withSize(3, ItemStack.EMPTY);
     protected final ContainerData data = new ContainerData() {
@@ -38,7 +39,7 @@ public class AlembicBlockEntity extends BaseContainerBlockEntity implements Menu
         public int get(int index) {
             return switch (index) {
                 case DATA_DISTILL_PROGRESS -> distillProgress;
-                case DATA_MAX_DISTILL_PROGRESS -> getMaxDistillProgress();
+                case DATA_MAX_DISTILL_PROGRESS -> MAX_DISTILL_PROGRESS;
                 case DATA_PROGRESS -> progress;
                 case DATA_MAX_PROGRESS -> getRequiredIngredientCount();
                 default -> 0;
@@ -187,10 +188,6 @@ public class AlembicBlockEntity extends BaseContainerBlockEntity implements Menu
         setChanged();
     }
 
-    public int getMaxDistillProgress() {
-        return 200;
-    }
-
     public int getRequiredIngredientCount() {
         return EssenceDistilling.getRequiredCount(currentIngredient);
     }
@@ -216,7 +213,7 @@ public class AlembicBlockEntity extends BaseContainerBlockEntity implements Menu
             alembicBlockEntity.distillProgress += 1;
             setChanged(level, pos, state);
 
-            if (alembicBlockEntity.distillProgress >= alembicBlockEntity.getMaxDistillProgress())
+            if (alembicBlockEntity.distillProgress >= MAX_DISTILL_PROGRESS)
                 alembicBlockEntity.distill();
             if (alembicBlockEntity.progress >= alembicBlockEntity.getRequiredIngredientCount())
                 alembicBlockEntity.createEssence();

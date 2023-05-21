@@ -38,6 +38,6 @@ public class EssenceDistilling {
     }
 
     private record DistillingEntry(Item result, int requiredCount) {
-        public static DistillingEntry EMPTY = new DistillingEntry(Items.AIR, 0);
+        public static final DistillingEntry EMPTY = new DistillingEntry(Items.AIR, 0);
     }
 }

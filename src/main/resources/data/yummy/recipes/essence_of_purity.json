@@ -1,0 +1,41 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "ABC",
+        "D/E",
+        "FGH"
+    ],
+    "key": {
+        "/": {
+            "item": "yummy:god_blood"
+        },
+        "A": {
+            "item": "yummy:essence_of_earth"
+        },
+        "B": {
+            "item": "yummy:essence_of_electricity"
+        },
+        "C": {
+            "item": "yummy:essence_of_fire"
+        },
+        "D": {
+            "item": "yummy:essence_of_ice"
+        },
+        "E": {
+            "item": "yummy:essence_of_life"
+        },
+        "F": {
+            "item": "yummy:essence_of_sound"
+        },
+        "G": {
+            "item": "yummy:essence_of_water"
+        },
+        "H": {
+            "item": "yummy:essence_of_wind"
+        }
+    },
+    "result": {
+        "item": "yummy:essence_of_purity",
+        "count": 1
+    }
+}

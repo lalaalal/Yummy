@@ -19,11 +19,6 @@ public class AlembicScreen extends AbstractContainerScreen<AlembicMenu> {
     }
 
     @Override
-    protected void init() {
-        super.init();
-    }
-
-    @Override
     protected void renderBg(PoseStack poseStack, float partialTick, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1, 1, 1, 1);

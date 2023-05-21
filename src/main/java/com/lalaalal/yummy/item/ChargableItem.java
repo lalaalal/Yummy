@@ -6,7 +6,6 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 
 public abstract class ChargableItem extends Item {
@@ -33,16 +32,6 @@ public abstract class ChargableItem extends Item {
     }
 
     protected abstract void itemUse(Level level, Player player, InteractionHand usedHand);
-
-    @Override
-    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        return false;
-    }
-
-    @Override
-    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-        return false;
-    }
 
     @Override
     public boolean isEnchantable(ItemStack pStack) {

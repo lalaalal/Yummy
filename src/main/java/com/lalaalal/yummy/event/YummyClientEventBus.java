@@ -73,7 +73,7 @@ public class YummyClientEventBus {
         event.registerEntityRenderer(YummyEntities.MIGHTY_HOLY_SPEAR.get(), context -> new ThrownSpearRenderer<>(context, "mighty_holy_spear", () -> new ThrownMightyHolySpearModel<>(
                 context.bakeLayer(ThrownMightyHolySpearModel.LAYER_LOCATION)
         )));
-        event.registerEntityRenderer(YummyEntities.THROWN_SPEAR_OF_LONGINUS.get(), ThrownSpearOfLonginusRenderer::new);
+        event.registerEntityRenderer(YummyEntities.SPEAR_OF_LONGINUS.get(), ThrownSpearOfLonginusRenderer::new);
         event.registerEntityRenderer(YummyEntities.MARK_FIREBALL.get(),
                 (context) -> new YummyItemEntityRenderer<>(context, "mark_fireball", 1));
         event.registerEntityRenderer(YummyEntities.METEOR.get(), MeteorRenderer::new);

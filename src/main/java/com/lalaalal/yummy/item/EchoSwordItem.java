@@ -41,6 +41,11 @@ public class EchoSwordItem extends SwordItem {
     }
 
     @Override
+    public boolean isDamageable(ItemStack stack) {
+        return false;
+    }
+
+    @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
         ItemStack itemStack = player.getItemInHand(usedHand);
         if (!level.isClientSide && EchoMark.useMark(player)) {
