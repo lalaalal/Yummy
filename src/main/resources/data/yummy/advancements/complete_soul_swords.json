@@ -1,0 +1,126 @@
+{
+    "parent": "yummy:purified_soul_sword",
+    "display": {
+        "icon": {
+            "item": "yummy:sword_of_fire"
+        },
+        "title": {
+            "translate": "advancements.yummy.complete_soul_swords.title"
+        },
+        "description": {
+            "translate": "advancements.yummy.complete_soul_swords.description"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria": {
+        "sword_of_earth": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "yummy:sword_of_earth"
+                        ]
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        },
+        "sword_of_electricity": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "yummy:sword_of_electricity"
+                        ]
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        },
+        "sword_of_fire": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "yummy:sword_of_fire"
+                        ]
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        },
+        "sword_of_ice": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "yummy:sword_of_ice"
+                        ]
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        },
+        "sword_of_life": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "yummy:sword_of_life"
+                        ]
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        },
+        "sword_of_sound": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "yummy:sword_of_sound"
+                        ]
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        },
+        "sword_of_water": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "yummy:sword_of_water"
+                        ]
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        },
+        "sword_of_wind": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "yummy:sword_of_wind"
+                        ]
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        }
+    },
+    "requirements": [
+        [ "sword_of_earth" ],
+        [ "sword_of_electricity" ],
+        [ "sword_of_fire" ],
+        [ "sword_of_ice" ],
+        [ "sword_of_life" ],
+        [ "sword_of_sound" ],
+        [ "sword_of_water" ],
+        [ "sword_of_wind" ]
+    ]
+}

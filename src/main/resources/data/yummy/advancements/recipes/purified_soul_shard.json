@@ -1,0 +1,28 @@
+{
+    "parent": "yummy:recipes/root",
+    "criteria": {
+        "has_item": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "yummy:purified_soul_block"
+                        ]
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        }
+    },
+    "requirements": [
+        [
+            "has_item"
+        ]
+    ],
+    "rewards": {
+        "recipes": [
+            "yummy:purified_soul_shard",
+            "yummy:purified_soul_metal"
+        ]
+    }
+}

@@ -1,24 +1,12 @@
 {
-    "type": "minecraft:crafting_shapeless",
-    "ingredients": [
-        {
-            "item": "yummy:unstable_echo_matter"
-        },
-        {
-            "item": "minecraft:ghast_tear"
-        },
-        {
-            "item": "minecraft:ghast_tear"
-        },
-        {
-            "item": "yummy:purified_soul_shard"
-        },
-        {
-            "item": "yummy:purified_soul_shard"
-        }
-    ],
+    "type": "minecraft:smithing",
+    "base": {
+        "item": "yummy:purified_soul_metal"
+    },
+    "addition": {
+        "item": "yummy:unstable_echo_matter"
+    },
     "result": {
-        "item": "yummy:echo_ingot",
-        "count": 1
+        "item": "yummy:echo_ingot"
     }
 }

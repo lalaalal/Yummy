@@ -1,13 +1,14 @@
 package com.lalaalal.yummy.entity;
 
 import com.lalaalal.yummy.YummyUtil;
+import com.lalaalal.yummy.entity.ai.PhaseManager;
 import com.lalaalal.yummy.entity.ai.YummyAttributeModifiers;
-import com.lalaalal.yummy.entity.goal.FollowTargetGoal;
-import com.lalaalal.yummy.entity.skill.*;
-import com.lalaalal.yummy.misc.PhaseManager;
+import com.lalaalal.yummy.entity.ai.goal.FollowTargetGoal;
+import com.lalaalal.yummy.entity.ai.skill.*;
 import com.lalaalal.yummy.networking.YummyMessages;
 import com.lalaalal.yummy.networking.packet.ToggleHerobrineMusicPacket;
 import com.lalaalal.yummy.tags.YummyTags;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerBossEvent;
@@ -54,6 +55,7 @@ public class Herobrine extends AbstractHerobrine {
     private static final float[] HEALTH_CHANGE_CHECK = {12, 18, 24};
     private static final BossEvent.BossBarColor[] PHASE_COLORS = {BossEvent.BossBarColor.BLUE, BossEvent.BossBarColor.YELLOW, BossEvent.BossBarColor.RED};
 
+    private final Set<ServerPlayer> hurtPlayers = new HashSet<>();
     private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this, false);
     private final PhaseManager phaseManager = new PhaseManager(PHASE_HEALTHS, PHASE_COLORS, this);
     private final ServerBossEvent bossEvent = (ServerBossEvent) (new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.PROGRESS))
@@ -118,9 +120,9 @@ public class Herobrine extends AbstractHerobrine {
         structurePos = YummyUtil.readBlockPos(compoundTag, "StructurePos");
         preserveHealth = true;
         if (getPhase() >= 2)
-            enterPhase2();
+            enterPhase2(1);
         if (getPhase() == 3)
-            enterPhase3();
+            enterPhase3(2);
 
         preserveHealth = false;
     }
@@ -163,7 +165,7 @@ public class Herobrine extends AbstractHerobrine {
         setHealth(phaseManager.getActualCurrentPhaseMaxHealth());
     }
 
-    private void enterPhase2() {
+    private void enterPhase2(int from) {
         AttributeInstance attributeInstance = getAttribute(Attributes.ARMOR);
         if (attributeInstance != null)
             attributeInstance.setBaseValue(66);
@@ -177,7 +179,9 @@ public class Herobrine extends AbstractHerobrine {
         removeSkill(RushSkill.NAME);
     }
 
-    private void enterPhase3() {
+    private void enterPhase3(int from) {
+        if (from < 2)
+            enterPhase2(from);
         if (structurePos != null)
             moveTo(structurePos, getYRot(), getXRot());
 
@@ -322,13 +326,26 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
+        Entity entity = source.getEntity();
+        if (entity instanceof ServerPlayer player && !hurtPlayers.contains(entity))
+            hurtPlayers.add(player);
+
         if (source.equals(DamageSource.IN_WALL))
             destroyNearbyBlocks();
-        if (source.isBypassInvul())
+        if (source.isBypassInvul()) {
+            if (amount == Float.MAX_VALUE)
+                return super.hurt(source, amount);
+            float actualDamage = getDamageAfterArmorAbsorb(source, amount);
+            actualDamage = getDamageAfterMagicAbsorb(source, actualDamage);
+            if (getPhase() < 3 && getHealth() - actualDamage <= 0) {
+                super.hurt(source, 1);
+                setHealth(6);
+                return true;
+            }
             return super.hurt(source, amount);
+        }
 
         if (getPhase() == 3) {
-            Entity entity = source.getEntity();
             if (entity != null && entity.getType().is(YummyTags.HEROBRINE))
                 return super.hurt(source.bypassArmor(), 1);
             return false;
@@ -372,6 +389,9 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     public void die(DamageSource damageSource) {
+        for (ServerPlayer hurtPlayer : hurtPlayers)
+            CriteriaTriggers.PLAYER_KILLED_ENTITY.trigger(hurtPlayer, this, damageSource);
+
         if (damageSource.equals(DamageSource.OUT_OF_WORLD))
             remove(RemovalReason.KILLED);
         this.deathDamageSource = damageSource;

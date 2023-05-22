@@ -1,0 +1,37 @@
+{
+    "parent": "yummy:purified_soul_sword",
+    "display": {
+        "icon": {
+            "item": "yummy:echo_sword"
+        },
+        "title": {
+            "translate": "advancements.yummy.echo_sword.title"
+        },
+        "description": {
+            "translate": "advancements.yummy.echo_sword.description"
+        },
+        "frame": "goal",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria": {
+        "has_item": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "yummy:echo_sword"
+                        ]
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        }
+    },
+    "requirements": [
+        [
+            "has_item"
+        ]
+    ]
+}

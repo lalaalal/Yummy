@@ -1,7 +1,7 @@
 {
     "parent": "yummy:recipes/root",
     "criteria": {
-        "has_echo_shard": {
+        "has_item": {
             "conditions": {
                 "items": [
                     {
@@ -16,7 +16,7 @@
     },
     "requirements": [
         [
-            "has_echo_shard"
+            "has_item"
         ]
     ],
     "rewards": {

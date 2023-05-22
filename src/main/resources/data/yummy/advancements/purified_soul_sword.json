@@ -1,0 +1,37 @@
+{
+    "parent": "yummy:purified_soul_metal",
+    "display": {
+        "icon": {
+            "item": "yummy:purified_soul_sword"
+        },
+        "title": {
+            "translate": "advancements.yummy.purified_soul_sword.title"
+        },
+        "description": {
+            "translate": "advancements.yummy.purified_soul_sword.description"
+        },
+        "frame": "goal",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria": {
+        "has_item": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "yummy:purified_soul_sword"
+                        ]
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        }
+    },
+    "requirements": [
+        [
+            "has_item"
+        ]
+    ]
+}

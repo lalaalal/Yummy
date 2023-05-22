@@ -2,9 +2,9 @@ package com.lalaalal.yummy.entity;
 
 import com.lalaalal.yummy.YummyUtil;
 import com.lalaalal.yummy.effect.HerobrineMark;
-import com.lalaalal.yummy.entity.goal.FollowTargetGoal;
-import com.lalaalal.yummy.entity.skill.FractureRushSkill;
-import com.lalaalal.yummy.entity.skill.PunchSkill;
+import com.lalaalal.yummy.entity.ai.goal.FollowTargetGoal;
+import com.lalaalal.yummy.entity.ai.skill.FractureRushSkill;
+import com.lalaalal.yummy.entity.ai.skill.PunchSkill;
 import com.lalaalal.yummy.tags.YummyTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.DamageSource;

@@ -4,7 +4,6 @@ import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.YummyTypes;
 import com.lalaalal.yummy.world.feature.tree.EbonyTreeGrower;
 import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -123,26 +122,13 @@ public class YummyBlocks {
                     .strength(-1.0F, 3600000.0F)
                     .requiresCorrectToolForDrops(), false, false, true, false), YummyMod.TAB);
 
-    public static final RegistryObject<Block> CYAN_FLOWER = register("cyan_flower",
-            () -> new FlowerBlock(() -> MobEffects.GLOWING, 5,
-                    BlockBehaviour.Properties.copy(Blocks.DANDELION).color(MaterialColor.COLOR_CYAN)),
-            YummyMod.TAB);
-    public static final RegistryObject<Block> POTTED_CYAN_FLOWER = BLOCKS.register("potted_cyan_flower",
-            () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, CYAN_FLOWER,
-                    BlockBehaviour.Properties.copy(Blocks.POTTED_DANDELION).color(MaterialColor.COLOR_CYAN)));
-
-    public static final RegistryObject<Block> LIME_FLOWER = register("lime_flower",
-            () -> new FlowerBlock(() -> MobEffects.GLOWING, 5,
-                    BlockBehaviour.Properties.copy(Blocks.DANDELION).color(MaterialColor.COLOR_LIGHT_GREEN)),
-            YummyMod.TAB);
-    public static final RegistryObject<Block> POTTED_LIME_FLOWER = BLOCKS.register("potted_lime_flower",
-            () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, LIME_FLOWER,
-                    BlockBehaviour.Properties.copy(Blocks.POTTED_DANDELION).color(MaterialColor.COLOR_LIGHT_GREEN)));
-
     public static final RegistryObject<Item> PURIFIED_SOUL_BLOCK_ITEM = ITEMS.register("purified_soul_block",
             () -> new BlockItem(PURIFIED_SOUL_BLOCK.get(), new Item.Properties()
                     .fireResistant()
                     .tab(YummyMod.TAB)));
+
+    public static final RegistryObject<Block> ALEMBIC_BLOCK = register("alembic",
+            () -> new AlembicBlock(BlockBehaviour.Properties.of(Material.GLASS)), YummyMod.TAB);
 
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> block, CreativeModeTab tab) {
         RegistryObject<T> registryObject = BLOCKS.register(name, block);

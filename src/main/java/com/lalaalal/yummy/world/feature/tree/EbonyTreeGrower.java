@@ -11,6 +11,6 @@ public class EbonyTreeGrower extends AbstractTreeGrower {
     @Nullable
     @Override
     protected Holder<? extends ConfiguredFeature<?, ?>> getConfiguredFeature(RandomSource pRandom, boolean pLargeHive) {
-        return YummyConfiguredFeatures.EBONY.getHolder().get();
+        return YummyConfiguredFeatures.EBONY.getHolder().orElse(null);
     }
 }

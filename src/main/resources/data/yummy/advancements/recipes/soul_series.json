@@ -1,0 +1,34 @@
+{
+    "parent": "yummy:recipes/root",
+    "criteria": {
+        "has_item": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "yummy:purified_soul_metal"
+                        ]
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        }
+    },
+    "requirements": [
+        [
+            "has_item"
+        ]
+    ],
+    "rewards": {
+        "recipes": [
+            "yummy:sword_of_earth",
+            "yummy:sword_of_electricity",
+            "yummy:sword_of_fire",
+            "yummy:sword_of_ice",
+            "yummy:sword_of_life",
+            "yummy:sword_of_sound",
+            "yummy:sword_of_water",
+            "yummy:sword_of_wind"
+        ]
+    }
+}

@@ -4,6 +4,8 @@ import com.lalaalal.yummy.effect.Echo;
 import com.lalaalal.yummy.effect.EchoMark;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.DamageSource;
@@ -25,24 +27,35 @@ public class EchoSwordItem extends SwordItem {
 
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        int damage = damageItem(stack, 1, attacker, (entity) -> {
-        });
-        float damageModifier = target.getMaxHealth() * 0.4f;
-        target.hurt(DamageSource.mobAttack(attacker), damage + damageModifier);
+        float damage = (float) (Math.floor(target.getMaxHealth() / 5) * 2);
+        DamageSource damageSource = DamageSource.mobAttack(attacker);
+        if (getTier() == YummyTiers.GOD) {
+            damageSource = damageSource.bypassInvul();
+            damage = damage * 1.5f + target.getMaxHealth() * 0.02f;
+        }
+        target.hurt(damageSource, damage);
         EchoMark.markTarget(target, attacker);
         Echo.overlapEcho(target);
 
-        return super.hurtEnemy(stack, target, attacker);
+        return true;
+    }
+
+    @Override
+    public boolean isDamageable(ItemStack stack) {
+        return false;
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
-        if (!level.isClientSide) {
-            EchoMark.useMark(player);
-            return InteractionResultHolder.success(player.getItemInHand(usedHand));
+        ItemStack itemStack = player.getItemInHand(usedHand);
+        if (!level.isClientSide && EchoMark.useMark(player)) {
+            level.playSound(null, player.getOnPos(), SoundEvents.AMETHYST_BLOCK_FALL, SoundSource.PLAYERS, 1, 2);
+            level.playSound(null, player.getOnPos(), SoundEvents.BELL_RESONATE, SoundSource.PLAYERS, 1, 2);
+            player.getCooldowns().addCooldown(this, 20 * 10);
+            return InteractionResultHolder.success(itemStack);
         }
 
-        return super.use(level, player, usedHand);
+        return InteractionResultHolder.pass(itemStack);
     }
 
     @Override

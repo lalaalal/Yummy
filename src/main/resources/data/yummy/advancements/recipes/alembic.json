@@ -1,0 +1,42 @@
+{
+    "parent": "yummy:kill_herobrine",
+    "criteria": {
+        "cobblestone": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "minecraft:cobblestone"
+                        ]
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        },
+        "blaze_rod": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "minecraft:blaze_rod"
+                        ]
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        }
+    },
+    "requirements": [
+        [
+            "cobblestone"
+        ],
+        [
+            "blaze_rod"
+        ]
+    ],
+    "rewards": {
+        "recipes": [
+            "yummy:alembic"
+        ]
+    }
+}

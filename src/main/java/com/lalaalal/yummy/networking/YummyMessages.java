@@ -4,7 +4,6 @@ import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.networking.packet.PlayerDeltaMovePacket;
 import com.lalaalal.yummy.networking.packet.ShowParticlePacket;
 import com.lalaalal.yummy.networking.packet.ToggleHerobrineMusicPacket;
-import com.lalaalal.yummy.networking.packet.UseSteelArmorPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -30,11 +29,6 @@ public class YummyMessages {
                 .serverAcceptedVersions(s -> true)
                 .simpleChannel();
 
-        INSTANCE.messageBuilder(UseSteelArmorPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(UseSteelArmorPacket::new)
-                .encoder(UseSteelArmorPacket::encode)
-                .consumerMainThread(UseSteelArmorPacket::handle)
-                .add();
         INSTANCE.messageBuilder(ShowParticlePacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
                 .decoder(ShowParticlePacket::new)
                 .encoder(ShowParticlePacket::encode)

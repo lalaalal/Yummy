@@ -1,7 +1,7 @@
 package com.lalaalal.yummy.entity;
 
 import com.lalaalal.yummy.YummyMod;
-import com.lalaalal.yummy.misc.ItemDamageSource;
+import com.lalaalal.yummy.world.damagesource.ItemDamageSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -17,7 +17,7 @@ public class ThrownSpearOfLonginus extends ThrownSpear {
     }
 
     public ThrownSpearOfLonginus(Level level, LivingEntity shooter, ItemStack stack) {
-        super(YummyEntities.THROWN_SPEAR_OF_LONGINUS.get(), level, shooter, stack);
+        super(YummyEntities.SPEAR_OF_LONGINUS.get(), level, shooter, stack);
     }
 
     @Override

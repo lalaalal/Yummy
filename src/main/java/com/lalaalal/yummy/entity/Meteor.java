@@ -62,11 +62,6 @@ public class Meteor extends MarkFireball {
     }
 
     @Override
-    public Vec3 getDeltaMovement() {
-        return super.getDeltaMovement();
-    }
-
-    @Override
     protected void onHit(HitResult result) {
         super.onHit(result);
         Vec3 hitLocation = result.getLocation();

@@ -38,7 +38,7 @@ public class YummyEntities {
             () -> EntityType.Builder.of((EntityType.EntityFactory<ThrownSpear>) (type, level) -> new ThrownSpear(YummyEntities.MIGHTY_HOLY_SPEAR.get(), level), MobCategory.MISC)
                     .sized(0.5f, 0.5f)
                     .build(YummyMod.MOD_ID + ":mighty_holy_spear"));
-    public static final RegistryObject<EntityType<ThrownSpearOfLonginus>> THROWN_SPEAR_OF_LONGINUS = ENTITY_TYPES.register("spear_of_longinus",
+    public static final RegistryObject<EntityType<ThrownSpearOfLonginus>> SPEAR_OF_LONGINUS = ENTITY_TYPES.register("spear_of_longinus",
             () -> EntityType.Builder.of((EntityType.EntityFactory<ThrownSpearOfLonginus>) ThrownSpearOfLonginus::new, MobCategory.MISC)
                     .sized(0.5f, 0.5f)
                     .fireImmune()
@@ -75,8 +75,12 @@ public class YummyEntities {
 
     public static final RegistryObject<EntityType<FractureEntity>> FRACTURE_ENTITY = ENTITY_TYPES.register("fracture",
             () -> EntityType.Builder.of((EntityType.EntityFactory<FractureEntity>) FractureEntity::new, MobCategory.MISC)
-                    .sized(4, 2)
+                    .sized(5, 2)
                     .build(YummyMod.MOD_ID + ":fracture"));
+    public static final RegistryObject<EntityType<FractureExplosion>> FRACTURE_EXPLOSION = ENTITY_TYPES.register("fracture_explosion",
+            () -> EntityType.Builder.of((EntityType.EntityFactory<FractureExplosion>) FractureExplosion::new, MobCategory.MISC)
+                    .sized(1, 1)
+                    .build(YummyMod.MOD_ID + ":fracture_explosion"));
 
     public static final RegistryObject<EntityType<EbonyBoat>> EBONY_BOAT = ENTITY_TYPES.register("ebony_boat",
             () -> EntityType.Builder.of((EntityType.EntityFactory<EbonyBoat>) EbonyBoat::new, MobCategory.MISC)
