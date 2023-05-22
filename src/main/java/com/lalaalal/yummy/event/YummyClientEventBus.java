@@ -39,6 +39,11 @@ public class YummyClientEventBus {
     }
 
     @SubscribeEvent
+    public static void registerClientReloadListener(RegisterClientReloadListenersEvent event) {
+        event.registerReloadListener(YummyBlockEntityWithoutLevelRenderer.getInstance());
+    }
+
+    @SubscribeEvent
     public static void registerBlockColors(RegisterColorHandlersEvent.Block event) {
         event.register((state, level, pos, tint) -> level != null && pos != null ? BiomeColors.getAverageFoliageColor(level, pos) : FoliageColor.getDefaultColor(),
                 YummyBlocks.EBONY_LEAVES.get());

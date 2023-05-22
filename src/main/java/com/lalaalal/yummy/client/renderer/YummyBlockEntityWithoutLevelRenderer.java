@@ -16,10 +16,8 @@ import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.ItemModelShaper;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -28,7 +26,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.model.ForgeItemModelShaper;
 
 import java.util.Map;
 
@@ -49,29 +46,24 @@ public class YummyBlockEntityWithoutLevelRenderer extends BlockEntityWithoutLeve
 
     private Map<Item, EntityModel<? extends ThrownSpear>> modelMap = Map.of();
     private final EntityModelSet entityModelSet;
-    private ItemModelShaper itemModelShaper;
-    private ItemRenderer itemRenderer;
+    private final ItemRenderer itemRenderer;
+    private final ItemModelShaper itemModelShaper;
 
     public static YummyBlockEntityWithoutLevelRenderer getInstance() {
-        if (INSTANCE == null) {
-            Minecraft minecraft = Minecraft.getInstance();
-            ModelManager modelManager = minecraft.getModelManager();
-            INSTANCE = new YummyBlockEntityWithoutLevelRenderer(minecraft.getBlockEntityRenderDispatcher(), minecraft.getEntityModels());
-            INSTANCE.itemModelShaper = new ForgeItemModelShaper(modelManager);
-            INSTANCE.itemRenderer = minecraft.getItemRenderer();
-            INSTANCE.onResourceManagerReload(minecraft.getResourceManager());
-        }
+        if (INSTANCE == null)
+            INSTANCE = new YummyBlockEntityWithoutLevelRenderer(Minecraft.getInstance());
         return INSTANCE;
     }
 
-    public YummyBlockEntityWithoutLevelRenderer(BlockEntityRenderDispatcher pBlockEntityRenderDispatcher, EntityModelSet entityModelSet) {
-        super(pBlockEntityRenderDispatcher, entityModelSet);
-        this.entityModelSet = entityModelSet;
+    private YummyBlockEntityWithoutLevelRenderer(Minecraft minecraft) {
+        super(minecraft.getBlockEntityRenderDispatcher(), minecraft.getEntityModels());
+        this.entityModelSet = minecraft.getEntityModels();
+        this.itemRenderer = minecraft.getItemRenderer();
+        this.itemModelShaper = itemRenderer.getItemModelShaper();
     }
 
     @Override
-    public void onResourceManagerReload(ResourceManager resourcemanager) {
-        super.onResourceManagerReload(resourcemanager);
+    public void onResourceManagerReload(ResourceManager resourceManager) {
         EntityModel<ThrownSpear> thrownSpearModel = new ThrownSpearModel<>(entityModelSet.bakeLayer(ThrownSpearModel.LAYER_LOCATION));
         EntityModel<ThrownSpear> thrownMightyHolySpearModel = new ThrownMightyHolySpearModel<>(entityModelSet.bakeLayer(ThrownMightyHolySpearModel.LAYER_LOCATION));
         EntityModel<? extends ThrownSpear> thrownSpearOfLonginusModel = new ThrownSpearOfLonginusModel(entityModelSet.bakeLayer(ThrownSpearOfLonginusModel.LAYER_LOCATION));
