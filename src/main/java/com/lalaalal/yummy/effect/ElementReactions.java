@@ -16,41 +16,24 @@ public class ElementReactions {
                 Element.FIRE, () -> new MobEffectInstance(YummyEffects.CRYSTAL.get(), 60),
                 Element.ICE, () -> new MobEffectInstance(YummyEffects.CRYSTAL.get(), 60)
         ));
-        REACTIONS.put(Element.EARTH, earthReaction);
-
-        Reaction electricityReaction = new ElementSpecificReaction(Map.of(
-                Element.EARTH, () -> new MobEffectInstance(YummyEffects.CRYSTAL.get(), 60),
-                Element.LIFE, () -> new MobEffectInstance(YummyEffects.EMISSION.get(), 40),
-                Element.WATER, () -> new MobEffectInstance(YummyEffects.ELECTRIC_SHOCK.get(), 40)
-        ));
-        REACTIONS.put(Element.ELECTRICITY, electricityReaction);
-
-        Reaction fireReaction = new ElementSpecificReaction(Map.of(
-                Element.EARTH, () -> new MobEffectInstance(YummyEffects.CRYSTAL.get(), 60)
-        ));
-        REACTIONS.put(Element.FIRE, fireReaction);
-
-        Reaction iceReaction = new ElementSpecificReaction(Map.of(
-                Element.EARTH, () -> new MobEffectInstance(YummyEffects.CRYSTAL.get(), 60)
-        ));
-        REACTIONS.put(Element.ICE, iceReaction);
-
         Reaction lifeReaction = new ElementSpecificReaction(Map.of(
                 Element.ELECTRICITY, () -> new MobEffectInstance(YummyEffects.EMISSION.get(), 40, 2)
         ));
-        REACTIONS.put(Element.LIFE, lifeReaction);
-
         Reaction soundReaction = new ElementSpecificReaction(Map.of(
                 Element.SOUND, () -> new MobEffectInstance(YummyEffects.SOUND_WAVE.get(), 100)
         ));
-        REACTIONS.put(Element.SOUND, soundReaction);
-
         Reaction waterReaction = new ElementSpecificReaction(Map.of(
                 Element.ELECTRICITY, () -> new MobEffectInstance(YummyEffects.ELECTRIC_SHOCK.get(), 40)
         ));
-        REACTIONS.put(Element.WATER, waterReaction);
+        Reaction windReaction = (element) -> new MobEffectInstance(YummyEffects.DIFFUSION.get(), 40);
 
-        Reaction windReaction = new GeneralReaction(() -> new MobEffectInstance(YummyEffects.DIFFUSION.get(), 40));
+        REACTIONS.put(Element.EARTH, earthReaction);
+        REACTIONS.put(Element.ELECTRICITY, Reaction.EMPTY);
+        REACTIONS.put(Element.FIRE, Reaction.EMPTY);
+        REACTIONS.put(Element.ICE, Reaction.EMPTY);
+        REACTIONS.put(Element.LIFE, lifeReaction);
+        REACTIONS.put(Element.SOUND, soundReaction);
+        REACTIONS.put(Element.WATER, waterReaction);
         REACTIONS.put(Element.WIND, windReaction);
     }
 
@@ -65,25 +48,11 @@ public class ElementReactions {
         return reaction.getReactionMobEffect(b);
     }
 
+    @FunctionalInterface
     private interface Reaction {
+        Reaction EMPTY = element -> null;
+
         @Nullable MobEffectInstance getReactionMobEffect(Element element);
-    }
-
-    private static class GeneralReaction implements Reaction {
-        private Supplier<MobEffectInstance> supplier;
-
-        public GeneralReaction(Supplier<MobEffectInstance> supplier) {
-            this.supplier = supplier;
-        }
-
-        public void setEffectSupplier(Supplier<MobEffectInstance> supplier) {
-            this.supplier = supplier;
-        }
-
-        @Override
-        public @Nullable MobEffectInstance getReactionMobEffect(Element element) {
-            return supplier.get();
-        }
     }
 
     private static class ElementSpecificReaction implements Reaction {
@@ -91,14 +60,6 @@ public class ElementReactions {
 
         public ElementSpecificReaction(Map<Element, Supplier<MobEffectInstance>> map) {
             reactions = map;
-        }
-
-        public ElementSpecificReaction() {
-            reactions = Map.of();
-        }
-
-        public void addReaction(Element element, Supplier<MobEffectInstance> supplier) {
-            reactions.put(element, supplier);
         }
 
         @Nullable
