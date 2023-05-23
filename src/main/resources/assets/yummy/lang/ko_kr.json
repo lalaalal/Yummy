@@ -128,6 +128,8 @@
     "effect.yummy.sound_wave": "음파",
     "effect.yummy.diffusion": "확산",
     "death.effect.yummy.mark": "%2$s이 %1$s의 생명을 소모했습니다",
+    "death.attack.yummy.thrown_spear": "%1$s이(가) %2$s에 찔려 죽었습니다",
+    "death.attack.yummy.thrown_spear.player": "%1$s이(가) %3$s이(가) 던진 %2$s에 찔려 죽었습니다",
     "death.attack.yummy.spear_of_longinus": "%2$s에 %1$s의 AT 필드가 찢어졌습니다",
     "death.attack.yummy.spear_of_longinus.player": "%2$s에 %1$s의 AT 필드가 찢어졌습니다",
     "death.attack.yummy.thrown_spear_of_longinus.player": "%3$s가 던진 %2$s에 %1$s의 AT 필드가 찢어졌습니다",

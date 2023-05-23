@@ -33,8 +33,12 @@ public class ThrownSpearOfLonginus extends ThrownSpear {
     private void killEnemy(@Nullable Entity livingEntity) {
         if (livingEntity == null)
             return;
-        DamageSource damageSource = new ItemDamageSource(YummyMod.MOD_ID + ".thrown_spear_of_longinus", getOwner(), spearItem);
-        damageSource.bypassArmor().bypassInvul();
+        DamageSource damageSource = new ItemDamageSource(YummyMod.MOD_ID + ".thrown_spear_of_longinus", getOwner(), spearItem)
+                .bypassInvul()
+                .bypassArmor()
+                .bypassMagic()
+                .bypassEnchantments()
+                .setProjectile();
         livingEntity.hurt(damageSource, Float.MAX_VALUE);
         if (livingEntity.isAlive())
             livingEntity.kill();

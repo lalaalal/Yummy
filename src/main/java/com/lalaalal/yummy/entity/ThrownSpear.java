@@ -1,6 +1,9 @@
 package com.lalaalal.yummy.entity;
 
+import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.entity.ai.YummyAttributeModifiers;
+import com.lalaalal.yummy.world.damagesource.ItemDamageSource;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -51,6 +54,28 @@ public class ThrownSpear extends AbstractArrow {
         this.entityData.define(ID_FOIL, false);
     }
 
+    public byte getLoyalty() {
+        return this.entityData.get(ID_LOYALTY);
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag compoundTag) {
+        super.addAdditionalSaveData(compoundTag);
+        compoundTag.putBoolean("DealtDamage", dealtDamage);
+        compoundTag.put("Spear", spearItem.save(new CompoundTag()));
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag compoundTag) {
+        super.readAdditionalSaveData(compoundTag);
+        dealtDamage = compoundTag.getBoolean("DealtDamage");
+        if (compoundTag.contains("Spear")) {
+            this.spearItem = ItemStack.of(compoundTag.getCompound("Spear"));
+            this.entityData.set(ID_LOYALTY, (byte) EnchantmentHelper.getLoyalty(spearItem));
+            this.entityData.set(ID_FOIL, spearItem.hasFoil());
+        }
+    }
+
     @Override
     public void tick() {
         if (this.inGroundTime > 4) {
@@ -58,7 +83,7 @@ public class ThrownSpear extends AbstractArrow {
         }
 
         Entity owner = this.getOwner();
-        int loyaltyLevel = this.entityData.get(ID_LOYALTY);
+        int loyaltyLevel = getLoyalty();
         if (loyaltyLevel > 0 && (this.dealtDamage || this.isNoPhysics()) && owner != null) {
             if (!this.isAcceptibleReturnOwner()) {
                 if (!this.level.isClientSide && this.pickup == AbstractArrow.Pickup.ALLOWED) {
@@ -113,7 +138,7 @@ public class ThrownSpear extends AbstractArrow {
         float damage = YummyAttributeModifiers.calcItemAttribute(1, spearItem, EquipmentSlot.MAINHAND, Attributes.ATTACK_DAMAGE);
         Entity owner = getOwner();
         damage += spearItem.getEnchantmentLevel(Enchantments.IMPALING);
-        DamageSource damageSource = DamageSource.thrown(this, owner == null ? this : owner);
+        DamageSource damageSource = new ItemDamageSource(YummyMod.MOD_ID + ".thrown_spear", owner, spearItem).setProjectile();
         entity.hurt(damageSource, damage);
     }
 

@@ -22,7 +22,10 @@ public class SpearOfLonginusItem extends SpearItem {
             return;
 
         DamageSource damageSource = new ItemDamageSource(YummyMod.MOD_ID + ".spear_of_longinus", null, itemStack)
-                .bypassArmor();
+                .bypassInvul()
+                .bypassArmor()
+                .bypassMagic()
+                .bypassEnchantments();
         float damage = user.getMaxHealth() * damageRate;
         user.hurt(damageSource, damage);
     }
@@ -31,7 +34,10 @@ public class SpearOfLonginusItem extends SpearItem {
     public boolean onLeftClickEntity(ItemStack itemStack, Player player, Entity entity) {
         if (!player.level.isClientSide) {
             DamageSource damageSource = new ItemDamageSource(YummyMod.MOD_ID + ".spear_of_longinus", player, itemStack)
-                    .bypassInvul();
+                    .bypassInvul()
+                    .bypassArmor()
+                    .bypassMagic()
+                    .bypassEnchantments();
             entity.hurt(damageSource, Float.MAX_VALUE);
             if (entity instanceof LivingEntity livingEntity && livingEntity.getHealth() > 0)
                 livingEntity.kill();

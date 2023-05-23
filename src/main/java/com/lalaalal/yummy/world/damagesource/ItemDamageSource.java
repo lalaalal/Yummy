@@ -11,8 +11,8 @@ public class ItemDamageSource extends DamageSource {
     private final Entity source;
     private final ItemStack usedItem;
 
-    public ItemDamageSource(String itemType, @Nullable Entity source, ItemStack usedItem) {
-        super(itemType);
+    public ItemDamageSource(String id, @Nullable Entity source, ItemStack usedItem) {
+        super(id);
         this.source = source;
         this.usedItem = usedItem;
     }
