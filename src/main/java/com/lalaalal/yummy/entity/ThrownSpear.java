@@ -94,12 +94,12 @@ public class ThrownSpear extends AbstractArrow {
             } else {
                 this.setNoPhysics(true);
                 Vec3 vec3 = owner.getEyePosition().subtract(this.position());
-                this.setPosRaw(this.getX(), this.getY() + vec3.y * 0.015 * (double)loyaltyLevel, this.getZ());
+                this.setPosRaw(this.getX(), this.getY() + vec3.y * 0.015 * loyaltyLevel, this.getZ());
                 if (this.level.isClientSide) {
                     this.yOld = this.getY();
                 }
 
-                double scale = 0.05 * (double)loyaltyLevel;
+                double scale = 0.05 * loyaltyLevel;
                 this.setDeltaMovement(this.getDeltaMovement().scale(0.95).add(vec3.normalize().scale(scale)));
                 if (this.clientSideReturnTickCount == 0) {
                     this.playSound(SoundEvents.TRIDENT_RETURN, 10.0f, 1.0f);
@@ -126,9 +126,9 @@ public class ThrownSpear extends AbstractArrow {
         SoundEvent soundevent = SoundEvents.TRIDENT_HIT;
         Entity entity = result.getEntity();
 
-        hurtHitEntity(entity);
         if (this.getType() != YummyEntities.SPEAR_OF_LONGINUS.get() && entity.getType() == EntityType.ENDERMAN)
             return;
+        hurtHitEntity(entity);
 
         this.setDeltaMovement(this.getDeltaMovement().multiply(-0.01D, -0.1D, -0.01D));
         this.playSound(soundevent, 1.0F, 1.0F);
