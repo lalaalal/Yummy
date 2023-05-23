@@ -97,6 +97,7 @@ public class SpearItem extends Item {
     protected void throwSpear(ItemStack itemStack, Level level, LivingEntity livingEntity) {
         if (livingEntity instanceof Player player) {
             ThrownSpear spear = spearProvider.create(level, livingEntity, itemStack);
+            spear.setOwner(livingEntity);
             spear.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 2.5F, 1.0F);
             if (player.getAbilities().instabuild)
                 spear.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;

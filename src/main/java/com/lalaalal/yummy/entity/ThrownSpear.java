@@ -113,7 +113,7 @@ public class ThrownSpear extends AbstractArrow {
         float damage = YummyAttributeModifiers.calcItemAttribute(1, spearItem, EquipmentSlot.MAINHAND, Attributes.ATTACK_DAMAGE);
         Entity owner = getOwner();
         damage += spearItem.getEnchantmentLevel(Enchantments.IMPALING);
-        DamageSource damageSource = DamageSource.thrown(owner == null ? entity : owner, this);
+        DamageSource damageSource = DamageSource.thrown(this, owner == null ? this : owner);
         entity.hurt(damageSource, damage);
     }
 
