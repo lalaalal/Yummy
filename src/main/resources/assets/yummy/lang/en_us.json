@@ -128,6 +128,8 @@
     "effect.yummy.sound_wave": "Sound Wave",
     "effect.yummy.diffusion": "Diffusion",
     "death.effect.yummy.mark": "The %2$s has consumed %1$s's life",
+    "death.attack.yummy.thrown_spear": "%1$s was killed by %2$s",
+    "death.attack.yummy.thrown_spear.player": "%1$s was killed by %2$s %3$s thrown",
     "death.attack.yummy.spear_of_longinus": "%1$s's AT field is torn by %2$s",
     "death.attack.yummy.spear_of_longinus.player": "%1$s's AT field is torn by %2$s",
     "death.attack.yummy.thrown_spear_of_longinus.player": "%1$s's AT field is torn by %2$s %3$s threw",
