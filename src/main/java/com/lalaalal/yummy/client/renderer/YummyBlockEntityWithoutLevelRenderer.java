@@ -76,7 +76,7 @@ public class YummyBlockEntityWithoutLevelRenderer extends BlockEntityWithoutLeve
 
     @Override
     public void renderByItem(ItemStack itemStack, ItemTransforms.TransformType transformType, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
-        boolean renderAsItem = transformType == ItemTransforms.TransformType.GUI || transformType == ItemTransforms.TransformType.GROUND || transformType == ItemTransforms.TransformType.FIXED;
+        boolean renderAsItem = transformType == ItemTransforms.TransformType.GUI || transformType == ItemTransforms.TransformType.FIXED;
         if (renderAsItem) {
             renderSpearAsItem(itemStack, transformType, poseStack, buffer, packedLight, packedOverlay);
         } else {
