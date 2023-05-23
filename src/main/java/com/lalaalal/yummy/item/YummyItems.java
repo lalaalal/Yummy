@@ -36,6 +36,7 @@ public class YummyItems {
     public static final RegistryObject<Item> MIGHTY_HOLY_SPEAR = ITEMS.register("mighty_holy_spear",
             () -> new SpearItem(new Item.Properties()
                     .tab(YummyMod.TAB)
+                    .fireResistant()
                     .rarity(Rarity.EPIC), YummyTiers.GOD, -1, 2, 3, YummyEntities.MIGHTY_HOLY_SPEAR.get()));
     public static final RegistryObject<Item> SPEAR_OF_LONGINUS = ITEMS.register("spear_of_longinus",
             () -> new SpearOfLonginusItem(new Item.Properties()
