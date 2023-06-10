@@ -3,9 +3,9 @@ package com.lalaalal.yummy.client.model;
 import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.entity.AbstractHerobrine;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class AbstractHerobrineModel<T extends AbstractHerobrine> extends AnimatedGeoModel<T> {
+public class AbstractHerobrineModel<T extends AbstractHerobrine> extends GeoModel<T> {
     public static final ResourceLocation MODEL_RESOURCE = new ResourceLocation(YummyMod.MOD_ID, "geo/herobrine.geo.json");
     public static final ResourceLocation SHADOW_MODEL_RESOURCE = new ResourceLocation(YummyMod.MOD_ID, "geo/shadow_herobrine.geo.json");
     public static final ResourceLocation TEXTURE_RESOURCE = new ResourceLocation(YummyMod.MOD_ID, "textures/entity/herobrine.png");

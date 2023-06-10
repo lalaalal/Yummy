@@ -5,7 +5,7 @@ import com.lalaalal.yummy.client.model.MeteorModel;
 import com.lalaalal.yummy.entity.Meteor;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -29,7 +29,7 @@ public class MeteorRenderer extends EntityRenderer<Meteor> {
     public void render(Meteor pEntity, float pEntityYaw, float pPartialTicks, PoseStack pMatrixStack, MultiBufferSource pBuffer, int pPackedLight) {
         pMatrixStack.pushPose();
         pMatrixStack.translate(0, -1.2, 0);
-        pMatrixStack.mulPose(Vector3f.YN.rotationDegrees(pEntity.getRotationDegree()));
+        pMatrixStack.mulPose(Axis.YN.rotationDegrees(pEntity.getRotationDegree()));
         VertexConsumer vertexConsumer = pBuffer.getBuffer(model.renderType(getTextureLocation(pEntity)));
         this.model.renderToBuffer(pMatrixStack, vertexConsumer, pPackedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         pMatrixStack.popPose();

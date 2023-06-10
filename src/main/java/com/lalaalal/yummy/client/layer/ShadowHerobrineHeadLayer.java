@@ -4,20 +4,24 @@ import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.client.renderer.ShadowHerobrineRenderer;
 import com.lalaalal.yummy.entity.ShadowHerobrine;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.renderers.geo.layer.AbstractLayerGeo;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
+import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 
-public class ShadowHerobrineHeadLayer extends AbstractLayerGeo<ShadowHerobrine> {
+public class ShadowHerobrineHeadLayer extends GeoRenderLayer<ShadowHerobrine> {
     private static final ResourceLocation HEAD_TEXTURE_LOCATION = new ResourceLocation(YummyMod.MOD_ID, "textures/entity/shadow_herobrine_head.png");
 
     public ShadowHerobrineHeadLayer(ShadowHerobrineRenderer renderer) {
-        super(renderer, shadowHerobrine -> HEAD_TEXTURE_LOCATION, renderer.getGeoModelProvider()::getModelResource);
+        super(renderer);
     }
 
     @Override
-    public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, ShadowHerobrine entityLivingBaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        ResourceLocation textureLocation = funcGetCurrentTexture.apply(entityLivingBaseIn);
-        reRenderCurrentModelInRenderer(entityLivingBaseIn, partialTicks, matrixStackIn, bufferIn, packedLightIn, getRenderType(textureLocation));
+    public void render(PoseStack poseStack, ShadowHerobrine animatable, BakedGeoModel bakedModel, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
+        RenderType headRenderType = RenderType.entityTranslucent(HEAD_TEXTURE_LOCATION);
+        VertexConsumer vertexConsumer = bufferSource.getBuffer(headRenderType);
+        getRenderer().reRender(bakedModel, poseStack, bufferSource, animatable, headRenderType, vertexConsumer, partialTick, packedLight, packedOverlay, 1f, 1f, 1f, 1f);
     }
 }

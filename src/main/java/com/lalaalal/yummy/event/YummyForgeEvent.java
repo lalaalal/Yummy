@@ -7,6 +7,7 @@ import com.lalaalal.yummy.block.entity.YummyBlockEntities;
 import com.lalaalal.yummy.effect.Echo;
 import com.lalaalal.yummy.effect.YummyEffects;
 import com.lalaalal.yummy.entity.Herobrine;
+import com.lalaalal.yummy.world.damagesource.YummyDamageSources;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -56,7 +57,7 @@ public class YummyForgeEvent {
             float multiple = 0.1f * instance.getAmplifier();
             float amount = event.getAmount() * multiple;
             if (event.getAmount() != Float.MAX_VALUE)
-                livingEntity.hurt(event.getSource().bypassInvul(), amount);
+                livingEntity.hurt(YummyDamageSources.echoMark(livingEntity.level(), YummyEffects.ECHO.get()), amount);
         }
     }
 

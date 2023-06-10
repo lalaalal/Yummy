@@ -3,6 +3,7 @@ package com.lalaalal.yummy.entity;
 import com.lalaalal.yummy.particle.YummyParticles;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -37,7 +38,7 @@ public class FractureExplosion extends Entity {
         super.tick();
 
         if (currentFrame >= FRAME_ORDER.length) {
-            level.addParticle(YummyParticles.CORRUPTED_SMALL_FLAME.get(), getX(), getY(), getZ(), 0, 0, 0);
+            level().addParticle(YummyParticles.CORRUPTED_SMALL_FLAME.get(), getX(), getY(), getZ(), 0, 0, 0);
             discard();
             return;
         }
@@ -65,7 +66,7 @@ public class FractureExplosion extends Entity {
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return new ClientboundAddEntityPacket(this, scalePercentage);
     }
 

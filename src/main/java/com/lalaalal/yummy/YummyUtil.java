@@ -1,8 +1,6 @@
 package com.lalaalal.yummy;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix3f;
-import com.mojang.math.Matrix4f;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -11,10 +9,20 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
 
 import java.util.function.Consumer;
 
 public class YummyUtil {
+    public static BlockPos blockPos(double x, double y, double z) {
+        return new BlockPos((int) x, (int) y, (int) z);
+    }
+
+    public static BlockPos blockPos(Vec3 vec3) {
+        return blockPos(vec3.x, vec3.y, vec3.z);
+    }
+
     public static BlockPos randomPos(BlockPos pos, int range, RandomSource random) {
         return randomPos(pos.getX(), pos.getY(), pos.getZ(), range, random);
     }
@@ -61,7 +69,7 @@ public class YummyUtil {
             if (t == Math.PI * 1.5)
                 z -= 1;
 
-            consumer.accept(new BlockPos(x, basePos.getY(), z));
+            consumer.accept(new BlockPos((int) x, basePos.getY(), (int) z));
         }
     }
 

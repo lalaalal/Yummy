@@ -1,15 +1,15 @@
 package com.lalaalal.yummy.entity;
 
 import com.lalaalal.yummy.YummyMod;
+import com.lalaalal.yummy.world.damagesource.YummyDamageSources;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
-import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
@@ -60,7 +60,7 @@ public class FractureEntity extends Entity {
 
     @Override
     public void tick() {
-        if (tick >= lifetime - 5 && !level.isClientSide) {
+        if (tick >= lifetime - 5 && !level().isClientSide) {
             double t = tick - lifetime + 5.0;
             double currentWidth = (width / 5.0) * t;
             double angle = (90 + getYRot()) * Math.PI / 180;
@@ -68,16 +68,16 @@ public class FractureEntity extends Entity {
             double z = Math.sin(angle) * currentWidth;
             double y = (height / 5.0) * t;
             double explosionScale = 1 + Math.sin((Math.PI / 5) * t);
-            FractureExplosion explosion = new FractureExplosion(level, (int) (explosionScale * 50));
+            FractureExplosion explosion = new FractureExplosion(level(), (int) (explosionScale * 50));
             explosion.setPos(new Vec3(getX() + x, getY() + y, getZ() + z));
-            level.addFreshEntity(explosion);
+            level().addFreshEntity(explosion);
         }
-        if (tick == lifetime && !level.isClientSide) {
-            level.explode(this, null, null, getX(), getY(), getZ(), 1, false, Explosion.BlockInteraction.NONE);
+        if (tick == lifetime && !level().isClientSide) {
+            level().explode(this, null, null, getX(), getY(), getZ(), 1, false, Level.ExplosionInteraction.NONE);
             if (spawner != null) {
-                List<LivingEntity> entities = level.getNearbyEntities(LivingEntity.class, TargetingConditions.DEFAULT, spawner, getBoundingBox().inflate(0, 2, 2));
+                List<LivingEntity> entities = level().getNearbyEntities(LivingEntity.class, TargetingConditions.DEFAULT, spawner, getBoundingBox().inflate(0, 2, 2));
                 for (LivingEntity entity : entities)
-                    entity.hurt(new IndirectEntityDamageSource(YummyMod.MOD_ID + ".fracture", this, spawner), 166);
+                    entity.hurt(YummyDamageSources.simple(level(), YummyMod.MOD_ID + ".fracture", this, spawner), 166);
             }
 
             discard();
@@ -101,7 +101,7 @@ public class FractureEntity extends Entity {
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return new ClientboundAddEntityPacket(this, rotateDegree);
     }
 

@@ -32,6 +32,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class SpearItem extends TieredItem implements Vanishable {
     private static final Set<Enchantment> ENCHANTABLE = Set.of(Enchantments.LOYALTY, Enchantments.MENDING, Enchantments.UNBREAKING, Enchantments.IMPALING);
@@ -46,8 +47,8 @@ public class SpearItem extends TieredItem implements Vanishable {
         this(properties, tier, attackDamageModifier, attackSpeedModifier, attackReachModifier, ThrownSpear::new);
     }
 
-    public SpearItem(Properties properties, Tier tier, int attackDamageModifier, float attackSpeedModifier, int attackReachModifier, EntityType<? extends ThrownSpear> spearType) {
-        this(properties, tier, attackDamageModifier, attackSpeedModifier, attackReachModifier, (level, shooter, itemStack) -> new ThrownSpear(spearType, level, shooter, itemStack));
+    public SpearItem(Properties properties, Tier tier, int attackDamageModifier, float attackSpeedModifier, int attackReachModifier, Supplier<EntityType<? extends ThrownSpear>> spearType) {
+        this(properties, tier, attackDamageModifier, attackSpeedModifier, attackReachModifier, (level, shooter, itemStack) -> new ThrownSpear(spearType.get(), level, shooter, itemStack));
     }
 
     public SpearItem(Properties properties, Tier tier, int attackDamageModifier, float attackSpeedModifier, int attackReachModifier, SpearProvider spearProvider) {
@@ -55,8 +56,8 @@ public class SpearItem extends TieredItem implements Vanishable {
         this.spearProvider = spearProvider;
         this.attackDamage = tier.getAttackDamageBonus() + attackDamageModifier;
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-        builder.put(ForgeMod.REACH_DISTANCE.get(), new AttributeModifier(REACH_DISTANCE_UUID, "Weapon modifier", attackReachModifier, AttributeModifier.Operation.ADDITION));
-        builder.put(ForgeMod.ATTACK_RANGE.get(), new AttributeModifier(ATTACK_RANGE_UUID, "Weapon modifier", attackReachModifier, AttributeModifier.Operation.ADDITION));
+        builder.put(ForgeMod.BLOCK_REACH.get(), new AttributeModifier(REACH_DISTANCE_UUID, "Weapon modifier", attackReachModifier, AttributeModifier.Operation.ADDITION));
+        builder.put(ForgeMod.ENTITY_REACH.get(), new AttributeModifier(ATTACK_RANGE_UUID, "Weapon modifier", attackReachModifier, AttributeModifier.Operation.ADDITION));
         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", attackDamage, AttributeModifier.Operation.ADDITION));
         builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", attackSpeedModifier, AttributeModifier.Operation.ADDITION));
         this.defaultModifiers = builder.build();
@@ -138,8 +139,8 @@ public class SpearItem extends TieredItem implements Vanishable {
         AttributeModifier attributeModifier = new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", attackDamage + impalingLevel, AttributeModifier.Operation.ADDITION);
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         Multimap<Attribute, AttributeModifier> modifiers = builder
-                .putAll(ForgeMod.REACH_DISTANCE.get(), defaultModifiers.get(ForgeMod.REACH_DISTANCE.get()))
-                .putAll(ForgeMod.ATTACK_RANGE.get(), defaultModifiers.get(ForgeMod.ATTACK_RANGE.get()))
+                .putAll(ForgeMod.BLOCK_REACH.get(), defaultModifiers.get(ForgeMod.BLOCK_REACH.get()))
+                .putAll(ForgeMod.ENTITY_REACH.get(), defaultModifiers.get(ForgeMod.ENTITY_REACH.get()))
                 .put(Attributes.ATTACK_DAMAGE, attributeModifier)
                 .putAll(Attributes.ATTACK_SPEED, defaultModifiers.get(Attributes.ATTACK_SPEED))
                 .build();

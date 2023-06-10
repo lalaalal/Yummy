@@ -1,7 +1,6 @@
 package com.lalaalal.yummy.entity;
 
-import com.lalaalal.yummy.YummyMod;
-import com.lalaalal.yummy.world.damagesource.ItemDamageSource;
+import com.lalaalal.yummy.world.damagesource.YummyDamageSources;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -30,17 +29,12 @@ public class ThrownSpearOfLonginus extends ThrownSpear {
         }
     }
 
-    private void killEnemy(@Nullable Entity livingEntity) {
-        if (livingEntity == null)
+    private void killEnemy(@Nullable Entity entity) {
+        if (!(entity instanceof LivingEntity livingEntity))
             return;
-        DamageSource damageSource = new ItemDamageSource(YummyMod.MOD_ID + ".thrown_spear_of_longinus", getOwner(), spearItem)
-                .bypassInvul()
-                .bypassArmor()
-                .bypassMagic()
-                .bypassEnchantments()
-                .setProjectile();
-        livingEntity.hurt(damageSource, Float.MAX_VALUE);
+        DamageSource damageSource = YummyDamageSources.thrownLonginus(entity.level(), getOwner(), spearItem);
+        entity.hurt(damageSource, Float.MAX_VALUE);
         if (livingEntity.isAlive())
-            livingEntity.kill();
+            entity.kill();
     }
 }

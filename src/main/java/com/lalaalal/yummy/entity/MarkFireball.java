@@ -5,12 +5,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Fireball;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
@@ -68,11 +66,11 @@ public class MarkFireball extends Fireball {
     }
 
     public void explodeAndDiscard() {
-        if (!this.level.isClientSide) {
+        if (!this.level().isClientSide) {
             if (isMarkEntities())
-                markEntities(level);
+                markEntities(level());
             if (explosion)
-                this.level.explode(this.getOwner(), DamageSource.fireball(this, getOwner()), null, this.getX(), this.getY(), this.getZ(), explosionPower, true, Explosion.BlockInteraction.DESTROY);
+                this.level().explode(this.getOwner(), damageSources().fireball(this, getOwner()), null, this.getX(), this.getY(), this.getZ(), explosionPower, true, Level.ExplosionInteraction.BLOCK);
             this.discard();
         }
     }
@@ -100,9 +98,9 @@ public class MarkFireball extends Fireball {
     @Override
     protected void onHitEntity(EntityHitResult result) {
         super.onHitEntity(result);
-        if (!this.level.isClientSide) {
+        if (!level().isClientSide) {
             Entity entity = result.getEntity();
-            entity.hurt(DamageSource.fireball(this, getOwner()), 6.0F);
+            entity.hurt(damageSources().fireball(this, getOwner()), 6.0F);
         }
     }
 

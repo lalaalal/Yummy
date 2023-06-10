@@ -2,6 +2,7 @@ package com.lalaalal.yummy.item;
 
 import com.lalaalal.yummy.effect.Echo;
 import com.lalaalal.yummy.effect.EchoMark;
+import com.lalaalal.yummy.world.damagesource.YummyDamageSources;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -9,6 +10,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -26,18 +28,20 @@ public class EchoSwordItem extends SwordItem {
     }
 
     @Override
-    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        float damage = (float) (Math.floor(target.getMaxHealth() / 5) * 2);
-        DamageSource damageSource = DamageSource.mobAttack(attacker);
+    public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
+        if (!(entity instanceof LivingEntity target))
+            return super.onLeftClickEntity(stack, player, entity);
+        float damage = getTier().getAttackDamageBonus() + (float) (Math.floor(target.getMaxHealth() / 5) * 2);
+        DamageSource damageSource = player.damageSources().mobAttack(player);
         if (getTier() == YummyTiers.GOD) {
-            damageSource = damageSource.bypassInvul();
+            damageSource = YummyDamageSources.godEchoSword(player);
             damage = damage * 1.5f + target.getMaxHealth() * 0.02f;
         }
         target.hurt(damageSource, damage);
-        EchoMark.markTarget(target, attacker);
+        EchoMark.markTarget(target, player);
         Echo.overlapEcho(target);
 
-        return true;
+        return false;
     }
 
     @Override

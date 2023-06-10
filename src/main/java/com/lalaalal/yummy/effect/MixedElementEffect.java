@@ -1,6 +1,5 @@
 package com.lalaalal.yummy.effect;
 
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
@@ -20,6 +19,6 @@ public class MixedElementEffect extends MobEffect {
 
     @Override
     public void applyEffectTick(LivingEntity livingEntity, int amplifier) {
-        livingEntity.hurt(DamageSource.MAGIC, 2 * damageMultiplier);
+        livingEntity.hurt(livingEntity.damageSources().magic(), 2 * damageMultiplier);
     }
 }

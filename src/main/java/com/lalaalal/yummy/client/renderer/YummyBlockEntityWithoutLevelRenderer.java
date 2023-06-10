@@ -8,14 +8,13 @@ import com.lalaalal.yummy.entity.ThrownSpear;
 import com.lalaalal.yummy.item.YummyItems;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.ItemModelShaper;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
@@ -23,6 +22,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -75,25 +75,25 @@ public class YummyBlockEntityWithoutLevelRenderer extends BlockEntityWithoutLeve
     }
 
     @Override
-    public void renderByItem(ItemStack itemStack, ItemTransforms.TransformType transformType, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
-        boolean renderAsItem = transformType == ItemTransforms.TransformType.GUI || transformType == ItemTransforms.TransformType.FIXED;
+    public void renderByItem(ItemStack itemStack, ItemDisplayContext itemDisplayContext, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
+        boolean renderAsItem = itemDisplayContext == ItemDisplayContext.GUI || itemDisplayContext == ItemDisplayContext.FIXED;
         if (renderAsItem) {
-            renderSpearAsItem(itemStack, transformType, poseStack, buffer, packedLight, packedOverlay);
+            renderSpearAsItem(itemStack, itemDisplayContext, poseStack, buffer, packedLight, packedOverlay);
         } else {
-            renderSpearInHand(itemStack, transformType, poseStack, buffer, packedLight, packedOverlay);
+            renderSpearInHand(itemStack, itemDisplayContext, poseStack, buffer, packedLight, packedOverlay);
         }
     }
 
-    private void renderSpearAsItem(ItemStack itemStack, ItemTransforms.TransformType transformType, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
+    private void renderSpearAsItem(ItemStack itemStack, ItemDisplayContext itemDisplayContext, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
         Item item = itemStack.getItem();
         if (MODEL_RESOURCE_LOCATIONS.containsKey(item)) {
             ModelResourceLocation modelResourceLocation = MODEL_RESOURCE_LOCATIONS.get(item);
             BakedModel model = this.itemModelShaper.getModelManager().getModel(modelResourceLocation);
-            itemRenderer.render(itemStack, transformType, false, poseStack, buffer, packedLight, packedOverlay, model);
+            itemRenderer.render(itemStack, itemDisplayContext, false, poseStack, buffer, packedLight, packedOverlay, model);
         }
     }
 
-    private void renderSpearInHand(ItemStack itemStack, ItemTransforms.TransformType transformType, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
+    private void renderSpearInHand(ItemStack itemStack, ItemDisplayContext itemDisplayContext, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
         Item item = itemStack.getItem();
         if (MODEL_TEXTURE_LOCATIONS.containsKey(item)) {
             EntityModel<? extends ThrownSpear> spearModel = modelMap.get(item);
@@ -101,9 +101,9 @@ public class YummyBlockEntityWithoutLevelRenderer extends BlockEntityWithoutLeve
 
             poseStack.pushPose();
             Player player = Minecraft.getInstance().player;
-            boolean notFirstPerson = transformType != ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND && transformType != ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND;
+            boolean notFirstPerson = itemDisplayContext != ItemDisplayContext.FIRST_PERSON_LEFT_HAND && itemDisplayContext != ItemDisplayContext.FIRST_PERSON_RIGHT_HAND;
             if (player != null && player.isUsingItem() && notFirstPerson) {
-                poseStack.mulPose(Vector3f.ZP.rotationDegrees(180));
+                poseStack.mulPose(Axis.ZP.rotationDegrees(180));
                 poseStack.translate(0, 1, 0);
             }
             poseStack.scale(1.0F, -1.0F, -1.0F);

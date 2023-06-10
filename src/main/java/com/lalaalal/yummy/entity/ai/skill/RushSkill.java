@@ -4,8 +4,8 @@ import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.YummyUtil;
 import com.lalaalal.yummy.effect.HerobrineMark;
 import com.lalaalal.yummy.entity.FloatingBlockEntity;
+import com.lalaalal.yummy.world.damagesource.YummyDamageSources;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.PathfinderMob;
@@ -108,7 +108,7 @@ public class RushSkill extends TickableSkill {
     private void rush(int tick) {
         Vec3 stepMovement = moveVector.scale(tick / (double) RUSH_DURATION);
         Vec3 stepPos = rushStartPos.add(stepMovement);
-        BlockPos sturdyBlockPos = YummyUtil.findHorizonPos(new BlockPos(targetPos), level);
+        BlockPos sturdyBlockPos = YummyUtil.findHorizonPos(YummyUtil.blockPos(targetPos), level);
         usingEntity.moveTo(stepPos.x, sturdyBlockPos.getY(), stepPos.z);
         usingEntity.setDeltaMovement(Vec3.ZERO);
         LivingEntity target = usingEntity.getTarget();
@@ -116,7 +116,7 @@ public class RushSkill extends TickableSkill {
             return;
 
         if (!pushed && usingEntity.distanceToSqr(target) < 2) {
-            target.hurt(new EntityDamageSource(YummyMod.MOD_ID + ".herobrine.rush", usingEntity), 1);
+            target.hurt(YummyDamageSources.simple(level, YummyMod.MOD_ID + ".herobrine.rush", usingEntity), 1);
             target.knockback(6, -viewVector.x, -viewVector.z);
             HerobrineMark.overlapMark(target, usingEntity);
             pushed = true;
@@ -129,8 +129,8 @@ public class RushSkill extends TickableSkill {
             Vec3 offset1 = YummyUtil.calcXZRotation(moveVector.reverse(), Math.PI / (12 * i), scale);
             Vec3 offset2 = YummyUtil.calcXZRotation(moveVector.reverse(), Math.PI / (-12 * i), scale);
 
-            floatBlock(new BlockPos(targetPos.add(offset1)));
-            floatBlock(new BlockPos(targetPos.add(offset2)));
+            floatBlock(YummyUtil.blockPos(targetPos.add(offset1)));
+            floatBlock(YummyUtil.blockPos(targetPos.add(offset2)));
         }
     }
 

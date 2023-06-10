@@ -18,7 +18,7 @@ public class YummyClientForgeEvent {
         Player player = Minecraft.getInstance().player;
         if (player != null) {
             AABB area = player.getBoundingBox().inflate(15);
-            CameraShakingEntity cameraShakingEntity = player.level.getNearestEntity(CameraShakingEntity.class, TargetingConditions.forNonCombat(), player, player.getX(), player.getY(), player.getZ(), area);
+            CameraShakingEntity cameraShakingEntity = player.level().getNearestEntity(CameraShakingEntity.class, TargetingConditions.forNonCombat(), player, player.getX(), player.getY(), player.getZ(), area);
             if (cameraShakingEntity != null && cameraShakingEntity.isCameraShaking()) {
                 float ticksExistedDelta = player.tickCount;
                 double shakeAmplitude = 0.03;

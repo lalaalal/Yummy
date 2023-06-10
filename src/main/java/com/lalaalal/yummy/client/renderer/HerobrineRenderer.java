@@ -5,8 +5,7 @@ import com.lalaalal.yummy.client.model.AbstractHerobrineModel;
 import com.lalaalal.yummy.entity.Herobrine;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -14,9 +13,9 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.geo.render.built.GeoModel;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
-import software.bernie.geckolib3.model.provider.GeoModelProvider;
+import org.joml.Matrix4f;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
 public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine> {
     private static final ResourceLocation HEROBRINE_EXPLODING_LOCATION = new ResourceLocation(YummyMod.MOD_ID, "textures/entity/herobrine_exploding.png");
@@ -26,7 +25,7 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine> {
         this(renderManager, new AbstractHerobrineModel<>());
     }
 
-    public HerobrineRenderer(EntityRendererProvider.Context renderManager, AnimatedGeoModel<Herobrine> model) {
+    public HerobrineRenderer(EntityRendererProvider.Context renderManager, GeoModel<Herobrine> model) {
         super(renderManager, model);
     }
 
@@ -35,7 +34,7 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine> {
         if (animatable.getDeathTick() > 0) {
             float tickRate = animatable.getDeathTick() / (float) Herobrine.DEATH_TICK_DURATION;
 
-            renderExploding(poseStack, bufferSource, partialTick, packedLight, tickRate);
+            renderExploding(animatable, poseStack, bufferSource, partialTick, packedLight, tickRate);
             renderLight(poseStack, bufferSource, tickRate);
             return;
         }
@@ -43,17 +42,17 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine> {
         super.render(animatable, entityYaw, partialTick, poseStack, bufferSource, packedLight);
     }
 
-    private void renderExploding(PoseStack poseStack, MultiBufferSource bufferSource, float partialTick, int packedLight, float tickRate) {
-        GeoModelProvider<Herobrine> modelProvider = getGeoModelProvider();
-        GeoModel model = modelProvider.getModel(modelProvider.getModelResource(animatable));
+    private void renderExploding(Herobrine animatable, PoseStack poseStack, MultiBufferSource bufferSource, float partialTick, int packedLight, float tickRate) {
+        GeoModel<Herobrine> model = getGeoModel();
+        BakedGeoModel bakedGeoModel = model.getBakedModel(model.getModelResource(animatable));
 
         RenderType explosionAlpha = RenderType.dragonExplosionAlpha(HEROBRINE_EXPLODING_LOCATION);
         VertexConsumer explosionVertexConsumer = bufferSource.getBuffer(explosionAlpha);
-        render(model, animatable, partialTick, explosionAlpha, poseStack, bufferSource, explosionVertexConsumer, packedLight, OverlayTexture.pack(0.0F, true), 1f, 1f, 1f, tickRate);
+        actuallyRender(poseStack, animatable, bakedGeoModel, explosionAlpha, bufferSource, explosionVertexConsumer, false, partialTick, packedLight, OverlayTexture.pack(0.0F, true), 1f, 1f, 1f, tickRate);
 
         RenderType decal = RenderType.entityDecal(getTextureLocation(animatable));
         VertexConsumer decalVertexConsumer = bufferSource.getBuffer(decal);
-        render(model, animatable, partialTick, decal, poseStack, bufferSource, decalVertexConsumer, packedLight, OverlayTexture.pack(0.0F, true), 1f, 1f, 1f, 1f);
+        actuallyRender(poseStack, animatable, bakedGeoModel, decal, bufferSource, decalVertexConsumer, false, partialTick, packedLight, OverlayTexture.pack(0.0F, true), 1f, 1f, 1f, 1f);
 
     }
 
@@ -66,12 +65,12 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine> {
         poseStack.translate(0, 1, 0);
 
         for (int i = 0; (float) i < (tickRate + tickRate * tickRate) / 2.0F * 60.0F; ++i) {
-            poseStack.mulPose(Vector3f.XP.rotationDegrees(randomsource.nextFloat() * 360.0F));
-            poseStack.mulPose(Vector3f.YP.rotationDegrees(randomsource.nextFloat() * 360.0F));
-            poseStack.mulPose(Vector3f.ZP.rotationDegrees(randomsource.nextFloat() * 360.0F));
-            poseStack.mulPose(Vector3f.XP.rotationDegrees(randomsource.nextFloat() * 360.0F));
-            poseStack.mulPose(Vector3f.YP.rotationDegrees(randomsource.nextFloat() * 360.0F));
-            poseStack.mulPose(Vector3f.ZP.rotationDegrees(randomsource.nextFloat() * 360.0F + tickRate * 90.0F));
+            poseStack.mulPose(Axis.XP.rotationDegrees(randomsource.nextFloat() * 360.0F));
+            poseStack.mulPose(Axis.YP.rotationDegrees(randomsource.nextFloat() * 360.0F));
+            poseStack.mulPose(Axis.ZP.rotationDegrees(randomsource.nextFloat() * 360.0F));
+            poseStack.mulPose(Axis.XP.rotationDegrees(randomsource.nextFloat() * 360.0F));
+            poseStack.mulPose(Axis.YP.rotationDegrees(randomsource.nextFloat() * 360.0F));
+            poseStack.mulPose(Axis.ZP.rotationDegrees(randomsource.nextFloat() * 360.0F + tickRate * 90.0F));
             float randomY = randomsource.nextFloat() * 20.0F + 5.0F + offset * 10.0F;
             float randomFactor = randomsource.nextFloat() * 2.0F + 1.0F + offset * 2.0F;
             Matrix4f matrix4f = poseStack.last().pose();
@@ -106,9 +105,9 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine> {
     }
 
     @Override
-    public RenderType getRenderType(Herobrine animatable, float partialTick, PoseStack poseStack, @Nullable MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, int packedLight, ResourceLocation texture) {
+    public RenderType getRenderType(Herobrine animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
         if (animatable.getDeathTick() >= Herobrine.DEATH_TICK_DURATION)
-            return super.getRenderType(animatable, partialTick, poseStack, bufferSource, buffer, packedLight, texture);
+            return super.getRenderType(animatable, texture, bufferSource, partialTick);
         return RenderType.entityTranslucent(getTextureLocation(animatable));
     }
 }

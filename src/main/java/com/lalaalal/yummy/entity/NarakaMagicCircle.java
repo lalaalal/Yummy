@@ -2,14 +2,13 @@ package com.lalaalal.yummy.entity;
 
 import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.effect.HerobrineMark;
+import com.lalaalal.yummy.world.damagesource.YummyDamageSources;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
@@ -48,15 +47,15 @@ public class NarakaMagicCircle extends FlatImageEntity {
     }
 
     public void explode() {
-        if (!level.isClientSide) {
+        if (!level().isClientSide) {
             AABB area = getBoundingBox().inflate(width);
-            LivingEntity target = level.getNearestEntity(LivingEntity.class, TargetingConditions.DEFAULT, spawner, getX(), getY(), getZ(), area);
+            LivingEntity target = level().getNearestEntity(LivingEntity.class, TargetingConditions.DEFAULT, spawner, getX(), getY(), getZ(), area);
             if (target != null && spawner != null) {
-                level.explode(spawner, getX(), getY(), getZ(), 1, false, Explosion.BlockInteraction.NONE);
-                target.hurt(new IndirectEntityDamageSource(YummyMod.MOD_ID + ".naraka_magic", this, spawner), 166);
+                level().explode(spawner, getX(), getY(), getZ(), 1, false, Level.ExplosionInteraction.NONE);
+                target.hurt(YummyDamageSources.simple(level(), YummyMod.MOD_ID + ".naraka_magic", this, spawner), 166);
                 HerobrineMark.overlapMark(target, spawner);
             }
-            ((ServerLevel) level).sendParticles(ParticleTypes.EXPLOSION_EMITTER, getX(), getY(), getZ(), 1, 0, 0, 0, 1);
+            ((ServerLevel) level()).sendParticles(ParticleTypes.EXPLOSION_EMITTER, getX(), getY(), getZ(), 1, 0, 0, 0, 1);
         }
     }
 }

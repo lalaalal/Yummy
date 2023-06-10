@@ -13,7 +13,7 @@ public abstract class TickableSkill {
 
     public TickableSkill(PathfinderMob usingEntity, int cooldown, int animationDuration, int tickDuration) {
         this.usingEntity = usingEntity;
-        this.level = usingEntity.level;
+        this.level = usingEntity.level();
         this.cooldown = cooldown;
         this.animationDuration = animationDuration;
         this.tickDuration = tickDuration;

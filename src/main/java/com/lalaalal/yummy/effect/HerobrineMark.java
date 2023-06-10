@@ -1,9 +1,8 @@
 package com.lalaalal.yummy.effect;
 
-import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.entity.Herobrine;
 import com.lalaalal.yummy.tags.YummyTags;
-import com.lalaalal.yummy.world.damagesource.EffectDamageSource;
+import com.lalaalal.yummy.world.damagesource.YummyDamageSources;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
@@ -61,9 +60,8 @@ public class HerobrineMark extends MobEffect {
 
     @Override
     public void applyEffectTick(LivingEntity livingEntity, int amplifier) {
-        if (!livingEntity.getLevel().isClientSide && amplifier >= 6) {
-            DamageSource damageSource = new EffectDamageSource(YummyMod.MOD_ID + ".mark", this);
-            damageSource.bypassArmor().bypassInvul();
+        if (!livingEntity.level().isClientSide && amplifier >= 6) {
+            DamageSource damageSource = YummyDamageSources.herobrineMark(livingEntity.level(), this);
             livingEntity.removeAllEffects();
             livingEntity.hurt(damageSource, Float.MAX_VALUE);
         }

@@ -1,8 +1,7 @@
 package com.lalaalal.yummy.entity;
 
-import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.entity.ai.YummyAttributeModifiers;
-import com.lalaalal.yummy.world.damagesource.ItemDamageSource;
+import com.lalaalal.yummy.world.damagesource.YummyDamageSources;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -86,7 +85,7 @@ public class ThrownSpear extends AbstractArrow {
         int loyaltyLevel = getLoyalty();
         if (loyaltyLevel > 0 && (this.dealtDamage || this.isNoPhysics()) && owner != null) {
             if (!this.isAcceptibleReturnOwner()) {
-                if (!this.level.isClientSide && this.pickup == AbstractArrow.Pickup.ALLOWED) {
+                if (!level().isClientSide && this.pickup == AbstractArrow.Pickup.ALLOWED) {
                     this.spawnAtLocation(this.getPickupItem(), 0.1f);
                 }
 
@@ -95,7 +94,7 @@ public class ThrownSpear extends AbstractArrow {
                 this.setNoPhysics(true);
                 Vec3 vec3 = owner.getEyePosition().subtract(this.position());
                 this.setPosRaw(this.getX(), this.getY() + vec3.y * 0.015 * loyaltyLevel, this.getZ());
-                if (this.level.isClientSide) {
+                if (level().isClientSide) {
                     this.yOld = this.getY();
                 }
 
@@ -138,7 +137,7 @@ public class ThrownSpear extends AbstractArrow {
         float damage = YummyAttributeModifiers.calcItemAttribute(1, spearItem, EquipmentSlot.MAINHAND, Attributes.ATTACK_DAMAGE);
         Entity owner = getOwner();
         damage += spearItem.getEnchantmentLevel(Enchantments.IMPALING);
-        DamageSource damageSource = new ItemDamageSource(YummyMod.MOD_ID + ".thrown_spear", owner, spearItem).setProjectile();
+        DamageSource damageSource = YummyDamageSources.spear(level(), owner, spearItem);
         entity.hurt(damageSource, damage);
     }
 

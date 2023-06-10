@@ -9,6 +9,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -72,7 +73,7 @@ public class HerobrineSpawnerBlockEntity extends BlockEntity {
     }
 
     private void summonHerobrine(ServerLevel level, BlockPos summonPos) {
-        EntityType.LIGHTNING_BOLT.spawn(level, null, null, summonPos, MobSpawnType.TRIGGERED, true, true);
+        EntityType.LIGHTNING_BOLT.spawn(level, (ItemStack) null, null, summonPos, MobSpawnType.TRIGGERED, true, true);
         Herobrine herobrine = new Herobrine(level, summonPos, summonPos);
 
         Player player = level.getPlayerByUUID(triggeredPlayerUUID);

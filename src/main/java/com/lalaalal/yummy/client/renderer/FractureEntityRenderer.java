@@ -5,14 +5,14 @@ import com.lalaalal.yummy.YummyUtil;
 import com.lalaalal.yummy.entity.FractureEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix3f;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
 
 public class FractureEntityRenderer extends EntityRenderer<FractureEntity> {
     private static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(YummyMod.MOD_ID, "textures/entity/fracture.png");
@@ -31,8 +31,8 @@ public class FractureEntityRenderer extends EntityRenderer<FractureEntity> {
         poseStack.pushPose();
         poseStack.scale(4, 4, 6);
         poseStack.translate(0, -0.4, 0.1);
-        poseStack.mulPose(Vector3f.YP.rotationDegrees(90 - entity.getYRot()));
-        poseStack.mulPose(Vector3f.ZP.rotationDegrees(entity.getRotateDegree()));
+        poseStack.mulPose(Axis.YP.rotationDegrees(90 - entity.getYRot()));
+        poseStack.mulPose(Axis.ZP.rotationDegrees(entity.getRotateDegree()));
         Matrix4f pose = poseStack.last().pose();
         Matrix3f normal = poseStack.last().normal();
         VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(getTextureLocation(entity)));

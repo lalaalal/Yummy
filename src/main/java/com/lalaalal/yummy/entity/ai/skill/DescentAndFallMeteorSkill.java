@@ -6,8 +6,8 @@ import com.lalaalal.yummy.effect.HerobrineMark;
 import com.lalaalal.yummy.entity.CameraShakingEntity;
 import com.lalaalal.yummy.entity.Meteor;
 import com.lalaalal.yummy.entity.ai.YummyAttributeModifiers;
+import com.lalaalal.yummy.world.damagesource.YummyDamageSources;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
@@ -93,7 +93,7 @@ public class DescentAndFallMeteorSkill extends TickableSkill {
         AABB area = usingEntity.getBoundingBox().inflate(4);
         LivingEntity entity = level.getNearestEntity(LivingEntity.class, TargetingConditions.DEFAULT, usingEntity, targetPos.x, targetPos.y, targetPos.z, area);
         if (entity != null) {
-            entity.hurt(new EntityDamageSource(YummyMod.MOD_ID + ".herobrine.descent", usingEntity), 1);
+            entity.hurt(YummyDamageSources.simple(level, YummyMod.MOD_ID + ".herobrine.descent", usingEntity), 1);
             HerobrineMark.overlapMark(entity, usingEntity);
         }
         usingEntity.setNoGravity(false);

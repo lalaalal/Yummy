@@ -1,13 +1,16 @@
 plugins {
     id 'eclipse'
+    id 'idea'
     id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '5.1.+'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
 }
 
-version = "${minecraft_version}-${yummy_version}"
-group = 'com.lalaalal.yummy' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'yummy'
+version = "${minecraft_version}-${mod_version}"
+group = mod_group_id // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+base {
+    archivesName = mod_id
+}
 
 // Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
@@ -29,8 +32,10 @@ minecraft {
     // Simply re-run your setup task after changing the mappings to update your workspace.
 
     // ORIGINAL MAPPINGS
-    //mappings channel: 'official', version: '1.19.2'
-    mappings channel: 'parchment', version: '2022.08.14-1.19.2'
+//    mappings channel: 'official', version: '1.20'
+    mappings channel: mapping_channel, version: mapping_version
+
+    copyIdeResources = true
 
     // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg') // Currently, this location cannot be changed from the default.
 
@@ -51,15 +56,19 @@ minecraft {
             // You can set various levels here.
             // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
             property 'forge.logging.console.level', 'debug'
+            property 'mixin.env.remapRefMap', 'true'
+
+            property 'mixin.env.refMapRemappingFile', "${project.projectDir}/build/createSrgToMcp/output.srg"
+            args "-mixin.config=geckolib.mixins.json"
 
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
-            property 'forge.enabledGameTestNamespaces', 'yummy'
+            property 'forge.enabledGameTestNamespaces', mod_id
 
             property 'geckolib.disable_examples', 'true'
 
 
             mods {
-                yummy {
+                "${mod_id}" {
                     source sourceSets.main
                 }
             }
@@ -76,11 +85,16 @@ minecraft {
 
             property 'forge.enabledGameTestNamespaces', 'yummy'
 
+            property 'mixin.env.remapRefMap', 'true'
+
+            property 'mixin.env.refMapRemappingFile', "${project.projectDir}/build/createSrgToMcp/output.srg"
+            args "-mixin.config=geckolib.mixins.json"
+
             property 'geckolib.disable_examples', 'true'
 
 
             mods {
-                yummy {
+                "${mod_id}" {
                     source sourceSets.main
                 }
             }
@@ -98,8 +112,13 @@ minecraft {
 
             property 'forge.enabledGameTestNamespaces', 'yummy'
 
+            property 'mixin.env.remapRefMap', 'true'
+
+            property 'mixin.env.refMapRemappingFile', "${project.projectDir}/build/createSrgToMcp/output.srg"
+            args "-mixin.config=geckolib.mixins.json"
+
             mods {
-                yummy {
+                "${mod_id}" {
                     source sourceSets.main
                 }
             }
@@ -112,11 +131,16 @@ minecraft {
 
             property 'forge.logging.console.level', 'debug'
 
+            property 'mixin.env.remapRefMap', 'true'
+
+            property 'mixin.env.refMapRemappingFile', "${project.projectDir}/build/createSrgToMcp/output.srg"
+            args "-mixin.config=geckolib.mixins.json"
+
             // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
             args '--mod', 'yummy', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             mods {
-                yummy {
+                "${mod_id}" {
                     source sourceSets.main
                 }
             }
@@ -142,8 +166,8 @@ dependencies {
     // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft', it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft 'net.minecraftforge:forge:1.19.2-43.2.11'
-    implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.19:3.1.40')
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}")
 
     // Real mod deobf dependency examples - these get remapped to your current mappings
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
@@ -158,16 +182,33 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 }
 
+def resourceTargets = ['META-INF/mods.toml', 'pack.mcmeta']
+def replaceProperties = [
+        minecraft_version: minecraft_version, minecraft_version_range: minecraft_version_range,
+        forge_version: forge_version, forge_version_range: forge_version_range,
+        loader_version_range: loader_version_range,
+        mod_id: mod_id, mod_name: mod_name, mod_license: mod_license, mod_version: mod_version,
+        mod_authors: mod_authors, mod_description: mod_description
+]
+processResources {
+    inputs.properties replaceProperties
+    replaceProperties.put 'project', project
+
+    filesMatching(resourceTargets) {
+        expand replaceProperties
+    }
+}
+
 // Example for how to get properties into the manifest for reading at runtime.
 jar {
     manifest {
         attributes([
-                "Specification-Title"     : "yummy",
-                "Specification-Vendor"    : "lalaalal",
+                "Specification-Title"     : mod_id,
+                "Specification-Vendor"    : mod_authors,
                 "Specification-Version"   : "1", // We are version 1 of ourselves
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.jar.archiveVersion,
-                "Implementation-Vendor"   : "lalaalal",
+                "Implementation-Vendor"   : mod_authors,
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
