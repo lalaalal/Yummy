@@ -1,7 +1,9 @@
 package com.lalaalal.yummy.world.damagesource;
 
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -11,8 +13,8 @@ public class ItemDamageSource extends DamageSource {
     private final Entity source;
     private final ItemStack usedItem;
 
-    public ItemDamageSource(String itemType, @Nullable Entity source, ItemStack usedItem) {
-        super(itemType);
+    public ItemDamageSource(Holder<DamageType> type, @Nullable Entity source, ItemStack usedItem) {
+        super(type);
         this.source = source;
         this.usedItem = usedItem;
     }

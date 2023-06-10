@@ -22,6 +22,7 @@ public class AlembicMenu extends AbstractContainerMenu {
     public static final int FUEL_SLOT = 1;
     public static final int RESULT_SLOT = 2;
     public static final int ALEMBIC_SLOT_COUNT = 3;
+    private static final int PLAYER_INVENTORY_SLOT_COUNT = 36;
 
     private final Container container;
     private final ContainerData containerData;
@@ -54,7 +55,7 @@ public class AlembicMenu extends AbstractContainerMenu {
             return ItemStack.EMPTY;
         ItemStack sourceStack = sourceSlot.getItem();
 
-        if (index >= 3) {
+        if (index >= ALEMBIC_SLOT_COUNT) {
             if (EssenceDistilling.isIngredient(sourceStack.getItem())) {
                 if (!this.moveItemStackTo(sourceStack, INGREDIENT_SLOT, INGREDIENT_SLOT + 1, false))
                     return ItemStack.EMPTY;
@@ -64,7 +65,7 @@ public class AlembicMenu extends AbstractContainerMenu {
                     return ItemStack.EMPTY;
             }
         } else {
-            this.moveItemStackTo(sourceStack, ALEMBIC_SLOT_COUNT, ALEMBIC_SLOT_COUNT + 36, false);
+            this.moveItemStackTo(sourceStack, ALEMBIC_SLOT_COUNT, ALEMBIC_SLOT_COUNT + PLAYER_INVENTORY_SLOT_COUNT, false);
         }
 
         return ItemStack.EMPTY;

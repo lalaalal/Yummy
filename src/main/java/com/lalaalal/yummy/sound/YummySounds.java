@@ -23,7 +23,7 @@ public class YummySounds {
     public static final RegistryObject<SoundEvent> SHOOT_FIREBALL = register("shoot_fireball");
 
     private static RegistryObject<SoundEvent> register(String name) {
-        return SOUND_EVENTS.register(name, () -> new SoundEvent(new ResourceLocation(YummyMod.MOD_ID, name)));
+        return SOUND_EVENTS.register(name, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(YummyMod.MOD_ID, name)));
     }
 
     public static void register(IEventBus eventBus) {

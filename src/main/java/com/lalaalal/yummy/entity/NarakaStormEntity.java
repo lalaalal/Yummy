@@ -3,10 +3,10 @@ package com.lalaalal.yummy.entity;
 import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.effect.HerobrineMark;
 import com.lalaalal.yummy.particle.YummyParticles;
+import com.lalaalal.yummy.world.damagesource.YummyDamageSources;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -74,7 +74,7 @@ public class NarakaStormEntity extends FlatImageEntity {
     public void tick() {
         super.tick();
 
-        if (level.isClientSide)
+        if (level().isClientSide)
             return;
         radius += speed;
         for (int i = 0; i < 360; i++) {
@@ -82,16 +82,16 @@ public class NarakaStormEntity extends FlatImageEntity {
             double x = Math.cos(theta) * radius + getX();
             double z = Math.sin(theta) * radius + getZ();
 
-            ((ServerLevel) level).sendParticles(particle, x, getY() + 1.5, z, 1, 0, 0, 0, 1);
+            ((ServerLevel) level()).sendParticles(particle, x, getY() + 1.5, z, 1, 0, 0, 0, 1);
         }
-        List<Entity> entities = level.getEntities(this, getBoundingBox().inflate(radius - 0.5),
+        List<Entity> entities = level().getEntities(this, getBoundingBox().inflate(radius - 0.5),
                 entity -> !markedEntities.contains(entity)
                         && entity.distanceToSqr(this) > initialRadius * initialRadius
                         && entity.distanceTo(this) > radius - ERROR_RANGE);
         for (Entity entity : entities) {
             if (entity instanceof LivingEntity livingEntity) {
                 livingEntity.setSecondsOnFire(6);
-                livingEntity.hurt(new IndirectEntityDamageSource(YummyMod.MOD_ID + "naraka_storm", this, spawner), damage);
+                livingEntity.hurt(YummyDamageSources.simple(level(), YummyMod.MOD_ID + "naraka_storm", this, spawner), damage);
                 HerobrineMark.overlapMark(livingEntity, spawner);
                 markedEntities.add(livingEntity);
             }

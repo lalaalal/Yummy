@@ -1,7 +1,6 @@
 package com.lalaalal.yummy.entity;
 
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -65,13 +64,13 @@ public class Meteor extends MarkFireball {
     protected void onHit(HitResult result) {
         super.onHit(result);
         Vec3 hitLocation = result.getLocation();
-        this.level.addParticle(ParticleTypes.EXPLOSION_EMITTER, hitLocation.x, hitLocation.y, hitLocation.z, 0, 0.3, 0);
+        level().addParticle(ParticleTypes.EXPLOSION_EMITTER, hitLocation.x, hitLocation.y, hitLocation.z, 0, 0.3, 0);
     }
 
     @Override
     protected void onHitEntity(EntityHitResult result) {
         super.onHitEntity(result);
         Entity hitEntity = result.getEntity();
-        hitEntity.hurt(DamageSource.fireball(this, getOwner()), 66f);
+        hitEntity.hurt(damageSources().fireball(this, getOwner()), 66f);
     }
 }

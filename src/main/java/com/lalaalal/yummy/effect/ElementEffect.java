@@ -1,6 +1,5 @@
 package com.lalaalal.yummy.effect;
 
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -28,7 +27,7 @@ public class ElementEffect extends MobEffect {
         }
         if (reactionSucceed)
             livingEntity.removeEffect(this);
-        livingEntity.hurt(DamageSource.MAGIC, 2 * (amplifier + 1));
+        livingEntity.hurt(livingEntity.level().damageSources().magic(), 2 * (amplifier + 1));
     }
 
     private boolean react(LivingEntity livingEntity, MobEffectInstance effectInstance) {

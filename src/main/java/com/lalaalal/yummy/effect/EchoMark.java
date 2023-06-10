@@ -41,7 +41,7 @@ public class EchoMark extends MobEffect {
 
         boolean succeed = false;
         for (LivingEntity target : targets) {
-            if (!attacker.level.equals(target.level))
+            if (!attacker.level().equals(target.level()))
                 continue;
             targetMap.remove(target);
             if (target.isDeadOrDying())

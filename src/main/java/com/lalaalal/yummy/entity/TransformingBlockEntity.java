@@ -2,6 +2,7 @@ package com.lalaalal.yummy.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.entity.EntityType;
@@ -42,9 +43,9 @@ public class TransformingBlockEntity extends FloatingBlockEntity {
     public void tick() {
         if (getDeltaMovement().y > 0) {
             super.tick();
-        } else if (!level.isClientSide) {
+        } else if (!level().isClientSide) {
             discard();
-            level.setBlock(getOnPos(), transformingBlockState, 3);
+            level().setBlock(getOnPos(), transformingBlockState, 3);
         }
     }
 
@@ -58,7 +59,7 @@ public class TransformingBlockEntity extends FloatingBlockEntity {
     protected void readAdditionalSaveData(CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
         if (compoundTag.contains("TransformingBlockState"))
-            transformingBlockState = NbtUtils.readBlockState(compoundTag.getCompound("TransformingBlockState"));
+            transformingBlockState = NbtUtils.readBlockState(level().holderLookup(Registries.BLOCK), compoundTag.getCompound("TransformingBlockState"));
         else
             setDeltaMovement(DEFAULT_VELOCITY);
     }

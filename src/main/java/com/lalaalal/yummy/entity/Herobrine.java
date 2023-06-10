@@ -14,6 +14,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -34,15 +35,14 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -56,7 +56,7 @@ public class Herobrine extends AbstractHerobrine {
     private static final BossEvent.BossBarColor[] PHASE_COLORS = {BossEvent.BossBarColor.BLUE, BossEvent.BossBarColor.YELLOW, BossEvent.BossBarColor.RED};
 
     private final Set<ServerPlayer> hurtPlayers = new HashSet<>();
-    private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this, false);
+    private final AnimatableInstanceCache animatableInstanceCache = GeckoLibUtil.createInstanceCache(this);
     private final PhaseManager phaseManager = new PhaseManager(PHASE_HEALTHS, PHASE_COLORS, this);
     private final ServerBossEvent bossEvent = (ServerBossEvent) (new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.PROGRESS))
             .setDarkenScreen(true)
@@ -160,7 +160,7 @@ public class Herobrine extends AbstractHerobrine {
             return;
         invulnerableTick = 30;
         setInvulnerable(true);
-        LevelChunk levelChunk = level.getChunkAt(getOnPos());
+        LevelChunk levelChunk = level().getChunkAt(getOnPos());
         YummyMessages.sendToPlayer(new ToggleHerobrineMusicPacket(true, to), levelChunk);
         setHealth(phaseManager.getActualCurrentPhaseMaxHealth());
     }
@@ -255,7 +255,7 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     protected PathNavigation createNavigation(Level pLevel) {
-        GroundPathNavigation pathNavigation = new GroundPathNavigation(this, level);
+        GroundPathNavigation pathNavigation = new GroundPathNavigation(this, level());
         pathNavigation.setCanOpenDoors(true);
         pathNavigation.setCanFloat(true);
         pathNavigation.setAvoidSun(false);
@@ -271,41 +271,41 @@ public class Herobrine extends AbstractHerobrine {
         registerSkill(new RushSkill(this, 20 * 10));
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    private PlayState predicate(AnimationState<GeoAnimatable> geoAnimatableAnimationState) {
         String skillName = getUsingSkillName();
         if (!skillName.equals(SKILL_NONE)) {
             hurtAnimationTick = 0;
             String animationName = "animation.herobrine." + skillName;
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(animationName, ILoopType.EDefaultLoopTypes.PLAY_ONCE));
+            geoAnimatableAnimationState.getController().setAnimation(RawAnimation.begin().thenPlayAndHold(animationName));
             return PlayState.CONTINUE;
         }
 
         if (getPhase() == 3) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.herobrine.phase_3_basic", ILoopType.EDefaultLoopTypes.LOOP));
+            geoAnimatableAnimationState.getController().setAnimation(RawAnimation.begin().thenLoop("animation.herobrine.phase_3_basic"));
             return PlayState.CONTINUE;
         }
 
         if (hurtAnimationTick > 0) {
             hurtAnimationTick -= 1;
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.herobrine.hit", ILoopType.EDefaultLoopTypes.LOOP));
+            geoAnimatableAnimationState.getController().setAnimation(RawAnimation.begin().thenLoop("animation.herobrine.hit"));
             return PlayState.CONTINUE;
         }
 
-        if (!event.isMoving())
+        if (!geoAnimatableAnimationState.isMoving())
             return PlayState.STOP;
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.herobrine.walk", ILoopType.EDefaultLoopTypes.LOOP));
+        geoAnimatableAnimationState.getController().setAnimation(RawAnimation.begin().thenLoop("animation.herobrine.walk"));
         return PlayState.CONTINUE;
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+        controllerRegistrar.add(new AnimationController<>(this, "controller", 0, this::predicate));
     }
 
     @Override
-    public AnimationFactory getFactory() {
-        return animationFactory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return animatableInstanceCache;
     }
 
     @Override
@@ -330,9 +330,9 @@ public class Herobrine extends AbstractHerobrine {
         if (entity instanceof ServerPlayer player && !hurtPlayers.contains(entity))
             hurtPlayers.add(player);
 
-        if (source.equals(DamageSource.IN_WALL))
+        if (source.equals(level().damageSources().inWall()))
             destroyNearbyBlocks();
-        if (source.isBypassInvul()) {
+        if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             if (amount == Float.MAX_VALUE)
                 return super.hurt(source, amount);
             float actualDamage = getDamageAfterArmorAbsorb(source, amount);
@@ -347,7 +347,7 @@ public class Herobrine extends AbstractHerobrine {
 
         if (getPhase() == 3) {
             if (entity != null && entity.getType().is(YummyTags.HEROBRINE))
-                return super.hurt(source.bypassArmor(), 1);
+                return super.hurt(damageSources().magic(), 1);
             return false;
         }
 
@@ -362,7 +362,7 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private void destroyNearbyBlocks() {
-        if (level.isClientSide)
+        if (level().isClientSide)
             return;
 
         BlockPos basePos = getOnPos().west().north();
@@ -370,7 +370,7 @@ public class Herobrine extends AbstractHerobrine {
             for (int z = 0; z < 3; z++) {
                 for (int y = 0; y < 3; y++) {
                     BlockPos blockPos = basePos.east(x).south(z).above(y);
-                    level.destroyBlock(blockPos, false);
+                    level().destroyBlock(blockPos, false);
                 }
             }
         }
@@ -392,7 +392,7 @@ public class Herobrine extends AbstractHerobrine {
         for (ServerPlayer hurtPlayer : hurtPlayers)
             CriteriaTriggers.PLAYER_KILLED_ENTITY.trigger(hurtPlayer, this, damageSource);
 
-        if (damageSource.equals(DamageSource.OUT_OF_WORLD))
+        if (damageSource.equals(level().damageSources().fellOutOfWorld()))
             remove(RemovalReason.KILLED);
         this.deathDamageSource = damageSource;
         phaseManager.updateBossBarOnly(bossEvent);
@@ -409,17 +409,17 @@ public class Herobrine extends AbstractHerobrine {
         if (velocity.y > 0) {
             setDeltaMovement(velocity);
         } else {
-            if (!level.isClientSide && deathTick % 4 == 0)
+            if (!level().isClientSide && deathTick % 4 == 0)
                 destroyBlocks(deathTick / 4);
         }
 
         if (deathTick == DEATH_TICK_DURATION) {
             this.remove(Entity.RemovalReason.KILLED);
             this.gameEvent(GameEvent.ENTITY_DIE);
-            if (deathDamageSource != null && !level.isClientSide) {
+            if (deathDamageSource != null && !level().isClientSide) {
                 dead = true;
                 dropAllDeathLoot(deathDamageSource);
-                ExperienceOrb.award((ServerLevel) this.level, this.position(), xpReward);
+                ExperienceOrb.award((ServerLevel) level(), this.position(), xpReward);
             }
         }
         deathTick += 1;
@@ -435,10 +435,10 @@ public class Herobrine extends AbstractHerobrine {
                 double x = getX() + Math.cos(xz_t * Math.PI / 180) * currentRadius;
                 double z = getZ() + Math.sin(xz_t * Math.PI / 180) * currentRadius;
 
-                BlockPos pos = new BlockPos(x, y, z);
-                if (destroyedPos.contains(pos) || level.getBlockState(pos).is(Blocks.BEDROCK))
+                BlockPos pos = new BlockPos((int) x, (int) y, (int) z);
+                if (destroyedPos.contains(pos) || level().getBlockState(pos).is(Blocks.BEDROCK))
                     continue;
-                level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+                level().setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
                 destroyedPos.add(pos);
             }
         }

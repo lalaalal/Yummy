@@ -48,7 +48,7 @@ public class SummonShadowHerobrineSkill extends TickableSkill {
             double theta = Math.PI * 2 / 3 * index;
             double x = Math.cos(theta) * 3 + usingEntity.getX();
             double z = Math.sin(theta) * 3 + usingEntity.getZ();
-            int y = YummyUtil.findHorizonPos(new BlockPos(x, usingEntity.getY(), z), level).getY() + 1;
+            int y = YummyUtil.findHorizonPos(new BlockPos((int) x, usingEntity.getBlockY(), (int) z), level).getY() + 1;
             Vec3 targetPos = new Vec3(x, y, z);
             ShadowHerobrine shadowHerobrine = new ShadowHerobrine(level, usingEntity.position(), targetPos);
             shadowHerobrine.changeSpeed(herobrine.calcCurrentShadowSpeed());

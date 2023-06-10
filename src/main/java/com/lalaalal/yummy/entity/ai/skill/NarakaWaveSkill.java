@@ -7,8 +7,8 @@ import com.lalaalal.yummy.entity.CameraShakingEntity;
 import com.lalaalal.yummy.entity.FloatingBlockEntity;
 import com.lalaalal.yummy.entity.TransformingBlockEntity;
 import com.lalaalal.yummy.entity.ai.YummyAttributeModifiers;
+import com.lalaalal.yummy.world.damagesource.YummyDamageSources;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
@@ -93,7 +93,7 @@ public class NarakaWaveSkill extends TickableSkill {
         AABB area = usingEntity.getBoundingBox().inflate(15);
         List<LivingEntity> entities = level.getNearbyEntities(LivingEntity.class, TargetingConditions.DEFAULT, usingEntity, area);
         for (LivingEntity entity : entities)
-            entity.hurt(new EntityDamageSource(YummyMod.MOD_ID + ".herobrine.naraka_wave", usingEntity), 1);
+            entity.hurt(YummyDamageSources.simple(level, YummyMod.MOD_ID + ".herobrine.naraka_wave", usingEntity), 1);
     }
 
     private void floatBlock(int tick) {

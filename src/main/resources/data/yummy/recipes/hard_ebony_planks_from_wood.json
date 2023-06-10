@@ -1,8 +1,0 @@
-{
-    "type": "minecraft:stonecutting",
-    "ingredient": {
-        "item": "yummy:ebony_wood"
-    },
-    "result": "yummy:hard_ebony_planks",
-    "count": 1
-}

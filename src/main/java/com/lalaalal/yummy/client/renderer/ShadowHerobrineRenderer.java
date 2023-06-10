@@ -11,22 +11,22 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.geo.render.built.GeoModel;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
 
 public class ShadowHerobrineRenderer extends AbstractHerobrineRenderer<ShadowHerobrine> {
     public ShadowHerobrineRenderer(EntityRendererProvider.Context context) {
         super(context, new AbstractHerobrineModel<>());
-        addLayer(new ShadowHerobrineArmorLayer(this));
-        addLayer(new ShadowHerobrineHeadLayer(this));
+        addRenderLayer(new ShadowHerobrineArmorLayer(this));
+        addRenderLayer(new ShadowHerobrineHeadLayer(this));
     }
 
     @Override
-    public void render(GeoModel model, ShadowHerobrine animatable, float partialTick, RenderType type, PoseStack poseStack, @Nullable MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        super.render(model, animatable, partialTick, type, poseStack, bufferSource, buffer, packedLight, packedOverlay, red, green, blue, 0.7f);
+    public void actuallyRender(PoseStack poseStack, ShadowHerobrine animatable, BakedGeoModel model, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        super.actuallyRender(poseStack, animatable, model, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, 0.7f);
     }
 
     @Override
-    public RenderType getRenderType(ShadowHerobrine animatable, float partialTick, PoseStack poseStack, @Nullable MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, int packedLight, ResourceLocation texture) {
+    public RenderType getRenderType(ShadowHerobrine animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
         return RenderType.entityTranslucent(texture);
     }
 }

@@ -2,9 +2,11 @@ package com.lalaalal.yummy.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -72,8 +74,8 @@ public class FloatingBlockEntity extends Entity {
         setDeltaMovement(getDeltaMovement().add(acceleration));
         move(MoverType.SELF, getDeltaMovement());
 
-        if (!level.isClientSide && isOnGround()) {
-            level.setBlock(blockPosition(), blockState, 3);
+        if (!level().isClientSide && onGround()) {
+            level().setBlock(blockPosition(), blockState, 3);
             discard();
         }
     }
@@ -88,7 +90,7 @@ public class FloatingBlockEntity extends Entity {
         if (!compoundTag.contains("BlockState"))
             return;
 
-        blockState = NbtUtils.readBlockState(compoundTag.getCompound("BlockState"));
+        blockState = NbtUtils.readBlockState(level().holderLookup(Registries.BLOCK), compoundTag.getCompound("BlockState"));
         time = compoundTag.getInt("Time");
         double vx = compoundTag.getDouble("VelocityX");
         double vy = compoundTag.getDouble("VelocityY");
@@ -114,7 +116,7 @@ public class FloatingBlockEntity extends Entity {
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return new ClientboundAddEntityPacket(this, Block.getId(this.getBlockState()));
     }
 

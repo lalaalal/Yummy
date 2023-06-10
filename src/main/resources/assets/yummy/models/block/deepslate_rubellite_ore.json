@@ -1,6 +1,0 @@
-{
-    "parent": "minecraft:block/cube_all",
-    "textures": {
-        "all": "yummy:block/deepslate_rubellite_ore"
-    }
-}

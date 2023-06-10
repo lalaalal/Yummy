@@ -1,6 +1,8 @@
 package com.lalaalal.yummy.entity;
 
 import com.lalaalal.yummy.entity.ai.YummyAttributeModifiers;
+import com.lalaalal.yummy.world.damagesource.YummyDamageSources;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -51,6 +53,28 @@ public class ThrownSpear extends AbstractArrow {
         this.entityData.define(ID_FOIL, false);
     }
 
+    public byte getLoyalty() {
+        return this.entityData.get(ID_LOYALTY);
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag compoundTag) {
+        super.addAdditionalSaveData(compoundTag);
+        compoundTag.putBoolean("DealtDamage", dealtDamage);
+        compoundTag.put("Spear", spearItem.save(new CompoundTag()));
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag compoundTag) {
+        super.readAdditionalSaveData(compoundTag);
+        dealtDamage = compoundTag.getBoolean("DealtDamage");
+        if (compoundTag.contains("Spear")) {
+            this.spearItem = ItemStack.of(compoundTag.getCompound("Spear"));
+            this.entityData.set(ID_LOYALTY, (byte) EnchantmentHelper.getLoyalty(spearItem));
+            this.entityData.set(ID_FOIL, spearItem.hasFoil());
+        }
+    }
+
     @Override
     public void tick() {
         if (this.inGroundTime > 4) {
@@ -58,10 +82,10 @@ public class ThrownSpear extends AbstractArrow {
         }
 
         Entity owner = this.getOwner();
-        int loyaltyLevel = this.entityData.get(ID_LOYALTY);
+        int loyaltyLevel = getLoyalty();
         if (loyaltyLevel > 0 && (this.dealtDamage || this.isNoPhysics()) && owner != null) {
             if (!this.isAcceptibleReturnOwner()) {
-                if (!this.level.isClientSide && this.pickup == AbstractArrow.Pickup.ALLOWED) {
+                if (!level().isClientSide && this.pickup == AbstractArrow.Pickup.ALLOWED) {
                     this.spawnAtLocation(this.getPickupItem(), 0.1f);
                 }
 
@@ -69,12 +93,12 @@ public class ThrownSpear extends AbstractArrow {
             } else {
                 this.setNoPhysics(true);
                 Vec3 vec3 = owner.getEyePosition().subtract(this.position());
-                this.setPosRaw(this.getX(), this.getY() + vec3.y * 0.015 * (double)loyaltyLevel, this.getZ());
-                if (this.level.isClientSide) {
+                this.setPosRaw(this.getX(), this.getY() + vec3.y * 0.015 * loyaltyLevel, this.getZ());
+                if (level().isClientSide) {
                     this.yOld = this.getY();
                 }
 
-                double scale = 0.05 * (double)loyaltyLevel;
+                double scale = 0.05 * loyaltyLevel;
                 this.setDeltaMovement(this.getDeltaMovement().scale(0.95).add(vec3.normalize().scale(scale)));
                 if (this.clientSideReturnTickCount == 0) {
                     this.playSound(SoundEvents.TRIDENT_RETURN, 10.0f, 1.0f);
@@ -101,9 +125,9 @@ public class ThrownSpear extends AbstractArrow {
         SoundEvent soundevent = SoundEvents.TRIDENT_HIT;
         Entity entity = result.getEntity();
 
-        hurtHitEntity(entity);
         if (this.getType() != YummyEntities.SPEAR_OF_LONGINUS.get() && entity.getType() == EntityType.ENDERMAN)
             return;
+        hurtHitEntity(entity);
 
         this.setDeltaMovement(this.getDeltaMovement().multiply(-0.01D, -0.1D, -0.01D));
         this.playSound(soundevent, 1.0F, 1.0F);
@@ -113,7 +137,7 @@ public class ThrownSpear extends AbstractArrow {
         float damage = YummyAttributeModifiers.calcItemAttribute(1, spearItem, EquipmentSlot.MAINHAND, Attributes.ATTACK_DAMAGE);
         Entity owner = getOwner();
         damage += spearItem.getEnchantmentLevel(Enchantments.IMPALING);
-        DamageSource damageSource = DamageSource.thrown(owner == null ? entity : owner, this);
+        DamageSource damageSource = YummyDamageSources.spear(level(), owner, spearItem);
         entity.hurt(damageSource, damage);
     }
 

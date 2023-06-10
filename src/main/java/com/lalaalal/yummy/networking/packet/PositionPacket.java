@@ -34,6 +34,6 @@ public abstract class PositionPacket extends YummyPacket {
     }
 
     public BlockPos getBlockPos() {
-        return new BlockPos(x, y, z);
+        return new BlockPos((int) x, (int) y, (int) z);
     }
 }

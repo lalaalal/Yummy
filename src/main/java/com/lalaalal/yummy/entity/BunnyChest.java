@@ -10,6 +10,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.*;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -92,25 +93,25 @@ public class BunnyChest extends TamableAnimal implements Container, MenuProvider
                 this.move(MoverType.SELF, this.getDeltaMovement());
                 this.setDeltaMovement(this.getDeltaMovement().scale(0.5D));
             } else {
-                BlockPos ground = new BlockPos(this.getX(), this.getY() - 1.0D, this.getZ());
+                BlockPos ground = new BlockPos(this.getBlockX(), this.getBlockY() - 1, this.getBlockZ());
                 float f = 0.91F;
-                if (this.onGround) {
-                    f = this.level.getBlockState(ground).getFriction(this.level, ground, this) * 0.91F;
+                if (this.onGround()) {
+                    f = this.level().getBlockState(ground).getFriction(this.level(), ground, this) * 0.91F;
                 }
 
                 float f1 = 0.16277137F / (f * f * f);
                 f = 0.91F;
-                if (this.onGround) {
-                    f = this.level.getBlockState(ground).getFriction(this.level, ground, this) * 0.91F;
+                if (this.onGround()) {
+                    f = this.level().getBlockState(ground).getFriction(this.level(), ground, this) * 0.91F;
                 }
 
-                this.moveRelative(this.onGround ? 0.1F * f1 : 0.02F, pTravelVector);
+                this.moveRelative(this.onGround() ? 0.1F * f1 : 0.02F, pTravelVector);
                 this.move(MoverType.SELF, this.getDeltaMovement());
                 this.setDeltaMovement(this.getDeltaMovement().scale(f));
             }
         }
 
-        this.calculateEntityAnimation(this, false);
+        this.calculateEntityAnimation(false);
     }
 
     @Override
@@ -175,8 +176,8 @@ public class BunnyChest extends TamableAnimal implements Container, MenuProvider
             addAdditionalSaveData(compoundTag);
             itemStack.setTag(compoundTag);
 
-            ItemEntity itemEntity = new ItemEntity(level, getX(), getY(), getZ(), itemStack);
-            level.addFreshEntity(itemEntity);
+            ItemEntity itemEntity = new ItemEntity(level(), getX(), getY(), getZ(), itemStack);
+            level().addFreshEntity(itemEntity);
             discard();
             return false;
         }
@@ -187,13 +188,13 @@ public class BunnyChest extends TamableAnimal implements Container, MenuProvider
     @Override
     public void die(DamageSource pCause) {
         super.die(pCause);
-        Containers.dropContents(level, this, this);
+        Containers.dropContents(level(), this, this);
     }
 
     @Override
     public void tick() {
         super.tick();
-        if (level.isClientSide)
+        if (level().isClientSide)
             return;
         if (!isFollowing()) {
             setDeltaMovement(getDeltaMovement().add(0, -0.005, 0));
@@ -201,7 +202,7 @@ public class BunnyChest extends TamableAnimal implements Container, MenuProvider
             idleTick = 0;
             return;
         }
-        double height = getY() - YummyUtil.findHorizonPos(getOnPos(), level).getY();
+        double height = getY() - YummyUtil.findHorizonPos(getOnPos(), level()).getY();
         if (height > 2.2)
             setDeltaMovement(getDeltaMovement().add(0, -0.03, 0));
         else {
@@ -225,7 +226,7 @@ public class BunnyChest extends TamableAnimal implements Container, MenuProvider
     public boolean isInvulnerableTo(DamageSource source) {
         if (Objects.equals(source.getEntity(), getOwner()))
             return false;
-        return !source.isBypassInvul();
+        return !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY);
     }
 
     @Override
@@ -285,7 +286,7 @@ public class BunnyChest extends TamableAnimal implements Container, MenuProvider
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        if (!level.isClientSide && player.isShiftKeyDown()) {
+        if (!level().isClientSide && player.isShiftKeyDown()) {
             setFollowing(!isFollowing());
             String key = isFollowing() ? "info.yummy.bunny_chest.following" : "info.yummy.bunny_chest.not_following";
             player.sendSystemMessage(Component.translatable(key, this.getDisplayName(), player.getDisplayName()));

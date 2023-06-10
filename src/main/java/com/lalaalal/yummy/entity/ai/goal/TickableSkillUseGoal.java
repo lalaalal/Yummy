@@ -28,7 +28,7 @@ public class TickableSkillUseGoal<T extends PathfinderMob & SkillUsable> extends
 
     public TickableSkillUseGoal(T usingEntity) {
         this.usingEntity = usingEntity;
-        this.level = usingEntity.level;
+        this.level = usingEntity.level();
         this.lastSkillEndTime = level.getGameTime();
     }
 

@@ -17,7 +17,6 @@ import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.block.state.BlockState;
@@ -32,8 +31,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 public class YummyClientEventBus {
     @SubscribeEvent
     public static void clientSetup(final FMLClientSetupEvent event) {
-        Sheets.addWoodType(YummyTypes.WOOD_EBONY);
-        WoodType.register(YummyTypes.WOOD_EBONY);
+        Sheets.addWoodType(YummyTypes.EBONY_WOOD_TYPE);
+        WoodType.register(YummyTypes.EBONY_WOOD_TYPE);
 
         MenuScreens.register(YummyMenuTypes.ALEMBIC_MENU.get(), AlembicScreen::new);
     }
@@ -59,13 +58,13 @@ public class YummyClientEventBus {
 
     @SubscribeEvent
     public static void registerParticleFactories(final RegisterParticleProvidersEvent event) {
-        event.register(YummyParticles.POLLUTED_PARTICLE_RED.get(),
+        event.registerSpriteSet(YummyParticles.POLLUTED_PARTICLE_RED.get(),
                 (spriteSet) -> new PollutedParticle.Provider(spriteSet, 0x441f0b));
-        event.register(YummyParticles.POLLUTED_PARTICLE_BLUE.get(),
+        event.registerSpriteSet(YummyParticles.POLLUTED_PARTICLE_BLUE.get(),
                 (spriteSet) -> new PollutedParticle.Provider(spriteSet, 0x019ea3));
-        event.register(YummyParticles.POLLUTED_PARTICLE_PURPLE.get(),
+        event.registerSpriteSet(YummyParticles.POLLUTED_PARTICLE_PURPLE.get(),
                 (spriteSet) -> new PollutedParticle.Provider(spriteSet, 0x201a33));
-        event.register(YummyParticles.CORRUPTED_SMALL_FLAME.get(),
+        event.registerSpriteSet(YummyParticles.CORRUPTED_SMALL_FLAME.get(),
                 FlameParticle.SmallFlameProvider::new);
     }
 
@@ -103,15 +102,15 @@ public class YummyClientEventBus {
         event.registerLayerDefinition(MeteorModel.LAYER_LOCATION, MeteorModel::createBodyLayer);
     }
 
-    @SubscribeEvent
-    public static void onTexture(TextureStitchEvent.Pre event) {
-        ResourceLocation location = event.getAtlas().location();
-        if (location.equals(new ResourceLocation("textures/atlas/blocks.png"))) {
-            event.addSprite(new ResourceLocation(YummyMod.MOD_ID, "item/spear"));
-            event.addSprite(new ResourceLocation(YummyMod.MOD_ID, "item/mighty_holy_spear"));
-            event.addSprite(new ResourceLocation(YummyMod.MOD_ID, "item/spear_of_longinus"));
-        }
-    }
+//    @SubscribeEvent
+//    public static void onTexture(TextureStitchEvent.Pre event) {
+//        ResourceLocation location = event.getAtlas().location();
+//        if (location.equals(new ResourceLocation("textures/atlas/blocks.png"))) {
+//            event.addSprite(new ResourceLocation(YummyMod.MOD_ID, "item/spear"));
+//            event.addSprite(new ResourceLocation(YummyMod.MOD_ID, "item/mighty_holy_spear"));
+//            event.addSprite(new ResourceLocation(YummyMod.MOD_ID, "item/spear_of_longinus"));
+//        }
+//    }
 
     @SubscribeEvent
     public static void onModelBake(ModelEvent.RegisterAdditional event) {

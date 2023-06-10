@@ -1,6 +1,0 @@
-{
-    "parent": "minecraft:block/pressure_plate_down",
-    "textures": {
-        "texture": "yummy:block/ebony_planks"
-    }
-}

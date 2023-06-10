@@ -1,6 +1,5 @@
 package com.lalaalal.yummy.effect;
 
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -27,7 +26,7 @@ public class Echo extends MobEffect {
     public void applyEffectTick(LivingEntity livingEntity, int amplifier) {
         if (amplifier >= MAX_AMPLIFIER) {
             float damage = livingEntity.getHealth() * 0.25f;
-            livingEntity.hurt(DamageSource.MAGIC.bypassInvul(), damage);
+            livingEntity.hurt(livingEntity.level().damageSources().magic(), damage);
             livingEntity.removeEffect(YummyEffects.ECHO.get());
         }
     }

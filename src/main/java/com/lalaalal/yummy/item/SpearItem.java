@@ -19,10 +19,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
@@ -35,30 +32,33 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
-public class SpearItem extends Item {
+public class SpearItem extends TieredItem implements Vanishable {
     private static final Set<Enchantment> ENCHANTABLE = Set.of(Enchantments.LOYALTY, Enchantments.MENDING, Enchantments.UNBREAKING, Enchantments.IMPALING);
-    protected static final UUID ATTACK_REACH_MODIFIER = UUID.fromString("63d316c1-7d6d-41be-81c3-41fc1a216c27");
+    protected static final UUID REACH_DISTANCE_UUID = UUID.fromString("63d316c1-7d6d-41be-81c3-41fc1a216c27");
+    protected static final UUID ATTACK_RANGE_UUID = UUID.fromString("be7b5181-06e6-4268-a1e0-0a767a152901");
     private final Multimap<Attribute, AttributeModifier> defaultModifiers;
     private final Map<Integer, Multimap<Attribute, AttributeModifier>> defaultModifiersByImpalingLevel = new HashMap<>();
     private final SpearProvider spearProvider;
-    private final Tier tier;
+    private final float attackDamage;
 
     public SpearItem(Properties properties, Tier tier, int attackDamageModifier, float attackSpeedModifier, int attackReachModifier) {
         this(properties, tier, attackDamageModifier, attackSpeedModifier, attackReachModifier, ThrownSpear::new);
     }
 
-    public SpearItem(Properties properties, Tier tier, int attackDamageModifier, float attackSpeedModifier, int attackReachModifier, EntityType<? extends ThrownSpear> spearType) {
-        this(properties, tier, attackDamageModifier, attackSpeedModifier, attackReachModifier, (level, shooter, itemStack) -> new ThrownSpear(spearType, level, shooter, itemStack));
+    public SpearItem(Properties properties, Tier tier, int attackDamageModifier, float attackSpeedModifier, int attackReachModifier, Supplier<EntityType<? extends ThrownSpear>> spearType) {
+        this(properties, tier, attackDamageModifier, attackSpeedModifier, attackReachModifier, (level, shooter, itemStack) -> new ThrownSpear(spearType.get(), level, shooter, itemStack));
     }
 
     public SpearItem(Properties properties, Tier tier, int attackDamageModifier, float attackSpeedModifier, int attackReachModifier, SpearProvider spearProvider) {
-        super(properties.durability(tier.getUses()));
+        super(tier, properties.durability(tier.getUses()));
         this.spearProvider = spearProvider;
-        this.tier = tier;
+        this.attackDamage = tier.getAttackDamageBonus() + attackDamageModifier;
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-        builder.put(ForgeMod.REACH_DISTANCE.get(), new AttributeModifier(ATTACK_REACH_MODIFIER, "Weapon modifier", attackReachModifier, AttributeModifier.Operation.ADDITION));
-        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", tier.getAttackDamageBonus() + attackDamageModifier, AttributeModifier.Operation.ADDITION));
+        builder.put(ForgeMod.BLOCK_REACH.get(), new AttributeModifier(REACH_DISTANCE_UUID, "Weapon modifier", attackReachModifier, AttributeModifier.Operation.ADDITION));
+        builder.put(ForgeMod.ENTITY_REACH.get(), new AttributeModifier(ATTACK_RANGE_UUID, "Weapon modifier", attackReachModifier, AttributeModifier.Operation.ADDITION));
+        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", attackDamage, AttributeModifier.Operation.ADDITION));
         builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", attackSpeedModifier, AttributeModifier.Operation.ADDITION));
         this.defaultModifiers = builder.build();
 
@@ -88,6 +88,19 @@ public class SpearItem extends Item {
     }
 
     @Override
+    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        stack.hurtAndBreak(1, attacker, entity -> entity.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+        return true;
+    }
+
+    @Override
+    public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity miningEntity) {
+        if (state.getDestroySpeed(level, pos) != 0)
+            stack.hurtAndBreak(2, miningEntity, entity -> entity.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+        return true;
+    }
+
+    @Override
     public void releaseUsing(ItemStack itemStack, Level level, LivingEntity livingEntity, int timeLeft) {
         int i = this.getUseDuration(itemStack) - timeLeft;
         if (i >= 10 && !level.isClientSide)
@@ -96,13 +109,15 @@ public class SpearItem extends Item {
 
     protected void throwSpear(ItemStack itemStack, Level level, LivingEntity livingEntity) {
         if (livingEntity instanceof Player player) {
+            itemStack.hurtAndBreak(1, livingEntity, entity -> entity.broadcastBreakEvent(player.getUsedItemHand()));
             ThrownSpear spear = spearProvider.create(level, livingEntity, itemStack);
-            spear.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 2.5F, 1.0F);
+            spear.setOwner(livingEntity);
+            spear.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 2.5f, 1.0f);
             if (player.getAbilities().instabuild)
                 spear.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
 
             level.addFreshEntity(spear);
-            level.playSound(null, spear, SoundEvents.TRIDENT_THROW, SoundSource.PLAYERS, 1.0F, 1.0F);
+            level.playSound(null, spear, SoundEvents.TRIDENT_THROW, SoundSource.PLAYERS, 1.0f, 1.0f);
             if (!player.getAbilities().instabuild)
                 player.getInventory().removeItem(itemStack);
         }
@@ -121,13 +136,11 @@ public class SpearItem extends Item {
     }
 
     private Multimap<Attribute, AttributeModifier> cacheAttributeModifiers(int impalingLevel) {
-        float damage = 0;
-        for (AttributeModifier attributeModifier : defaultModifiers.get(Attributes.ATTACK_DAMAGE))
-            damage += attributeModifier.getAmount();
-        AttributeModifier attributeModifier = new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", damage + impalingLevel, AttributeModifier.Operation.ADDITION);
+        AttributeModifier attributeModifier = new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", attackDamage + impalingLevel, AttributeModifier.Operation.ADDITION);
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         Multimap<Attribute, AttributeModifier> modifiers = builder
-                .putAll(ForgeMod.REACH_DISTANCE.get(), defaultModifiers.get(ForgeMod.REACH_DISTANCE.get()))
+                .putAll(ForgeMod.BLOCK_REACH.get(), defaultModifiers.get(ForgeMod.BLOCK_REACH.get()))
+                .putAll(ForgeMod.ENTITY_REACH.get(), defaultModifiers.get(ForgeMod.ENTITY_REACH.get()))
                 .put(Attributes.ATTACK_DAMAGE, attributeModifier)
                 .putAll(Attributes.ATTACK_SPEED, defaultModifiers.get(Attributes.ATTACK_SPEED))
                 .build();
@@ -142,7 +155,7 @@ public class SpearItem extends Item {
 
     @Override
     public int getEnchantmentValue(ItemStack itemStack) {
-        return tier.getEnchantmentValue();
+        return getTier().getEnchantmentValue();
     }
 
     @Override

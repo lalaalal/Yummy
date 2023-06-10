@@ -7,6 +7,7 @@ import com.lalaalal.yummy.entity.ai.skill.FractureRushSkill;
 import com.lalaalal.yummy.entity.ai.skill.PunchSkill;
 import com.lalaalal.yummy.tags.YummyTags;
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -24,22 +25,21 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class ShadowHerobrine extends AbstractHerobrine {
     public static final float DEFAULT_MOVEMENT_SPEED = 0.18f;
     private static final int FIRST_MOVING_DURATION = 150;
     private static final int START_MOVING_TICK = 8;
 
-    private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this, false);
+    private final AnimatableInstanceCache animatableInstanceCache = GeckoLibUtil.createInstanceCache(this);
     private Herobrine herobrine;
     private Vec3 firstPos;
     private int firstMovingTick = 0;
@@ -93,7 +93,7 @@ public class ShadowHerobrine extends AbstractHerobrine {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return !source.isBypassInvul();
+        return !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY);
     }
 
     @Override
@@ -134,7 +134,7 @@ public class ShadowHerobrine extends AbstractHerobrine {
     public void aiStep() {
         if (tickCount > START_MOVING_TICK + tickOffset)
             super.aiStep();
-        else if (!level.isClientSide && firstPos != null)
+        else if (!level().isClientSide && firstPos != null)
             moveTo(firstPos);
     }
 
@@ -144,37 +144,36 @@ public class ShadowHerobrine extends AbstractHerobrine {
             kill();
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    private PlayState predicate(AnimationState<GeoAnimatable> geoAnimatableAnimationState) {
         if (firstMovingTick < FIRST_MOVING_DURATION) {
             firstMovingTick += 1;
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.shadow_herobrine.summoned_shadow", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
+            geoAnimatableAnimationState.getController().setAnimation(RawAnimation.begin().thenPlay("animation.shadow_herobrine.summoned_shadow"));
             return PlayState.CONTINUE;
         }
 
         String skillName = getUsingSkillName();
         if (!skillName.equals(SKILL_NONE)) {
             String animationName = "animation.shadow_herobrine." + skillName;
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(animationName, ILoopType.EDefaultLoopTypes.PLAY_ONCE));
+            geoAnimatableAnimationState.getController().setAnimation(RawAnimation.begin().thenPlay(animationName));
             return PlayState.CONTINUE;
         }
 
-        if (!event.isMoving())
+        if (!geoAnimatableAnimationState.isMoving())
             return PlayState.STOP;
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.shadow_herobrine.walk", ILoopType.EDefaultLoopTypes.LOOP));
+        geoAnimatableAnimationState.getController().setAnimation(RawAnimation.begin().thenLoop("animation.shadow_herobrine.walk"));
         return PlayState.CONTINUE;
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "shadow_controller", 0, this::predicate));
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+        controllerRegistrar.add(new AnimationController<>(this, "shadow_controller", 0, this::predicate));
     }
 
     @Override
-    public AnimationFactory getFactory() {
-        return animationFactory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return animatableInstanceCache;
     }
-
 
     private class FollowParentGoal extends Goal {
         public static final double START_FOLLOWING_DISTANCE = 24;
@@ -217,7 +216,7 @@ public class ShadowHerobrine extends AbstractHerobrine {
 
         private void teleportToHerobrine() {
             BlockPos blockpos = this.parent.blockPosition();
-            BlockPos teleportPos = YummyUtil.randomPos(blockpos, 5, level.getRandom());
+            BlockPos teleportPos = YummyUtil.randomPos(blockpos, 5, level().getRandom());
 
             moveTo(teleportPos, 0, 0);
         }
