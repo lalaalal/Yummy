@@ -20,7 +20,7 @@ public class YummyBlockLootTables extends BlockLootSubProvider {
         dropSelf(YummyBlocks.AMETHYST_BLOCK.get());
         add(YummyBlocks.DEEPSLATE_RUBELLITE_ORE.get(), block -> createOreDrop(block, YummyItems.RUBELLITE.get()));
         dropSelf(YummyBlocks.EBONY_BUTTON.get());
-        createDoorTable(YummyBlocks.EBONY_DOOR.get());
+        add(YummyBlocks.EBONY_DOOR.get(), this::createDoorTable);
         dropSelf(YummyBlocks.EBONY_FENCE.get());
         dropSelf(YummyBlocks.EBONY_FENCE_GATE.get());
         add(YummyBlocks.EBONY_LEAVES.get(), block -> createLeavesDrops(block, YummyBlocks.EBONY_SAPLING.get(), NORMAL_LEAVES_SAPLING_CHANCES));
