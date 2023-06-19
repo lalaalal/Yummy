@@ -102,16 +102,6 @@ public class YummyClientEventBus {
         event.registerLayerDefinition(MeteorModel.LAYER_LOCATION, MeteorModel::createBodyLayer);
     }
 
-//    @SubscribeEvent
-//    public static void onTexture(TextureStitchEvent.Pre event) {
-//        ResourceLocation location = event.getAtlas().location();
-//        if (location.equals(new ResourceLocation("textures/atlas/blocks.png"))) {
-//            event.addSprite(new ResourceLocation(YummyMod.MOD_ID, "item/spear"));
-//            event.addSprite(new ResourceLocation(YummyMod.MOD_ID, "item/mighty_holy_spear"));
-//            event.addSprite(new ResourceLocation(YummyMod.MOD_ID, "item/spear_of_longinus"));
-//        }
-//    }
-
     @SubscribeEvent
     public static void onModelBake(ModelEvent.RegisterAdditional event) {
         event.register(new ModelResourceLocation(YummyMod.MOD_ID, "spear_inventory", "inventory"));

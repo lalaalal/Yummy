@@ -29,7 +29,7 @@ public class EchoSwordItem extends SwordItem {
 
     @Override
     public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
-        if (!(entity instanceof LivingEntity target))
+        if (player.level().isClientSide || !(entity instanceof LivingEntity target))
             return super.onLeftClickEntity(stack, player, entity);
         float damage = getTier().getAttackDamageBonus() + (float) (Math.floor(target.getMaxHealth() / 5) * 2);
         DamageSource damageSource = player.damageSources().mobAttack(player);

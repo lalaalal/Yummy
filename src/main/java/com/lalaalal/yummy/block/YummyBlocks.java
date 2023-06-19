@@ -130,7 +130,7 @@ public class YummyBlocks {
                     .fireResistant()));
 
     public static final RegistryObject<Block> ALEMBIC_BLOCK = register("alembic",
-            () -> new AlembicBlock(BlockBehaviour.Properties.copy(Blocks.GLASS)));
+            () -> new AlembicBlock(BlockBehaviour.Properties.copy(Blocks.FURNACE)));
 
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> block) {
         RegistryObject<T> registryObject = BLOCKS.register(name, block);
