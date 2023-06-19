@@ -36,7 +36,6 @@ public class YummyRecipeProvider extends RecipeProvider implements IConditionBui
                 .stairs(YummyBlocks.EBONY_STAIRS.get())
                 .trapdoor(YummyBlocks.EBONY_TRAPDOOR.get())
                 .getFamily());
-        cut(consumer, RecipeCategory.BUILDING_BLOCKS, YummyBlocks.HARD_EBONY_PLANKS.get(), YummyBlocks.EBONY_WOOD.get());
         essenceSmithing(consumer, YummyItems.PURIFIED_SOUL_SWORD.get(), YummyItems.ESSENCE_OF_EARTH.get(), RecipeCategory.MISC, YummyItems.SWORD_OF_EARTH.get());
         essenceSmithing(consumer, YummyItems.PURIFIED_SOUL_SWORD.get(), YummyItems.ESSENCE_OF_ELECTRICITY.get(), RecipeCategory.MISC, YummyItems.SWORD_OF_ELECTRICITY.get());
         essenceSmithing(consumer, YummyItems.PURIFIED_SOUL_SWORD.get(), YummyItems.ESSENCE_OF_FIRE.get(), RecipeCategory.MISC, YummyItems.SWORD_OF_FIRE.get());
@@ -45,7 +44,7 @@ public class YummyRecipeProvider extends RecipeProvider implements IConditionBui
         essenceSmithing(consumer, YummyItems.PURIFIED_SOUL_SWORD.get(), YummyItems.ESSENCE_OF_SOUND.get(), RecipeCategory.MISC, YummyItems.SWORD_OF_SOUND.get());
         essenceSmithing(consumer, YummyItems.PURIFIED_SOUL_SWORD.get(), YummyItems.ESSENCE_OF_WATER.get(), RecipeCategory.MISC, YummyItems.SWORD_OF_WATER.get());
         essenceSmithing(consumer, YummyItems.PURIFIED_SOUL_SWORD.get(), YummyItems.ESSENCE_OF_WIND.get(), RecipeCategory.MISC, YummyItems.SWORD_OF_WIND.get());
-        planksFromLog(consumer, YummyBlocks.EBONY_LOG.get(), YummyTags.EBONY_LOGS_ITEM_TAG, 4);
+        planksFromLog(consumer, YummyBlocks.EBONY_PLANKS.get(), YummyTags.EBONY_LOGS_ITEM_TAG, 4);
         woodFromLogs(consumer, YummyBlocks.EBONY_WOOD.get(), YummyBlocks.EBONY_LOG.get());
         woodenBoat(consumer, YummyItems.EBONY_BOAT_ITEM.get(), YummyBlocks.EBONY_PLANKS.get());
         chestBoat(consumer, YummyItems.EBONY_CHEST_BOAT_ITEM.get(), YummyBlocks.EBONY_PLANKS.get());

@@ -34,8 +34,7 @@ public class SimpleDamageSource extends DamageSource {
     }
 
     public String getTranslationId() {
-        String messageId = "death.attack." + super.getMsgId();
-        return source == null ? messageId : messageId + ".player";
+        return "death.attack." + getMsgId();
     }
 
     @Override

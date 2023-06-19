@@ -17,6 +17,7 @@ public class YummyTabs {
             .title(Component.translatable("itemGroup." + YummyMod.MOD_ID))
             .icon(() -> new ItemStack(YummyItems.RUBELLITE.get()))
             .displayItems((features, entries) -> {
+                entries.accept(YummyBlocks.ALEMBIC_BLOCK.get());
                 entries.accept(YummyBlocks.EBONY_LOG.get());
                 entries.accept(YummyBlocks.EBONY_WOOD.get());
                 entries.accept(YummyBlocks.STRIPPED_EBONY_LOG.get());
