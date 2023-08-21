@@ -27,7 +27,7 @@ public class YummyBlockStateProvider extends BlockStateProvider {
         blockWithItem(YummyBlocks.RUBELLITE_BLOCK);
         blockWithItem(YummyBlocks.RUBELLITE_ORE);
         buttonBlock(YummyBlocks.EBONY_BUTTON.get(), new ResourceLocation(YummyMod.MOD_ID, "block/ebony_planks"));
-        doorBlock(YummyBlocks.EBONY_DOOR.get(), new ResourceLocation(YummyMod.MOD_ID, "block/ebony_door_top"), new ResourceLocation(YummyMod.MOD_ID, "block/ebony_door_bottom"));
+        doorBlock(YummyBlocks.EBONY_DOOR.get(), new ResourceLocation(YummyMod.MOD_ID, "block/ebony_door_bottom"), new ResourceLocation(YummyMod.MOD_ID, "block/ebony_door_top"));
         fenceBlock(YummyBlocks.EBONY_FENCE.get(), new ResourceLocation(YummyMod.MOD_ID, "block/ebony_planks"));
         fenceGateBlock(YummyBlocks.EBONY_FENCE_GATE.get(), new ResourceLocation(YummyMod.MOD_ID, "block/ebony_planks"));
         logBlock(YummyBlocks.EBONY_LOG.get());

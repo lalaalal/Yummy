@@ -23,6 +23,7 @@ public class YummyTabs {
                 entries.accept(YummyBlocks.STRIPPED_EBONY_LOG.get());
                 entries.accept(YummyBlocks.STRIPPED_EBONY_WOOD.get());
                 entries.accept(YummyBlocks.EBONY_PLANKS.get());
+                entries.accept(YummyBlocks.HARD_EBONY_PLANKS.get());
                 entries.accept(YummyBlocks.EBONY_STAIRS.get());
                 entries.accept(YummyBlocks.EBONY_SLAB.get());
                 entries.accept(YummyBlocks.EBONY_FENCE.get());
@@ -81,7 +82,7 @@ public class YummyTabs {
                 entries.accept(YummyBlocks.CORRUPTED_POLLUTED_BLOCK.get());
                 entries.accept(YummyBlocks.DISPLAYING_POLLUTED_BLOCK.get());
                 entries.accept(YummyBlocks.PURIFIED_SOUL_BLOCK.get());
-                entries.accept(YummyBlocks.HARD_EBONY_PLANKS.get());
+
             })
             .build()
     );
