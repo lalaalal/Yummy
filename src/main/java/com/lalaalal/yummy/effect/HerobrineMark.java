@@ -63,7 +63,7 @@ public class HerobrineMark extends MobEffect {
         if (!livingEntity.level().isClientSide && amplifier >= 6) {
             DamageSource damageSource = YummyDamageSources.herobrineMark(livingEntity.level(), this);
             livingEntity.removeAllEffects();
-            livingEntity.hurt(damageSource, Float.MAX_VALUE);
+            livingEntity.hurt(damageSource, 666);
         }
     }
 

@@ -3,6 +3,7 @@ package com.lalaalal.yummy.client.renderer;
 import com.lalaalal.yummy.YummyMod;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.model.BoatModel;
+import net.minecraft.client.model.ChestBoatModel;
 import net.minecraft.client.model.ListModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -24,8 +25,15 @@ public class EbonyBoatRenderer extends BoatRenderer {
         super(context, containChest);
 
         ModelLayerLocation modellayerlocation = containChest ? ModelLayers.createChestBoatModelName(Boat.Type.OAK) : ModelLayers.createBoatModelName(Boat.Type.OAK);
-        BoatModel model = new BoatModel(context.bakeLayer(modellayerlocation));
-        modelResourcePair = new Pair<>(getTextureLocation(containChest), model);
+        if (!containChest){
+            BoatModel model = new BoatModel(context.bakeLayer(modellayerlocation));
+            modelResourcePair = new Pair<>(getTextureLocation(containChest), model);
+        } else{
+            ChestBoatModel model = new ChestBoatModel(context.bakeLayer(modellayerlocation));
+            modelResourcePair = new Pair<>(getTextureLocation(containChest), model);
+        }
+
+
     }
 
     @Override
