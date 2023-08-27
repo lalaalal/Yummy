@@ -41,6 +41,8 @@ public class YummyBlockLootTables extends BlockLootSubProvider {
         add(YummyBlocks.RUBELLITE_ORE.get(), block -> createOreDrop(block, YummyItems.RUBELLITE.get()));
         dropSelf(YummyBlocks.STRIPPED_EBONY_LOG.get());
         dropSelf(YummyBlocks.STRIPPED_EBONY_WOOD.get());
+        dropOther(YummyBlocks.EBONY_HANGING_SIGN.get(), YummyItems.EBONY_HANGING_SIGN.get());
+        dropOther(YummyBlocks.EBONY_WALL_HANGING_SIGN.get(), YummyItems.EBONY_HANGING_SIGN.get());
     }
 
     @Override

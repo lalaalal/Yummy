@@ -31,6 +31,12 @@ public class YummyBlockEntities {
             YummyBlocks.EBONY_WALL_SIGN.get()
     ).build(null));
 
+    public static final RegistryObject<BlockEntityType<YummyHangingSignBlockEntity>> YUMMY_HANGING_SIGN_BLOCK_ENTITY
+            = BLOCK_ENTITY_TYPES.register("yummy_hanging_sign_block_entity", () -> BlockEntityType.Builder.of(YummyHangingSignBlockEntity::new,
+            YummyBlocks.EBONY_HANGING_SIGN.get(),
+            YummyBlocks.EBONY_WALL_HANGING_SIGN.get()
+    ).build(null));
+
     private static <T extends BlockEntity> RegistryObject<BlockEntityType<T>> register(String name, BlockEntityType.BlockEntitySupplier<T> blockEntitySupplier, RegistryObject<Block> block) {
         return BLOCK_ENTITY_TYPES.register(name,
                 () -> BlockEntityType.Builder.of(blockEntitySupplier, block.get()).build(null));

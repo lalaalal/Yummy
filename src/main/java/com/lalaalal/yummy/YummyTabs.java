@@ -35,6 +35,7 @@ public class YummyTabs {
                 entries.accept(YummyItems.EBONY_BOAT_ITEM.get());
                 entries.accept(YummyItems.EBONY_CHEST_BOAT_ITEM.get());
                 entries.accept(YummyItems.EBONY_SIGN.get());
+                entries.accept(YummyItems.EBONY_HANGING_SIGN.get());
                 entries.accept(YummyBlocks.EBONY_LEAVES.get());
                 entries.accept(YummyBlocks.EBONY_SAPLING.get());
                 entries.accept(YummyItems.RUBELLITE.get());
