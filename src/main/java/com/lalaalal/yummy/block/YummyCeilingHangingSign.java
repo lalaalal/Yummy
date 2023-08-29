@@ -7,8 +7,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
 
-public class EbonyCeilingHangingSign extends CeilingHangingSignBlock {
-    public EbonyCeilingHangingSign(Properties properties, WoodType woodType) {
+public class YummyCeilingHangingSign extends CeilingHangingSignBlock {
+    public YummyCeilingHangingSign(Properties properties, WoodType woodType) {
         super(properties, woodType);
     }
 

@@ -106,10 +106,10 @@ public class YummyBlocks {
             () -> new YummyStandingSignBlock(BlockBehaviour.Properties.copy(Blocks.OAK_SIGN), YummyTypes.EBONY_WOOD_TYPE));
     public static final RegistryObject<YummyWallSignBlock> EBONY_WALL_SIGN = BLOCKS.register("ebony_wall_sign",
             () -> new YummyWallSignBlock(BlockBehaviour.Properties.copy(Blocks.OAK_WALL_SIGN), YummyTypes.EBONY_WOOD_TYPE));
-    public static final RegistryObject<EbonyCeilingHangingSign> EBONY_HANGING_SIGN = BLOCKS.register("ebony_hanging_sign",
-            () -> new EbonyCeilingHangingSign(BlockBehaviour.Properties.copy(Blocks.OAK_HANGING_SIGN), YummyTypes.EBONY_WOOD_TYPE));
-    public static final RegistryObject<EbonyWallHangingSign> EBONY_WALL_HANGING_SIGN = BLOCKS.register("ebony_hanging_wall_sign",
-            () -> new EbonyWallHangingSign(BlockBehaviour.Properties.copy(Blocks.OAK_WALL_HANGING_SIGN), YummyTypes.EBONY_WOOD_TYPE));
+    public static final RegistryObject<YummyCeilingHangingSign> EBONY_HANGING_SIGN = BLOCKS.register("ebony_hanging_sign",
+            () -> new YummyCeilingHangingSign(BlockBehaviour.Properties.copy(Blocks.OAK_HANGING_SIGN), YummyTypes.EBONY_WOOD_TYPE));
+    public static final RegistryObject<YummyWallHangingSign> EBONY_WALL_HANGING_SIGN = BLOCKS.register("ebony_hanging_wall_sign",
+            () -> new YummyWallHangingSign(BlockBehaviour.Properties.copy(Blocks.OAK_WALL_HANGING_SIGN), YummyTypes.EBONY_WOOD_TYPE));
 
     public static final RegistryObject<TrapDoorBlock> EBONY_TRAPDOOR = register("ebony_trapdoor",
             () -> new TrapDoorBlock(BlockBehaviour.Properties.copy(Blocks.OAK_TRAPDOOR), YummyTypes.EBONY_BLOCK_SET_TYPE));
