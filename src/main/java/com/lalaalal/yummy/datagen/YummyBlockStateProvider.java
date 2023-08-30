@@ -34,7 +34,6 @@ public class YummyBlockStateProvider extends BlockStateProvider {
         logBlock(YummyBlocks.STRIPPED_EBONY_LOG.get());
         pressurePlateBlock(YummyBlocks.EBONY_PRESSURE_PLATE.get(), new ResourceLocation(YummyMod.MOD_ID, "block/ebony_planks"));
         signBlock(YummyBlocks.EBONY_SIGN.get(), YummyBlocks.EBONY_WALL_SIGN.get(), new ResourceLocation(YummyMod.MOD_ID, "block/ebony_planks"));
-        //signBlock(YummyBlocks.EBONY_HANGING_SIGN.get(), YummyBlocks.EBONY_WALL_HANGING_SIGN.get(), new ResourceLocation(YummyMod.MOD_ID, "block/ebony_planks"));
         slabBlock(YummyBlocks.EBONY_SLAB.get(), new ResourceLocation(YummyMod.MOD_ID, "block/ebony_planks"), new ResourceLocation(YummyMod.MOD_ID, "block/ebony_planks"));
         stairsBlock(YummyBlocks.EBONY_STAIRS.get(), new ResourceLocation(YummyMod.MOD_ID, "block/ebony_planks"));
         trapdoorBlock(YummyBlocks.EBONY_TRAPDOOR.get(), new ResourceLocation(YummyMod.MOD_ID, "block/ebony_trapdoor"), true);
