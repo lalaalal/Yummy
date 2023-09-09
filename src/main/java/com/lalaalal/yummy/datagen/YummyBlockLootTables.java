@@ -4,16 +4,23 @@ import com.lalaalal.yummy.block.YummyBlocks;
 import com.lalaalal.yummy.item.YummyItems;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.predicates.BonusLevelTableCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.Set;
 
 public class YummyBlockLootTables extends BlockLootSubProvider {
+    private static final LootItemCondition.Builder HAS_SHEARS_OR_SILK_TOUCH = HAS_SHEARS.or(HAS_SILK_TOUCH);
+    private static final LootItemCondition.Builder HAS_NO_SHEARS_OR_SILK_TOUCH = HAS_SHEARS_OR_SILK_TOUCH.invert();
     protected YummyBlockLootTables() {
         super(Set.of(), FeatureFlags.REGISTRY.allFlags());
     }
-
     @Override
     protected void generate() {
         dropSelf(YummyBlocks.ALEMBIC_BLOCK.get());
@@ -23,7 +30,7 @@ public class YummyBlockLootTables extends BlockLootSubProvider {
         add(YummyBlocks.EBONY_DOOR.get(), this::createDoorTable);
         dropSelf(YummyBlocks.EBONY_FENCE.get());
         dropSelf(YummyBlocks.EBONY_FENCE_GATE.get());
-        add(YummyBlocks.EBONY_LEAVES.get(), block -> createOakLeavesDrops(block, YummyBlocks.EBONY_SAPLING.get(), NORMAL_LEAVES_SAPLING_CHANCES));
+        add(YummyBlocks.EBONY_LEAVES.get(), block -> createLeavesDrops(block, YummyBlocks.EBONY_SAPLING.get(), NORMAL_LEAVES_SAPLING_CHANCES).withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).when(HAS_NO_SHEARS_OR_SILK_TOUCH).add(this.applyExplosionCondition(block, LootItem.lootTableItem(YummyItems.EBONY_FRUIT.get())).when(BonusLevelTableCondition.bonusLevelFlatChance(Enchantments.BLOCK_FORTUNE, 0.005F, 0.0055555557F, 0.00625F, 0.008333334F, 0.025F)))));
         dropSelf(YummyBlocks.EBONY_LOG.get());
         dropSelf(YummyBlocks.EBONY_PLANKS.get());
         dropSelf(YummyBlocks.EBONY_PRESSURE_PLATE.get());

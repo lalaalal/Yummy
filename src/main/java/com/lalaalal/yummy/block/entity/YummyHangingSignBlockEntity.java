@@ -1,5 +1,10 @@
 package com.lalaalal.yummy.block.entity;
-
+/**
+ *
+ * YummyHangingSignBlockEntity is Ebony hanging sign's Entity class
+ * @author GuEunso
+ *
+ */
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;

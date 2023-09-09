@@ -23,7 +23,6 @@ public class YummyTabs {
                 entries.accept(YummyBlocks.STRIPPED_EBONY_LOG.get());
                 entries.accept(YummyBlocks.STRIPPED_EBONY_WOOD.get());
                 entries.accept(YummyBlocks.EBONY_PLANKS.get());
-                entries.accept(YummyBlocks.HARD_EBONY_PLANKS.get());
                 entries.accept(YummyBlocks.EBONY_STAIRS.get());
                 entries.accept(YummyBlocks.EBONY_SLAB.get());
                 entries.accept(YummyBlocks.EBONY_FENCE.get());
@@ -36,8 +35,10 @@ public class YummyTabs {
                 entries.accept(YummyItems.EBONY_CHEST_BOAT_ITEM.get());
                 entries.accept(YummyItems.EBONY_SIGN.get());
                 entries.accept(YummyItems.EBONY_HANGING_SIGN.get());
+                entries.accept(YummyBlocks.HARD_EBONY_PLANKS.get());
                 entries.accept(YummyBlocks.EBONY_LEAVES.get());
                 entries.accept(YummyBlocks.EBONY_SAPLING.get());
+                entries.accept(YummyItems.EBONY_FRUIT.get());
                 entries.accept(YummyItems.RUBELLITE.get());
                 entries.accept(YummyItems.SPEAR.get());
                 entries.accept(YummyItems.MIGHTY_HOLY_SPEAR.get());
@@ -83,6 +84,10 @@ public class YummyTabs {
                 entries.accept(YummyBlocks.CORRUPTED_POLLUTED_BLOCK.get());
                 entries.accept(YummyBlocks.DISPLAYING_POLLUTED_BLOCK.get());
                 entries.accept(YummyBlocks.PURIFIED_SOUL_BLOCK.get());
+                entries.accept(YummyItems.STARARMOR_HELMET.get());
+                entries.accept(YummyItems.STARARMOR_CHESTPLATE.get());
+                entries.accept(YummyItems.STARARMOR_LEGGINGS.get());
+                entries.accept(YummyItems.STARARMOR_BOOTS.get());
 
             })
             .build()

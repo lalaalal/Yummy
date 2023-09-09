@@ -12,12 +12,14 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-@SuppressWarnings("unused")
 public class YummyItems {
+
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, YummyMod.MOD_ID);
 
     public static final RegistryObject<Item> RUBELLITE = ITEMS.register("rubellite",
             () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> EBONY_FRUIT = ITEMS.register("ebony_fruit",
+            EbonyFruitItem::new);
 
     public static final RegistryObject<Item> MANGANESE_NODULE = ITEMS.register("manganese_nodule",
             () -> new Item(new Item.Properties()));
@@ -171,6 +173,12 @@ public class YummyItems {
     private static RegistryObject<Item> registerElementEssence(Element element) {
         return ITEMS.register("essence_of_" + element, () -> new Item(new Item.Properties()));
     }
+
+    public static final RegistryObject<Item> STARARMOR_HELMET = ITEMS.register("stararmor_helmet", () -> new StarArmor.Helmet());
+    public static final RegistryObject<Item> STARARMOR_CHESTPLATE = ITEMS.register("stararmor_chestplate", () -> new StarArmor.Chestplate());
+    public static final RegistryObject<Item> STARARMOR_LEGGINGS = ITEMS.register("stararmor_leggings", () -> new StarArmor.Leggings());
+    public static final RegistryObject<Item> STARARMOR_BOOTS = ITEMS.register("stararmor_boots", () -> new StarArmor.Boots());
+
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

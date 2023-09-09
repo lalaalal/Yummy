@@ -1,5 +1,13 @@
 package com.lalaalal.yummy.block;
 
+/**
+ *
+ * YummyCeilingHangingSign is Ebony hanging sign's entity class.
+ *
+ * @author GuEunso
+ *
+ */
+
 import com.lalaalal.yummy.block.entity.YummyHangingSignBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.CeilingHangingSignBlock;

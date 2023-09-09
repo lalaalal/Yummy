@@ -40,6 +40,7 @@ public class YummyBlockStateProvider extends BlockStateProvider {
     }
 
 
+
     private void blockWithItem(RegistryObject<? extends Block> block) {
         simpleBlockWithItem(block.get(), cubeAll(block.get()));
     }

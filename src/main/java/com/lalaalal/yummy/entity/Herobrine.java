@@ -47,7 +47,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Herobrine extends AbstractHerobrine {
+public class Herobrine extends AbstractHerobrine{
     public static final int DEATH_TICK_DURATION = 100;
     private static final int HURT_ANIMATION_DURATION = 37;
     private static final int CONSUME_MARK_HEAL = 66;
