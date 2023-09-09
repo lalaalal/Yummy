@@ -15,6 +15,7 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.world.item.BlockItem;
@@ -91,6 +92,7 @@ public class YummyClientEventBus {
         event.registerEntityRenderer(YummyEntities.EBONY_CHEST_BOAT.get(), (context) -> new EbonyBoatRenderer(context, true));
 
         event.registerBlockEntityRenderer(YummyBlockEntities.YUMMY_SIGN_BLOCK_ENTITY.get(), SignRenderer::new);
+        event.registerBlockEntityRenderer(YummyBlockEntities.YUMMY_HANGING_SIGN_BLOCK_ENTITY.get(), HangingSignRenderer::new);
     }
 
     @SubscribeEvent

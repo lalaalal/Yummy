@@ -48,6 +48,7 @@ public class YummyRecipeProvider extends RecipeProvider implements IConditionBui
         woodFromLogs(consumer, YummyBlocks.EBONY_WOOD.get(), YummyBlocks.EBONY_LOG.get());
         woodenBoat(consumer, YummyItems.EBONY_BOAT_ITEM.get(), YummyBlocks.EBONY_PLANKS.get());
         chestBoat(consumer, YummyItems.EBONY_CHEST_BOAT_ITEM.get(), YummyBlocks.EBONY_PLANKS.get());
+        hangingSign(consumer, YummyBlocks.EBONY_HANGING_SIGN.get(), YummyBlocks.STRIPPED_EBONY_LOG.get());
     }
 
     protected static void nineBlockStorageRecipes(Consumer<FinishedRecipe> pFinishedRecipeConsumer, RecipeCategory pUnpackedCategory, ItemLike pUnpacked, RecipeCategory pPackedCategory, ItemLike pPacked) {

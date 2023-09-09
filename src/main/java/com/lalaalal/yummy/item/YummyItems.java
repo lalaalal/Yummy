@@ -69,6 +69,8 @@ public class YummyItems {
 
     public static final RegistryObject<Item> EBONY_SIGN = ITEMS.register("ebony_sign",
             () -> new SignItem(new Item.Properties().stacksTo(16), YummyBlocks.EBONY_SIGN.get(), YummyBlocks.EBONY_WALL_SIGN.get()));
+    public static final RegistryObject<Item> EBONY_HANGING_SIGN = ITEMS.register("ebony_hanging_sign",
+            () -> new HangingSignItem(YummyBlocks.EBONY_HANGING_SIGN.get(), YummyBlocks.EBONY_WALL_HANGING_SIGN.get(), new Item.Properties().stacksTo(16)));
     public static final RegistryObject<Item> EBONY_BOAT_ITEM = ITEMS.register("ebony_boat",
             () -> new EbonyBoatItem(false, new Item.Properties()
                     .stacksTo(1)

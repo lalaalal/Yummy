@@ -23,7 +23,7 @@ public class YummyBlockLootTables extends BlockLootSubProvider {
         add(YummyBlocks.EBONY_DOOR.get(), this::createDoorTable);
         dropSelf(YummyBlocks.EBONY_FENCE.get());
         dropSelf(YummyBlocks.EBONY_FENCE_GATE.get());
-        add(YummyBlocks.EBONY_LEAVES.get(), block -> createLeavesDrops(block, YummyBlocks.EBONY_SAPLING.get(), NORMAL_LEAVES_SAPLING_CHANCES));
+        add(YummyBlocks.EBONY_LEAVES.get(), block -> createOakLeavesDrops(block, YummyBlocks.EBONY_SAPLING.get(), NORMAL_LEAVES_SAPLING_CHANCES));
         dropSelf(YummyBlocks.EBONY_LOG.get());
         dropSelf(YummyBlocks.EBONY_PLANKS.get());
         dropSelf(YummyBlocks.EBONY_PRESSURE_PLATE.get());
@@ -41,6 +41,8 @@ public class YummyBlockLootTables extends BlockLootSubProvider {
         add(YummyBlocks.RUBELLITE_ORE.get(), block -> createOreDrop(block, YummyItems.RUBELLITE.get()));
         dropSelf(YummyBlocks.STRIPPED_EBONY_LOG.get());
         dropSelf(YummyBlocks.STRIPPED_EBONY_WOOD.get());
+        dropOther(YummyBlocks.EBONY_HANGING_SIGN.get(), YummyItems.EBONY_HANGING_SIGN.get());
+        dropOther(YummyBlocks.EBONY_WALL_HANGING_SIGN.get(), YummyItems.EBONY_HANGING_SIGN.get());
     }
 
     @Override
