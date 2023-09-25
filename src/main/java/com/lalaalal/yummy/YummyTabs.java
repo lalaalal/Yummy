@@ -84,10 +84,11 @@ public class YummyTabs {
                 entries.accept(YummyBlocks.CORRUPTED_POLLUTED_BLOCK.get());
                 entries.accept(YummyBlocks.DISPLAYING_POLLUTED_BLOCK.get());
                 entries.accept(YummyBlocks.PURIFIED_SOUL_BLOCK.get());
-                entries.accept(YummyItems.STARARMOR_HELMET.get());
-                entries.accept(YummyItems.STARARMOR_CHESTPLATE.get());
-                entries.accept(YummyItems.STARARMOR_LEGGINGS.get());
-                entries.accept(YummyItems.STARARMOR_BOOTS.get());
+                entries.accept(YummyItems.PURIFIED_SOUL_HELMET.get());
+                entries.accept(YummyItems.PURIFIED_SOUL_CHESTPLATE.get());
+                entries.accept(YummyItems.PURIFIED_SOUL_LEGGINGS.get());
+                entries.accept(YummyItems.PURIFIED_SOUL_BOOTS.get());
+                entries.accept(YummyItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get());
 
             })
             .build()

@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:smithing_transform",
+  "base": {
+    "item": "minecraft:netherite_helmet"
+  },
+  "addition": {
+    "item": "yummy:purified_soul_metal"
+  },
+  "result": {
+    "item": "yummy:purified_soul_helmet"
+  },
+  "template": {
+    "item": "yummy:purified_soul_upgrade_smithing_template"
+  }
+}

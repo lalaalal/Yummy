@@ -8,9 +8,9 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class StarArmor extends ArmorItem{
+public class PurifiedSoulArmor extends ArmorItem{
 
-    public StarArmor(Type pType, Properties pProperties) {
+    public PurifiedSoulArmor(Type pType, Properties pProperties) {
         super(new ArmorMaterial() {
             @Override
             public int getDurabilityForType(ArmorItem.Type type) {
@@ -54,47 +54,47 @@ public class StarArmor extends ArmorItem{
         }, pType, pProperties);
     }
 
-    public static class Helmet extends StarArmor {
+    public static class Helmet extends PurifiedSoulArmor {
         public Helmet() {
             super(ArmorItem.Type.HELMET, new Item.Properties().fireResistant());
         }
 
         @Override
         public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-            return "yummy:textures/models/armor/star_layer_1.png";
+            return "yummy:textures/models/armor/purified_soul_layer_1.png";
         }
     }
 
-    public static class Chestplate extends StarArmor {
+    public static class Chestplate extends PurifiedSoulArmor {
         public Chestplate() {
             super(ArmorItem.Type.CHESTPLATE, new Item.Properties().fireResistant());
         }
 
         @Override
         public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-            return "yummy:textures/models/armor/star_layer_1.png";
+            return "yummy:textures/models/armor/purified_soul_layer_1.png";
         }
     }
 
-    public static class Leggings extends StarArmor {
+    public static class Leggings extends PurifiedSoulArmor {
         public Leggings() {
             super(ArmorItem.Type.LEGGINGS, new Item.Properties().fireResistant());
         }
 
         @Override
         public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-            return "yummy:textures/models/armor/star_layer_2.png";
+            return "yummy:textures/models/armor/purified_soul_layer_2.png";
         }
     }
 
-    public static class Boots extends StarArmor {
+    public static class Boots extends PurifiedSoulArmor {
         public Boots() {
             super(ArmorItem.Type.BOOTS, new Item.Properties().fireResistant());
         }
 
         @Override
         public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-            return "yummy:textures/models/armor/star_layer_1.png";
+            return "yummy:textures/models/armor/purified_soul_layer_1.png";
         }
     }
 

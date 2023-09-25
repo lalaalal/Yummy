@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "yummy:item/star_chestplate"
+    "layer0": "yummy:item/purified_soul_leggings"
   }
 }
