@@ -8,13 +8,14 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class PurifiedSoulArmor extends ArmorItem{
+public class PurifiedSoulArmor extends ArmorItem {
 
     public PurifiedSoulArmor(Type pType, Properties pProperties) {
+
         super(new ArmorMaterial() {
             @Override
             public int getDurabilityForType(ArmorItem.Type type) {
-                return new int[]{13, 15, 16, 11}[type.getSlot().getIndex()] * 25;
+                return new int[]{13, 15, 16, 11}[type.getSlot().getIndex()] * 45;
             }
 
             @Override
@@ -24,7 +25,7 @@ public class PurifiedSoulArmor extends ArmorItem{
 
             @Override
             public int getEnchantmentValue() {
-                return 9;
+                return 20;
             }
 
             @Override
@@ -44,7 +45,7 @@ public class PurifiedSoulArmor extends ArmorItem{
 
             @Override
             public float getToughness() {
-                return 4f;
+                return 6f;
             }
 
             @Override
@@ -97,5 +98,6 @@ public class PurifiedSoulArmor extends ArmorItem{
             return "yummy:textures/models/armor/purified_soul_layer_1.png";
         }
     }
+
 
 }

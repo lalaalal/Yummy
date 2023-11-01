@@ -179,7 +179,7 @@ public class YummyItems {
     public static final RegistryObject<Item> PURIFIED_SOUL_LEGGINGS = ITEMS.register("purified_soul_leggings", () -> new PurifiedSoulArmor.Leggings());
     public static final RegistryObject<Item> PURIFIED_SOUL_BOOTS = ITEMS.register("purified_soul_boots", () -> new PurifiedSoulArmor.Boots());
 
-    public static final RegistryObject<Item> PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE = ITEMS.register("purified_soul_upgrade_smithing_template", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE = ITEMS.register("purified_soul_upgrade_smithing_template", () -> new PurifiedSoulTemplateItem().createPurifiedSoulUpgradeTemplate());
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }
