@@ -7,6 +7,7 @@ import com.lalaalal.yummy.block.entity.YummyBlockEntities;
 import com.lalaalal.yummy.client.model.*;
 import com.lalaalal.yummy.client.renderer.*;
 import com.lalaalal.yummy.entity.YummyEntities;
+import com.lalaalal.yummy.item.PurifiedSoulArmor;
 import com.lalaalal.yummy.particle.PollutedParticle;
 import com.lalaalal.yummy.particle.YummyParticles;
 import com.lalaalal.yummy.screen.AlembicScreen;
@@ -18,18 +19,25 @@ import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 @Mod.EventBusSubscriber(modid = YummyMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class YummyClientEventBus {
+
+
+
     @SubscribeEvent
     public static void clientSetup(final FMLClientSetupEvent event) {
         Sheets.addWoodType(YummyTypes.EBONY_WOOD_TYPE);

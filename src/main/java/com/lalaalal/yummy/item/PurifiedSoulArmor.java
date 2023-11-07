@@ -1,11 +1,15 @@
 package com.lalaalal.yummy.item;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.GameType;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class PurifiedSoulArmor extends ArmorItem {
@@ -99,5 +103,15 @@ public class PurifiedSoulArmor extends ArmorItem {
         }
     }
 
-
+    public static void Flying(LivingEntity entity) {
+        if (entity instanceof Player player) {
+            if (!player.getAbilities().mayfly) {
+                player.getAbilities().mayfly = true;
+            }
+            if (!YummyItems.hasPurifiedSoulFullSet(player) && !player.isCreative()) {
+                player.getAbilities().mayfly = false;
+                player.getAbilities().flying = false;
+            }
+        }
+    }
 }
