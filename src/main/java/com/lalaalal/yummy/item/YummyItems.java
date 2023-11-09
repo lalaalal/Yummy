@@ -5,15 +5,21 @@ import com.lalaalal.yummy.block.YummyBlocks;
 import com.lalaalal.yummy.effect.Element;
 import com.lalaalal.yummy.entity.YummyEntities;
 import com.lalaalal.yummy.sound.YummySounds;
+import net.minecraft.core.Holder;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.*;
 import net.minecraft.world.item.*;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+
+import java.util.function.Predicate;
+
+import static net.minecraft.world.entity.SlotAccess.NULL;
 
 public class YummyItems {
     private static boolean hasArmorSet(LivingEntity entity, Item helmet, Item chestplate, Item leggings, Item boots) {
@@ -23,9 +29,20 @@ public class YummyItems {
                 && entity.getItemBySlot(EquipmentSlot.FEET).is(boots);
     }
 
+    private static boolean hasArmorLeaseOne(LivingEntity entity, Item helmet, Item chestplate, Item leggings, Item boots){
+        return entity.getItemBySlot(EquipmentSlot.HEAD).is(helmet)
+                || entity.getItemBySlot(EquipmentSlot.CHEST).is(chestplate)
+                || entity.getItemBySlot(EquipmentSlot.LEGS).is(leggings)
+                || entity.getItemBySlot(EquipmentSlot.FEET).is(boots);
+    }
+
     public static boolean hasPurifiedSoulFullSet(LivingEntity entity){
         return hasArmorSet(entity, YummyItems.PURIFIED_SOUL_HELMET.get(), YummyItems.PURIFIED_SOUL_CHESTPLATE.get(), YummyItems.PURIFIED_SOUL_LEGGINGS.get(), YummyItems.PURIFIED_SOUL_BOOTS.get());
     }
+    public static boolean hasPurifiedSoulLeaseOne(LivingEntity entity){
+        return hasArmorLeaseOne(entity, YummyItems.PURIFIED_SOUL_HELMET.get(), YummyItems.PURIFIED_SOUL_CHESTPLATE.get(), YummyItems.PURIFIED_SOUL_LEGGINGS.get(), YummyItems.PURIFIED_SOUL_BOOTS.get());
+    }
+
 
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, YummyMod.MOD_ID);
 

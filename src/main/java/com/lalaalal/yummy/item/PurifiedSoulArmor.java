@@ -1,15 +1,15 @@
 package com.lalaalal.yummy.item;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.GameType;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class PurifiedSoulArmor extends ArmorItem {
@@ -19,7 +19,8 @@ public class PurifiedSoulArmor extends ArmorItem {
         super(new ArmorMaterial() {
             @Override
             public int getDurabilityForType(ArmorItem.Type type) {
-                return new int[]{13, 15, 16, 11}[type.getSlot().getIndex()] * 45;
+                return new int[]{0, 0, 0, 0}[type.getSlot().getIndex()];
+
             }
 
             @Override
@@ -44,7 +45,7 @@ public class PurifiedSoulArmor extends ArmorItem {
 
             @Override
             public String getName() {
-                return "starArmor";
+                return "PurifiedSoulArmor";
             }
 
             @Override
@@ -103,14 +104,27 @@ public class PurifiedSoulArmor extends ArmorItem {
         }
     }
 
-    public static void Flying(LivingEntity entity) {
+    public static void FullSet(LivingEntity entity) {
         if (entity instanceof Player player) {
-            if (!player.getAbilities().mayfly) {
-                player.getAbilities().mayfly = true;
-            }
-            if (!YummyItems.hasPurifiedSoulFullSet(player) && !player.isCreative()) {
-                player.getAbilities().mayfly = false;
-                player.getAbilities().flying = false;
+            if (YummyItems.hasPurifiedSoulLeaseOne(player)) {
+                if (YummyItems.hasPurifiedSoulFullSet(player)) {
+                    player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE,5, 3, false, false));
+                    if (!player.getAbilities().mayfly) {
+                        player.getAbilities().mayfly = true;
+                        player.onUpdateAbilities();
+                    }
+                } else{
+                    if (player.isCreative() || player.isSpectator()){
+                        if (!player.getAbilities().mayfly) {
+                            player.getAbilities().mayfly = true;
+                            player.onUpdateAbilities();
+                        }
+                    }
+                    else{
+                        player.getAbilities().mayfly = false;
+                        player.getAbilities().flying = false;
+                    }
+                }
             }
         }
     }
