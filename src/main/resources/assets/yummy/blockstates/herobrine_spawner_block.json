@@ -1,0 +1,22 @@
+{
+    "variants": {
+        "crack=0": {
+            "model": "yummy:block/herobrine_spawner"
+        },
+        "crack=1": {
+            "model": "yummy:block/herobrine_spawner_1"
+        },
+        "crack=2": {
+            "model": "yummy:block/herobrine_spawner_2"
+        },
+        "crack=3": {
+            "model": "yummy:block/herobrine_spawner_3"
+        },
+        "crack=4": {
+            "model": "yummy:block/herobrine_spawner_4"
+        },
+        "crack=5": {
+            "model": "yummy:block/herobrine_spawner_5"
+        }
+    }
+}

@@ -40,11 +40,12 @@ public class YummyForgeEvent {
         if ((item.is(Items.FLINT_AND_STEEL) || item.is(Items.FIRE_CHARGE))
                 && direction == Direction.UP
                 && Herobrine.canSummonHerobrine(level, blockPos)) {
-            level.setBlock(blockPos.below(), YummyBlocks.HEROBRINE_SPAWNER_BLOCK.get().defaultBlockState(), 3);
-            Optional<HerobrineSpawnerBlockEntity> optional = level.getBlockEntity(blockPos.below(), YummyBlockEntities.HEROBRINE_SPAWNER_BLOCK_ENTITY.get());
+            level.setBlock(blockPos.above(), YummyBlocks.PURIFIED_SOUL_FIRE_BLOCK.get().defaultBlockState(), 10);
+            Optional<HerobrineSpawnerBlockEntity> optional = level.getBlockEntity(blockPos, YummyBlockEntities.HEROBRINE_SPAWNER_BLOCK_ENTITY.get());
             if (optional.isPresent()) {
                 HerobrineSpawnerBlockEntity spawner = optional.get();
                 spawner.setTriggeredPlayerUUID(event.getEntity().getUUID());
+                spawner.activate();
             }
         }
     }

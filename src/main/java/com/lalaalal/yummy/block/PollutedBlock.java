@@ -69,7 +69,6 @@ public class PollutedBlock extends BaseEntityBlock {
         return new PollutedBlockEntity(pos, state);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public RenderShape getRenderShape(BlockState blockState) {
         return RenderShape.MODEL;
