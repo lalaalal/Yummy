@@ -1,5 +1,6 @@
 package com.lalaalal.yummy.block.entity;
 
+import com.lalaalal.yummy.block.HerobrineSpawnerBlock;
 import com.lalaalal.yummy.block.YummyBlocks;
 import com.lalaalal.yummy.entity.Herobrine;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -20,39 +21,39 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.UUID;
 
 public class HerobrineSpawnerBlockEntity extends BlockEntity {
-    private static final Block[] STRUCTURE_BLOCK_TYPES = {Blocks.GOLD_BLOCK, Blocks.GOLD_BLOCK, YummyBlocks.HEROBRINE_SPAWNER_BLOCK.get(), Blocks.SOUL_SAND};
-    private static final BlockState[] REPLACE_BLOCK_STATES = {YummyBlocks.CORRUPTED_POLLUTED_BLOCK.get().defaultBlockState(), YummyBlocks.CORRUPTED_POLLUTED_BLOCK.get().defaultBlockState(), YummyBlocks.HEROBRINE_SPAWNER_BLOCK.get().defaultBlockState(), YummyBlocks.POLLUTED_BLOCK.get().defaultBlockState()};
-    private static final int BLOCK_CHANGE_INTERVAL = 20;
+    private static final Block[] STRUCTURE_BLOCK_TYPES = {Blocks.GOLD_BLOCK, Blocks.GOLD_BLOCK, YummyBlocks.HEROBRINE_SPAWNER_BLOCK.get(), Blocks.NETHERRACK};
+
+    private static final int TEXTURE_CHANGE_INTERVAL = 20;
     private int tick = -20;
     private boolean structureExists = false;
+    private boolean activated = false;
     private UUID triggeredPlayerUUID;
 
     public HerobrineSpawnerBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState state) {
         super(blockEntityType, pos, state);
     }
 
+    public void activate() {
+        this.activated = true;
+    }
+
     public void setTriggeredPlayerUUID(UUID triggeredPlayerUUID) {
         this.triggeredPlayerUUID = triggeredPlayerUUID;
     }
 
-    public void tick(ServerLevel level, BlockPos pos) {
+    public void tick(ServerLevel level, BlockPos pos, BlockState blockState) {
+        if (!activated)
+            return;
         if (tick == 0)
             structureExists = isStructureExists(level, pos);
-        if (tick >= 0 && tick % BLOCK_CHANGE_INTERVAL == 0) {
-            int index = tick / BLOCK_CHANGE_INTERVAL;
-            int yOffset = index - 2;
-
-            if (index == 4) {
+        if (tick % TEXTURE_CHANGE_INTERVAL == 0) {
+            int crack = blockState.getValue(HerobrineSpawnerBlock.CRACK);
+            if (crack >= HerobrineSpawnerBlock.CRACK_MAX) {
                 destroyStructure(level, pos);
                 return;
             }
-
-            if (structureExists) {
-                BlockPos checkingPos = pos.above(yOffset);
-                if (yOffset != 0 && level.getBlockState(checkingPos).is(STRUCTURE_BLOCK_TYPES[index])) {
-                    level.setBlock(checkingPos, REPLACE_BLOCK_STATES[index], 3);
-                }
-            }
+            BlockState newState = blockState.setValue(HerobrineSpawnerBlock.CRACK, crack + 1);
+            level.setBlock(pos, newState, 10);
         }
 
         tick += 1;
@@ -83,7 +84,7 @@ public class HerobrineSpawnerBlockEntity extends BlockEntity {
     }
 
     private static boolean isStructureExists(Level level, BlockPos pos) {
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < STRUCTURE_BLOCK_TYPES.length; i++) {
             if (!level.getBlockState(pos.above(i - 2)).is(STRUCTURE_BLOCK_TYPES[i]))
                 return false;
         }
@@ -92,6 +93,6 @@ public class HerobrineSpawnerBlockEntity extends BlockEntity {
 
     public static <T extends BlockEntity> void serverTick(Level level, BlockPos blockPos, BlockState blockState, T blockEntity) {
         if (blockEntity instanceof HerobrineSpawnerBlockEntity herobrineSpawnerBlockEntity && !level.isClientSide)
-            herobrineSpawnerBlockEntity.tick((ServerLevel) level, blockPos);
+            herobrineSpawnerBlockEntity.tick((ServerLevel) level, blockPos, blockState);
     }
 }

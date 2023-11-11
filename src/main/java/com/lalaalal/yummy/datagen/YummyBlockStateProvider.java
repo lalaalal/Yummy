@@ -21,7 +21,6 @@ public class YummyBlockStateProvider extends BlockStateProvider {
         blockWithItem(YummyBlocks.DEEPSLATE_RUBELLITE_ORE);
         blockWithItem(YummyBlocks.EBONY_PLANKS);
         blockWithItem(YummyBlocks.HARD_EBONY_PLANKS);
-        blockWithItem(YummyBlocks.HEROBRINE_SPAWNER_BLOCK);
         blockWithItem(YummyBlocks.MANGANITE);
         blockWithItem(YummyBlocks.PURIFIED_SOUL_BLOCK);
         blockWithItem(YummyBlocks.RUBELLITE_BLOCK);
