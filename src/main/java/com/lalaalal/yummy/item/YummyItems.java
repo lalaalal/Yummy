@@ -204,10 +204,10 @@ public class YummyItems {
         return ITEMS.register("essence_of_" + element, () -> new Item(new Item.Properties()));
     }
 
-    public static final RegistryObject<Item> PURIFIED_SOUL_HELMET = ITEMS.register("purified_soul_helmet", () -> new PurifiedSoulArmor.Helmet());
-    public static final RegistryObject<Item> PURIFIED_SOUL_CHESTPLATE = ITEMS.register("purified_soul_chestplate", () -> new PurifiedSoulArmor.Chestplate());
-    public static final RegistryObject<Item> PURIFIED_SOUL_LEGGINGS = ITEMS.register("purified_soul_leggings", () -> new PurifiedSoulArmor.Leggings());
-    public static final RegistryObject<Item> PURIFIED_SOUL_BOOTS = ITEMS.register("purified_soul_boots", () -> new PurifiedSoulArmor.Boots());
+    public static final RegistryObject<ArmorItem> PURIFIED_SOUL_HELMET = ITEMS.register("purified_soul_helmet", PurifiedSoulArmor.Helmet::new);
+    public static final RegistryObject<ArmorItem> PURIFIED_SOUL_CHESTPLATE = ITEMS.register("purified_soul_chestplate", PurifiedSoulArmor.Chestplate::new);
+    public static final RegistryObject<ArmorItem> PURIFIED_SOUL_LEGGINGS = ITEMS.register("purified_soul_leggings", PurifiedSoulArmor.Leggings::new);
+    public static final RegistryObject<ArmorItem> PURIFIED_SOUL_BOOTS = ITEMS.register("purified_soul_boots", PurifiedSoulArmor.Boots::new);
 
     public static final RegistryObject<Item> PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE = ITEMS.register("purified_soul_upgrade_smithing_template", () -> new PurifiedSoulTemplateItem().createPurifiedSoulUpgradeTemplate());
     public static void register(IEventBus eventBus) {

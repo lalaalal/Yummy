@@ -2,7 +2,6 @@ package com.lalaalal.yummy.event;
 
 import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.item.PurifiedSoulArmor;
-import com.lalaalal.yummy.item.YummyItems;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
