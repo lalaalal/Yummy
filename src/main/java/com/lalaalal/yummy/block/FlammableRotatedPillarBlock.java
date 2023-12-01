@@ -52,8 +52,9 @@ public class FlammableRotatedPillarBlock extends RotatedPillarBlock {
     public @Nullable BlockState getToolModifiedState(BlockState state, UseOnContext context, ToolAction toolAction, boolean simulate) {
         if (context.getItemInHand().getItem() instanceof AxeItem) {
             Block modifiedBlock = toolModifiedStates.get(state.getBlock());
-            if (modifiedBlock != null)
+            if (modifiedBlock == YummyBlocks.EBONY_LOG.get() || modifiedBlock == YummyBlocks.EBONY_WOOD.get()) {
                 return modifiedBlock.defaultBlockState().setValue(AXIS, state.getValue(AXIS));
+            }
         }
 
         return super.getToolModifiedState(state, context, toolAction, simulate);

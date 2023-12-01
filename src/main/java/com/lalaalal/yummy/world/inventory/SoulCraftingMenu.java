@@ -1,6 +1,6 @@
 package com.lalaalal.yummy.world.inventory;
 
-import com.lalaalal.yummy.block.entity.AlembicBlockEntity;
+import com.lalaalal.yummy.block.entity.SoulCrafterBlockEntity;
 import com.lalaalal.yummy.item.distill.EssenceDistilling;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
@@ -17,19 +17,19 @@ import net.minecraft.world.item.Items;
 
 import java.util.function.Predicate;
 
-public class AlembicMenu extends AbstractContainerMenu {
+public class SoulCraftingMenu extends AbstractContainerMenu {
     public static final int INGREDIENT_SLOT = 0;
     public static final int FUEL_SLOT = 1;
     public static final int RESULT_SLOT = 2;
-    public static final int ALEMBIC_SLOT_COUNT = 3;
+    public static final int SOUL_CRAFTING_SLOT_COUNT = 3;
     private static final int PLAYER_INVENTORY_SLOT_COUNT = 36;
 
     private final Container container;
     private final ContainerData containerData;
 
-    public AlembicMenu(int containerId, Inventory inventory, Container container, ContainerData containerData) {
-        super(YummyMenuTypes.ALEMBIC_MENU.get(), containerId);
-        checkContainerSize(inventory, ALEMBIC_SLOT_COUNT);
+    public SoulCraftingMenu(int containerId, Inventory inventory, Container container, ContainerData containerData) {
+        super(YummyMenuTypes.SOUL_CRAFTING_MENU.get(), containerId);
+        checkContainerSize(inventory, SOUL_CRAFTING_SLOT_COUNT);
 
         this.container = container;
         this.containerData = containerData;
@@ -44,8 +44,8 @@ public class AlembicMenu extends AbstractContainerMenu {
         addDataSlots(containerData);
     }
 
-    public AlembicMenu(int containerId, Inventory inventory, FriendlyByteBuf buf) {
-        this(containerId, inventory, new SimpleContainer(ALEMBIC_SLOT_COUNT), new SimpleContainerData(4));
+    public SoulCraftingMenu(int containerId, Inventory inventory, FriendlyByteBuf buf) {
+        this(containerId, inventory, new SimpleContainer(SOUL_CRAFTING_SLOT_COUNT), new SimpleContainerData(4));
     }
 
     @Override
@@ -55,7 +55,7 @@ public class AlembicMenu extends AbstractContainerMenu {
             return ItemStack.EMPTY;
         ItemStack sourceStack = sourceSlot.getItem();
 
-        if (index >= ALEMBIC_SLOT_COUNT) {
+        if (index >= SOUL_CRAFTING_SLOT_COUNT) {
             if (EssenceDistilling.isIngredient(sourceStack.getItem())) {
                 if (!this.moveItemStackTo(sourceStack, INGREDIENT_SLOT, INGREDIENT_SLOT + 1, false))
                     return ItemStack.EMPTY;
@@ -65,7 +65,7 @@ public class AlembicMenu extends AbstractContainerMenu {
                     return ItemStack.EMPTY;
             }
         } else {
-            this.moveItemStackTo(sourceStack, ALEMBIC_SLOT_COUNT, ALEMBIC_SLOT_COUNT + PLAYER_INVENTORY_SLOT_COUNT, false);
+            this.moveItemStackTo(sourceStack, SOUL_CRAFTING_SLOT_COUNT, SOUL_CRAFTING_SLOT_COUNT + PLAYER_INVENTORY_SLOT_COUNT, false);
         }
 
         return ItemStack.EMPTY;
@@ -91,28 +91,28 @@ public class AlembicMenu extends AbstractContainerMenu {
     }
 
     public boolean isDistilling() {
-        return containerData.get(AlembicBlockEntity.DATA_DISTILL_PROGRESS) > 0;
+        return containerData.get(SoulCrafterBlockEntity.DATA_DISTILL_PROGRESS) > 0;
     }
 
     public int getScaledProgress() {
-        int progress = containerData.get(AlembicBlockEntity.DATA_PROGRESS);
-        int maxProgress = containerData.get(AlembicBlockEntity.DATA_MAX_PROGRESS);
+        int progress = containerData.get(SoulCrafterBlockEntity.DATA_PROGRESS);
+        int maxProgress = containerData.get(SoulCrafterBlockEntity.DATA_MAX_PROGRESS);
         int progressArrowSize = 24;
 
         return maxProgress != 0 ? progress * progressArrowSize / maxProgress : 0;
     }
 
     public int getScaledDistillProgress() {
-        int progress = containerData.get(AlembicBlockEntity.DATA_DISTILL_PROGRESS);
-        int maxProgress = containerData.get(AlembicBlockEntity.DATA_MAX_DISTILL_PROGRESS);
+        int progress = containerData.get(SoulCrafterBlockEntity.DATA_DISTILL_PROGRESS);
+        int maxProgress = containerData.get(SoulCrafterBlockEntity.DATA_MAX_DISTILL_PROGRESS);
         int progressBubbleSize = 29;
 
         return maxProgress != 0 ? progress * progressBubbleSize / maxProgress : 0;
     }
 
     public int getScaledFuelDistillProgress() {
-        int progress = containerData.get(AlembicBlockEntity.DATA_DISTILL_PROGRESS);
-        int maxProgress = containerData.get(AlembicBlockEntity.DATA_MAX_DISTILL_PROGRESS);
+        int progress = containerData.get(SoulCrafterBlockEntity.DATA_DISTILL_PROGRESS);
+        int maxProgress = containerData.get(SoulCrafterBlockEntity.DATA_MAX_DISTILL_PROGRESS);
         int progressBubbleSize = 18;
 
         return maxProgress != 0 ? progress * progressBubbleSize / maxProgress : 0;

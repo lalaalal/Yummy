@@ -1,6 +1,6 @@
 package com.lalaalal.yummy.block;
 
-import com.lalaalal.yummy.block.entity.AlembicBlockEntity;
+import com.lalaalal.yummy.block.entity.SoulCrafterBlockEntity;
 import com.lalaalal.yummy.block.entity.YummyBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -28,11 +28,11 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
-public class AlembicBlock extends BaseEntityBlock {
+public class SoulCrafterBlock extends BaseEntityBlock {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty LIT = BooleanProperty.create("lit");
 
-    protected AlembicBlock(Properties properties) {
+    protected SoulCrafterBlock(Properties properties) {
         super(properties.lightLevel((blockState) -> blockState.getValue(LIT) ? 15 : 0));
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, Direction.NORTH)
@@ -61,7 +61,7 @@ public class AlembicBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new AlembicBlockEntity(pos, state);
+        return new SoulCrafterBlockEntity(pos, state);
     }
 
     @SuppressWarnings("deprecation")
@@ -70,8 +70,8 @@ public class AlembicBlock extends BaseEntityBlock {
                                  Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (!level.isClientSide) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof AlembicBlockEntity alembicBlockEntity)
-                NetworkHooks.openScreen((ServerPlayer) player, alembicBlockEntity, pos);
+            if (blockEntity instanceof SoulCrafterBlockEntity soulCrafterBlockEntity)
+                NetworkHooks.openScreen((ServerPlayer) player, soulCrafterBlockEntity, pos);
         }
 
         return InteractionResult.sidedSuccess(level.isClientSide);
@@ -80,23 +80,23 @@ public class AlembicBlock extends BaseEntityBlock {
     @Override
     public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
-        if (blockEntity instanceof AlembicBlockEntity alembicBlockEntity)
-            Containers.dropContents(level, pos, alembicBlockEntity);
+        if (blockEntity instanceof SoulCrafterBlockEntity soulCrafterBlockEntity)
+            Containers.dropContents(level, pos, soulCrafterBlockEntity);
         return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
     }
 
     @Override
     public void onBlockExploded(BlockState state, Level level, BlockPos pos, Explosion explosion) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
-        if (blockEntity instanceof AlembicBlockEntity alembicBlockEntity)
-            Containers.dropContents(level, pos, alembicBlockEntity);
+        if (blockEntity instanceof SoulCrafterBlockEntity soulCrafterBlockEntity)
+            Containers.dropContents(level, pos, soulCrafterBlockEntity);
         super.onBlockExploded(state, level, pos, explosion);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return level.isClientSide ? null : createTickerHelper(type, YummyBlockEntities.ALEMBIC_BLOCK_ENTITY_TYPE.get(),
-                AlembicBlockEntity::tick);
+        return level.isClientSide ? null : createTickerHelper(type, YummyBlockEntities.SOUL_CRAFTER_BLOCK_ENTITY_TYPE.get(),
+                SoulCrafterBlockEntity::tick);
     }
 }

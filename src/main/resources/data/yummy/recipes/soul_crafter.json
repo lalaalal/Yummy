@@ -3,18 +3,21 @@
     "group": "wooden_fence",
     "key": {
         "#": {
-            "item": "minecraft:cobblestone"
+            "item": "minecraft:netherite_ingot"
         },
         "/": {
-            "item": "minecraft:blaze_rod"
+            "item": "minecraft:blast_furnace"
+        },
+        "*": {
+            "item": "minecraft:deepslate_tiles"
         }
     },
     "pattern": [
         "###",
         "#/#",
-        "###"
+        "***"
     ],
     "result": {
-        "item": "yummy:alembic"
+        "item": "yummy:soul_crafter"
     }
 }

@@ -134,8 +134,8 @@ public class YummyBlocks {
             () -> new BlockItem(PURIFIED_SOUL_BLOCK.get(), new Item.Properties()
                     .fireResistant()));
 
-    public static final RegistryObject<Block> ALEMBIC_BLOCK = register("alembic",
-            () -> new AlembicBlock(BlockBehaviour.Properties.copy(Blocks.FURNACE)));
+    public static final RegistryObject<Block> SOUL_CRAFTER = register("soul_crafter",
+            () -> new SoulCrafterBlock(BlockBehaviour.Properties.copy(Blocks.FURNACE)));
 
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> block) {
         RegistryObject<T> registryObject = BLOCKS.register(name, block);

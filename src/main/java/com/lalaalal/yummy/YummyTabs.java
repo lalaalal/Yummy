@@ -15,9 +15,9 @@ public class YummyTabs {
 
     public static final RegistryObject<CreativeModeTab> YUMMY_TAB = CREATIVE_MODE_TABS.register("yummy", () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup." + YummyMod.MOD_ID))
-            .icon(() -> new ItemStack(YummyItems.RUBELLITE.get()))
+            .icon(() -> new ItemStack(YummyItems.GOD_BLOOD.get()))
             .displayItems((features, entries) -> {
-                entries.accept(YummyBlocks.ALEMBIC_BLOCK.get());
+                entries.accept(YummyBlocks.SOUL_CRAFTER.get());
                 entries.accept(YummyBlocks.EBONY_LOG.get());
                 entries.accept(YummyBlocks.EBONY_WOOD.get());
                 entries.accept(YummyBlocks.STRIPPED_EBONY_LOG.get());
@@ -43,9 +43,8 @@ public class YummyTabs {
                 entries.accept(YummyItems.SPEAR.get());
                 entries.accept(YummyItems.MIGHTY_HOLY_SPEAR.get());
                 entries.accept(YummyItems.EBONY_SWORD.get());
-                entries.accept(YummyItems.PURIFIED_SOUL_SWORD.get());
                 entries.accept(YummyItems.ECHO_SWORD.get());
-                entries.accept(YummyItems.GOD_ECHO_SWORD.get());
+                entries.accept(YummyItems.PURIFIED_SOUL_SWORD.get());
                 entries.accept(YummyItems.SWORD_OF_EARTH.get());
                 entries.accept(YummyItems.SWORD_OF_ELECTRICITY.get());
                 entries.accept(YummyItems.SWORD_OF_FIRE.get());
@@ -54,10 +53,7 @@ public class YummyTabs {
                 entries.accept(YummyItems.SWORD_OF_SOUND.get());
                 entries.accept(YummyItems.SWORD_OF_WATER.get());
                 entries.accept(YummyItems.SWORD_OF_WIND.get());
-                entries.accept(YummyItems.ECHO_INGOT.get());
-                entries.accept(YummyBlocks.MANGANITE.get());
-                entries.accept(YummyItems.MANGANESE_NODULE.get());
-                entries.accept(YummyItems.MANGANESE_COMPOUNDS.get());
+                entries.accept(YummyItems.PURIFIED_SOUL_METAL.get());
                 entries.accept(YummyItems.ESSENCE_OF_EARTH.get());
                 entries.accept(YummyItems.ESSENCE_OF_ELECTRICITY.get());
                 entries.accept(YummyItems.ESSENCE_OF_FIRE.get());
@@ -66,8 +62,11 @@ public class YummyTabs {
                 entries.accept(YummyItems.ESSENCE_OF_SOUND.get());
                 entries.accept(YummyItems.ESSENCE_OF_WATER.get());
                 entries.accept(YummyItems.ESSENCE_OF_WIND.get());
+                entries.accept(YummyItems.ECHO_INGOT.get());
+                entries.accept(YummyBlocks.MANGANITE.get());
+                entries.accept(YummyItems.MANGANESE_NODULE.get());
+                entries.accept(YummyItems.MANGANESE_COMPOUNDS.get());
                 entries.accept(YummyItems.GOD_BLOOD.get());
-                entries.accept(YummyItems.PURIFIED_SOUL_METAL.get());
                 entries.accept(YummyItems.BUNNY_CHEST_ITEM.get());
                 entries.accept(YummyItems.HEROBRINE_SPAWN_EGG.get());
                 entries.accept(YummyItems.HEROBRINE_PHASE1_DISC.get());
@@ -89,7 +88,7 @@ public class YummyTabs {
                 entries.accept(YummyItems.PURIFIED_SOUL_LEGGINGS.get());
                 entries.accept(YummyItems.PURIFIED_SOUL_BOOTS.get());
                 entries.accept(YummyItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get());
-
+                entries.accept(YummyItems.GOD_ECHO_SWORD.get());
             })
             .build()
     );

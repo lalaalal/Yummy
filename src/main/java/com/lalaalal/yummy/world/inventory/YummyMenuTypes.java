@@ -13,7 +13,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class YummyMenuTypes {
     private static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, YummyMod.MOD_ID);
 
-    public static final RegistryObject<MenuType<AlembicMenu>> ALEMBIC_MENU = register("alembic_menu", AlembicMenu::new);
+    public static final RegistryObject<MenuType<SoulCraftingMenu>> SOUL_CRAFTING_MENU = register("soul_crafting_menu", SoulCraftingMenu::new);
 
     private static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> register(String name, IContainerFactory<T> factory) {
         return MENUS.register(name, () -> IForgeMenuType.create(factory));

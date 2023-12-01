@@ -1,0 +1,22 @@
+{
+  "sources": [
+    {
+      "type": "paletted_permutations",
+      "textures": [
+        "trims/models/armor/silence",
+        "trims/models/armor/silence_leggings"
+      ],
+      "palette_key": "trims/color_palettes/trim_palette",
+      "permutations": {
+        "essence_of_earth": "yummy:trims/color_palettes/essence_of_earth",
+        "essence_of_electricity": "yummy:trims/color_palettes/essence_of_electricity",
+        "essence_of_fire": "yummy:trims/color_palettes/essence_of_fire",
+        "essence_of_ice": "yummy:trims/color_palettes/essence_of_ice",
+        "essence_of_life": "yummy:trims/color_palettes/essence_of_life",
+        "essence_of_sound": "yummy:trims/color_palettes/essence_of_sound",
+        "essence_of_water": "yummy:trims/color_palettes/essence_of_water",
+        "essence_of_wind": "yummy:trims/color_palettes/essence_of_wind"
+      }
+    }
+  ]
+}

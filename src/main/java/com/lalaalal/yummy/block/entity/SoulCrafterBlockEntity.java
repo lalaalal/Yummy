@@ -1,8 +1,8 @@
 package com.lalaalal.yummy.block.entity;
 
-import com.lalaalal.yummy.block.AlembicBlock;
+import com.lalaalal.yummy.block.SoulCrafterBlock;
 import com.lalaalal.yummy.item.distill.EssenceDistilling;
-import com.lalaalal.yummy.world.inventory.AlembicMenu;
+import com.lalaalal.yummy.world.inventory.SoulCraftingMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -23,7 +23,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class AlembicBlockEntity extends BaseContainerBlockEntity implements MenuProvider {
+public class SoulCrafterBlockEntity extends BaseContainerBlockEntity implements MenuProvider {
     public static final int INGREDIENT_SLOT = 0;
     public static final int FUEL_SLOT = 1;
     public static final int RESULT_SLOT = 2;
@@ -65,8 +65,8 @@ public class AlembicBlockEntity extends BaseContainerBlockEntity implements Menu
 
     private Item currentIngredient = Items.AIR;
 
-    public AlembicBlockEntity(BlockPos pos, BlockState blockState) {
-        super(YummyBlockEntities.ALEMBIC_BLOCK_ENTITY_TYPE.get(), pos, blockState);
+    public SoulCrafterBlockEntity(BlockPos pos, BlockState blockState) {
+        super(YummyBlockEntities.SOUL_CRAFTER_BLOCK_ENTITY_TYPE.get(), pos, blockState);
     }
 
     @Override
@@ -96,12 +96,12 @@ public class AlembicBlockEntity extends BaseContainerBlockEntity implements Menu
 
     @Override
     protected Component getDefaultName() {
-        return Component.translatable("block.yummy.alembic");
+        return Component.translatable("block.yummy.soul_crafter");
     }
 
     @Override
     protected AbstractContainerMenu createMenu(int containerId, Inventory inventory) {
-        return new AlembicMenu(containerId, inventory, this, data);
+        return new SoulCraftingMenu(containerId, inventory, this, data);
     }
 
     @Override
@@ -202,25 +202,25 @@ public class AlembicBlockEntity extends BaseContainerBlockEntity implements Menu
         this.removeItem(FUEL_SLOT, 1);
     }
 
-    public static void tick(Level level, BlockPos pos, BlockState state, AlembicBlockEntity alembicBlockEntity) {
-        if (alembicBlockEntity.isDistillable()) {
-            if (alembicBlockEntity.distillProgress == 0) {
-                if (!state.getValue(AlembicBlock.LIT))
-                    level.setBlock(pos, state.setValue(AlembicBlock.LIT, true), 3);
-                alembicBlockEntity.takeIngredientAndFuel();
+    public static void tick(Level level, BlockPos pos, BlockState state, SoulCrafterBlockEntity soulCrafterBlockEntity) {
+        if (soulCrafterBlockEntity.isDistillable()) {
+            if (soulCrafterBlockEntity.distillProgress == 0) {
+                if (!state.getValue(SoulCrafterBlock.LIT))
+                    level.setBlock(pos, state.setValue(SoulCrafterBlock.LIT, true), 3);
+                soulCrafterBlockEntity.takeIngredientAndFuel();
             }
 
-            alembicBlockEntity.distillProgress += 1;
+            soulCrafterBlockEntity.distillProgress += 1;
             setChanged(level, pos, state);
 
-            if (alembicBlockEntity.distillProgress >= MAX_DISTILL_PROGRESS)
-                alembicBlockEntity.distill();
-            if (alembicBlockEntity.progress >= alembicBlockEntity.getRequiredIngredientCount())
-                alembicBlockEntity.createEssence();
+            if (soulCrafterBlockEntity.distillProgress >= MAX_DISTILL_PROGRESS)
+                soulCrafterBlockEntity.distill();
+            if (soulCrafterBlockEntity.progress >= soulCrafterBlockEntity.getRequiredIngredientCount())
+                soulCrafterBlockEntity.createEssence();
         } else {
-            if (state.getValue(AlembicBlock.LIT))
-                level.setBlock(pos, state.setValue(AlembicBlock.LIT, false), 3);
-            alembicBlockEntity.distillProgress = 0;
+            if (state.getValue(SoulCrafterBlock.LIT))
+                level.setBlock(pos, state.setValue(SoulCrafterBlock.LIT, false), 3);
+            soulCrafterBlockEntity.distillProgress = 0;
         }
     }
 }

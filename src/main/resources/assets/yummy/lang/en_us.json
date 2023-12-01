@@ -28,7 +28,7 @@
     "block.yummy.ebony_trapdoor": "Ebony Trapdoor",
     "block.yummy.manganite": "Manganite",
     "block.yummy.herobrine_spawner_block": "Herobrine Spawner",
-    "block.yummy.alembic": "Alembic",
+    "block.yummy.soul_crafter": "Soul Crafter",
     "item.yummy.ebony_fruit": "Ebony Fruit",
     "item.yummy.rubellite": "Rubellite",
     "item.yummy.echo_silver_shard": "Echo Silver Shard",
@@ -109,6 +109,7 @@
     "item.minecraft.smithing_template.purified_soul_upgrade.ingredients": "Purified Soul Metal",
     "item.minecraft.smithing_template.purified_soul_upgrade.base_slot_description": "Add netherite armor, weapon, or tool",
     "item.minecraft.smithing_template.purified_soul_upgrade.additions_slot_description": "Add Purified Soul Metal",
+    "entity.yummy.chest_Boat": "Boat with Chest",
     "entity.yummy.herobrine": "Herobrine : The Naraka Tyrant",
     "entity.yummy.shadow_herobrine": "Shadow Herobrine",
     "entity.yummy.bunny_chest": "Bunny Chest",
@@ -194,5 +195,13 @@
     "advancements.yummy.the_true_purity.title": "The True Purity",
     "advancements.yummy.the_true_purity.description": "Craft The True Purity",
     "info.yummy.bunny_chest.following": "%1$s will follow %2$s",
-    "info.yummy.bunny_chest.not_following": "%1$s will not follow %2$s"
+    "info.yummy.bunny_chest.not_following": "%1$s will not follow %2$s",
+    "trim_material.yummy.essence_of_earth": "Essence of Earth Material",
+    "trim_material.yummy.essence_of_electricity": "Essence of Electricity Material",
+    "trim_material.yummy.essence_of_fire": "Essence of Fire Material",
+    "trim_material.yummy.essence_of_ice": "Essence of Ice Material",
+    "trim_material.yummy.essence_of_life": "Essence of Life Material",
+    "trim_material.yummy.essence_of_sound": "Essence of Sound Material",
+    "trim_material.yummy.essence_of_water": "Essence of Water Material",
+    "trim_material.yummy.essence_of_wind": "Essence of Wind Material"
 }

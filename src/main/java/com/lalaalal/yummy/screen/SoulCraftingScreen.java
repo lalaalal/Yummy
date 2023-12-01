@@ -1,7 +1,7 @@
 package com.lalaalal.yummy.screen;
 
 import com.lalaalal.yummy.YummyMod;
-import com.lalaalal.yummy.world.inventory.AlembicMenu;
+import com.lalaalal.yummy.world.inventory.SoulCraftingMenu;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -10,11 +10,11 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-public class AlembicScreen extends AbstractContainerScreen<AlembicMenu> {
+public class SoulCraftingScreen extends AbstractContainerScreen<SoulCraftingMenu> {
     private static final ResourceLocation TEXTURE_LOCATION
-            = new ResourceLocation(YummyMod.MOD_ID, "textures/gui/alembic.png");
+            = new ResourceLocation(YummyMod.MOD_ID, "textures/gui/soul_crafter.png");
 
-    public AlembicScreen(AlembicMenu menu, Inventory inventory, Component title) {
+    public SoulCraftingScreen(SoulCraftingMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title);
     }
 

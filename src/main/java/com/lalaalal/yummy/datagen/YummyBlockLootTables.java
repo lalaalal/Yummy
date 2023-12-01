@@ -23,14 +23,15 @@ public class YummyBlockLootTables extends BlockLootSubProvider {
     }
     @Override
     protected void generate() {
-        dropSelf(YummyBlocks.ALEMBIC_BLOCK.get());
+        dropSelf(YummyBlocks.SOUL_CRAFTER.get());
         dropSelf(YummyBlocks.AMETHYST_BLOCK.get());
         add(YummyBlocks.DEEPSLATE_RUBELLITE_ORE.get(), block -> createOreDrop(block, YummyItems.RUBELLITE.get()));
         dropSelf(YummyBlocks.EBONY_BUTTON.get());
         add(YummyBlocks.EBONY_DOOR.get(), this::createDoorTable);
         dropSelf(YummyBlocks.EBONY_FENCE.get());
         dropSelf(YummyBlocks.EBONY_FENCE_GATE.get());
-        add(YummyBlocks.EBONY_LEAVES.get(), block -> createLeavesDrops(block, YummyBlocks.EBONY_SAPLING.get(), NORMAL_LEAVES_SAPLING_CHANCES).withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).when(HAS_NO_SHEARS_OR_SILK_TOUCH).add(this.applyExplosionCondition(block, LootItem.lootTableItem(YummyItems.EBONY_FRUIT.get())).when(BonusLevelTableCondition.bonusLevelFlatChance(Enchantments.BLOCK_FORTUNE, 0.005F, 0.0055555557F, 0.00625F, 0.008333334F, 0.025F)))));
+        add(YummyBlocks.EBONY_LEAVES.get(), block ->
+                createLeavesDrops(block, YummyBlocks.EBONY_SAPLING.get(), NORMAL_LEAVES_SAPLING_CHANCES).withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).when(HAS_NO_SHEARS_OR_SILK_TOUCH).add(this.applyExplosionCondition(block, LootItem.lootTableItem(YummyItems.EBONY_FRUIT.get())).when(BonusLevelTableCondition.bonusLevelFlatChance(Enchantments.BLOCK_FORTUNE, 0.005F, 0.0055555557F, 0.00625F, 0.008333334F, 0.025F)))));
         dropSelf(YummyBlocks.EBONY_LOG.get());
         dropSelf(YummyBlocks.EBONY_PLANKS.get());
         dropSelf(YummyBlocks.EBONY_PRESSURE_PLATE.get());

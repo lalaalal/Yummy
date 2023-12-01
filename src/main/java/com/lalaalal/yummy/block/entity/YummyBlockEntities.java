@@ -22,8 +22,8 @@ public class YummyBlockEntities {
     public static final RegistryObject<BlockEntityType<HerobrineSpawnerBlockEntity>> HEROBRINE_SPAWNER_BLOCK_ENTITY
             = register("herobrine_spawner_block_entity_type", (blockPos, blockState) -> new HerobrineSpawnerBlockEntity(YummyBlockEntities.HEROBRINE_SPAWNER_BLOCK_ENTITY.get(), blockPos, blockState), YummyBlocks.HEROBRINE_SPAWNER_BLOCK);
 
-    public static final RegistryObject<BlockEntityType<AlembicBlockEntity>> ALEMBIC_BLOCK_ENTITY_TYPE
-            = register("alembic_block_entity_type", AlembicBlockEntity::new, YummyBlocks.ALEMBIC_BLOCK);
+    public static final RegistryObject<BlockEntityType<SoulCrafterBlockEntity>> SOUL_CRAFTER_BLOCK_ENTITY_TYPE
+            = register("soul_crafter_block_entity_type", SoulCrafterBlockEntity::new, YummyBlocks.SOUL_CRAFTER);
 
     public static final RegistryObject<BlockEntityType<YummySignBlockEntity>> YUMMY_SIGN_BLOCK_ENTITY
             = BLOCK_ENTITY_TYPES.register("yummy_sign_block_entity", () -> BlockEntityType.Builder.of(YummySignBlockEntity::new,

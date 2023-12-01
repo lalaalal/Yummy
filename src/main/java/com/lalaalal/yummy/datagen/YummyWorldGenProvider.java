@@ -1,6 +1,7 @@
 package com.lalaalal.yummy.datagen;
 
 import com.lalaalal.yummy.YummyMod;
+import com.lalaalal.yummy.init.YummyTrimMaterials;
 import com.lalaalal.yummy.world.damagesource.YummyDamageTypes;
 import com.lalaalal.yummy.world.feature.YummyConfiguredFeatures;
 import com.lalaalal.yummy.world.feature.YummyPlacedFeatures;
@@ -17,9 +18,10 @@ public class YummyWorldGenProvider extends DatapackBuiltinEntriesProvider {
     public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
             .add(Registries.CONFIGURED_FEATURE, YummyConfiguredFeatures::bootstrap)
             .add(Registries.PLACED_FEATURE, YummyPlacedFeatures::bootstrap)
-            .add(Registries.DAMAGE_TYPE, YummyDamageTypes::bootstrap);
+            .add(Registries.DAMAGE_TYPE, YummyDamageTypes::bootstrap)
+            .add(Registries.TRIM_MATERIAL, YummyTrimMaterials::bootstrap);
 
     public YummyWorldGenProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
-        super(output, registries, BUILDER, Set.of(YummyMod.MOD_ID));
+        super(output, registries, BUILDER, Set.of("minecraft", YummyMod.MOD_ID));
     }
 }
