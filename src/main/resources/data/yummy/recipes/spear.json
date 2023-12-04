@@ -9,9 +9,9 @@
         }
     },
     "pattern": [
-        "# #",
+        "  #",
         " / ",
-        " / "
+        "/  "
     ],
     "result": {
         "item": "yummy:spear",

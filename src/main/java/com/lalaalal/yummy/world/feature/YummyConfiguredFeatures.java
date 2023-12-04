@@ -21,12 +21,15 @@ import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguratio
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.BlobFoliagePlacer;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.FancyFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.feature.trunkplacers.FancyTrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
 import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 
 import java.util.List;
+import java.util.OptionalInt;
 
 public class YummyConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> EBONY_KEY = registerKey("ebony");
@@ -37,10 +40,11 @@ public class YummyConfiguredFeatures {
     public static void bootstrap(BootstapContext<ConfiguredFeature<?, ?>> context) {
         register(context, EBONY_KEY, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
                 BlockStateProvider.simple(YummyBlocks.EBONY_LOG.get()),
-                new StraightTrunkPlacer(5, 6, 5),
+                new FancyTrunkPlacer(3,11,0),
                 BlockStateProvider.simple(YummyBlocks.EBONY_LEAVES.get()),
-                new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 4),
-                new TwoLayersFeatureSize(1, 0, 2)).build());
+                new FancyFoliagePlacer(ConstantInt.of(2), ConstantInt.of(4), 4),
+                new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))).ignoreVines().build());
+
 
         RuleTest stoneReplaceables = new TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES);
         RuleTest deepslateReplaceables = new TagMatchTest(BlockTags.DEEPSLATE_ORE_REPLACEABLES);

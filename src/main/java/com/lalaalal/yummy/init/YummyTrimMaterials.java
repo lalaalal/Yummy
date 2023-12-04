@@ -12,32 +12,33 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.armortrim.TrimMaterial;
 import com.lalaalal.yummy.YummyMod;
+import org.checkerframework.checker.units.qual.A;
 
 
 import java.util.Map;
 
 public class YummyTrimMaterials {
-    public static final ResourceKey<TrimMaterial> EARTH = registerKey("essence_of_earth");
-    public static final ResourceKey<TrimMaterial> ELECTRICITY = registerKey("essence_of_electricity");
-    public static final ResourceKey<TrimMaterial> FIRE = registerKey("essence_of_fire");
-    public static final ResourceKey<TrimMaterial> ICE = registerKey("essence_of_ice");
-    public static final ResourceKey<TrimMaterial> LIFE = registerKey("essence_of_life");
-    public static final ResourceKey<TrimMaterial> SOUND = registerKey("essence_of_sound");
-    public static final ResourceKey<TrimMaterial> WATER = registerKey("essence_of_water");
-    public static final ResourceKey<TrimMaterial> WIND = registerKey("essence_of_wind");
+    public static final ResourceKey<TrimMaterial> REDSTONE = registerKey("soul_infused_redstone");
+    public static final ResourceKey<TrimMaterial> COPPER = registerKey("soul_infused_copper");
+    public static final ResourceKey<TrimMaterial> GOLD = registerKey("soul_infused_gold");
+    public static final ResourceKey<TrimMaterial> EMERALD = registerKey("soul_infused_emerald");
+    public static final ResourceKey<TrimMaterial> DIAMOND = registerKey("soul_infused_diamond");
+    public static final ResourceKey<TrimMaterial> LAPIS = registerKey("soul_infused_lapis");
+    public static final ResourceKey<TrimMaterial> AMETHYST = registerKey("soul_infused_amethyst");
+    public static final ResourceKey<TrimMaterial> FANCY_DIAMOND = registerKey("soul_infused_fancy_diamond");
     private static ResourceKey<TrimMaterial> registerKey(String name) {
         return ResourceKey.create(Registries.TRIM_MATERIAL, new ResourceLocation(YummyMod.MOD_ID, name));
     }
 
     public static void bootstrap(BootstapContext<TrimMaterial> context){
-        register(context, EARTH, YummyItems.ESSENCE_OF_EARTH.getHolder().get(), Style.EMPTY.withColor(11823181), 0.5F);
-        register(context, ELECTRICITY, YummyItems.ESSENCE_OF_ELECTRICITY.getHolder().get(), Style.EMPTY.withColor(14594349), 0.6F);
-        register(context, FIRE, YummyItems.ESSENCE_OF_FIRE.getHolder().get(), Style.EMPTY.withColor(9901575), 0.4F);
-        register(context, ICE, YummyItems.ESSENCE_OF_ICE.getHolder().get(), Style.EMPTY.withColor(7269586), 0.8F);
-        register(context, LIFE, YummyItems.ESSENCE_OF_LIFE.getHolder().get(), Style.EMPTY.withColor(1155126), 0.7F);
-        register(context, SOUND, YummyItems.ESSENCE_OF_SOUND.getHolder().get(), Style.EMPTY.withColor(10116294), 1.0F);
-        register(context, WATER, YummyItems.ESSENCE_OF_WATER.getHolder().get(), Style.EMPTY.withColor(4288151), 0.9F);
-        register(context, WIND, YummyItems.ESSENCE_OF_WIND.getHolder().get(), Style.EMPTY.withColor(15527148), 0.2F);
+        register(context, REDSTONE, YummyItems.SOUL_INFUSED_REDSTONE.getHolder().get(), Style.EMPTY.withColor(11823181), 0.5F);
+        register(context, COPPER, YummyItems.SOUL_INFUSED_COPPER.getHolder().get(), Style.EMPTY.withColor(14594349), 0.6F);
+        register(context, GOLD, YummyItems.SOUL_INFUSED_GOLD.getHolder().get(), Style.EMPTY.withColor(9901575), 0.4F);
+        register(context, EMERALD, YummyItems.SOUL_INFUSED_EMERALD.getHolder().get(), Style.EMPTY.withColor(7269586), 0.8F);
+        register(context, DIAMOND, YummyItems.SOUL_INFUSED_DIAMOND.getHolder().get(), Style.EMPTY.withColor(1155126), 0.7F);
+        register(context, LAPIS, YummyItems.SOUL_INFUSED_LAPIS.getHolder().get(), Style.EMPTY.withColor(10116294), 1.0F);
+        register(context, AMETHYST, YummyItems.SOUL_INFUSED_AMETHYST.getHolder().get(), Style.EMPTY.withColor(4288151), 0.9F);
+        register(context, FANCY_DIAMOND, YummyItems.SOUL_INFUSED_FANCY_DIAMOND.getHolder().get(), Style.EMPTY.withColor(15527148), 0.2F);
 
     }
 

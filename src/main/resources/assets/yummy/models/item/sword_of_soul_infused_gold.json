@@ -1,6 +1,6 @@
 {
     "parent": "minecraft:item/handheld",
     "textures": {
-        "layer0": "yummy:item/sword_of_sound"
+        "layer0": "yummy:item/sword_of_soul_infused_gold"
     }
 }

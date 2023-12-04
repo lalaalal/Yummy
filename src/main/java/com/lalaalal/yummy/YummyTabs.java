@@ -15,7 +15,7 @@ public class YummyTabs {
 
     public static final RegistryObject<CreativeModeTab> YUMMY_TAB = CREATIVE_MODE_TABS.register("yummy", () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup." + YummyMod.MOD_ID))
-            .icon(() -> new ItemStack(YummyItems.GOD_BLOOD.get()))
+            .icon(() -> new ItemStack(YummyItems.BUNNY_CHEST_ITEM.get()))
             .displayItems((features, entries) -> {
                 entries.accept(YummyBlocks.SOUL_CRAFTER.get());
                 entries.accept(YummyBlocks.EBONY_LOG.get());
@@ -44,24 +44,24 @@ public class YummyTabs {
                 entries.accept(YummyItems.MIGHTY_HOLY_SPEAR.get());
                 entries.accept(YummyItems.EBONY_SWORD.get());
                 entries.accept(YummyItems.ECHO_SWORD.get());
+                entries.accept(YummyItems.SWORD_OF_SOUL_INFUSED_REDSTONE.get());
+                entries.accept(YummyItems.SWORD_OF_SOUL_INFUSED_COPPER.get());
+                entries.accept(YummyItems.SWORD_OF_SOUL_INFUSED_GOLD.get());
+                entries.accept(YummyItems.SWORD_OF_SOUL_INFUSED_EMERALD.get());
+                entries.accept(YummyItems.SWORD_OF_SOUL_INFUSED_DIAMOND.get());
+                entries.accept(YummyItems.SWORD_OF_SOUL_INFUSED_LAPIS.get());
+                entries.accept(YummyItems.SWORD_OF_SOUL_INFUSED_AMETHYST.get());
+                entries.accept(YummyItems.SWORD_OF_SOUL_INFUSED_FANCY_DIAMOND.get());
                 entries.accept(YummyItems.PURIFIED_SOUL_SWORD.get());
-                entries.accept(YummyItems.SWORD_OF_EARTH.get());
-                entries.accept(YummyItems.SWORD_OF_ELECTRICITY.get());
-                entries.accept(YummyItems.SWORD_OF_FIRE.get());
-                entries.accept(YummyItems.SWORD_OF_ICE.get());
-                entries.accept(YummyItems.SWORD_OF_LIFE.get());
-                entries.accept(YummyItems.SWORD_OF_SOUND.get());
-                entries.accept(YummyItems.SWORD_OF_WATER.get());
-                entries.accept(YummyItems.SWORD_OF_WIND.get());
+                entries.accept(YummyItems.SOUL_INFUSED_REDSTONE.get());
+                entries.accept(YummyItems.SOUL_INFUSED_COPPER.get());
+                entries.accept(YummyItems.SOUL_INFUSED_GOLD.get());
+                entries.accept(YummyItems.SOUL_INFUSED_EMERALD.get());
+                entries.accept(YummyItems.SOUL_INFUSED_DIAMOND.get());
+                entries.accept(YummyItems.SOUL_INFUSED_LAPIS.get());
+                entries.accept(YummyItems.SOUL_INFUSED_AMETHYST.get());
+                entries.accept(YummyItems.SOUL_INFUSED_FANCY_DIAMOND.get());
                 entries.accept(YummyItems.PURIFIED_SOUL_METAL.get());
-                entries.accept(YummyItems.ESSENCE_OF_EARTH.get());
-                entries.accept(YummyItems.ESSENCE_OF_ELECTRICITY.get());
-                entries.accept(YummyItems.ESSENCE_OF_FIRE.get());
-                entries.accept(YummyItems.ESSENCE_OF_ICE.get());
-                entries.accept(YummyItems.ESSENCE_OF_LIFE.get());
-                entries.accept(YummyItems.ESSENCE_OF_SOUND.get());
-                entries.accept(YummyItems.ESSENCE_OF_WATER.get());
-                entries.accept(YummyItems.ESSENCE_OF_WIND.get());
                 entries.accept(YummyItems.ECHO_INGOT.get());
                 entries.accept(YummyBlocks.MANGANITE.get());
                 entries.accept(YummyItems.MANGANESE_NODULE.get());

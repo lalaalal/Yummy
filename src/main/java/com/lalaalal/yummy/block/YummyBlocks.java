@@ -94,7 +94,7 @@ public class YummyBlocks {
     public static final RegistryObject<SlabBlock> EBONY_SLAB = register("ebony_slab",
             () -> new SlabBlock(BlockBehaviour.Properties.copy(Blocks.OAK_SLAB)));
     public static final RegistryObject<StairBlock> EBONY_STAIRS = register("ebony_stairs",
-            () -> new StairBlock(() -> EBONY_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.OAK_STAIRS)));
+            () -> new StairBlock(() -> EBONY_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(YummyBlocks.EBONY_PLANKS.get())));
     public static final RegistryObject<ButtonBlock> EBONY_BUTTON = register("ebony_button",
             () -> new ButtonBlock(BlockBehaviour.Properties.copy(Blocks.OAK_BUTTON), YummyTypes.EBONY_BLOCK_SET_TYPE, 20, true));
     public static final RegistryObject<PressurePlateBlock> EBONY_PRESSURE_PLATE = register("ebony_pressure_plate",

@@ -1,6 +1,6 @@
 {
     "parent": "minecraft:item/generated",
     "textures": {
-        "layer0": "yummy:item/essence_of_ice"
+        "layer0": "yummy:item/soul_infused_redstone"
     }
 }

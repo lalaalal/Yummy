@@ -11,14 +11,14 @@ public class EssenceDistilling {
     private static final Map<Item, DistillingEntry> DISTILLING_MAP = new HashMap<>();
 
     public static void init() {
-        addDistillRecipe(Items.GOLD_BLOCK, 16, YummyItems.ESSENCE_OF_EARTH.get());
-        addDistillRecipe(Items.REDSTONE_BLOCK, 32, YummyItems.ESSENCE_OF_ELECTRICITY.get());
-        addDistillRecipe(Items.MAGMA_BLOCK, 32, YummyItems.ESSENCE_OF_FIRE.get());
-        addDistillRecipe(Items.BLUE_ICE, 32, YummyItems.ESSENCE_OF_ICE.get());
-        addDistillRecipe(Items.MOSS_BLOCK, 64, YummyItems.ESSENCE_OF_LIFE.get());
-        addDistillRecipe(Items.AMETHYST_BLOCK, 64, YummyItems.ESSENCE_OF_SOUND.get());
-        addDistillRecipe(Items.HEART_OF_THE_SEA, 1, YummyItems.ESSENCE_OF_WATER.get());
-        addDistillRecipe(Items.GOAT_HORN, 1, YummyItems.ESSENCE_OF_WIND.get());
+        addDistillRecipe(Items.GOLD_BLOCK, 16, YummyItems.SOUL_INFUSED_GOLD.get());
+        addDistillRecipe(Items.REDSTONE_BLOCK, 32, YummyItems.SOUL_INFUSED_REDSTONE.get());
+        addDistillRecipe(Items.MAGMA_BLOCK, 32, YummyItems.SOUL_INFUSED_COPPER.get());
+        addDistillRecipe(Items.BLUE_ICE, 32, YummyItems.SOUL_INFUSED_DIAMOND.get());
+        addDistillRecipe(Items.MOSS_BLOCK, 64, YummyItems.SOUL_INFUSED_EMERALD.get());
+        addDistillRecipe(Items.AMETHYST_BLOCK, 64, YummyItems.SOUL_INFUSED_AMETHYST.get());
+        addDistillRecipe(Items.HEART_OF_THE_SEA, 1, YummyItems.SOUL_INFUSED_LAPIS.get());
+        addDistillRecipe(Items.GOAT_HORN, 1, YummyItems.SOUL_INFUSED_FANCY_DIAMOND.get());
     }
 
     public static void addDistillRecipe(Item ingredient, int requiredCount, Item result) {

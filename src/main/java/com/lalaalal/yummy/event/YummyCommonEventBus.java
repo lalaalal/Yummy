@@ -2,17 +2,13 @@ package com.lalaalal.yummy.event;
 
 import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.block.YummyBlocks;
-import com.lalaalal.yummy.effect.ElementReactions;
 import com.lalaalal.yummy.entity.BunnyChest;
 import com.lalaalal.yummy.entity.Herobrine;
 import com.lalaalal.yummy.entity.ShadowHerobrine;
 import com.lalaalal.yummy.entity.YummyEntities;
-import com.lalaalal.yummy.item.PurifiedSoulArmor;
 import com.lalaalal.yummy.item.distill.EssenceDistilling;
 import com.lalaalal.yummy.networking.YummyMessages;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -26,7 +22,6 @@ public class YummyCommonEventBus {
             YummyBlocks.EBONY_WOOD.get().addAxeModifiedState(YummyBlocks.EBONY_WOOD.get(), YummyBlocks.STRIPPED_EBONY_WOOD.get());
 
             EssenceDistilling.init();
-            ElementReactions.init();
         });
 
         YummyMessages.register();

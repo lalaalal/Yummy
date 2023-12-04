@@ -1,12 +1,12 @@
 {
   "values": [
-    "yummy:essence_of_earth",
-    "yummy:essence_of_electricity",
-    "yummy:essence_of_fire",
-    "yummy:essence_of_ice",
-    "yummy:essence_of_life",
-    "yummy:essence_of_sound",
-    "yummy:essence_of_water",
-    "yummy:essence_of_wind"
+    "yummy:soul_infused_redstone",
+    "yummy:soul_infused_copper",
+    "yummy:soul_infused_gold",
+    "yummy:soul_infused_emerald",
+    "yummy:soul_infused_diamond",
+    "yummy:soul_infused_lapis",
+    "yummy:soul_infused_amethyst",
+    "yummy:soul_infused_fancy_diamond"
   ]
 }

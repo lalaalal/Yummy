@@ -6,7 +6,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import java.util.function.Supplier;
 
 public enum YummyTiers implements Tier {
-    ELEMENT(5, 3096, 6, 20, 23, () -> Ingredient.of(YummyItems.PURIFIED_SOUL_METAL.get())),
+    SOUL_INFUSED(5, 3096, 6, 20, 23, () -> Ingredient.of(YummyItems.PURIFIED_SOUL_METAL.get())),
     PURIFIED_SOUL(5, 3096, 13.0f, 5.0f, 23, () -> Ingredient.of(YummyItems.PURIFIED_SOUL_METAL.get())),
     GOD(666, 0, 6.66f, 66, 66, () -> Ingredient.of(YummyItems.GOD_BLOOD.get()));
 

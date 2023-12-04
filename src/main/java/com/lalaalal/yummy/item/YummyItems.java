@@ -2,24 +2,16 @@ package com.lalaalal.yummy.item;
 
 import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.block.YummyBlocks;
-import com.lalaalal.yummy.effect.Element;
 import com.lalaalal.yummy.entity.YummyEntities;
 import com.lalaalal.yummy.sound.YummySounds;
-import net.minecraft.core.Holder;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.*;
 import net.minecraft.world.item.*;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-
-import java.util.function.Predicate;
-
-import static net.minecraft.world.entity.SlotAccess.NULL;
 
 public class YummyItems {
     private static boolean hasArmorSet(LivingEntity entity, Item helmet, Item chestplate, Item leggings, Item boots) {
@@ -159,49 +151,49 @@ public class YummyItems {
                     .fireResistant()
                     .rarity(Rarity.EPIC)));
 
-    public static final RegistryObject<Item> ESSENCE_OF_EARTH = ITEMS.register("essence_of_earth",
+    public static final RegistryObject<Item> SOUL_INFUSED_REDSTONE = ITEMS.register("soul_infused_redstone",
             () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> ESSENCE_OF_ELECTRICITY = ITEMS.register("essence_of_electricity",
+    public static final RegistryObject<Item> SOUL_INFUSED_COPPER = ITEMS.register("soul_infused_copper",
             () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> ESSENCE_OF_FIRE = ITEMS.register("essence_of_fire",
+    public static final RegistryObject<Item> SOUL_INFUSED_GOLD = ITEMS.register("soul_infused_gold",
             () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> ESSENCE_OF_ICE = ITEMS.register("essence_of_ice",
+    public static final RegistryObject<Item> SOUL_INFUSED_EMERALD = ITEMS.register("soul_infused_emerald",
             () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> ESSENCE_OF_LIFE = ITEMS.register("essence_of_life",
+    public static final RegistryObject<Item> SOUL_INFUSED_DIAMOND = ITEMS.register("soul_infused_diamond",
             () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> ESSENCE_OF_SOUND = ITEMS.register("essence_of_sound",
+    public static final RegistryObject<Item> SOUL_INFUSED_LAPIS = ITEMS.register("soul_infused_lapis",
             () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> ESSENCE_OF_WATER = ITEMS.register("essence_of_water",
+    public static final RegistryObject<Item> SOUL_INFUSED_AMETHYST = ITEMS.register("soul_infused_amethyst",
             () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> ESSENCE_OF_WIND = ITEMS.register("essence_of_wind",
+    public static final RegistryObject<Item> SOUL_INFUSED_FANCY_DIAMOND = ITEMS.register("soul_infused_fancy_diamond",
             () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> ESSENCE_OF_PURITY = ITEMS.register("essence_of_purity",
             () -> new Item(new Item.Properties()));
 
-    public static final RegistryObject<Item> SWORD_OF_EARTH
-            = registerElementSword(Element.EARTH, 2, -2);
-    public static final RegistryObject<Item> SWORD_OF_ELECTRICITY
-            = registerElementSword(Element.ELECTRICITY, 0, 2);
-    public static final RegistryObject<Item> SWORD_OF_FIRE
-            = registerElementSword(Element.FIRE, 1, 0);
-    public static final RegistryObject<Item> SWORD_OF_ICE
-            = registerElementSword(Element.ICE, 1, 0);
-    public static final RegistryObject<Item> SWORD_OF_LIFE
-            = registerElementSword(Element.LIFE, 0, 0);
-    public static final RegistryObject<Item> SWORD_OF_SOUND
-            = registerElementSword(Element.SOUND, -4, 0);
-    public static final RegistryObject<Item> SWORD_OF_WATER
-            = registerElementSword(Element.WATER, 0, 0);
-    public static final RegistryObject<Item> SWORD_OF_WIND
-            = registerElementSword(Element.WIND, 0, 0);
+    public static final RegistryObject<Item> SWORD_OF_SOUL_INFUSED_REDSTONE
+            = registerSoulInfusedSword("redstone",2, -2);
+    public static final RegistryObject<Item> SWORD_OF_SOUL_INFUSED_COPPER
+            = registerSoulInfusedSword("copper", 0, 2);
+    public static final RegistryObject<Item> SWORD_OF_SOUL_INFUSED_GOLD
+            = registerSoulInfusedSword("gold", 1, 0);
+    public static final RegistryObject<Item> SWORD_OF_SOUL_INFUSED_EMERALD
+            = registerSoulInfusedSword("emerald", 1, 0);
+    public static final RegistryObject<Item> SWORD_OF_SOUL_INFUSED_DIAMOND
+            = registerSoulInfusedSword("diamond", 0, 0);
+    public static final RegistryObject<Item> SWORD_OF_SOUL_INFUSED_LAPIS
+            = registerSoulInfusedSword("lapis", -4, 0);
+    public static final RegistryObject<Item> SWORD_OF_SOUL_INFUSED_AMETHYST
+            = registerSoulInfusedSword("amethyst", 0, 0);
+    public static final RegistryObject<Item> SWORD_OF_SOUL_INFUSED_FANCY_DIAMOND
+            = registerSoulInfusedSword("fancy_diamond", 0, 0);
 
-    private static RegistryObject<Item> registerElementSword(Element element, int attackDamageModifier, float attackSpeedModifier) {
-        return ITEMS.register("sword_of_" + element, () -> new ElementSwordItem(YummyTiers.ELEMENT, element, attackDamageModifier, attackSpeedModifier, new Item.Properties()
+    private static RegistryObject<Item> registerSoulInfusedSword(String element, int attackDamageModifier, float attackSpeedModifier) {
+        return ITEMS.register("sword_of_soul_infused_" + element, () -> new SoulInfusedSwordItem(YummyTiers.SOUL_INFUSED, attackDamageModifier, attackSpeedModifier, new Item.Properties()
                 .rarity(Rarity.RARE)));
     }
 
-    private static RegistryObject<Item> registerElementEssence(Element element) {
-        return ITEMS.register("essence_of_" + element, () -> new Item(new Item.Properties()));
+    private static RegistryObject<Item> registerSoulInfused(String element) {
+        return ITEMS.register("soul_infused_" + element, () -> new Item(new Item.Properties()));
     }
 
     public static final RegistryObject<ArmorItem> PURIFIED_SOUL_HELMET = ITEMS.register("purified_soul_helmet", PurifiedSoulArmor.Helmet::new);

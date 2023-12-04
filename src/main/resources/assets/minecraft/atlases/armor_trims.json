@@ -8,14 +8,14 @@
       ],
       "palette_key": "trims/color_palettes/trim_palette",
       "permutations": {
-        "essence_of_earth": "yummy:trims/color_palettes/essence_of_earth",
-        "essence_of_electricity": "yummy:trims/color_palettes/essence_of_electricity",
-        "essence_of_fire": "yummy:trims/color_palettes/essence_of_fire",
-        "essence_of_ice": "yummy:trims/color_palettes/essence_of_ice",
-        "essence_of_life": "yummy:trims/color_palettes/essence_of_life",
-        "essence_of_sound": "yummy:trims/color_palettes/essence_of_sound",
-        "essence_of_water": "yummy:trims/color_palettes/essence_of_water",
-        "essence_of_wind": "yummy:trims/color_palettes/essence_of_wind"
+        "soul_infused_redstone": "yummy:trims/color_palettes/soul_infused_redstone",
+        "soul_infused_copper": "yummy:trims/color_palettes/soul_infused_copper",
+        "soul_infused_gold": "yummy:trims/color_palettes/soul_infused_gold",
+        "soul_infused_emerald": "yummy:trims/color_palettes/soul_infused_emerald",
+        "soul_infused_diamond": "yummy:trims/color_palettes/soul_infused_diamond",
+        "soul_infused_lapis": "yummy:trims/color_palettes/soul_infused_lapis",
+        "soul_infused_amethyst": "yummy:trims/color_palettes/soul_infused_amethyst",
+        "soul_infused_fancy_diamond": "yummy:trims/color_palettes/soul_infused_fancy_diamond"
       }
     }
   ]
