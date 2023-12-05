@@ -62,6 +62,15 @@ public class YummyTabs {
                 entries.accept(YummyItems.SOUL_INFUSED_AMETHYST.get());
                 entries.accept(YummyItems.SOUL_INFUSED_FANCY_DIAMOND.get());
                 entries.accept(YummyItems.PURIFIED_SOUL_METAL.get());
+                entries.accept(YummyBlocks.SOUL_INFUSED_REDSTONE_BLOCK.get());
+                entries.accept(YummyBlocks.SOUL_INFUSED_COPPER_BLOCK.get());
+                entries.accept(YummyBlocks.SOUL_INFUSED_GOLD_BLOCK.get());
+                entries.accept(YummyBlocks.SOUL_INFUSED_EMERALD_BLOCK.get());
+                entries.accept(YummyBlocks.SOUL_INFUSED_DIAMOND_BLOCK.get());
+                entries.accept(YummyBlocks.SOUL_INFUSED_LAPIS_BLOCK.get());
+                entries.accept(YummyBlocks.SOUL_INFUSED_AMETHYST_BLOCK.get());
+                entries.accept(YummyBlocks.SOUL_INFUSED_FANCY_DIAMOND_BLOCK.get());
+                entries.accept(YummyBlocks.PURIFIED_SOUL_METAL_BLOCK.get());
                 entries.accept(YummyItems.ECHO_INGOT.get());
                 entries.accept(YummyBlocks.MANGANITE.get());
                 entries.accept(YummyItems.MANGANESE_NODULE.get());

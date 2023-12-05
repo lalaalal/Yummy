@@ -46,6 +46,15 @@ public class YummyBlockLootTables extends BlockLootSubProvider {
         dropSelf(YummyBlocks.MANGANITE.get());
         dropSelf(YummyBlocks.PURIFIED_SOUL_BLOCK.get());
         dropSelf(YummyBlocks.RUBELLITE_BLOCK.get());
+        dropSelf(YummyBlocks.SOUL_INFUSED_REDSTONE_BLOCK.get());
+        dropSelf(YummyBlocks.SOUL_INFUSED_COPPER_BLOCK.get());
+        dropSelf(YummyBlocks.SOUL_INFUSED_GOLD_BLOCK.get());
+        dropSelf(YummyBlocks.SOUL_INFUSED_EMERALD_BLOCK.get());
+        dropSelf(YummyBlocks.SOUL_INFUSED_DIAMOND_BLOCK.get());
+        dropSelf(YummyBlocks.SOUL_INFUSED_LAPIS_BLOCK.get());
+        dropSelf(YummyBlocks.SOUL_INFUSED_AMETHYST_BLOCK.get());
+        dropSelf(YummyBlocks.SOUL_INFUSED_FANCY_DIAMOND_BLOCK.get());
+        dropSelf(YummyBlocks.PURIFIED_SOUL_METAL_BLOCK.get());
         add(YummyBlocks.RUBELLITE_ORE.get(), block -> createOreDrop(block, YummyItems.RUBELLITE.get()));
         dropSelf(YummyBlocks.STRIPPED_EBONY_LOG.get());
         dropSelf(YummyBlocks.STRIPPED_EBONY_WOOD.get());

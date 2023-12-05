@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "yummy:soul_infused_amethyst"
+    }
+  },
+  "result": {
+    "item": "yummy:soul_infused_amethyst_block",
+    "count": 1
+  }
+}

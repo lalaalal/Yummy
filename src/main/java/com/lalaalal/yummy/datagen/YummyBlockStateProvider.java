@@ -24,6 +24,15 @@ public class YummyBlockStateProvider extends BlockStateProvider {
         blockWithItem(YummyBlocks.MANGANITE);
         blockWithItem(YummyBlocks.PURIFIED_SOUL_BLOCK);
         blockWithItem(YummyBlocks.RUBELLITE_BLOCK);
+        blockWithItem(YummyBlocks.SOUL_INFUSED_REDSTONE_BLOCK);
+        blockWithItem(YummyBlocks.SOUL_INFUSED_COPPER_BLOCK);
+        blockWithItem(YummyBlocks.SOUL_INFUSED_GOLD_BLOCK);
+        blockWithItem(YummyBlocks.SOUL_INFUSED_EMERALD_BLOCK);
+        blockWithItem(YummyBlocks.SOUL_INFUSED_DIAMOND_BLOCK);
+        blockWithItem(YummyBlocks.SOUL_INFUSED_LAPIS_BLOCK);
+        blockWithItem(YummyBlocks.SOUL_INFUSED_AMETHYST_BLOCK);
+        blockWithItem(YummyBlocks.SOUL_INFUSED_FANCY_DIAMOND_BLOCK);
+        blockWithItem(YummyBlocks.PURIFIED_SOUL_METAL_BLOCK);
         blockWithItem(YummyBlocks.RUBELLITE_ORE);
         buttonBlock(YummyBlocks.EBONY_BUTTON.get(), new ResourceLocation(YummyMod.MOD_ID, "block/ebony_planks"));
         doorBlock(YummyBlocks.EBONY_DOOR.get(), new ResourceLocation(YummyMod.MOD_ID, "block/ebony_door_bottom"), new ResourceLocation(YummyMod.MOD_ID, "block/ebony_door_top"));

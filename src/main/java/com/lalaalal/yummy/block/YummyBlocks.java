@@ -130,10 +130,45 @@ public class YummyBlocks {
                     .strength(-1.0F, 3600000.0F)
                     .requiresCorrectToolForDrops(), false, false, true, false));
 
+    public static final RegistryObject<Block> SOUL_INFUSED_REDSTONE_BLOCK = register("soul_infused_redstone_block",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.REDSTONE_BLOCK)
+                    .strength(5f, 6f)
+                    .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> SOUL_INFUSED_COPPER_BLOCK = register("soul_infused_copper_block",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)
+                    .strength(5f, 6f)
+                    .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> SOUL_INFUSED_GOLD_BLOCK = register("soul_infused_gold_block",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.GOLD_BLOCK)
+                    .strength(5f, 6f)
+                    .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> SOUL_INFUSED_EMERALD_BLOCK = register("soul_infused_emerald_block",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.EMERALD_BLOCK)
+                    .strength(5f, 6f)
+                    .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> SOUL_INFUSED_DIAMOND_BLOCK = register("soul_infused_diamond_block",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.DIAMOND_BLOCK)
+                    .strength(5f, 6f)
+                    .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> SOUL_INFUSED_LAPIS_BLOCK = register("soul_infused_lapis_block",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.LAPIS_BLOCK)
+                    .strength(5f, 6f)
+                    .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> SOUL_INFUSED_AMETHYST_BLOCK = register("soul_infused_amethyst_block",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.AMETHYST_BLOCK)
+                    .strength(5f, 6f)
+                    .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> SOUL_INFUSED_FANCY_DIAMOND_BLOCK = register("soul_infused_fancy_diamond_block",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.DIAMOND_BLOCK)
+                    .strength(5f, 6f)
+                    .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> PURIFIED_SOUL_METAL_BLOCK = register("purified_soul_metal_block",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.NETHERITE_BLOCK)
+                    .strength(5f, 6f)
+                    .requiresCorrectToolForDrops()));
     public static final RegistryObject<Item> PURIFIED_SOUL_BLOCK_ITEM = ITEMS.register("purified_soul_block",
             () -> new BlockItem(PURIFIED_SOUL_BLOCK.get(), new Item.Properties()
                     .fireResistant()));
-
     public static final RegistryObject<Block> SOUL_CRAFTER = register("soul_crafter",
             () -> new SoulCrafterBlock(BlockBehaviour.Properties.copy(Blocks.FURNACE)));
 
