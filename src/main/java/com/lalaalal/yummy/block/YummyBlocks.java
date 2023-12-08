@@ -16,6 +16,8 @@ import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Supplier;
 
+import static net.minecraft.world.item.Items.registerBlock;
+
 @SuppressWarnings("unused")
 public class YummyBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, YummyMod.MOD_ID);
@@ -169,8 +171,12 @@ public class YummyBlocks {
     public static final RegistryObject<Item> PURIFIED_SOUL_BLOCK_ITEM = ITEMS.register("purified_soul_block",
             () -> new BlockItem(PURIFIED_SOUL_BLOCK.get(), new Item.Properties()
                     .fireResistant()));
-    public static final RegistryObject<Block> SOUL_CRAFTER = register("soul_crafter",
+    public static final RegistryObject<Block> SOUL_CRAFTER = BLOCKS.register("soul_crafter",
             () -> new SoulCrafterBlock(BlockBehaviour.Properties.copy(Blocks.FURNACE)));
+
+    public static final RegistryObject<Item> SOUL_CRAFTER_ITEM = ITEMS.register("soul_crafter",
+            () -> new BlockItem(SOUL_CRAFTER.get(), new Item.Properties()
+                    .fireResistant()));
 
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> block) {
         RegistryObject<T> registryObject = BLOCKS.register(name, block);

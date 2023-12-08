@@ -57,5 +57,9 @@ public class YummyItemTags extends ItemTagsProvider {
                 YummyItems.PURIFIED_SOUL_LEGGINGS.get(),
                 YummyItems.PURIFIED_SOUL_BOOTS.get()
         );
+        tag(ItemTags.CHEST_BOATS).add(
+                YummyItems.EBONY_CHEST_BOAT_ITEM.get()
+        );
+
     }
 }

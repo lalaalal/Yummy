@@ -17,7 +17,6 @@ public class YummyTabs {
             .title(Component.translatable("itemGroup." + YummyMod.MOD_ID))
             .icon(() -> new ItemStack(YummyItems.BUNNY_CHEST_ITEM.get()))
             .displayItems((features, entries) -> {
-                entries.accept(YummyBlocks.SOUL_CRAFTER.get());
                 entries.accept(YummyBlocks.EBONY_LOG.get());
                 entries.accept(YummyBlocks.EBONY_WOOD.get());
                 entries.accept(YummyBlocks.STRIPPED_EBONY_LOG.get());
@@ -39,6 +38,7 @@ public class YummyTabs {
                 entries.accept(YummyBlocks.EBONY_LEAVES.get());
                 entries.accept(YummyBlocks.EBONY_SAPLING.get());
                 entries.accept(YummyItems.EBONY_FRUIT.get());
+                entries.accept(YummyBlocks.SOUL_CRAFTER.get());
                 entries.accept(YummyItems.RUBELLITE.get());
                 entries.accept(YummyItems.SPEAR.get());
                 entries.accept(YummyItems.MIGHTY_HOLY_SPEAR.get());
@@ -98,6 +98,12 @@ public class YummyTabs {
                 entries.accept(YummyItems.PURIFIED_SOUL_BOOTS.get());
                 entries.accept(YummyItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get());
                 entries.accept(YummyItems.GOD_ECHO_SWORD.get());
+                entries.accept(YummyItems.ECHO_KNIFE.get());
+                entries.accept(YummyBlocks.RUBELLITE_BLOCK.get());
+                entries.accept(YummyItems.UNSTABLE_ECHO_MATTER.get());
+                entries.accept(YummyItems.PURIFIED_SOUL_SHARD.get());
+                entries.accept(YummyItems.SPEAR_OF_LONGINUS.get());
+                entries.accept(YummyItems.ESSENCE_OF_PURITY.get());
             })
             .build()
     );

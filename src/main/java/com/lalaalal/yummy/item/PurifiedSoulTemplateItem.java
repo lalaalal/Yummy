@@ -4,11 +4,14 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SmithingTemplateItem;
 
 import java.util.List;
 
 public class PurifiedSoulTemplateItem {
+
     private static final ChatFormatting TITLE_FORMAT = ChatFormatting.GRAY;
     private static final ChatFormatting DESCRIPTION_FORMAT = ChatFormatting.BLUE;
     private static final Component PURIFIED_SOUL_SOUL_UPGRADE = Component.translatable(Util.makeDescriptionId("upgrade", new ResourceLocation("purified_soul_upgrade"))).withStyle(TITLE_FORMAT);
@@ -16,7 +19,6 @@ public class PurifiedSoulTemplateItem {
     private static final Component PURIFIED_SOUL_UPGRADE_INGREDIENTS = Component.translatable(Util.makeDescriptionId("item", new ResourceLocation("smithing_template.purified_soul_upgrade.ingredients"))).withStyle(DESCRIPTION_FORMAT);
     private static final Component PURIFIED_SOUL_UPGRADE_BASE_SLOT_DESCRIPTION = Component.translatable(Util.makeDescriptionId("item", new ResourceLocation("smithing_template.purified_soul_upgrade.base_slot_description")));
     private static final Component PURIFIED_SOUL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION = Component.translatable(Util.makeDescriptionId("item", new ResourceLocation("smithing_template.purified_soul_upgrade.additions_slot_description")));
-
     private static List<ResourceLocation> createNetheriteUpgradeIconList() {
         return List.of(EMPTY_SLOT_HELMET, EMPTY_SLOT_SWORD, EMPTY_SLOT_CHESTPLATE, EMPTY_SLOT_PICKAXE, EMPTY_SLOT_LEGGINGS, EMPTY_SLOT_AXE, EMPTY_SLOT_BOOTS, EMPTY_SLOT_HOE, EMPTY_SLOT_SHOVEL);
     }
@@ -34,6 +36,6 @@ public class PurifiedSoulTemplateItem {
         return List.of(EMPTY_SLOT_INGOT);
     }
     public static SmithingTemplateItem createPurifiedSoulUpgradeTemplate() {
-        return new SmithingTemplateItem(PURIFIED_SOUL_UPGRADE_APPLIES_TO, PURIFIED_SOUL_UPGRADE_INGREDIENTS, PURIFIED_SOUL_SOUL_UPGRADE, PURIFIED_SOUL_UPGRADE_BASE_SLOT_DESCRIPTION, PURIFIED_SOUL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION, createNetheriteUpgradeIconList(), createNetheriteUpgradeMaterialList());
+       return new SmithingTemplateItem(PURIFIED_SOUL_UPGRADE_APPLIES_TO, PURIFIED_SOUL_UPGRADE_INGREDIENTS, PURIFIED_SOUL_SOUL_UPGRADE, PURIFIED_SOUL_UPGRADE_BASE_SLOT_DESCRIPTION, PURIFIED_SOUL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION, createNetheriteUpgradeIconList(), createNetheriteUpgradeMaterialList());
     }
 }

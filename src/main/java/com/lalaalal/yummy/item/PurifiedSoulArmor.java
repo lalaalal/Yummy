@@ -102,9 +102,7 @@ public class PurifiedSoulArmor extends ArmorItem {
     }
 
     public static class Boots extends PurifiedSoulArmor {
-        public Boots() {
-            super(ArmorItem.Type.BOOTS, new ArmorItem.Properties().fireResistant());
-        }
+        public Boots() { super(ArmorItem.Type.BOOTS, new ArmorItem.Properties().fireResistant()); }
 
         @Override
         public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
