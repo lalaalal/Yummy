@@ -25,9 +25,9 @@ public class SoulInfusedSwordItem extends SwordItem {
         return super.hurtEnemy(stack, target, attacker);
     }
 
-    @Override
+    /*@Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
         super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
         tooltipComponents.add(Component.translatable(getDescriptionId() + ".desc").withStyle(ChatFormatting.GRAY));
-    }
+    }*/
 }

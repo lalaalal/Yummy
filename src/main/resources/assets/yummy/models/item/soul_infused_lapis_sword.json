@@ -1,6 +1,6 @@
 {
     "parent": "minecraft:item/handheld",
     "textures": {
-        "layer0": "yummy:item/sword_of_soul_infused_emerald"
+        "layer0": "yummy:item/soul_infused_lapis_sword"
     }
 }

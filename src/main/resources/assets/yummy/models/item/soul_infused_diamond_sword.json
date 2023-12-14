@@ -1,6 +1,6 @@
 {
     "parent": "minecraft:item/handheld",
     "textures": {
-        "layer0": "yummy:item/sword_of_soul_infused_redstone"
+        "layer0": "yummy:item/soul_infused_diamond_sword"
     }
 }

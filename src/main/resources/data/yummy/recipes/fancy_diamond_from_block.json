@@ -2,11 +2,11 @@
     "type": "minecraft:crafting_shapeless",
     "ingredients": [
         {
-            "item": "yummy:manganite"
+            "item": "yummy:fancy_diamond_block"
         }
     ],
     "result": {
-        "item": "yummy:manganese_nodule",
-        "count": 2
+        "item": "yummy:fancy_diamond",
+        "count": 9
     }
 }

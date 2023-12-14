@@ -7,11 +7,11 @@
     ],
     "key": {
         "#": {
-            "item": "yummy:rubellite"
+            "item": "yummy:fancy_diamond"
         }
     },
     "result": {
-        "item": "yummy:rubellite_block",
+        "item": "yummy:fancy_diamond_block",
         "count": 1
     }
 }

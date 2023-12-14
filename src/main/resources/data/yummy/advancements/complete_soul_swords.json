@@ -2,7 +2,7 @@
     "parent": "yummy:purified_soul_sword",
     "display": {
         "icon": {
-            "item": "yummy:sword_of_fire"
+            "item": "yummy:soul_infused_diamond_sword"
         },
         "title": {
             "translate": "advancements.yummy.complete_soul_swords.title"
@@ -21,7 +21,7 @@
                 "items": [
                     {
                         "items": [
-                            "yummy:sword_of_earth"
+                            "yummy:soul_infused_redstone_sword"
                         ]
                     }
                 ]
@@ -33,7 +33,7 @@
                 "items": [
                     {
                         "items": [
-                            "yummy:sword_of_electricity"
+                            "yummy:soul_infused_copper_sword"
                         ]
                     }
                 ]
@@ -45,7 +45,7 @@
                 "items": [
                     {
                         "items": [
-                            "yummy:sword_of_fire"
+                            "yummy:soul_infused_golden_sword"
                         ]
                     }
                 ]
@@ -57,7 +57,7 @@
                 "items": [
                     {
                         "items": [
-                            "yummy:sword_of_ice"
+                            "yummy:soul_infused_emerald_sword"
                         ]
                     }
                 ]
@@ -69,7 +69,7 @@
                 "items": [
                     {
                         "items": [
-                            "yummy:sword_of_life"
+                            "yummy:soul_infused_diamond_sword"
                         ]
                     }
                 ]
@@ -81,7 +81,7 @@
                 "items": [
                     {
                         "items": [
-                            "yummy:sword_of_sound"
+                            "yummy:soul_infused_lapis_sword"
                         ]
                     }
                 ]
@@ -93,7 +93,7 @@
                 "items": [
                     {
                         "items": [
-                            "yummy:sword_of_water"
+                            "yummy:soul_infused_amethyst_sword"
                         ]
                     }
                 ]
@@ -105,7 +105,7 @@
                 "items": [
                     {
                         "items": [
-                            "yummy:sword_of_wind"
+                            "yummy:soul_infused_fancy_diamond_sword"
                         ]
                     }
                 ]

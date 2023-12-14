@@ -24,7 +24,6 @@ public class YummyRecipeProvider extends RecipeProvider implements IConditionBui
 
     @Override
     protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
-        nineBlockStorageRecipes(consumer, RecipeCategory.MISC, Items.AMETHYST_SHARD, RecipeCategory.BUILDING_BLOCKS, YummyBlocks.AMETHYST_BLOCK.get());
         generateRecipes(consumer, new BlockFamily.Builder(YummyBlocks.EBONY_PLANKS.get())
                 .button(YummyBlocks.EBONY_BUTTON.get())
                 .door(YummyBlocks.EBONY_DOOR.get())
@@ -36,14 +35,14 @@ public class YummyRecipeProvider extends RecipeProvider implements IConditionBui
                 .stairs(YummyBlocks.EBONY_STAIRS.get())
                 .trapdoor(YummyBlocks.EBONY_TRAPDOOR.get())
                 .getFamily());
-        soulinfusedSmithing(consumer, YummyItems.PURIFIED_SOUL_SWORD.get(), YummyItems.SOUL_INFUSED_REDSTONE.get(), RecipeCategory.MISC, YummyItems.SWORD_OF_SOUL_INFUSED_REDSTONE.get());
-        soulinfusedSmithing(consumer, YummyItems.PURIFIED_SOUL_SWORD.get(), YummyItems.SOUL_INFUSED_COPPER.get(), RecipeCategory.MISC, YummyItems.SWORD_OF_SOUL_INFUSED_COPPER.get());
-        soulinfusedSmithing(consumer, YummyItems.PURIFIED_SOUL_SWORD.get(), YummyItems.SOUL_INFUSED_GOLD.get(), RecipeCategory.MISC, YummyItems.SWORD_OF_SOUL_INFUSED_GOLD.get());
-        soulinfusedSmithing(consumer, YummyItems.PURIFIED_SOUL_SWORD.get(), YummyItems.SOUL_INFUSED_EMERALD.get(), RecipeCategory.MISC, YummyItems.SWORD_OF_SOUL_INFUSED_EMERALD.get());
-        soulinfusedSmithing(consumer, YummyItems.PURIFIED_SOUL_SWORD.get(), YummyItems.SOUL_INFUSED_DIAMOND.get(), RecipeCategory.MISC, YummyItems.SWORD_OF_SOUL_INFUSED_DIAMOND.get());
-        soulinfusedSmithing(consumer, YummyItems.PURIFIED_SOUL_SWORD.get(), YummyItems.SOUL_INFUSED_LAPIS.get(), RecipeCategory.MISC, YummyItems.SWORD_OF_SOUL_INFUSED_LAPIS.get());
-        soulinfusedSmithing(consumer, YummyItems.PURIFIED_SOUL_SWORD.get(), YummyItems.SOUL_INFUSED_AMETHYST.get(), RecipeCategory.MISC, YummyItems.SWORD_OF_SOUL_INFUSED_AMETHYST.get());
-        soulinfusedSmithing(consumer, YummyItems.PURIFIED_SOUL_SWORD.get(), YummyItems.SOUL_INFUSED_FANCY_DIAMOND.get(), RecipeCategory.MISC, YummyItems.SWORD_OF_SOUL_INFUSED_FANCY_DIAMOND.get());
+        soulinfusedSmithing(consumer, YummyItems.PURIFIED_SOUL_SWORD.get(), YummyItems.SOUL_INFUSED_REDSTONE.get(), RecipeCategory.MISC, YummyItems.SOUL_INFUSED_REDSTONE_SWORD.get());
+        soulinfusedSmithing(consumer, YummyItems.PURIFIED_SOUL_SWORD.get(), YummyItems.SOUL_INFUSED_COPPER.get(), RecipeCategory.MISC, YummyItems.SOUL_INFUSED_COPPER_SWORD.get());
+        soulinfusedSmithing(consumer, YummyItems.PURIFIED_SOUL_SWORD.get(), YummyItems.SOUL_INFUSED_GOLD.get(), RecipeCategory.MISC, YummyItems.SOUL_INFUSED_GOLDEN_SWORD.get());
+        soulinfusedSmithing(consumer, YummyItems.PURIFIED_SOUL_SWORD.get(), YummyItems.SOUL_INFUSED_EMERALD.get(), RecipeCategory.MISC, YummyItems.SOUL_INFUSED_EMERALD_SWORD.get());
+        soulinfusedSmithing(consumer, YummyItems.PURIFIED_SOUL_SWORD.get(), YummyItems.SOUL_INFUSED_DIAMOND.get(), RecipeCategory.MISC, YummyItems.SOUL_INFUSED_DIAMOND_SWORD.get());
+        soulinfusedSmithing(consumer, YummyItems.PURIFIED_SOUL_SWORD.get(), YummyItems.SOUL_INFUSED_LAPIS.get(), RecipeCategory.MISC, YummyItems.SOUL_INFUSED_LAPIS_SWORD.get());
+        soulinfusedSmithing(consumer, YummyItems.PURIFIED_SOUL_SWORD.get(), YummyItems.SOUL_INFUSED_AMETHYST.get(), RecipeCategory.MISC, YummyItems.SOUL_INFUSED_AMETHYST_SWORD.get());
+        soulinfusedSmithing(consumer, YummyItems.PURIFIED_SOUL_SWORD.get(), YummyItems.SOUL_INFUSED_FANCY_DIAMOND.get(), RecipeCategory.MISC, YummyItems.SOUL_INFUSED_FANCY_DIAMOND_SWORD.get());
         planksFromLog(consumer, YummyBlocks.EBONY_PLANKS.get(), YummyTags.EBONY_LOGS_ITEM_TAG, 4);
         woodFromLogs(consumer, YummyBlocks.EBONY_WOOD.get(), YummyBlocks.EBONY_LOG.get());
         woodenBoat(consumer, YummyItems.EBONY_BOAT_ITEM.get(), YummyBlocks.EBONY_PLANKS.get());

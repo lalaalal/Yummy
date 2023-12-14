@@ -2,11 +2,11 @@
     "type": "minecraft:crafting_shapeless",
     "ingredients": [
         {
-            "item": "yummy:rubellite_block"
+            "item": "minecraft:diamond"
         }
     ],
     "result": {
-        "item": "yummy:rubellite",
-        "count": 9
+        "item": "yummy:fancy_diamond",
+        "count": 1
     }
 }

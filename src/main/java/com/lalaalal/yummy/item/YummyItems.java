@@ -40,15 +40,10 @@ public class YummyItems {
 
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, YummyMod.MOD_ID);
 
-    public static final RegistryObject<Item> RUBELLITE = ITEMS.register("rubellite",
+    public static final RegistryObject<Item> FANCY_DIAMOND = ITEMS.register("fancy_diamond",
             () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> EBONY_FRUIT = ITEMS.register("ebony_fruit",
             EbonyFruitItem::new);
-
-    public static final RegistryObject<Item> MANGANESE_NODULE = ITEMS.register("manganese_nodule",
-            () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> MANGANESE_COMPOUNDS = ITEMS.register("manganese_compounds",
-            () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> PURIFIED_SOUL_METAL = ITEMS.register("purified_soul_metal",
             () -> new Item(new Item.Properties().fireResistant()));
@@ -157,44 +152,46 @@ public class YummyItems {
                     .rarity(Rarity.EPIC)));
 
     public static final RegistryObject<Item> SOUL_INFUSED_REDSTONE = ITEMS.register("soul_infused_redstone",
-            () -> new Item(new Item.Properties()));
+            () -> new Item(new Item.Properties().fireResistant()));
     public static final RegistryObject<Item> SOUL_INFUSED_COPPER = ITEMS.register("soul_infused_copper",
-            () -> new Item(new Item.Properties()));
+            () -> new Item(new Item.Properties().fireResistant()));
     public static final RegistryObject<Item> SOUL_INFUSED_GOLD = ITEMS.register("soul_infused_gold",
-            () -> new Item(new Item.Properties()));
+            () -> new Item(new Item.Properties().fireResistant()));
     public static final RegistryObject<Item> SOUL_INFUSED_EMERALD = ITEMS.register("soul_infused_emerald",
-            () -> new Item(new Item.Properties()));
+            () -> new Item(new Item.Properties().fireResistant()));
     public static final RegistryObject<Item> SOUL_INFUSED_DIAMOND = ITEMS.register("soul_infused_diamond",
-            () -> new Item(new Item.Properties()));
+            () -> new Item(new Item.Properties().fireResistant()));
     public static final RegistryObject<Item> SOUL_INFUSED_LAPIS = ITEMS.register("soul_infused_lapis",
-            () -> new Item(new Item.Properties()));
+            () -> new Item(new Item.Properties().fireResistant()));
     public static final RegistryObject<Item> SOUL_INFUSED_AMETHYST = ITEMS.register("soul_infused_amethyst",
-            () -> new Item(new Item.Properties()));
+            () -> new Item(new Item.Properties().fireResistant()));
     public static final RegistryObject<Item> SOUL_INFUSED_FANCY_DIAMOND = ITEMS.register("soul_infused_fancy_diamond",
-            () -> new Item(new Item.Properties()));
+            () -> new Item(new Item.Properties().fireResistant()));
     public static final RegistryObject<Item> ESSENCE_OF_PURITY = ITEMS.register("essence_of_purity",
             () -> new Item(new Item.Properties().fireResistant()));
 
-    public static final RegistryObject<Item> SWORD_OF_SOUL_INFUSED_REDSTONE
+    public static final RegistryObject<Item> SOUL_INFUSED_REDSTONE_SWORD
             = registerSoulInfusedSword("redstone",2, -2);
-    public static final RegistryObject<Item> SWORD_OF_SOUL_INFUSED_COPPER
+    public static final RegistryObject<Item> SOUL_INFUSED_COPPER_SWORD
             = registerSoulInfusedSword("copper", 0, 2);
-    public static final RegistryObject<Item> SWORD_OF_SOUL_INFUSED_GOLD
-            = registerSoulInfusedSword("gold", 1, 0);
-    public static final RegistryObject<Item> SWORD_OF_SOUL_INFUSED_EMERALD
+    public static final RegistryObject<Item> SOUL_INFUSED_GOLDEN_SWORD
+            = registerSoulInfusedSword("golden", 1, 0);
+    public static final RegistryObject<Item> SOUL_INFUSED_EMERALD_SWORD
             = registerSoulInfusedSword("emerald", 1, 0);
-    public static final RegistryObject<Item> SWORD_OF_SOUL_INFUSED_DIAMOND
+    public static final RegistryObject<Item> SOUL_INFUSED_DIAMOND_SWORD
             = registerSoulInfusedSword("diamond", 0, 0);
-    public static final RegistryObject<Item> SWORD_OF_SOUL_INFUSED_LAPIS
+    public static final RegistryObject<Item> SOUL_INFUSED_LAPIS_SWORD
             = registerSoulInfusedSword("lapis", -4, 0);
-    public static final RegistryObject<Item> SWORD_OF_SOUL_INFUSED_AMETHYST
+    public static final RegistryObject<Item> SOUL_INFUSED_AMETHYST_SWORD
             = registerSoulInfusedSword("amethyst", 0, 0);
-    public static final RegistryObject<Item> SWORD_OF_SOUL_INFUSED_FANCY_DIAMOND
+    public static final RegistryObject<Item> SOUL_INFUSED_FANCY_DIAMOND_SWORD
             = registerSoulInfusedSword("fancy_diamond", 0, 0);
 
+
+
     private static RegistryObject<Item> registerSoulInfusedSword(String element, int attackDamageModifier, float attackSpeedModifier) {
-        return ITEMS.register("sword_of_soul_infused_" + element, () -> new SoulInfusedSwordItem(YummyTiers.SOUL_INFUSED, attackDamageModifier, attackSpeedModifier, new Item.Properties()
-                .rarity(Rarity.RARE)));
+        return ITEMS.register("soul_infused_" + element + "_sword", () -> new SoulInfusedSwordItem(YummyTiers.SOUL_INFUSED, attackDamageModifier, attackSpeedModifier, new Item.Properties()
+                .rarity(Rarity.RARE).fireResistant()));
     }
 
     private static RegistryObject<Item> registerSoulInfused(String element) {

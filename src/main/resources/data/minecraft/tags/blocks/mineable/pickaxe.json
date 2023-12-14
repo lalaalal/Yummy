@@ -1,13 +1,12 @@
 {
     "replace": false,
     "values": [
-        "yummy:amethyst_block",
-        "yummy:rubellite_block",
-        "yummy:rubellite_ore",
-        "yummy:deepslate_rubellite_ore",
+        "yummy:fancy_diamond_block",
+        "yummy:fancy_diamond_ore",
+        "yummy:deepslate_fancy_diamond_ore",
         "yummy:polluted_block",
-        "yummy:manganite",
         "yummy:soul_crafter",
+        "yummy:purified_soul_metal_block",
         "yummy:soul_infused_redstone_block",
         "yummy:soul_infused_copper_block",
         "yummy:soul_infused_gold_block",

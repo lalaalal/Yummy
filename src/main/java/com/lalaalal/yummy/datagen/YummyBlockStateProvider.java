@@ -17,13 +17,11 @@ public class YummyBlockStateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-        blockWithItem(YummyBlocks.AMETHYST_BLOCK);
-        blockWithItem(YummyBlocks.DEEPSLATE_RUBELLITE_ORE);
+        blockWithItem(YummyBlocks.DEEPSLATE_FANCY_DIAMOND_ORE);
         blockWithItem(YummyBlocks.EBONY_PLANKS);
         blockWithItem(YummyBlocks.HARD_EBONY_PLANKS);
-        blockWithItem(YummyBlocks.MANGANITE);
         blockWithItem(YummyBlocks.PURIFIED_SOUL_BLOCK);
-        blockWithItem(YummyBlocks.RUBELLITE_BLOCK);
+        blockWithItem(YummyBlocks.FANCY_DIAMOND_BLOCK);
         blockWithItem(YummyBlocks.SOUL_INFUSED_REDSTONE_BLOCK);
         blockWithItem(YummyBlocks.SOUL_INFUSED_COPPER_BLOCK);
         blockWithItem(YummyBlocks.SOUL_INFUSED_GOLD_BLOCK);
@@ -33,7 +31,7 @@ public class YummyBlockStateProvider extends BlockStateProvider {
         blockWithItem(YummyBlocks.SOUL_INFUSED_AMETHYST_BLOCK);
         blockWithItem(YummyBlocks.SOUL_INFUSED_FANCY_DIAMOND_BLOCK);
         blockWithItem(YummyBlocks.PURIFIED_SOUL_METAL_BLOCK);
-        blockWithItem(YummyBlocks.RUBELLITE_ORE);
+        blockWithItem(YummyBlocks.FANCY_DIAMOND_ORE);
         buttonBlock(YummyBlocks.EBONY_BUTTON.get(), new ResourceLocation(YummyMod.MOD_ID, "block/ebony_planks"));
         doorBlock(YummyBlocks.EBONY_DOOR.get(), new ResourceLocation(YummyMod.MOD_ID, "block/ebony_door_bottom"), new ResourceLocation(YummyMod.MOD_ID, "block/ebony_door_top"));
         fenceBlock(YummyBlocks.EBONY_FENCE.get(), new ResourceLocation(YummyMod.MOD_ID, "block/ebony_planks"));

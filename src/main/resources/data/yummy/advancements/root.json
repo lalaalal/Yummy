@@ -4,8 +4,7 @@
             "item": "yummy:bunny_chest"
         },
         "title": {
-            "translate": "advancements.yummy.root.title",
-            "color": "aqua"
+            "translate": "advancements.yummy.root.title"
         },
         "description": {
             "translate": "advancements.yummy.root.description"
