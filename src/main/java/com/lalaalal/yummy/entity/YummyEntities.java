@@ -3,6 +3,7 @@ package com.lalaalal.yummy.entity;
 import com.lalaalal.yummy.YummyMod;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.vehicle.ChestBoat;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -11,6 +12,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class YummyEntities {
     private static final DeferredRegister<EntityType<?>> ENTITY_TYPES
             = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, YummyMod.MOD_ID);
+    
 
     public static final RegistryObject<EntityType<Herobrine>> HEROBRINE = ENTITY_TYPES.register("herobrine",
             () -> EntityType.Builder.of((EntityType.EntityFactory<Herobrine>) Herobrine::new, MobCategory.CREATURE)

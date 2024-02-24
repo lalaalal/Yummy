@@ -51,11 +51,11 @@ public class YummyItems {
             () -> new Item(new Item.Properties().fireResistant()));
 
     public static final RegistryObject<Item> SPEAR = ITEMS.register("spear",
-            () -> new SpearItem(new Item.Properties(), Tiers.IRON, 2, 2, 3));
+            () -> new SpearItem(new Item.Properties(), Tiers.IRON, 6, -2.9F, 0));
     public static final RegistryObject<Item> MIGHTY_HOLY_SPEAR = ITEMS.register("mighty_holy_spear",
             () -> new SpearItem(new Item.Properties()
                     .fireResistant()
-                    .rarity(Rarity.EPIC), YummyTiers.GOD, -1, 2, 3, YummyEntities.MIGHTY_HOLY_SPEAR
+                    .rarity(Rarity.EPIC), YummyTiers.GOD, 14, -2.9F, 3, YummyEntities.MIGHTY_HOLY_SPEAR
             ));
     public static final RegistryObject<Item> SPEAR_OF_LONGINUS = ITEMS.register("spear_of_longinus",
             () -> new SpearOfLonginusItem(new Item.Properties()
@@ -104,7 +104,7 @@ public class YummyItems {
                     .stacksTo(1)
             ));
     public static final RegistryObject<Item> EBONY_SWORD = ITEMS.register("ebony_sword",
-            () -> new EbonySwordItem(Tiers.WOOD, 4, -2.6f, new Item.Properties()
+            () -> new EbonySwordItem(Tiers.WOOD, 3, -2.4F, new Item.Properties()
             ));
 
     public static final RegistryObject<Item> HEROBRINE_PHASE1_DISC = ITEMS.register("herobrine_phase1_disc",
@@ -124,7 +124,7 @@ public class YummyItems {
                     new Item.Properties()
                             .stacksTo(1)
                             .fireResistant()
-                            .rarity(Rarity.RARE), 3840));
+                            .rarity(Rarity.RARE), 3980));
     public static final RegistryObject<Item> GOD_BLOOD = ITEMS.register("god_blood",
             () -> new Item(new Item.Properties()
                     .stacksTo(1)

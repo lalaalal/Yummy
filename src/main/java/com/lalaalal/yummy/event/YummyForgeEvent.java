@@ -30,7 +30,7 @@ import java.util.Optional;
 @Mod.EventBusSubscriber(modid = YummyMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class YummyForgeEvent {
     @SubscribeEvent
-    public static void soulFireCheck(PlayerInteractEvent.RightClickBlock event) {
+    public static void FireCheck(PlayerInteractEvent.RightClickBlock event) {
         Level level = event.getLevel();
         if (level.isClientSide)
             return;
@@ -41,7 +41,7 @@ public class YummyForgeEvent {
                 && direction == Direction.UP
                 && Herobrine.canSummonHerobrine(level, blockPos)) {
             level.setBlock(blockPos.above(), YummyBlocks.PURIFIED_SOUL_FIRE_BLOCK.get().defaultBlockState(), 10);
-            Optional<HerobrineSpawnerBlockEntity> optional = level.getBlockEntity(blockPos, YummyBlockEntities.HEROBRINE_SPAWNER_BLOCK_ENTITY.get());
+            Optional<HerobrineSpawnerBlockEntity> optional = level.getBlockEntity(blockPos.below(), YummyBlockEntities.HEROBRINE_SPAWNER_BLOCK_ENTITY.get());
             if (optional.isPresent()) {
                 HerobrineSpawnerBlockEntity spawner = optional.get();
                 spawner.setTriggeredPlayerUUID(event.getEntity().getUUID());

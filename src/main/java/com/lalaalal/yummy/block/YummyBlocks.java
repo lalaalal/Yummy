@@ -2,6 +2,7 @@ package com.lalaalal.yummy.block;
 
 import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.YummyTypes;
+import com.lalaalal.yummy.item.YummyItems;
 import com.lalaalal.yummy.mixin.accessor.FireBlockAccessor;
 import com.lalaalal.yummy.world.feature.tree.EbonyTreeGrower;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -17,7 +18,6 @@ import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Supplier;
 
-import static net.minecraft.world.item.Items.registerBlock;
 
 @SuppressWarnings("unused")
 public class YummyBlocks {
@@ -50,7 +50,7 @@ public class YummyBlocks {
 
     public static final RegistryObject<Block> PURIFIED_SOUL_BLOCK = BLOCKS.register("purified_soul_block",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.SOUL_SAND)
-                    .requiresCorrectToolForDrops().strength(50.0F, 1200.0F)
+                    .requiresCorrectToolForDrops().strength(0.5F, 1200.0F)
                     .speedFactor(0.4F)));
     public static final RegistryObject<Block> PURIFIED_SOUL_FIRE_BLOCK = BLOCKS.register("purified_soul_fire",
             () -> new PurifiedSoulFireBlock(BlockBehaviour.Properties.copy(Blocks.SOUL_FIRE)
@@ -122,41 +122,42 @@ public class YummyBlocks {
                     .strength(-1.0F, 3600000.0F)
                     .requiresCorrectToolForDrops(), false, false, true, false));
 
-    public static final RegistryObject<Block> SOUL_INFUSED_REDSTONE_BLOCK = register("soul_infused_redstone_block",
+    public static final RegistryObject<Block> SOUL_INFUSED_REDSTONE_BLOCK = FireresistRegister("soul_infused_redstone_block",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.REDSTONE_BLOCK)
                     .strength(5.0F, 6f)
                     .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> SOUL_INFUSED_COPPER_BLOCK = register("soul_infused_copper_block",
+
+    public static final RegistryObject<Block> SOUL_INFUSED_COPPER_BLOCK = FireresistRegister("soul_infused_copper_block",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)
                     .strength(5.0F, 6f)
                     .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> SOUL_INFUSED_GOLD_BLOCK = register("soul_infused_gold_block",
+    public static final RegistryObject<Block> SOUL_INFUSED_GOLD_BLOCK = FireresistRegister("soul_infused_gold_block",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.GOLD_BLOCK)
                     .strength(5.0F, 6f)
                     .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> SOUL_INFUSED_EMERALD_BLOCK = register("soul_infused_emerald_block",
+    public static final RegistryObject<Block> SOUL_INFUSED_EMERALD_BLOCK = FireresistRegister("soul_infused_emerald_block",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.EMERALD_BLOCK)
                     .strength(5.0F, 6f)
                     .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> SOUL_INFUSED_DIAMOND_BLOCK = register("soul_infused_diamond_block",
+    public static final RegistryObject<Block> SOUL_INFUSED_DIAMOND_BLOCK = FireresistRegister("soul_infused_diamond_block",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.DIAMOND_BLOCK)
                     .strength(5.0F, 6f)
                     .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> SOUL_INFUSED_LAPIS_BLOCK = register("soul_infused_lapis_block",
+    public static final RegistryObject<Block> SOUL_INFUSED_LAPIS_BLOCK = FireresistRegister("soul_infused_lapis_block",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.LAPIS_BLOCK)
                     .strength(5.0F, 6f)
                     .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> SOUL_INFUSED_AMETHYST_BLOCK = register("soul_infused_amethyst_block",
+    public static final RegistryObject<Block> SOUL_INFUSED_AMETHYST_BLOCK = FireresistRegister("soul_infused_amethyst_block",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.AMETHYST_BLOCK)
                     .strength(5.0F, 6f)
                     .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> SOUL_INFUSED_FANCY_DIAMOND_BLOCK = register("soul_infused_fancy_diamond_block",
+    public static final RegistryObject<Block> SOUL_INFUSED_FANCY_DIAMOND_BLOCK = FireresistRegister("soul_infused_fancy_diamond_block",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.DIAMOND_BLOCK)
                     .strength(5.0F, 6f)
                     .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> PURIFIED_SOUL_METAL_BLOCK = register("purified_soul_metal_block",
+    public static final RegistryObject<Block> PURIFIED_SOUL_METAL_BLOCK = FireresistRegister("purified_soul_metal_block",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.NETHERITE_BLOCK)
-                    .strength(5f, 6f)
+                    .strength(50f, 6f)
                     .requiresCorrectToolForDrops()));
     public static final RegistryObject<Item> PURIFIED_SOUL_BLOCK_ITEM = ITEMS.register("purified_soul_block",
             () -> new BlockItem(PURIFIED_SOUL_BLOCK.get(), new Item.Properties()
@@ -169,40 +170,23 @@ public class YummyBlocks {
                     .fireResistant()));
 
 
-    /*public static final RegistryObject<Item> SOUL_INFUSED_REDSTONE_BLOCK_ITEM = ITEMS.register("soul_infused_redstone_block",
-            () -> new BlockItem(SOUL_INFUSED_REDSTONE_BLOCK.get(), new Item.Properties()
-                    .fireResistant()));
-    public static final RegistryObject<Item> SOUL_INFUSED_COPPER_BLOCK_ITEM = ITEMS.register("soul_infused_copper_block",
-            () -> new BlockItem(SOUL_INFUSED_COPPER_BLOCK.get(), new Item.Properties()
-                    .fireResistant()));
-    public static final RegistryObject<Item> SOUL_INFUSED_GOLD_BLOCK_ITEM = ITEMS.register("soul_infused_gold_block",
-            () -> new BlockItem(SOUL_INFUSED_GOLD_BLOCK.get(), new Item.Properties()
-                    .fireResistant()));
-    public static final RegistryObject<Item> SOUL_INFUSED_EMERALD_BLOCK_ITEM = ITEMS.register("soul_infused_emerald_block",
-            () -> new BlockItem(SOUL_INFUSED_EMERALD_BLOCK.get(), new Item.Properties()
-                    .fireResistant()));
-    public static final RegistryObject<Item> SOUL_INFUSED_DIAMOND_BLOCK_ITEM = ITEMS.register("soul_infused_diamond_block",
-            () -> new BlockItem(SOUL_INFUSED_DIAMOND_BLOCK.get(), new Item.Properties()
-                    .fireResistant()));
-    public static final RegistryObject<Item> SOUL_INFUSED_LAPIS_BLOCK_ITEM = ITEMS.register("soul_infused_lapis_block",
-            () -> new BlockItem(SOUL_INFUSED_LAPIS_BLOCK.get(), new Item.Properties()
-                    .fireResistant()));
-    public static final RegistryObject<Item> SOUL_INFUSED_AMETHYST_BLOCK_ITEM = ITEMS.register("soul_infused_amethyst_block",
-            () -> new BlockItem(SOUL_INFUSED_AMETHYST_BLOCK.get(), new Item.Properties()
-                    .fireResistant()));
-    public static final RegistryObject<Item> SOUL_INFUSED_FANCY_DIAMOND_BLOCK_ITEM = ITEMS.register("soul_infused_fancy_diamond_block",
-            () -> new BlockItem(SOUL_INFUSED_FANCY_DIAMOND_BLOCK.get(), new Item.Properties()
-                    .fireResistant()));*/
-
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> block) {
         RegistryObject<T> registryObject = BLOCKS.register(name, block);
         registerBlockItem(name, registryObject);
 
         return registryObject;
     }
+    private static <T extends Block> RegistryObject<T> FireresistRegister(String name, Supplier<T> block) {
+        RegistryObject<T> registryObject = BLOCKS.register(name, block);
+        registerFireResistBlockItem(name, registryObject);
+        return registryObject;
+    }
 
     private static <T extends Block> void registerBlockItem(String name, Supplier<T> block) {
         ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+    }
+    private static <T extends Block> void registerFireResistBlockItem(String name, Supplier<T> block) {
+        ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().fireResistant()));
     }
 
     public static void registerFlammability() {
