@@ -1,0 +1,7 @@
+{
+    "parent": "minecraft:block/cube_column",
+    "textures": {
+        "end": "yummy:block/herobrine_spawner_top",
+        "side": "yummy:block/herobrine_spawner_side"
+    }
+}

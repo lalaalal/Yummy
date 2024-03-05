@@ -1,6 +1,7 @@
 package com.lalaalal.yummy.entity;
 
 import com.lalaalal.yummy.YummyUtil;
+import com.lalaalal.yummy.block.YummyBlocks;
 import com.lalaalal.yummy.entity.ai.PhaseManager;
 import com.lalaalal.yummy.entity.ai.YummyAttributeModifiers;
 import com.lalaalal.yummy.entity.ai.goal.FollowTargetGoal;
@@ -51,8 +52,9 @@ public class Herobrine extends AbstractHerobrine{
     public static final int DEATH_TICK_DURATION = 100;
     private static final int HURT_ANIMATION_DURATION = 37;
     private static final int CONSUME_MARK_HEAL = 66;
-    private static final float[] PHASE_HEALTHS = {600, 60, 6};
+    private static final float[] PHASE_HEALTHS = {6, 60, 600};
     private static final float[] HEALTH_CHANGE_CHECK = {12, 18, 24};
+    private static final double[] PHASE_ARMOR = {0, 30, 30};
     private static final BossEvent.BossBarColor[] PHASE_COLORS = {BossEvent.BossBarColor.BLUE, BossEvent.BossBarColor.YELLOW, BossEvent.BossBarColor.RED};
 
     private final Set<ServerPlayer> hurtPlayers = new HashSet<>();
@@ -73,12 +75,10 @@ public class Herobrine extends AbstractHerobrine{
 
     public static boolean canSummonHerobrine(Level level, BlockPos headPos) {
         Block soulSandBlock = level.getBlockState(headPos).getBlock();
-        Block netherBlock = level.getBlockState(headPos.below(1)).getBlock();
-        Block goldBlock1 = level.getBlockState(headPos.below(2)).getBlock();
-        Block goldBlock2 = level.getBlockState(headPos.below(3)).getBlock();
+        Block goldBlock1 = level.getBlockState(headPos.below(1)).getBlock();
+        Block goldBlock2 = level.getBlockState(headPos.below(2)).getBlock();
 
-        return soulSandBlock == Blocks.SOUL_SAND
-                && netherBlock == Blocks.CHISELED_NETHER_BRICKS
+        return soulSandBlock == YummyBlocks.HEROBRINE_SPAWNER_BLOCK.get()
                 && goldBlock1 == Blocks.GOLD_BLOCK
                 && goldBlock2 == Blocks.GOLD_BLOCK;
     }
@@ -87,11 +87,17 @@ public class Herobrine extends AbstractHerobrine{
         return Mob.createMobAttributes()
                 .add(Attributes.FOLLOW_RANGE, 32)
                 .add(Attributes.MAX_HEALTH, 666)
-                .add(Attributes.ARMOR, 6)
+                .add(Attributes.ARMOR, 0)
                 .add(Attributes.ATTACK_DAMAGE, 16)
                 .add(Attributes.ATTACK_KNOCKBACK, 6)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.6)
                 .add(Attributes.MOVEMENT_SPEED, 0.20);
+    }
+
+    public Herobrine(Level level, BlockPos spawnPos, BlockPos structurePos) {
+        this(YummyEntities.HEROBRINE.get(), level);
+        this.structurePos = structurePos;
+        setPos(spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5);
     }
 
     protected Herobrine(EntityType<? extends Herobrine> entityType, Level level) {
@@ -105,12 +111,6 @@ public class Herobrine extends AbstractHerobrine{
         phaseManager.addHealthChangeListener(this::updateShadowSpeed);
 
         setPersistenceRequired();
-    }
-
-    public Herobrine(Level level, BlockPos spawnPos, BlockPos structurePos) {
-        this(YummyEntities.HEROBRINE.get(), level);
-        this.structurePos = structurePos;
-        setPos(spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5);
     }
 
     @Override
@@ -160,15 +160,22 @@ public class Herobrine extends AbstractHerobrine{
             return;
         invulnerableTick = 30;
         setInvulnerable(true);
+        updateArmorPoint(to);
         LevelChunk levelChunk = level().getChunkAt(getOnPos());
         YummyMessages.sendToPlayer(new ToggleHerobrineMusicPacket(true, to), levelChunk);
         setHealth(phaseManager.getActualCurrentPhaseMaxHealth());
     }
 
-    private void enterPhase2(int from) {
+    private void updateArmorPoint(int phase) {
+        int phaseIndex = phase - 1;
+        if (0 > phaseIndex || phaseIndex >= PHASE_ARMOR.length)
+            return;
         AttributeInstance attributeInstance = getAttribute(Attributes.ARMOR);
         if (attributeInstance != null)
-            attributeInstance.setBaseValue(66);
+            attributeInstance.setBaseValue(phaseIndex);
+    }
+
+    private void enterPhase2(int from) {
         if (getSkill(DescentAndFallMeteorSkill.NAME) instanceof DescentAndFallMeteorSkill descentAndFallMeteorSkill) {
             descentAndFallMeteorSkill.setMeteorMark(true);
             registerSkill(new NarakaStormSkill(this, 20 * 40, descentAndFallMeteorSkill));
@@ -392,7 +399,7 @@ public class Herobrine extends AbstractHerobrine{
         for (ServerPlayer hurtPlayer : hurtPlayers)
             CriteriaTriggers.PLAYER_KILLED_ENTITY.trigger(hurtPlayer, this, damageSource);
 
-        if (damageSource.equals(level().damageSources().fellOutOfWorld()))
+        if (damageSource.equals(level().damageSources().genericKill()))
             remove(RemovalReason.KILLED);
         this.deathDamageSource = damageSource;
         phaseManager.updateBossBarOnly(bossEvent);
