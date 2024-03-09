@@ -60,11 +60,11 @@ public class HerobrineSpawnerBlockEntity extends BlockEntity {
     }
 
     private void destroyStructure(ServerLevel level, BlockPos pos) {
-        if (!structureExists) {
+        /*if (!structureExists) {
             level.destroyBlock(pos, false);
             summonHerobrine(level, pos);
             return;
-        }
+        }*/
 
         for (int i = 0; i < 4; i++) {
             int yOffset = i - 2;

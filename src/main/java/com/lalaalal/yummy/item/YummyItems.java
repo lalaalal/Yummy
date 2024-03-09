@@ -63,8 +63,7 @@ public class YummyItems {
                     .fireResistant()
             ));
     public static final RegistryObject<Item> PURIFIED_SOUL_SWORD = ITEMS.register("purified_soul_sword",
-            () -> new PurifiedSoulSwordItem(new Item.Properties()
-                    .durability(0)
+            () -> new PurifiedSoulSwordItem(YummyTiers.PURIFIED_SOUL_SWORD, 5, 2, new Item.Properties()
                     .fireResistant()
                     .rarity(Rarity.UNCOMMON)
             ));
@@ -151,6 +150,8 @@ public class YummyItems {
                     .fireResistant()
                     .rarity(Rarity.EPIC)));
 
+    public static final RegistryObject<Item> FAKE_GOLD_INGOT = ITEMS.register("fake_gold_ingot",
+            () -> new Item(new Item.Properties().fireResistant()));
     public static final RegistryObject<Item> SOUL_INFUSED_REDSTONE = ITEMS.register("soul_infused_redstone",
             () -> new Item(new Item.Properties().fireResistant()));
     public static final RegistryObject<Item> SOUL_INFUSED_COPPER = ITEMS.register("soul_infused_copper",

@@ -76,13 +76,13 @@ public class Herobrine extends AbstractHerobrine{
     public static boolean canSummonHerobrine(Level level, BlockPos headPos) {
         Block netherrack = level.getBlockState(headPos).getBlock();
         Block HeroBrineBlock = level.getBlockState(headPos.below(1)).getBlock();
-        Block goldBlock1 = level.getBlockState(headPos.below(2)).getBlock();
-        Block goldBlock2 = level.getBlockState(headPos.below(3)).getBlock();
+        Block fakegoldBlock1 = level.getBlockState(headPos.below(2)).getBlock();
+        Block fakegoldBlock2 = level.getBlockState(headPos.below(3)).getBlock();
 
         return netherrack == Blocks.NETHERRACK
                 && HeroBrineBlock == YummyBlocks.HEROBRINE_SPAWNER_BLOCK.get()
-                && goldBlock1 == Blocks.GOLD_BLOCK
-                && goldBlock2 == Blocks.GOLD_BLOCK;
+                && fakegoldBlock1 == YummyBlocks.FAKE_GOLD_BLOCK.get()
+                && fakegoldBlock2 == YummyBlocks.FAKE_GOLD_BLOCK.get();
     }
 
     public static AttributeSupplier.Builder getHerobrineAttributes() {

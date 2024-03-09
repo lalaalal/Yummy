@@ -72,8 +72,7 @@ public class YummyBlocks {
     public static final RegistryObject<Block> EBONY_PLANKS = register("ebony_planks",
             () -> new FlammableRotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS), 5, 20));
     public static final RegistryObject<Block> EBONY_LEAVES = register("ebony_leaves",
-            () -> new FlammableLeavesBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LEAVES)
-                    .requiresCorrectToolForDrops()));
+            () -> new FlammableLeavesBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LEAVES)));
     public static final RegistryObject<Block> EBONY_SAPLING = register("ebony_sapling",
             () -> new SaplingBlock(new EbonyTreeGrower(), BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING)));
     public static final RegistryObject<Block> HARD_EBONY_PLANKS = register("hard_ebony_planks",
@@ -121,6 +120,11 @@ public class YummyBlocks {
                     .noLootTable()
                     .strength(-1.0F, 3600000.0F)
                     .requiresCorrectToolForDrops(), false, false, true, false));
+
+    public static final RegistryObject<Block> FAKE_GOLD_BLOCK = FireresistRegister("fake_gold_block",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.GOLD_BLOCK)
+                    .strength(5.0F, 6f)
+                    .requiresCorrectToolForDrops()));
 
     public static final RegistryObject<Block> SOUL_INFUSED_REDSTONE_BLOCK = FireresistRegister("soul_infused_redstone_block",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.REDSTONE_BLOCK)

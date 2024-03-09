@@ -22,6 +22,7 @@ public class YummyBlockStateProvider extends BlockStateProvider {
         blockWithItem(YummyBlocks.HARD_EBONY_PLANKS);
         blockWithItem(YummyBlocks.PURIFIED_SOUL_BLOCK);
         blockWithItem(YummyBlocks.FANCY_DIAMOND_BLOCK);
+        blockWithItem(YummyBlocks.FAKE_GOLD_BLOCK);
         blockWithItem(YummyBlocks.SOUL_INFUSED_REDSTONE_BLOCK);
         blockWithItem(YummyBlocks.SOUL_INFUSED_COPPER_BLOCK);
         blockWithItem(YummyBlocks.SOUL_INFUSED_GOLD_BLOCK);

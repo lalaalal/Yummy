@@ -105,6 +105,8 @@ public class YummyTabs {
                 entries.accept(YummyItems.PURIFIED_SOUL_SHARD.get());
                 entries.accept(YummyItems.SPEAR_OF_LONGINUS.get());
                 entries.accept(YummyItems.ESSENCE_OF_PURITY.get());
+                entries.accept(YummyItems.FAKE_GOLD_INGOT.get());
+                entries.accept(YummyBlocks.FAKE_GOLD_BLOCK.get());
             })
             .build()
     );
