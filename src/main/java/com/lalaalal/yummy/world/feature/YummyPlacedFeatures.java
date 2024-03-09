@@ -6,6 +6,8 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.features.FeatureUtils;
+import net.minecraft.data.worldgen.features.OreFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.resources.ResourceKey;
@@ -18,27 +20,25 @@ import java.util.List;
 
 public class YummyPlacedFeatures {
     public static final ResourceKey<PlacedFeature> EBONY_PLACED_KEY = createKey("ebony_placed");
-    public static final ResourceKey<PlacedFeature> RUBELLITE_ORE_PLACED_KEY = createKey("rubellite_ore_placed");
-    public static final ResourceKey<PlacedFeature> MANGANITE_ORE_PLACED_KEY = createKey("manganite_ore_placed");
-    public static final ResourceKey<PlacedFeature> MANGANITE_GEODE_PLACED_KEY = createKey("manganite_geode_placed");
+    public static final ResourceKey<PlacedFeature> FANCY_DIAMOND_ORE_PLACED_KEY = createKey("fancy_diamond_ore_placed");
+    public static final ResourceKey<PlacedFeature> FANCY_DIAMOND_ORE_LARGE_PLACED_KEY = createKey("fancy_diamond_ore_large_placed");
+    public static final ResourceKey<PlacedFeature> FANCY_DIAMOND_ORE_BURIED_PLACED_KEY = createKey("fancy_diamond_ore_buried_placed");
 
     public static void bootstrap(BootstapContext<PlacedFeature> context) {
         HolderGetter<ConfiguredFeature<?, ?>> configuredFeatures = context.lookup(Registries.CONFIGURED_FEATURE);
+
         register(context, EBONY_PLACED_KEY, configuredFeatures.getOrThrow(YummyConfiguredFeatures.EBONY_KEY),
                 VegetationPlacements.treePlacement(PlacementUtils.countExtra(3, 0.1f, 2), YummyBlocks.EBONY_SAPLING.get())
         );
-        register(context, RUBELLITE_ORE_PLACED_KEY, configuredFeatures.getOrThrow(YummyConfiguredFeatures.RUBELLITE_ORE_KEY),
-                commonOrePlacement(9, HeightRangePlacement.triangle(VerticalAnchor.absolute(-63), VerticalAnchor.absolute(13)))
-        );
-        register(context, MANGANITE_ORE_PLACED_KEY, configuredFeatures.getOrThrow(YummyConfiguredFeatures.MANGANITE_ORE_KEY),
-                commonOrePlacement(4, HeightRangePlacement.triangle(VerticalAnchor.absolute(-63), VerticalAnchor.absolute(13)))
-        );
-        register(context, MANGANITE_GEODE_PLACED_KEY, configuredFeatures.getOrThrow(YummyConfiguredFeatures.MANGANITE_GEODE_KEY),
-                RarityFilter.onAverageOnceEvery(24),
-                InSquarePlacement.spread(),
-                HeightRangePlacement.uniform(VerticalAnchor.absolute(35), VerticalAnchor.absolute(40)),
-                BiomeFilter.biome()
-        );
+        register(context, FANCY_DIAMOND_ORE_PLACED_KEY, configuredFeatures.getOrThrow(YummyConfiguredFeatures.FANCY_DIAMOND_ORE_SMALL),
+                commonOrePlacement(7, HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(-80), VerticalAnchor.aboveBottom(80))));
+        register(context, FANCY_DIAMOND_ORE_LARGE_PLACED_KEY, configuredFeatures.getOrThrow(YummyConfiguredFeatures.FANCY_DIAMOND_ORE_LARGE),
+                rareOrePlacement(9, HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(-80), VerticalAnchor.aboveBottom(80))));
+        register(context, FANCY_DIAMOND_ORE_BURIED_PLACED_KEY, configuredFeatures.getOrThrow(YummyConfiguredFeatures.FANCY_DIAMOND_ORE_BURIED),
+                commonOrePlacement(4, HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(-80), VerticalAnchor.aboveBottom(80))));
+
+
+
     }
 
     private static ResourceKey<PlacedFeature> createKey(String name) {
@@ -61,5 +61,8 @@ public class YummyPlacedFeatures {
 
     private static List<PlacementModifier> commonOrePlacement(int count, PlacementModifier heightRange) {
         return orePlacement(CountPlacement.of(count), heightRange);
+    }
+    private static List<PlacementModifier> rareOrePlacement(int count, PlacementModifier pHeightRange) {
+        return orePlacement(RarityFilter.onAverageOnceEvery(count), pHeightRange);
     }
 }

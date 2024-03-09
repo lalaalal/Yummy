@@ -1,0 +1,11 @@
+{
+    "type": "minecraft:blasting",
+    "ingredient": {
+        "item": "yummy:deepslate_fancy_diamond_ore"
+    },
+    "result": {
+        "item": "yummy:fancy_diamond"
+    },
+    "experience": 0.7,
+    "cookingtime": 100
+}

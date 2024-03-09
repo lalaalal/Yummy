@@ -52,7 +52,7 @@ public class Herobrine extends AbstractHerobrine{
     public static final int DEATH_TICK_DURATION = 100;
     private static final int HURT_ANIMATION_DURATION = 37;
     private static final int CONSUME_MARK_HEAL = 66;
-    private static final float[] PHASE_HEALTHS = {6, 60, 600};
+    private static final float[] PHASE_HEALTHS = {600, 60, 6};
     private static final float[] HEALTH_CHANGE_CHECK = {12, 18, 24};
     private static final double[] PHASE_ARMOR = {0, 30, 30};
     private static final BossEvent.BossBarColor[] PHASE_COLORS = {BossEvent.BossBarColor.BLUE, BossEvent.BossBarColor.YELLOW, BossEvent.BossBarColor.RED};
@@ -74,13 +74,15 @@ public class Herobrine extends AbstractHerobrine{
     private boolean preserveHealth = false;
 
     public static boolean canSummonHerobrine(Level level, BlockPos headPos) {
-        Block soulSandBlock = level.getBlockState(headPos).getBlock();
-        Block goldBlock1 = level.getBlockState(headPos.below(1)).getBlock();
-        Block goldBlock2 = level.getBlockState(headPos.below(2)).getBlock();
+        Block netherrack = level.getBlockState(headPos).getBlock();
+        Block HeroBrineBlock = level.getBlockState(headPos.below(1)).getBlock();
+        Block fakegoldBlock1 = level.getBlockState(headPos.below(2)).getBlock();
+        Block fakegoldBlock2 = level.getBlockState(headPos.below(3)).getBlock();
 
-        return soulSandBlock == YummyBlocks.HEROBRINE_SPAWNER_BLOCK.get()
-                && goldBlock1 == Blocks.GOLD_BLOCK
-                && goldBlock2 == Blocks.GOLD_BLOCK;
+        return netherrack == Blocks.NETHERRACK
+                && HeroBrineBlock == YummyBlocks.HEROBRINE_SPAWNER_BLOCK.get()
+                && fakegoldBlock1 == YummyBlocks.FAKE_GOLD_BLOCK.get()
+                && fakegoldBlock2 == YummyBlocks.FAKE_GOLD_BLOCK.get();
     }
 
     public static AttributeSupplier.Builder getHerobrineAttributes() {

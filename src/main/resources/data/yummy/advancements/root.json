@@ -1,11 +1,10 @@
 {
     "display": {
         "icon": {
-            "item": "yummy:rubellite"
+            "item": "yummy:bunny_chest"
         },
         "title": {
-            "translate": "advancements.yummy.root.title",
-            "color": "aqua"
+            "translate": "advancements.yummy.root.title"
         },
         "description": {
             "translate": "advancements.yummy.root.description"
@@ -14,7 +13,7 @@
         "show_toast": false,
         "announce_to_chat": false,
         "hidden": false,
-        "background": "yummy:textures/block/purified_soul_block.png"
+        "background": "yummy:textures/block/hard_ebony_planks.png"
     },
     "criteria": {
         "killed_by_something": {

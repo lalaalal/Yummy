@@ -1,0 +1,12 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "yummy:purified_soul_metal_block"
+        }
+    ],
+    "result": {
+        "item": "yummy:purified_soul_metal",
+        "count": 9
+    }
+}

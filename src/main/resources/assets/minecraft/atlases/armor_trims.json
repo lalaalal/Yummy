@@ -1,0 +1,22 @@
+{
+  "sources": [
+    {
+      "type": "paletted_permutations",
+      "textures": [
+        "trims/models/armor/silence",
+        "trims/models/armor/silence_leggings"
+      ],
+      "palette_key": "trims/color_palettes/trim_palette",
+      "permutations": {
+        "soul_infused_redstone": "yummy:trims/color_palettes/soul_infused_redstone",
+        "soul_infused_copper": "yummy:trims/color_palettes/soul_infused_copper",
+        "soul_infused_gold": "yummy:trims/color_palettes/soul_infused_gold",
+        "soul_infused_emerald": "yummy:trims/color_palettes/soul_infused_emerald",
+        "soul_infused_diamond": "yummy:trims/color_palettes/soul_infused_diamond",
+        "soul_infused_lapis": "yummy:trims/color_palettes/soul_infused_lapis",
+        "soul_infused_amethyst": "yummy:trims/color_palettes/soul_infused_amethyst",
+        "soul_infused_fancy_diamond": "yummy:trims/color_palettes/soul_infused_fancy_diamond"
+      }
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+    "parent": "minecraft:block/orientable",
+    "textures": {
+        "front": "yummy:block/soul_crafter_front",
+        "side": "yummy:block/soul_crafter_side",
+        "top": "yummy:block/soul_crafter_top"
+    }
+}

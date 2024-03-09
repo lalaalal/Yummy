@@ -1,17 +1,24 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "category": "misc",
-  "ingredients": [
-    {
-      "item": "minecraft:netherite_upgrade_smithing_template"
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#$#",
+    "#*#",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:netherite_ingot"
     },
-    {
-      "item": "minecraft:nether_star"
+    "*": {
+      "item": "minecraft:netherrack"
+    },
+    "$": {
+      "item": "yummy:purified_soul_upgrade_smithing_template"
     }
-    ],
+  },
   "result": {
-    "count": 1,
-    "item": "yummy:purified_soul_upgrade_smithing_template"
+    "item": "yummy:purified_soul_upgrade_smithing_template",
+    "count": 2
   },
   "show_notification": true
 }

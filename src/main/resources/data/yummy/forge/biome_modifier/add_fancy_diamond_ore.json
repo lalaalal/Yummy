@@ -1,0 +1,8 @@
+{
+    "type": "forge:add_features",
+    "biomes": "#minecraft:is_overworld",
+    "features": ["yummy:fancy_diamond_ore_placed",
+        "yummy:fancy_diamond_ore_large_placed",
+        "yummy:fancy_diamond_ore_buried_placed"],
+    "step": "underground_ores"
+}

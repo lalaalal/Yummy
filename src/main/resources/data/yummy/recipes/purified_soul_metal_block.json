@@ -1,0 +1,17 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "###",
+        "###"
+    ],
+    "key": {
+        "#": {
+            "item": "yummy:purified_soul_metal"
+        }
+    },
+    "result": {
+        "item": "yummy:purified_soul_metal_block",
+        "count": 1
+    }
+}

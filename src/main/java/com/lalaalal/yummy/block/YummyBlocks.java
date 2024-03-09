@@ -2,6 +2,8 @@ package com.lalaalal.yummy.block;
 
 import com.lalaalal.yummy.YummyMod;
 import com.lalaalal.yummy.YummyTypes;
+import com.lalaalal.yummy.item.YummyItems;
+import com.lalaalal.yummy.mixin.accessor.FireBlockAccessor;
 import com.lalaalal.yummy.world.feature.tree.EbonyTreeGrower;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.BlockItem;
@@ -16,36 +18,26 @@ import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Supplier;
 
+
 @SuppressWarnings("unused")
 public class YummyBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, YummyMod.MOD_ID);
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, YummyMod.MOD_ID);
-
-    public static final RegistryObject<Block> AMETHYST_BLOCK = register("amethyst_block",
-            () -> new Block(BlockBehaviour.Properties.copy(Blocks.AMETHYST_BLOCK)
-                    .strength(1.5f, 0.5f)
-                    .requiresCorrectToolForDrops()
-                    .sound(SoundType.AMETHYST)));
-    public static final RegistryObject<Block> RUBELLITE_BLOCK = register("rubellite_block",
+    public static final RegistryObject<Block> FANCY_DIAMOND_BLOCK = register("fancy_diamond_block",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
                     .strength(5f, 6f)
                     .requiresCorrectToolForDrops())
             );
-    public static final RegistryObject<Block> RUBELLITE_ORE = register("rubellite_ore",
+    public static final RegistryObject<Block> FANCY_DIAMOND_ORE = register("fancy_diamond_ore",
             () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(Blocks.STONE)
                     .strength(3f, 3f)
                     .requiresCorrectToolForDrops(), UniformInt.of(3, 7))
             );
-    public static final RegistryObject<Block> DEEPSLATE_RUBELLITE_ORE = register("deepslate_rubellite_ore",
+    public static final RegistryObject<Block> DEEPSLATE_FANCY_DIAMOND_ORE = register("deepslate_fancy_diamond_ore",
             () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(Blocks.STONE)
                     .strength(4.5f, 3f)
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.DEEPSLATE), UniformInt.of(3, 7))
-            );
-    public static final RegistryObject<Block> MANGANITE = register("manganite",
-            () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_ORE)
-                    .strength(5f, 6f)
-                    .requiresCorrectToolForDrops())
             );
     public static final RegistryObject<Block> HEROBRINE_SPAWNER_BLOCK = register("herobrine_spawner_block",
             () -> new HerobrineSpawnerBlock(BlockBehaviour.Properties.copy(Blocks.CHISELED_NETHER_BRICKS)
@@ -57,8 +49,8 @@ public class YummyBlocks {
             );
 
     public static final RegistryObject<Block> PURIFIED_SOUL_BLOCK = BLOCKS.register("purified_soul_block",
-            () -> new Block(BlockBehaviour.Properties.copy(Blocks.DIRT)
-                    .strength(0.5F)
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.SOUL_SAND)
+                    .requiresCorrectToolForDrops().strength(0.5F, 1200.0F)
                     .speedFactor(0.4F)));
     public static final RegistryObject<Block> PURIFIED_SOUL_FIRE_BLOCK = BLOCKS.register("purified_soul_fire",
             () -> new PurifiedSoulFireBlock(BlockBehaviour.Properties.copy(Blocks.SOUL_FIRE)
@@ -80,8 +72,7 @@ public class YummyBlocks {
     public static final RegistryObject<Block> EBONY_PLANKS = register("ebony_planks",
             () -> new FlammableRotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS), 5, 20));
     public static final RegistryObject<Block> EBONY_LEAVES = register("ebony_leaves",
-            () -> new FlammableLeavesBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LEAVES)
-                    .requiresCorrectToolForDrops()));
+            () -> new FlammableLeavesBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LEAVES)));
     public static final RegistryObject<Block> EBONY_SAPLING = register("ebony_sapling",
             () -> new SaplingBlock(new EbonyTreeGrower(), BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING)));
     public static final RegistryObject<Block> HARD_EBONY_PLANKS = register("hard_ebony_planks",
@@ -94,7 +85,7 @@ public class YummyBlocks {
     public static final RegistryObject<SlabBlock> EBONY_SLAB = register("ebony_slab",
             () -> new SlabBlock(BlockBehaviour.Properties.copy(Blocks.OAK_SLAB)));
     public static final RegistryObject<StairBlock> EBONY_STAIRS = register("ebony_stairs",
-            () -> new StairBlock(() -> EBONY_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.OAK_STAIRS)));
+            () -> new StairBlock(() -> EBONY_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(YummyBlocks.EBONY_PLANKS.get())));
     public static final RegistryObject<ButtonBlock> EBONY_BUTTON = register("ebony_button",
             () -> new ButtonBlock(BlockBehaviour.Properties.copy(Blocks.OAK_BUTTON), YummyTypes.EBONY_BLOCK_SET_TYPE, 20, true));
     public static final RegistryObject<PressurePlateBlock> EBONY_PRESSURE_PLATE = register("ebony_pressure_plate",
@@ -130,12 +121,58 @@ public class YummyBlocks {
                     .strength(-1.0F, 3600000.0F)
                     .requiresCorrectToolForDrops(), false, false, true, false));
 
+    public static final RegistryObject<Block> FAKE_GOLD_BLOCK = FireresistRegister("fake_gold_block",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.GOLD_BLOCK)
+                    .strength(5.0F, 6f)
+                    .requiresCorrectToolForDrops()));
+
+    public static final RegistryObject<Block> SOUL_INFUSED_REDSTONE_BLOCK = FireresistRegister("soul_infused_redstone_block",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.REDSTONE_BLOCK)
+                    .strength(5.0F, 6f)
+                    .requiresCorrectToolForDrops()));
+
+    public static final RegistryObject<Block> SOUL_INFUSED_COPPER_BLOCK = FireresistRegister("soul_infused_copper_block",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)
+                    .strength(5.0F, 6f)
+                    .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> SOUL_INFUSED_GOLD_BLOCK = FireresistRegister("soul_infused_gold_block",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.GOLD_BLOCK)
+                    .strength(5.0F, 6f)
+                    .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> SOUL_INFUSED_EMERALD_BLOCK = FireresistRegister("soul_infused_emerald_block",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.EMERALD_BLOCK)
+                    .strength(5.0F, 6f)
+                    .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> SOUL_INFUSED_DIAMOND_BLOCK = FireresistRegister("soul_infused_diamond_block",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.DIAMOND_BLOCK)
+                    .strength(5.0F, 6f)
+                    .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> SOUL_INFUSED_LAPIS_BLOCK = FireresistRegister("soul_infused_lapis_block",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.LAPIS_BLOCK)
+                    .strength(5.0F, 6f)
+                    .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> SOUL_INFUSED_AMETHYST_BLOCK = FireresistRegister("soul_infused_amethyst_block",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.AMETHYST_BLOCK)
+                    .strength(5.0F, 6f)
+                    .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> SOUL_INFUSED_FANCY_DIAMOND_BLOCK = FireresistRegister("soul_infused_fancy_diamond_block",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.DIAMOND_BLOCK)
+                    .strength(5.0F, 6f)
+                    .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> PURIFIED_SOUL_METAL_BLOCK = FireresistRegister("purified_soul_metal_block",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.NETHERITE_BLOCK)
+                    .strength(50f, 6f)
+                    .requiresCorrectToolForDrops()));
     public static final RegistryObject<Item> PURIFIED_SOUL_BLOCK_ITEM = ITEMS.register("purified_soul_block",
             () -> new BlockItem(PURIFIED_SOUL_BLOCK.get(), new Item.Properties()
                     .fireResistant()));
+    public static final RegistryObject<Block> SOUL_CRAFTER = BLOCKS.register("soul_crafter",
+            () -> new SoulCrafterBlock(BlockBehaviour.Properties.copy(Blocks.FURNACE)));
 
-    public static final RegistryObject<Block> ALEMBIC_BLOCK = register("alembic",
-            () -> new AlembicBlock(BlockBehaviour.Properties.copy(Blocks.FURNACE)));
+    public static final RegistryObject<Item> SOUL_CRAFTER_ITEM = ITEMS.register("soul_crafter",
+            () -> new BlockItem(SOUL_CRAFTER.get(), new Item.Properties()
+                    .fireResistant()));
+
 
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> block) {
         RegistryObject<T> registryObject = BLOCKS.register(name, block);
@@ -143,9 +180,25 @@ public class YummyBlocks {
 
         return registryObject;
     }
+    private static <T extends Block> RegistryObject<T> FireresistRegister(String name, Supplier<T> block) {
+        RegistryObject<T> registryObject = BLOCKS.register(name, block);
+        registerFireResistBlockItem(name, registryObject);
+        return registryObject;
+    }
 
     private static <T extends Block> void registerBlockItem(String name, Supplier<T> block) {
         ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+    }
+    private static <T extends Block> void registerFireResistBlockItem(String name, Supplier<T> block) {
+        ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().fireResistant()));
+    }
+
+    public static void registerFlammability() {
+        FireBlockAccessor fireBlockAccessor = (FireBlockAccessor) Blocks.FIRE;
+        fireBlockAccessor.callSetFlammable(YummyBlocks.EBONY_STAIRS.get(), 30, 60);
+        fireBlockAccessor.callSetFlammable(YummyBlocks.EBONY_FENCE.get(), 30, 60);
+        fireBlockAccessor.callSetFlammable(YummyBlocks.EBONY_FENCE_GATE.get(), 30, 60);
+        fireBlockAccessor.callSetFlammable(YummyBlocks.EBONY_SLAB.get(), 30, 60);
     }
 
     public static void register(IEventBus eventBus) {

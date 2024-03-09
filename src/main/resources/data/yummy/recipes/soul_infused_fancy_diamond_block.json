@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "yummy:soul_infused_fancy_diamond"
+    }
+  },
+  "result": {
+    "item": "yummy:soul_infused_fancy_diamond_block",
+    "count": 1
+  }
+}

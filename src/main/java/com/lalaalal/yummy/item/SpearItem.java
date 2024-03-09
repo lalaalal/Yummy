@@ -34,7 +34,7 @@ import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class SpearItem extends TieredItem implements Vanishable {
+public class SpearItem extends YummyTieredItem implements Vanishable {
     private static final Set<Enchantment> ENCHANTABLE = Set.of(Enchantments.LOYALTY, Enchantments.MENDING, Enchantments.UNBREAKING, Enchantments.IMPALING);
     protected static final UUID REACH_DISTANCE_UUID = UUID.fromString("63d316c1-7d6d-41be-81c3-41fc1a216c27");
     protected static final UUID ATTACK_RANGE_UUID = UUID.fromString("be7b5181-06e6-4268-a1e0-0a767a152901");

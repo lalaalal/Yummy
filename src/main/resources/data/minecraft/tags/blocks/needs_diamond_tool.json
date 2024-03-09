@@ -1,5 +1,7 @@
 {
     "replace": false,
     "values": [
+        "yummy:purified_soul_block",
+        "yummy:purified_soul_metal_block"
     ]
 }

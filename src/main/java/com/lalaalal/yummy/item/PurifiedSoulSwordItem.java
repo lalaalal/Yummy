@@ -12,9 +12,7 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
@@ -24,15 +22,16 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class PurifiedSoulSwordItem extends Item {
+public class PurifiedSoulSwordItem extends SwordItem {
     private final Multimap<Attribute, AttributeModifier> defaultModifiers;
 
-    public PurifiedSoulSwordItem(Properties properties) {
-        super(properties);
+    public PurifiedSoulSwordItem(Tier tier, int attackDamageModifier, float attackSpeedModifier, Properties properties) {
+        super(tier, attackDamageModifier, attackSpeedModifier, properties);
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", 5, AttributeModifier.Operation.ADDITION));
         builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", 2, AttributeModifier.Operation.ADDITION));
         this.defaultModifiers = builder.build();
+
     }
 
     @Override

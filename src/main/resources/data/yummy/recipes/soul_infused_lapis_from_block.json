@@ -1,0 +1,12 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "yummy:soul_infused_lapis_block"
+        }
+    ],
+    "result": {
+        "item": "yummy:soul_infused_lapis",
+        "count": 9
+    }
+}

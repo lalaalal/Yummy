@@ -9,7 +9,7 @@ import com.lalaalal.yummy.client.renderer.*;
 import com.lalaalal.yummy.entity.YummyEntities;
 import com.lalaalal.yummy.particle.PollutedParticle;
 import com.lalaalal.yummy.particle.YummyParticles;
-import com.lalaalal.yummy.screen.AlembicScreen;
+import com.lalaalal.yummy.screen.SoulCraftingScreen;
 import com.lalaalal.yummy.world.inventory.YummyMenuTypes;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.particle.FlameParticle;
@@ -30,12 +30,15 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 @Mod.EventBusSubscriber(modid = YummyMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class YummyClientEventBus {
+
+
+
     @SubscribeEvent
     public static void clientSetup(final FMLClientSetupEvent event) {
         Sheets.addWoodType(YummyTypes.EBONY_WOOD_TYPE);
         WoodType.register(YummyTypes.EBONY_WOOD_TYPE);
 
-        MenuScreens.register(YummyMenuTypes.ALEMBIC_MENU.get(), AlembicScreen::new);
+        MenuScreens.register(YummyMenuTypes.SOUL_CRAFTING_MENU.get(), SoulCraftingScreen::new);
     }
 
     @SubscribeEvent

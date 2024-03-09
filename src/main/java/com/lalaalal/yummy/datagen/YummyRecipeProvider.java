@@ -24,7 +24,6 @@ public class YummyRecipeProvider extends RecipeProvider implements IConditionBui
 
     @Override
     protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
-        nineBlockStorageRecipes(consumer, RecipeCategory.MISC, Items.AMETHYST_SHARD, RecipeCategory.BUILDING_BLOCKS, YummyBlocks.AMETHYST_BLOCK.get());
         generateRecipes(consumer, new BlockFamily.Builder(YummyBlocks.EBONY_PLANKS.get())
                 .button(YummyBlocks.EBONY_BUTTON.get())
                 .door(YummyBlocks.EBONY_DOOR.get())
@@ -36,18 +35,18 @@ public class YummyRecipeProvider extends RecipeProvider implements IConditionBui
                 .stairs(YummyBlocks.EBONY_STAIRS.get())
                 .trapdoor(YummyBlocks.EBONY_TRAPDOOR.get())
                 .getFamily());
-        essenceSmithing(consumer, YummyItems.PURIFIED_SOUL_SWORD.get(), YummyItems.ESSENCE_OF_EARTH.get(), RecipeCategory.MISC, YummyItems.SWORD_OF_EARTH.get());
-        essenceSmithing(consumer, YummyItems.PURIFIED_SOUL_SWORD.get(), YummyItems.ESSENCE_OF_ELECTRICITY.get(), RecipeCategory.MISC, YummyItems.SWORD_OF_ELECTRICITY.get());
-        essenceSmithing(consumer, YummyItems.PURIFIED_SOUL_SWORD.get(), YummyItems.ESSENCE_OF_FIRE.get(), RecipeCategory.MISC, YummyItems.SWORD_OF_FIRE.get());
-        essenceSmithing(consumer, YummyItems.PURIFIED_SOUL_SWORD.get(), YummyItems.ESSENCE_OF_ICE.get(), RecipeCategory.MISC, YummyItems.SWORD_OF_ICE.get());
-        essenceSmithing(consumer, YummyItems.PURIFIED_SOUL_SWORD.get(), YummyItems.ESSENCE_OF_LIFE.get(), RecipeCategory.MISC, YummyItems.SWORD_OF_LIFE.get());
-        essenceSmithing(consumer, YummyItems.PURIFIED_SOUL_SWORD.get(), YummyItems.ESSENCE_OF_SOUND.get(), RecipeCategory.MISC, YummyItems.SWORD_OF_SOUND.get());
-        essenceSmithing(consumer, YummyItems.PURIFIED_SOUL_SWORD.get(), YummyItems.ESSENCE_OF_WATER.get(), RecipeCategory.MISC, YummyItems.SWORD_OF_WATER.get());
-        essenceSmithing(consumer, YummyItems.PURIFIED_SOUL_SWORD.get(), YummyItems.ESSENCE_OF_WIND.get(), RecipeCategory.MISC, YummyItems.SWORD_OF_WIND.get());
+        soulinfusedSmithing(consumer, YummyItems.PURIFIED_SOUL_SWORD.get(), YummyItems.SOUL_INFUSED_REDSTONE.get(), RecipeCategory.MISC, YummyItems.SOUL_INFUSED_REDSTONE_SWORD.get());
+        soulinfusedSmithing(consumer, YummyItems.PURIFIED_SOUL_SWORD.get(), YummyItems.SOUL_INFUSED_COPPER.get(), RecipeCategory.MISC, YummyItems.SOUL_INFUSED_COPPER_SWORD.get());
+        soulinfusedSmithing(consumer, YummyItems.PURIFIED_SOUL_SWORD.get(), YummyItems.SOUL_INFUSED_GOLD.get(), RecipeCategory.MISC, YummyItems.SOUL_INFUSED_GOLDEN_SWORD.get());
+        soulinfusedSmithing(consumer, YummyItems.PURIFIED_SOUL_SWORD.get(), YummyItems.SOUL_INFUSED_EMERALD.get(), RecipeCategory.MISC, YummyItems.SOUL_INFUSED_EMERALD_SWORD.get());
+        soulinfusedSmithing(consumer, YummyItems.PURIFIED_SOUL_SWORD.get(), YummyItems.SOUL_INFUSED_DIAMOND.get(), RecipeCategory.MISC, YummyItems.SOUL_INFUSED_DIAMOND_SWORD.get());
+        soulinfusedSmithing(consumer, YummyItems.PURIFIED_SOUL_SWORD.get(), YummyItems.SOUL_INFUSED_LAPIS.get(), RecipeCategory.MISC, YummyItems.SOUL_INFUSED_LAPIS_SWORD.get());
+        soulinfusedSmithing(consumer, YummyItems.PURIFIED_SOUL_SWORD.get(), YummyItems.SOUL_INFUSED_AMETHYST.get(), RecipeCategory.MISC, YummyItems.SOUL_INFUSED_AMETHYST_SWORD.get());
+        soulinfusedSmithing(consumer, YummyItems.PURIFIED_SOUL_SWORD.get(), YummyItems.SOUL_INFUSED_FANCY_DIAMOND.get(), RecipeCategory.MISC, YummyItems.SOUL_INFUSED_FANCY_DIAMOND_SWORD.get());
         planksFromLog(consumer, YummyBlocks.EBONY_PLANKS.get(), YummyTags.EBONY_LOGS_ITEM_TAG, 4);
         woodFromLogs(consumer, YummyBlocks.EBONY_WOOD.get(), YummyBlocks.EBONY_LOG.get());
         woodenBoat(consumer, YummyItems.EBONY_BOAT_ITEM.get(), YummyBlocks.EBONY_PLANKS.get());
-        chestBoat(consumer, YummyItems.EBONY_CHEST_BOAT_ITEM.get(), YummyBlocks.EBONY_PLANKS.get());
+        chestBoat(consumer, YummyItems.EBONY_CHEST_BOAT_ITEM.get(), YummyItems.EBONY_BOAT_ITEM.get());
         hangingSign(consumer, YummyBlocks.EBONY_HANGING_SIGN.get(), YummyBlocks.STRIPPED_EBONY_LOG.get());
     }
 
@@ -60,7 +59,7 @@ public class YummyRecipeProvider extends RecipeProvider implements IConditionBui
         ShapedRecipeBuilder.shaped(pPackedCategory, pPacked).define('#', pUnpacked).pattern("###").pattern("###").pattern("###").group(pPackedGroup).unlockedBy(getHasName(pUnpacked), has(pUnpacked)).save(pFinishedRecipeConsumer, new ResourceLocation(YummyMod.MOD_ID, pPackedName));
     }
 
-    protected static void essenceSmithing(Consumer<FinishedRecipe> consumer, Item ingredientItem, Item additionItem, RecipeCategory category, Item resultItem) {
+    protected static void soulinfusedSmithing(Consumer<FinishedRecipe> consumer, Item ingredientItem, Item additionItem, RecipeCategory category, Item resultItem) {
         SmithingTransformRecipeBuilder.smithing(Ingredient.of(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.of(ingredientItem), Ingredient.of(additionItem), category, resultItem).unlocks("has_essence", has(additionItem)).save(consumer, new ResourceLocation(YummyMod.MOD_ID, getItemName(resultItem) + "_smithing"));
     }
 }
